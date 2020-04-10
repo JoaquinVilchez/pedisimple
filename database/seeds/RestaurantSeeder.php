@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Shop;
+use App\Restaurant;
 
-class ShopSeeder extends Seeder
+class RestaurantSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,24 +12,24 @@ class ShopSeeder extends Seeder
      */
     public function run()
     {
-        Shop::create([
+        Restaurant::create([
             'name' => 'Pizzeria Italia',
             'description' => 'Desde 2003',
             'slug' => 'pizzeria-italia',
             'phone' => '425339',
-            'shipping-price' => 50,
+            'shipping_price' => 50,
             'delivery' => true,
-            'user-id' => 1
+            'user_id' => 1
         ]);
 
-        Shop::create([
+        Restaurant::create([
             'name' => 'Despensa Mari',
             'description' => 'La despensa mas reconocida del barrio',
             'slug' => 'despensa-mari',
             'phone' => '433967',
-            'shipping-price' => 60,
+            'shipping_price' => 60,
             'delivery' => true,
-            'user-id' => 3
+            'user_id' => 3
         ]);
     }
 }

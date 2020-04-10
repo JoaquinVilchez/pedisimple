@@ -12,11 +12,11 @@
     <div class="row justify-content-center">
         <div class="col-lg-2">
 
-        <div class="list-group">
+        <div class="list-group mb-4">
             <p><strong>Filtros</strong></p>
-            <a href="#" class="list-group-item py-1">Pizzas</a>
-            <a href="#" class="list-group-item py-1">Empanadas</a>
-            <a href="#" class="list-group-item py-1">Hamburguesas</a>
+            @foreach ($categories as $category)
+                <a href="#" class="list-group-item py-1">{{$category->name}}</a>
+            @endforeach
             
         </div>
 
@@ -24,6 +24,7 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
+            @foreach($restaurants as $restaurant)
             <div class="card p-2 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
@@ -32,66 +33,20 @@
                     <div class="col-9 pl-0">
                     <div class="card-block mt-2">
                         <!--           <h4 class="card-title">Small card</h4> -->
-                        <h5><strong><a href="#">Green Eat</a></strong></h5>
-                        <p>Jujuy 229, Venado Tuerto, Santa Fe</p>
-                        <small>Pizzas - Empanadas</small>
+                        <h5><strong><a href="{{route('profile.show', $restaurant->slug)}}">{{$restaurant->name}}</a></strong></h5>
+                        <p>{{$restaurant->address->getFullAddress()}}</p>
+                        <small>
+                          @foreach($restaurant->restaurantCategories as $restaurantCategory)
+                            {{$restaurantCategory->name.' - '}}
+                          @endforeach
+                        </small>
                         <br>
-                        <a href="{{route('profile')}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
+                        <a href="{{route('profile.show', $restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
                     </div>
                     </div>
                 </div>
             </div>
-            <div class="card p-2 mb-2">
-                <div class="row">
-                    <div class="col-3 pr-0">
-                    <img class="d-block border m-1" width="120px" src="https://img.pystatic.com/restaurants/green-eat-billinghurst.jpg" alt="">
-                    </div>
-                    <div class="col-9 pl-0">
-                    <div class="card-block mt-2">
-                        <!--           <h4 class="card-title">Small card</h4> -->
-                        <h5><strong><a href="#">Green Eat</a></strong></h5>
-                        <p>Jujuy 229, Venado Tuerto, Santa Fe</p>
-                        <small>Pizzas - Empanadas</small>
-                        <br>
-                        <a href="{{route('profile')}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card p-2 mb-2">
-                <div class="row">
-                    <div class="col-3 pr-0">
-                    <img class="d-block border m-1" width="120px" src="https://img.pystatic.com/restaurants/green-eat-billinghurst.jpg" alt="">
-                    </div>
-                    <div class="col-9 pl-0">
-                    <div class="card-block mt-2">
-                        <!--           <h4 class="card-title">Small card</h4> -->
-                        <h5><strong><a href="#">Green Eat</a></strong></h5>
-                        <p>Jujuy 229, Venado Tuerto, Santa Fe</p>
-                        <small>Pizzas - Empanadas</small>
-                        <br>
-                        <a href="{{route('profile')}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card p-2 mb-2">
-                <div class="row">
-                    <div class="col-3 pr-0">
-                    <img class="d-block border m-1" width="120px" src="https://img.pystatic.com/restaurants/green-eat-billinghurst.jpg" alt="">
-                    </div>
-                    <div class="col-9 pl-0">
-                    <div class="card-block mt-2">
-                        <!--           <h4 class="card-title">Small card</h4> -->
-                        <h5><strong><a href="#">Green Eat</a></strong></h5>
-                        <p>Jujuy 229, Venado Tuerto, Santa Fe</p>
-                        <small>Pizzas - Empanadas</small>
-                        <br>
-                        <a href="{{route('profile')}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
-                    </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
 
             <nav aria-label="..." class="float-right mt-3">
                 <ul class="pagination">

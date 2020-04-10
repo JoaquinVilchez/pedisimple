@@ -10,48 +10,20 @@
 <div class="container">
     <div class="row mb-5">
         <div class="col-md-4 order-md-2 mb-4">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Mi pedido</span>
-            <span class="badge badge-secondary badge-pill">3</span>
-        </h4>
-        <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">$12</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between bg-light">
-            <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">-$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-            <span>Total </span>
-            <strong>$20</strong>
-            </li>
-        </ul>
-
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Tu pedido</span>
+                <span class="badge badge-secondary badge-pill">{{Cart::session(Auth::user()->id)->getTotalQuantity()}}</span>
+            </h4>
+            @include('carrito')
         </div>
         <div class="col-md-8 order-md-1">
-        <form class="needs-validation" action="{{route('thankyou')}}" novalidate>
+        <form class="needs-validation" action="{{route('checkout.store')}}" method="POST" novalidate>
+            @csrf
+            {{-- HACERLO DINAMICO --}}
+            <input type="hidden" name="restaurant_id" value="1"> 
+            {{-- HACERLO DINAMICO --}}
+            <input type="hidden" name="shipping_method" value="delivery">
+            {{-- HACERLO DINAMICO --}} 
             <div class="mb-4">
                 <h4 class="mb-3">Direccion de entrega</h4>
                 <div class="row">
@@ -129,10 +101,10 @@
             </div>
             <hr class="my-4">
             <div class="form-group">
-                <h4>Notas adicionales</h4   >
+                <h4>Notas adicionales</h4>
                 <textarea class="form-control" rows="3" placeholder="Notas adicionales"></textarea>
               </div>
-            <button class="subscribe btn btn-danger btn-block" type="submit"> Confirmar pedido </button>
+            <button class="subscribe btn btn-danger btn-block" type="submit" @if(Cart::isEmpty())disabled @endif> Confirmar pedido </button>
         </form>
         </div>
     </div>

@@ -17,9 +17,9 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('status')->default('active');
-            $table->unsignedBigInteger('shop');
-                $table->foreign('shop')->references('id')->on('shops');
+            $table->string('state')->default('active');
+            $table->unsignedBigInteger('restaurant_id');
+                $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->timestamps();
         });
     }

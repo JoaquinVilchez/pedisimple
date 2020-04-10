@@ -19,17 +19,8 @@ Route::get('/', function(){
     return view('home');
 })->name('home');
 
-Route::get('/list', function(){
-    return view('list');
-})->name('list');
 
-Route::get('/profile', function(){
-    return view('profile');
-})->name('profile');
 
-Route::get('/checkout', function(){
-    return view('checkout');
-})->name('checkout');
 
 Route::get('/gracias', function(){
     return view('thankyou');
@@ -39,14 +30,33 @@ Route::get('/confirmado', function(){
     return view('confirmation');
 })->name('confirmation');
 
-Route::get('/mis-direcciones', function(){
-    return view('myAddresses');
-})->name('myAddresses');
 
-Route::get('/mis-pedidos', function(){
-    return view('myOrders');
-})->name('myOrders');
+Route::post('/cart', 'CartController@store')->name('cart.store');
 
-Route::get('/mis-datos', function(){
-    return view('myAccount');
-})->name('myAccount');
+Route::post('/cart/remove/{id}', 'CartController@remove')->name('cart.remove');
+
+Route::post('/cart/update', 'CartController@update')->name('cart.update');
+
+Route::get('/cart/empty', 'CartController@empty')->name('cart.empty');
+
+Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
+Route::post('/checkout/confirm', 'CheckoutController@store')->name('checkout.store');
+//Ver direcciones
+Route::get('/mis-direcciones', 'AddressController@index')->name('myAddresses');
+//Agregar direccion
+Route::post('/addAddress', 'AddressController@store')->name('address.store');
+//Eliminar direccion
+Route::delete('/removeAddress', 'AddressController@destroy')->name('address.destroy');
+//Ver pedidos
+Route::get('/mis-pedidos', 'OrderController@index')->name('myOrders');
+//Ver pedido especifico
+Route::get('/pedidos/{id}', 'OrderController@show')->name('order.show');
+//Ver datos 
+Route::get('/mis-datos', 'UserController@index')->name('myAccount');
+//Editar usuarios
+Route::post('/editData/{user}', 'UserController@update')->name('user.update');
+//Ver restaurantes
+Route::get('/restaurantes', 'ListController@index')->name('list');
+//Perfil restaurante
+Route::get('/{slug}', 'RestaurantController@show')->name('profile.show');
+

@@ -15,11 +15,11 @@ class CreateOpeningDateTimesTable extends Migration
     {
         Schema::create('opening_date_times', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('shop-id');
-                $table->foreign('shop-id')->references('id')->on('shops');
+            $table->unsignedBigInteger('restaurant_id');
+                $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->integer('weekday');
-            $table->string('start-hour');
-            $table->string('end-hour');
+            $table->string('start_hour');
+            $table->string('end_hour');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@
           <input type="text" placeholder="Buscar comercio" class="form-control">
           <input type="submit" value="Buscar" class="btn btn-primary mx-2">
       </form>
+      <a href="{{route('list')}}" class="btn btn-warning btn-sm mt-2"><strong>Ver todos los comercios</strong></a> 
     </div>
 </section>
 
@@ -58,7 +59,7 @@
     <div class="container mt-5">
         <h4 class="d-flex justify-content-center">Unite a la plataforma</h4>
         <hr width="30%">
-        <a href="#" class="btn btn-success">Registrarme</a>
+        <a href="{{route('register')}}" class="btn btn-success">Registrarme</a>
     </div>
     <div class="container my-5">
         <p>Tenes un comercio y queres estar en la plataforma? <a href="#">Trabaja con nosotros</a></p>

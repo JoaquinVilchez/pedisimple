@@ -13,28 +13,34 @@
         <div class="col-lg-2">
             <img src="https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" class="img-thumbnail">
             <div class="d-flex justify-content-center mb-2">
-                <span><strong>Joaquin</strong></span>
+                <span><strong>{{Auth::user()->first_name}}</strong></span>
             </div>
             <hr>
             
         <div class="list-group mb-3">
+            <a href="{{route('myAddresses')}}" class="list-group-item py-1">Mi comercio</a>
+        </div>
+
+        <div class="list-group mb-3">
             <a href="{{route('myAddresses')}}" class="list-group-item py-1">Mis direcciones</a>
             <a href="{{route('myOrders')}}" class="list-group-item py-1">Mis pedidos</a>
-            <a href="{{route('myAccount')}}" class="list-group-item active py-1">Mis datos</a>
-            
+            <a href="{{route('myAccount')}}" class="list-group-item py-1">Mis datos</a>
         </div>
 
         </div>
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8 mb-3">
-            <h5>Mis datos <small>(2)</small></h5>
-            <table class="table table-hover">
-                <tbody>
-                    
-                </tbody>
-            </table>
-            <a href="#">+ Agregar direccion</a>
+                        <!-- Mensajes -->
+            @if (session('success_message'))
+                <div class="alert alert-success alert-dismissible fade show col-md-12" role="alert">
+                    <strong>{{session('success_message') }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+            @yield('info-content')
         </div>
             
     </div>

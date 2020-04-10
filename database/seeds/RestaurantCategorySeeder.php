@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\ShopCategory;
+use App\RestaurantCategory;
 
-class ShopCategorySeeder extends Seeder
+class RestaurantCategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,9 @@ class ShopCategorySeeder extends Seeder
         $categories = array('Empanadas', 'Pizzas', 'Ensaladas', 'Hamburguesas', 'Helados', 'Lomitos', 'Menu del dia', 'Milanesas', 'Papas Fritas', 'Parrilla', 'Pastas', 'Pescados y Mariscos', 'Picadas', 'Pollo', 'Postres', 'Sandwiches');
         
         for ($i=0; $i < count($categories); $i++) { 
-            ShopCategory::create([
+            RestaurantCategory::create([
                 'name' => $categories[$i],
-                'description' => 'Descripcion '.$i,
-                'status' => 'active'
+                'state' => 'active'
             ]);
         }
     }

@@ -15,10 +15,10 @@ class CreateLineItemsTable extends Migration
     {
         Schema::create('line_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('order');
-                $table->foreign('order')->references('id')->on('orders');
-            $table->unsignedBigInteger('product');
-                $table->foreign('product')->references('id')->on('products');
+            $table->unsignedBigInteger('order_id');
+                $table->foreign('order_id')->references('id')->on('orders');
+            $table->unsignedBigInteger('product_id');
+                $table->foreign('product_id')->references('id')->on('products');
             $table->integer('quantity');
             $table->timestamps();
         });

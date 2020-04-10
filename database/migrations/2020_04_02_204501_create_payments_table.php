@@ -18,8 +18,8 @@ class CreatePaymentsTable extends Migration
             $table->datetime('paid');
             $table->decimal('total', 8, 2);
             $table->string('details')->nullable();
-            $table->unsignedBigInteger('order-id');
-                $table->foreign('order-id')->references('id')->on('orders');
+            $table->unsignedBigInteger('order_id');
+                $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

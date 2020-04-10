@@ -13,15 +13,15 @@ class CitySeeder extends Seeder
     public function run()
     {
         City::create([
-            'zip-code' => '2600',
+            'zip_code' => '2600',
             'name' => 'Venado Tuerto',
-            'province' => 'Santa Fe'
+            'province_id' => 1
         ]);
 
         City::create([
-            'zip-code' => '6100',
+            'zip_code' => '6100',
             'name' => 'Rufino',
-            'province' => 'Santa Fe'
+            'province_id' => 1
         ]);
     }
 }

@@ -15,9 +15,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -42,11 +40,15 @@ class User extends Authenticatable
     }
     
     public function orders(){
-        return $this->hasMany('App\Orders');
+        return $this->hasMany(Order::class);
     }
     
-    public function shop(){
-        return $this->hasOne('App\Shop');
+    public function restaurant(){
+        return $this->hasOne('App\Restaurant');
+    }
+
+    public function fullName(){
+        return $this->first_name.' '.$this->last_name;
     }
 
 }

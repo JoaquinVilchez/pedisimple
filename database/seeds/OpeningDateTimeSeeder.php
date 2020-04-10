@@ -15,19 +15,19 @@ class OpeningDateTimeSeeder extends Seeder
     {
         for ($dia=1; $dia < 7; $dia++) { 
             OpeningDateTime::create([
-                'shop-id' => 1,
+                'restaurant_id' => 1,
                 'weekday' => $dia,
-                'start-hour' => '20:00',
-                'end-hour' => '00:00',
+                'start_hour' => '20:00',
+                'end_hour' => '00:00',
             ]);
         }
 
         for ($dia=1; $dia < 7; $dia++) { 
             OpeningDateTime::create([
-                'shop-id' => 2,
+                'restaurant_id' => 2,
                 'weekday' => $dia,
-                'start-hour' => '09:00',
-                'end-hour' => '21:30',
+                'start_hour' => '09:00',
+                'end_hour' => '21:30',
             ]);
         }
     }

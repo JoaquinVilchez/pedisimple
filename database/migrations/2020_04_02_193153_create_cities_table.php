@@ -15,9 +15,10 @@ class CreateCitiesTable extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('zip-code')->unique();
+            $table->string('zip_code')->unique();
             $table->string('name');
-            $table->string('province');
+            $table->unsignedBigInteger('province_id');
+                $table->foreign('province_id')->references('id')->on('provinces');
             $table->timestamps();
         });
     }
