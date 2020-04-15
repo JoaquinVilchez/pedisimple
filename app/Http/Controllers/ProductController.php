@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Restaurant;
-use App\Category;
-use Darryldecode\Cart\Cart;
-use Illuminate\Support\Facades\DB;
+use Auth;
 
-class RestaurantController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +14,10 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return view('restaurants.dashboard');
+        $user = Auth::user();
+        $restaurant = $user->restaurant;
+        $products = $restaurant->products;
+        return view('restaurants.products.list')->with('products', $products);
     }
 
     /**
@@ -27,7 +27,8 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Auth::user()->restaurant->categories;
+        return view('restaurants.products.create')->with('categories', $categories);
     }
 
     /**
@@ -47,19 +48,9 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($id)
     {
-        $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
-        // $restaurant = Restaurant::find($id);
-        $categories = Category::where('restaurant_id', $restaurant->id)->get();
-        $opening_times = DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->get();
-
-        return view('restaurants.profile')->with([
-            'restaurant' =>  $restaurant,
-            'categories' => $categories,
-            'opening_times' => $opening_times
-
-        ]);
+        //
     }
 
     /**
@@ -70,7 +61,7 @@ class RestaurantController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('restaurants.products.edit');
     }
 
     /**

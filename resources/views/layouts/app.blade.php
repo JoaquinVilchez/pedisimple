@@ -69,6 +69,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{route('restaurant.index')}}">Mi comercio</a>
                                     <a class="dropdown-item" href="{{route('myAddresses')}}">Mis direcciones</a>
                                     <a class="dropdown-item" href="{{route('myOrders')}}">Mis pedidos</a>
                                     <a class="dropdown-item" href="{{route('myAccount')}}">Mis datos</a>

@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Restaurant;
-use App\Category;
-use Darryldecode\Cart\Cart;
-use Illuminate\Support\Facades\DB;
+use Auth;   
 
-class RestaurantController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +14,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return view('restaurants.dashboard');
+        $categories = Auth::user()->restaurant->categories;
+        return view('restaurants.categories.list')->with('categories', $categories);
     }
 
     /**
@@ -27,7 +25,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        return view('restaurants.categories.create');
     }
 
     /**
@@ -47,19 +45,9 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($id)
     {
-        $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
-        // $restaurant = Restaurant::find($id);
-        $categories = Category::where('restaurant_id', $restaurant->id)->get();
-        $opening_times = DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->get();
-
-        return view('restaurants.profile')->with([
-            'restaurant' =>  $restaurant,
-            'categories' => $categories,
-            'opening_times' => $opening_times
-
-        ]);
+        //
     }
 
     /**

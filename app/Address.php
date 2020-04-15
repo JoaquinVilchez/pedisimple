@@ -11,15 +11,15 @@ class Address extends Model
     protected $guarded = [];
     
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function restaurant(){
-        return $this->belongsTo('App\Restaurant');
+        return $this->belongsTo(Restaurant::class);
     }
 
     public function city(){
-        return $this->belongsTo('App\City');
+        return $this->belongsTo(City::class);
     }
 
     public function getAddress(){

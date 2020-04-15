@@ -33,7 +33,7 @@
                     <div class="col-9 pl-0">
                     <div class="card-block mt-2">
                         <!--           <h4 class="card-title">Small card</h4> -->
-                        <h5><strong><a href="{{route('profile.show', $restaurant->slug)}}">{{$restaurant->name}}</a></strong></h5>
+                        <h5><a href="{{route('profile.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
                         <p>{{$restaurant->address->getFullAddress()}}</p>
                         <small>
                           @foreach($restaurant->restaurantCategories as $restaurantCategory)

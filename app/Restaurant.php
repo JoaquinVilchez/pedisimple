@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class restaurant extends Model
 {
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function orders(){
@@ -16,11 +16,15 @@ class restaurant extends Model
     }
 
     public function address(){
-        return $this->hasOne('App\Address');
+        return $this->hasOne(Address::class);
     }
 
     public function products(){
-        return $this->hasMany('App\Product');
+        return $this->hasMany(Product::class);
+    }
+
+    public function categories(){
+        return $this->hasMany(Category::class);
     }
 
     public function restaurantCategories(){

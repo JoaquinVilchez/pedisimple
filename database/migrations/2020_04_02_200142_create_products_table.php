@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('state')->default('activo');
             $table->unsignedBigInteger('category_id');
                 $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('restaurant_id');
+                $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->timestamps();
         });
     }

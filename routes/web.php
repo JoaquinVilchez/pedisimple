@@ -15,13 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', function(){
+Route::get('/',function(){
     return view('home');
-})->name('home');
-
-
-
-
+});
 Route::get('/gracias', function(){
     return view('thankyou');
 })->name('thankyou');
@@ -32,11 +28,8 @@ Route::get('/confirmado', function(){
 
 
 Route::post('/cart', 'CartController@store')->name('cart.store');
-
 Route::post('/cart/remove/{id}', 'CartController@remove')->name('cart.remove');
-
 Route::post('/cart/update', 'CartController@update')->name('cart.update');
-
 Route::get('/cart/empty', 'CartController@empty')->name('cart.empty');
 
 Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
@@ -59,4 +52,17 @@ Route::post('/editData/{user}', 'UserController@update')->name('user.update');
 Route::get('/restaurantes', 'ListController@index')->name('list');
 //Perfil restaurante
 Route::get('/{slug}', 'RestaurantController@show')->name('profile.show');
+
+//Ver panel de administracion
+Route::get('/administracion', 'RestaurantController@index')->name('restaurant.index');
+
+//Productos
+Route::get('/administracion/productos', 'ProductController@index')->name('product.index');
+Route::get('/administracion/productos/editar/{id}', 'ProductController@edit')->name('product.edit');
+Route::get('/administracion/productos/nuevo', 'ProductController@create')->name('product.create');
+
+//Categorias
+Route::get('/administracion/categorias', 'CategoryController@index')->name('category.index');
+Route::get('/administracion/categorias/editar/{id}', 'CategoryController@edit')->name('category.edit');
+Route::get('/administracion/categorias/nuevo', 'CategoryController@create')->name('category.create');
 

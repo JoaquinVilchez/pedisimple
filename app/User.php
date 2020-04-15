@@ -44,7 +44,7 @@ class User extends Authenticatable
     }
     
     public function restaurant(){
-        return $this->hasOne('App\Restaurant');
+        return $this->hasOne(Restaurant::class);
     }
 
     public function fullName(){
