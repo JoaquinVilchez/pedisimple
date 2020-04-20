@@ -28,5 +28,16 @@ class Category extends Model
         }
     }
 
+    public function translateState(){
+        switch ($this->state) {
+            case 'not-available':
+                return 'No disponible';
+                break;
+            case 'available':
+                return 'Disponible';
+                break;
+       }
+    }
+
 }
 

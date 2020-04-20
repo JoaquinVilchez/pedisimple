@@ -41,7 +41,7 @@
           </tr>
           <tr>
             <td>¿Retiro o delivery?</td>
-            <td>{{$restaurant->shipping_method}}</td>
+            <td>{{$restaurant->shippingMethod()}}</td>
           </tr>
           @if($restaurant->shipping_method=='delivery' || $restaurant->shipping_method=='delivery-pickup')
           <tr>
@@ -49,8 +49,10 @@
             <td>${{$restaurant->shipping_price}}</td>
           </tr>
           <tr>
+            @if($restaurant->shipping_time != null)
             <td>Tiempo aproximado de envio</td>
-            <td>45 min.</td>
+            <td>{{$restaurant->shipping_time}} minutos</td>
+            @endif
           </tr>
           @endif
         </tbody>

@@ -10,7 +10,10 @@
     </div>
 </div>
 <div class="container container-fluid">
-<div class="row">
+@if(count($categories)==0)
+  <p>Primero debes crear una categoria antes que un producto. <br> <a href="{{route('category.create')}}">Crear categorias</a></p>
+@else
+  <div class="row">
   <div class="col-xl-6 col-12 my-2">
       <div class="card">
         <h5 class="card-header">Detalles del producto</h5>
@@ -81,6 +84,7 @@
       </div>
     </div>
 </div>
+@endif
 </div>
 
 </form>

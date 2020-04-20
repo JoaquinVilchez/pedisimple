@@ -9,8 +9,10 @@
     </div>
   </div>
 
-  @include('messages')
-
+@include('messages')
+@if(count($categories)==0)
+<p>Todavia no tienes categorias. <a href="{{route('category.create')}}">Agregar una</a></p>
+@else
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -30,7 +32,7 @@
           {{-- <td><input type="checkbox"></td> --}}
           <td>{{$category->name}}</td>
           <td>{{$category->description}}</td>
-          <td><span class="{{$category->stateStyle()}}">{{ucwords($category->state)}}</span></td>
+          <td><span class="{{$category->stateStyle()}}">{{$category->translateState()}}</span></td>
           <td style="text-align:center" width="10%">
             <form id="{{'not_available_checkbox_'.$category->id}}" action="{{route('category.available', $category)}}" method="POST">
               @csrf
@@ -49,8 +51,10 @@
         @endforeach
       </tbody>
     </table>
+@endif
   </div>
 
+@if(count($categories)!=0)
 <!-- Modal -->
 <div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -77,6 +81,7 @@
   </div>
   </div>
 </div>
+@endif
 
 @endsection
 

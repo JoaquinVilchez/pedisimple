@@ -50,7 +50,7 @@
                         </small>
                         @if(!$restaurant->shipping_method==null)
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>{{$restaurant->shipping_method}}</small>
+                        <small>{{$restaurant->shippingMethod()}}</small>
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
                         <small>${{$restaurant->shipping_price}}</small>
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Exports\UsersExport;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,7 @@ use App\Exports\UsersExport;
 |
 */
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/',function(){
     return view('home');
@@ -42,15 +43,19 @@ Route::resource('/datos', 'UserController')->names('user');
 
 Route::resource('/comercios', 'ListController')->names('list');
 
-Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info');
-Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('restaurant.times');
-Route::resource('/comercio', 'RestaurantController')->names('restaurant');
+Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
+Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('restaurant.times')->middleware(['verified', 'hasRestaurant']);
+Route::resource('/comercio', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
+Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
+Route::post('/comercio', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
+Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show');
 
-Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available');
-Route::resource('/productos', 'ProductController')->names('product');
+Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware('verified');
+Route::resource('/productos', 'ProductController')->names('product')->middleware('verified');
 
-Route::post('/categoria/{id}', 'CategoryController@isAvailable')->name('category.available');
-Route::resource('/categorias', 'CategoryController')->names('category');
+Route::post('/categoria/{id}', 'CategoryController@isAvailable')->name('category.available')->middleware('verified');
+Route::resource('/categorias', 'CategoryController')->names('category')->middleware('verified');
+
 
 // Route::get('/download', function(){
 //     return Excel::download(new UsersExport, 'users.xlsx');

@@ -61,7 +61,12 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        $categories = RestaurantCategory::all();
+        $cities = City::all();
+        return view('restaurant.create')->with([
+            'categories' => $categories,
+            'cities' => $cities
+        ]);
     }
 
     /**
@@ -71,8 +76,68 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {  
+
+        $data=request()->validate([
+            'name'=> ['required', 'string'],
+            'street'=> ['required', 'string'],
+            'number'=> ['required'],
+            'city_id'=> ['required'],
+            'phone'=> ['required', 'string'],
+            'description'=> ['nullable', 'string'],
+            'shipping_method'=> ['required'],
+            'shipping_price'=> ['required'],
+            'shipping_time'=> ['nullable'],
+            'food_categories'=> ['required'],
+            'image'=> ['nullable'],
+        ]);
+
+        $slug = str_replace(' ', '-', strtolower($data['name']));
+
+        if($request->hasFile('image')){
+
+            $file = $request->file('image');
+
+            $path = $file->hashName('public');
+
+            $image = Image::make($file)->encode('jpg', 75);
+
+            Storage::put($path, (string) $image->encode());
+
+            $data['image'] = $path;
+        }
+
+        Restaurant::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'slug' => $slug,
+            'phone' => $data['phone'],
+            'shipping_price' => $data['shipping_price'],
+            'shipping_time' => $data['shipping_time'],
+            'shipping_method' => $data['shipping_method'],
+            'state' => 'pending',
+            'user_id' => Auth::user()->id,
+            'image' => $data['image'],
+        ]);
+
+        $restaurant = Restaurant::where('user_id', Auth::user()->id)->first();
         
+        Address::create([
+            'street' => $data['street'],
+            'number' => $data['number'],
+            'restaurant_id' => $restaurant->id,
+            'city_id' => $data['city_id']
+        ]);
+        
+        for ($i=0; $i < count($data['food_categories']); $i++) { 
+            DB::table('relation_restaurant_category')->insert([
+                'restaurant_id' => $restaurant->id,
+                'category_restaurant_id' => $data['food_categories'][$i]
+            ]);   
+        }
+
+        return redirect()->route('restaurant.index');
+
     }
 
     /**

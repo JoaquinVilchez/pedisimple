@@ -33,4 +33,18 @@ class restaurant extends Model
         return $this->belongsToMany(RestaurantCategory::class, 'relation_restaurant_category', 'restaurant_id', 'category_restaurant_id');
     }
 
+    public function shippingMethod(){
+        switch ($this->shipping_method) {
+            case 'pickup':
+                return 'Retiro en local';
+                break;
+            case 'delivery':
+                return 'Delivery';
+                break;
+            case 'delivery-pickup':
+                return 'Retiro y Delivery';
+                break;
+       }
+    }
+
 }

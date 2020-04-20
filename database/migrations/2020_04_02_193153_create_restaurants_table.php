@@ -23,7 +23,7 @@ class CreateRestaurantsTable extends Migration
             $table->string('shipping_time')->nullable();
             $table->string('shipping_method');
             $table->string('state')->default('activo');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->unique();
                 $table->foreign('user_id')->references('id')->on('users');
             $table->string('image')->default('public/commerce.png');
             $table->timestamps();

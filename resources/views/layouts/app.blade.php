@@ -19,9 +19,23 @@
 
     @yield('css-scripts')
 
+    <style>
+        body{
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        footer{
+            margin-top: auto;
+            background-color: #333333;
+            color: white;
+            padding: 20px 0px
+        }
+    </style>
     
 </head>
-<body class="d-flex flex-column">
+<body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -42,9 +56,9 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
-                            </li>
+                            </li> --}}
                             {{-- @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Registrarme') }}</a>
@@ -57,7 +71,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @if(Auth::user()->restaurant)
+                                    @if(Auth::user()->restaurant || Auth::user()->type=='merchant')
                                     <a class="dropdown-item" href="{{route('restaurant.index')}}">Mi comercio</a>
                                     @endif
                                     {{-- <a class="dropdown-item" href="{{route('address.index')}}">Mis direcciones</a>
@@ -85,9 +99,16 @@
         </main>  
     </div>
     
-<footer class="footer mt-auto py-3" style="background-color:grey;">
-    <div class="container">
-        <span>Place sticky footer content here.</span>
+<footer class="footer">
+    <div class="container d-flex justify-content-between">
+        <div class="col-xl-6">
+            <span class="d-flex p-0">Place sticky footer content here.</span>
+        </div>
+        <div class="col-xl-6">
+            @guest
+            <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
+            @endguest
+        </div>
     </div>
 </footer>
 

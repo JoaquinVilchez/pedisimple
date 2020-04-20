@@ -10,7 +10,10 @@
   </div>
 
   @include('messages')
-
+  
+  @if(count($products)==0)
+    <p>Todavia no tienes productos. <a href="{{route('product.create')}}">Agregar uno</a></p>
+  @else
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -28,37 +31,39 @@
         </tr>
       </thead>
       <tbody>
-        @foreach($products as $product)
-        <tr>
-          {{-- <td><input type="checkbox"></td> --}}
-          <td><img src="{{Storage::url($product->image)}}" class="img-thumbnail" width="70px" alt=""></td>
-          <td>{{$product->name}}</td>
-          <td>{{$product->description}}</td>
-          <td>{{$product->category->name}}</td>
-          <td>${{$product->price}}</td>
-          <td><span class="{{$product->stateStyle()}}">{{ucwords($product->state)}}</span></td>
-          <td style="text-align:center" width="10%">
-            <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
-              @csrf
-              <input type="text" value="{{$product->id}}" name="product_id" hidden>
-              <input name="checkbox" type="checkbox" value="{{$product->id}}" onchange="notAvailable({{$product->id}});"
-                @if($product->state=='not-available')
-                  checked
-                @endif
-              >
-            </form>
-          </td>
-          <td>{{$product->updated_at}}</td>
-          <td>
-            <a href="{{route('product.edit', $product)}}">Editar</a>
-            <a href="#" data-productid="{{$product->id}}" data-toggle="modal" data-target="#deleteProductModal">Eliminar</a>
-          </td>
-        </tr>
-        @endforeach
+          @foreach($products as $product)
+          <tr>
+            {{-- <td><input type="checkbox"></td> --}}
+            <td><img src="{{Storage::url($product->image)}}" class="img-thumbnail" width="70px" alt=""></td>
+            <td>{{$product->name}}</td>
+            <td>{{$product->description}}</td>
+            <td>{{$product->category->name}}</td>
+            <td>${{$product->price}}</td>
+            <td><span class="{{$product->stateStyle()}}">{{$product->translateState()}}</span></td>
+            <td style="text-align:center" width="10%">
+              <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
+                @csrf
+                <input type="text" value="{{$product->id}}" name="product_id" hidden>
+                <input name="checkbox" type="checkbox" value="{{$product->id}}" onchange="notAvailable({{$product->id}});"
+                  @if($product->state=='not-available')
+                    checked
+                  @endif
+                >
+              </form>
+            </td>
+            <td>{{$product->updated_at}}</td>
+            <td>
+              <a href="{{route('product.edit', $product)}}">Editar</a>
+              <a href="#" data-productid="{{$product->id}}" data-toggle="modal" data-target="#deleteProductModal">Eliminar</a>
+            </td>
+          </tr>
+          @endforeach
+        @endif
       </tbody>
     </table>
   </div>
 
+@if(count($products)!=0)
 <!-- Modal -->
 <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -85,6 +90,7 @@
   </div>
   </div>
 </div>
+@endif
 
 @endsection
 

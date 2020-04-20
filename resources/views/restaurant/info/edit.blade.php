@@ -66,11 +66,11 @@
                         <input type="number" class="form-control" name="shipping_price" value="{{$restaurant->shipping_price}}">
                       </div>
 
-                    <label>Tiempo de envio</label>
+                    <label>Tiempo aproximado de envio</label>
                     <div class="input-group mb-3 col-8">
                     <input type="number" class="form-control" name="shipping_time" value="{{$restaurant->shipping_time}}">
                         <div class="input-group-append">
-                          <span class="input-group-text" id="basic-addon2" >min.</span>
+                          <span class="input-group-text" id="basic-addon2">min.</span>
                         </div>
                     </div>
                 </div>
