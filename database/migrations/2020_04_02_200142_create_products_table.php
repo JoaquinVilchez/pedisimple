@@ -18,12 +18,12 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('details')->nullable();
             $table->decimal('price', 8, 2);
-            $table->string('image')->nullable();
-            $table->string('state')->default('activo');
+            $table->string('state')->default('available');
             $table->unsignedBigInteger('category_id');
                 $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedBigInteger('restaurant_id');
                 $table->foreign('restaurant_id')->references('id')->on('restaurants');
+            $table->string('image')->default('public/no_image.png');
             $table->timestamps();
         });
     }

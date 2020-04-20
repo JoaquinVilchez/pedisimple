@@ -19,12 +19,13 @@ class CreateRestaurantsTable extends Migration
             $table->string('description')->nullable();
             $table->string('slug');
             $table->string('phone')->nullable();
-            $table->string('image')->nullable();
             $table->decimal('shipping_price', 8, 2)->nullable();
-            $table->boolean('delivery')->default(false);
+            $table->string('shipping_time')->nullable();
+            $table->string('shipping_method');
             $table->string('state')->default('activo');
             $table->unsignedBigInteger('user_id');
                 $table->foreign('user_id')->references('id')->on('users');
+            $table->string('image')->default('public/commerce.png');
             $table->timestamps();
         });
     }

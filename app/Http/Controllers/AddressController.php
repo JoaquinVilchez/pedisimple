@@ -17,7 +17,7 @@ class AddressController extends Controller
     {
         $user = Auth::user();
         $addresses = Address::where('user_id',$user->id)->get();
-        return view('users.myAddresses')->with('addresses', $addresses);
+        return view('user.addresses')->with('addresses', $addresses);
     }
 
     /**
@@ -48,7 +48,7 @@ class AddressController extends Controller
             'building_name'=>$request->building_name
         ]);
 
-        return redirect(route('myAddresses'))->with('success_message', 'Dirección agregada con éxito');
+        return redirect(route('address.index'))->with('success_message', 'Dirección agregada con éxito');
     }
 
     /**
@@ -95,7 +95,7 @@ class AddressController extends Controller
     {
         $address = Address::find($request->addressid);
         $address->delete();
-        return redirect(route('myAddresses'))->with('success_message', 'Dirección eliminada con éxito');
+        return redirect(route('address.index'))->with('success_message', 'Dirección eliminada con éxito');
 
     }
 }

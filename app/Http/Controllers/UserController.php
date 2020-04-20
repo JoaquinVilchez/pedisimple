@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -16,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $user = User::find(Auth::user()->id);
-        return view('users.myAccount')->with('user', $user);
+        return view('user.account')->with('user', $user);
     }
 
     /**
@@ -37,7 +39,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -69,17 +71,36 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user)
+    public function update(Request $request, $id)
     {
-        $data=request()->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'email'=>'required',
-            'phone' => 'nullable',
-        ]);
+        $user = User::findOrFail($id);
         
-        $user->update($data);
-        return redirect(route('myAccount'))->with('success_message', 'Datos editados con éxito');
+        if($request->hasFile('image')){
+            $old_image = $user->image;
+
+            $file = $request->file('image');
+
+            $path = $file->hashName('public');
+
+            $image = Image::make($file)->encode('jpg', 75);
+            
+            $image->fit(250, 250, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            if(!$old_image=='public/user.png'){
+                Storage::delete($old_image);
+            }
+            Storage::put($path, (string) $image->encode());
+
+            $user->image = $path;         
+        }
+
+        $user->image = $path;
+        $user->update($request->only('first_name','last_name','email','phone'));
+
+        return redirect(route('user.index'))->with('success_message', 'Datos editados con éxito');
+
     }
 
     /**

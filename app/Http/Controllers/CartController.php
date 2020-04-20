@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Darryldecode\Cart\Cart;
 use App\Product;
+use App\Restaurant;
 use Carbon\Carbon;
 use Auth;
 
@@ -37,32 +38,53 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        $userID = Auth::user()->id;
         $product = Product::find($request->id);
+        $restaurant = $product->restaurant;
 
-            \Cart::session($userID)->add(array(
+        if(\Cart::isEmpty()){
+            \Cart::add(array(
                 'id' => $request->id,
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => $request->quantity,
-                'attributes' => array(),
                 'associatedModel' => $product
             ));
-                    
-        return redirect()->back()->with('success_message', 'Agregado al carrito con exito');
 
+            return redirect()->back()->with('success_message', 'Agregado al carrito con exito');
+        }else{
+            $firstItem = \Cart::getContent()->first();
+            $product = Product::find($request->id);
+            
+            if($product->restaurant->id == $firstItem->model->restaurant->id){
+                \Cart::add(array(
+                    'id' => $request->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'quantity' => $request->quantity,
+                    'associatedModel' => $product
+                ));
+
+                return redirect()->back()->with('success_message', 'Agregado al carrito con exito');
+            }else{
+                return redirect()->back()->with('error_message', 'El producto debe ser del mismo comercio.');
+            }
+
+            // foreach (\Cart::getContent() as $item) {
+            //     $item->attributes;
+            // }
+
+        }   
     }
 
-        /**
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function empty(){
-        $userID = Auth::user()->id;
-
-        \Cart::session($userID)->clear();
+        \Cart::clearCartConditions();
+        \Cart::clear();
         return redirect()->back()->with('success_message', 'Carrito vaciado con exito');
     }
 
@@ -95,10 +117,40 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function deliveryTax(Request $request)
     {
-        $userID = Auth::user()->id;
-        \Cart::session($userID)->update($request->id, array(
+        $restaurant = Restaurant::findOrFail($request->restaurant_id);
+        
+        $condition = new \Darryldecode\Cart\CartCondition(array(
+            'name' => 'Delivery',
+            'type' => 'tax',
+            'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
+            'value' => $restaurant->shipping_price,
+            'attributes' => array( // attributes field is optional
+                'description' => 'Costo del envio'
+            )
+        ));
+        if($request->shipping_method == 'delivery'){
+            \Cart::condition($condition);
+            $option="delivery";
+        }else{
+            \Cart::clearCartConditions();
+        $option="pickup";   
+        }
+
+        return redirect()->back()->with('option', $option);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        \Cart::update($id, array(
             'quantity' => array(
                 'relative' => false,
                 'value' => $request->quantity
@@ -116,18 +168,7 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function remove($id){
-        $userID = Auth::user()->id;
-        \Cart::session($userID)->remove($id);
+        \Cart::remove($id);
         return redirect()->back()->with('success_message', 'Producto removido con exito del carrito.');
     }
 }

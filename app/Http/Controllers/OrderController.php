@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         $user = User::findOrFail(Auth::user()->id);
         $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'desc')->orderBy('state', 'asc')->get();                
-        return view('users.myOrders')->with('orders', $orders);
+        return view('user.orders')->with('orders', $orders);
     }
 
     /**
@@ -51,7 +51,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::find($id);
-        return view('users.order')->with('order', $order);
+        return view('user.order')->with('order', $order);
     }
 
     /**

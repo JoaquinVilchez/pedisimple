@@ -36,7 +36,7 @@ class User extends Authenticatable
     ];
 
     public function addresses(){
-        return $this->hasMany('App\Address');
+        return $this->hasMany(Address::class);
     }
     
     public function orders(){

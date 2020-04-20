@@ -27,14 +27,14 @@ class AddressSeeder extends Seeder
         ]);
 
         Address::create([
-            'user_id' => 2,
+            'restaurant_id' => 1,
             'street' => 'San Luis',
             'number' => '145',
             'city_id' => 2
         ]);
 
         Address::create([
-            'user_id' => 3,
+            'restaurant_id' => 2,
             'street' => 'Laprida',
             'number' => '622',
             'city_id' => 1

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Exports\UsersExport;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,52 +18,40 @@ Auth::routes();
 
 Route::get('/',function(){
     return view('home');
-});
-Route::get('/gracias', function(){
-    return view('thankyou');
-})->name('thankyou');
+})->name('home');
 
-Route::get('/confirmado', function(){
-    return view('confirmation');
-})->name('confirmation');
+// Route::get('/gracias', function(){
+//     return view('thankyou');
+// })->name('thankyou')->name('thankyou');
 
+// Route::get('/confirmado', function(){
+//     return view('confirmation');
+// })->name('confirmation')->name('confirmation');
 
-Route::post('/cart', 'CartController@store')->name('cart.store');
-Route::post('/cart/remove/{id}', 'CartController@remove')->name('cart.remove');
-Route::post('/cart/update', 'CartController@update')->name('cart.update');
-Route::get('/cart/empty', 'CartController@empty')->name('cart.empty');
+Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
+Route::get('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
+Route::resource('/carrito', 'CartController')->names('cart');
 
-Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
-Route::post('/checkout/confirm', 'CheckoutController@store')->name('checkout.store');
-//Ver direcciones
-Route::get('/mis-direcciones', 'AddressController@index')->name('myAddresses');
-//Agregar direccion
-Route::post('/addAddress', 'AddressController@store')->name('address.store');
-//Eliminar direccion
-Route::delete('/removeAddress', 'AddressController@destroy')->name('address.destroy');
-//Ver pedidos
-Route::get('/mis-pedidos', 'OrderController@index')->name('myOrders');
-//Ver pedido especifico
-Route::get('/pedidos/{id}', 'OrderController@show')->name('order.show');
-//Ver datos 
-Route::get('/mis-datos', 'UserController@index')->name('myAccount');
-//Editar usuarios
-Route::post('/editData/{user}', 'UserController@update')->name('user.update');
-//Ver restaurantes
-Route::get('/restaurantes', 'ListController@index')->name('list');
-//Perfil restaurante
-Route::get('/{slug}', 'RestaurantController@show')->name('profile.show');
+// Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
-//Ver panel de administracion
-Route::get('/administracion', 'RestaurantController@index')->name('restaurant.index');
+// Route::resource('/direcciones', 'AddressController')->names('address');
 
-//Productos
-Route::get('/administracion/productos', 'ProductController@index')->name('product.index');
-Route::get('/administracion/productos/editar/{id}', 'ProductController@edit')->name('product.edit');
-Route::get('/administracion/productos/nuevo', 'ProductController@create')->name('product.create');
+// Route::resource('/pedidos', 'OrderController')->names('order');
 
-//Categorias
-Route::get('/administracion/categorias', 'CategoryController@index')->name('category.index');
-Route::get('/administracion/categorias/editar/{id}', 'CategoryController@edit')->name('category.edit');
-Route::get('/administracion/categorias/nuevo', 'CategoryController@create')->name('category.create');
+Route::resource('/datos', 'UserController')->names('user');
 
+Route::resource('/comercios', 'ListController')->names('list');
+
+Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info');
+Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('restaurant.times');
+Route::resource('/comercio', 'RestaurantController')->names('restaurant');
+
+Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available');
+Route::resource('/productos', 'ProductController')->names('product');
+
+Route::post('/categoria/{id}', 'CategoryController@isAvailable')->name('category.available');
+Route::resource('/categorias', 'CategoryController')->names('category');
+
+// Route::get('/download', function(){
+//     return Excel::download(new UsersExport, 'users.xlsx');
+// });

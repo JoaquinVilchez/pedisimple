@@ -15,6 +15,18 @@
         width:100%;
         position:absolute;
         }
+        
+        .img-card {
+            object-fit: cover;
+            width: 80px;
+            height: 80px;
+        }
+
+        .img-modal img{
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
     </style>
 @endsection
 
@@ -23,22 +35,26 @@
         <div class="container text-white d-flex align-items-end col-lg-8">
             <div class="row d-flex align-items-end">
                 <figure>
-                <img class="d-block border m-1" width="110px" src="https://img.pystatic.com/restaurants/green-eat-billinghurst.jpg" alt="">
+                <img class="d-block border m-1" width="110px" src="{{Storage::url($restaurant->image)}}" alt="">
                 </figure>
                 <section class="ml-3 mb-3">
                     <div class="title"><h3><strong>{{$restaurant->name}}</strong></h3></div>
-                    <div class="info mb-0 ml-3"><p class="mb-0">{{$restaurant->address->getFullAddress()}}</p></div>
+                    <div class="info mb-0 ml-3"><p class="mb-0"><i class="fas fa-phone"></i> {{$restaurant->phone}}</p></div>
+                    <div class="info mb-0 ml-3"><p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p></div>
                     <div class="extra ml-3 mb-10">
                         <small>
                             @foreach($restaurant->restaurantCategories as $restaurantCategory)
                                 {{$restaurantCategory->name}}
+                                -
                             @endforeach
                         </small>
-                        <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>Telefono: {{$restaurant->phone}}</small>
                         @if(!$restaurant->shipping_method==null)
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>Costo de envio: ${{$restaurant->shipping_method}}</small>
+                        <small>{{$restaurant->shipping_method}}</small>
+                        <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
+                        <small>${{$restaurant->shipping_price}}</small>
+                        <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
+                        <small>{{$restaurant->shipping_time}} min.</small>
                         @endif
                     </div>
                 </section>
@@ -68,12 +84,9 @@
                 @include('messages')
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Tu pedido</span>
-                    @if(userIsLoggedIn())
-                    <span class="badge badge-secondary badge-pill">{{Cart::session(Auth::user()->id)->getTotalQuantity()}}</span>
-                    @endif
+                    <span class="badge badge-secondary badge-pill">{{Cart::getTotalQuantity()}}</span>
                 </h4>
-                @if(userIsLoggedIn())
-                    @if(!Cart::session(Auth::user()->id)->isEmpty())
+                    @if(!Cart::isEmpty())
                     @include('carrito')
                     
                     <div class="alert alert-primary" role="alert" id="confirmEmptyCart" hidden>
@@ -81,36 +94,36 @@
                     </div>
                     <div class="float-right">
                         <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
-                        <a href="{{route('checkout.index')}}" class="btn btn-danger">Continuar</a>
+                        <a href="#" class="btn btn-danger" data-name="{{$restaurant->name}}" 
+                            data-image="{{$restaurant->image}}" 
+                            data-address="{{$restaurant->address->getFullAddress()}}" 
+                            data-phone="{{$restaurant->phone}}" 
+                            
+                            data-toggle="modal" data-target="#restaurantInfo">Continuar</a>
+                        {{-- <a href="{{route('checkout.index')}}" class="btn btn-danger">Continuar</a> --}}
                     </div>
                     @else
                     <div class="list-group mb-3">
                         <h6>No tienes productos en tu pedido</h6>
-                        <a href="{{route('list')}}" class="btn btn-danger">Ver comercios</a>
+                        <a href="{{route('list.index')}}" class="btn btn-danger">Ver comercios</a>
                     </div>
                     @endif
-                @else
-                    <h6>Recuerda que para hacer un pedido debes ingresar con tu cuenta</h6>
-                    <a href="{{route('login')}}" class="btn btn-primary">Ingresar</a>
-                    <p>No tienes cuenta?</p>
-                    <p><a href="{{route('register')}}">Registrarme</a></p>
-                @endif
             </div>
 
             <div class="col-lg-8 tab-content" id="pills-tabContent">
-            
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                 @foreach($categories as $category)
                 @if(count($category->getProducts())>0)
                 <div class="categoria mb-4">
                     <h3>{{$category->name}}</h3>
+                    <p>{{$category->description}}</p>   
                     <div class="row">
                         @foreach($category->getProducts() as $product)
                         <div class="col-lg-6 px-1">
                             <div class="card p-2 m-1">
                                 <div class="row">
                                     <div class="col-4 pr-0">
-                                    <img class="d-block border m-1" width="80px" src="https://cdn2.cocinadelirante.com/sites/default/files/styles/gallerie/public/images/2019/11/masa-para-empanadas-economica.jpg" alt="">
+                                    <img class="d-block border m-1 img-card" src="{{Storage::url($product->image)}}" alt="">
                                     </div>
                                     <div class="col-8 pl-0">
                                     <div class="card-block mt-2">
@@ -122,7 +135,7 @@
                                             data-productid="{{$product->id}}" 
                                             data-productname="{{$product->name}}" 
                                             data-productprice="{{$product->price}}" 
-                                            {{-- data-productimage="{{$product->image}}"  --}}
+                                            data-productimage="{{Storage::url($product->image)}}" 
                                             
                                             data-toggle="modal" data-target="#addItemModal">
                                             <i class="fas fa-plus-circle"></i></a>
@@ -142,17 +155,25 @@
                     <div class="card" >
                         <div class="card-body">
                           <h5 class="card-title">Informacion del comercio</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                          <ul>
+                          
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Direccion</h6>
+                            <p><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
+
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Telefono</h6>
+                            <p><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
+
+                          <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios de apertura</h6>
+                          <table class="table table-striped table-responsive">
                             @foreach ($opening_times as $day)
-                            <li>{{$day->weekday}}</li>
-                            <li>{{$day->start_hour}}</li>
-                            <li>{{$day->end_hour}}</li>
+                            <tr>
+                                <td>{{$day->getDayName()}}</td>
+                                <td>{{substr($day->start_hour_1, 3)}} hs</td>
+                                <td>{{substr($day->end_hour_1, 3)}} hs</td>
+                                <td>{{substr($day->start_hour_2, 3)}} hs</td>
+                                <td>{{substr($day->end_hour_2, 3)}} hs</td>
+                            </tr>
                             @endforeach
-                          </ul>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                          <a href="#" class="card-link">Card link</a>
-                          <a href="#" class="card-link">Another link</a>
+                        </table>
                         </div>
                     </div>
                     <!--Google map-->
@@ -181,7 +202,8 @@
                     <input type="hidden" id="productid" name="id">
                     <input type="hidden" id="productname" name="name">
                     <input type="hidden" id="productprice" name="price">
-                    <p class="text-mute">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, rerum a. Dignissimos, dolor. Molestiae vitae esse, at ipsam consectetur illum voluptatibus a voluptatum laboriosam impedit itaque corporis, expedita dicta rem!</p>
+                    <div id="modalImage" class="img-fluid img-modal"></div>
+                    <p class="text-mute" id="modalDescription"></p>
                     <div class="form-group">
                         <h5 id="modalPrice"></h5>
                     </div>
@@ -193,9 +215,9 @@
                             @endfor
                         </select>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Notas adicionales"></textarea>
-                      </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-danger float-right mr-2">Agregar a mi pedido</button>
@@ -204,22 +226,47 @@
         </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="restaurantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="text-align:center">
+            <div class="modal-header">
+            <h5 class="modal-title" id="restaurantName"></h5><br>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <h5><i class="fas fa-map-marker-alt"></i> Direccion</h5>
+                <h6 class="modal-title" id="restaurantAddress"></h6>
+                <hr>
+                <h5><i class="fas fa-phone"></i> Telefono</h5>
+                <h6 class="modal-title" id="restaurantPhone"></h6>                  
+            </div>
+            {{-- <div class="modal-footer"> --}}
+                <div class="alert alert-primary mx-2" role="alert">
+                    Proximamente se podra pedir online
+                </div>
+            {{-- </div> --}}
+        </div>
+        </div>
+    </div>
 @endsection
 
 @section('js-scripts')
     <script>
-        $('#addItemModal').on('show.bs.modal', function(event){
-        console.log('hola')
         
+        $('#addItemModal').on('show.bs.modal', function(event){
         var button = $(event.relatedTarget)
 
-        
+
         var productid = button.data('productid')
         var productname = button.data('productname')
         var productprice = button.data('productprice')
         var productimage = button.data('productimage')
         var productdescription = button.data('productdescription')
-        
+
         var modal = $(this)
 
         //data
@@ -228,13 +275,40 @@
         modal.find('.modal-body #productprice').val(productprice)
 
         //modal
+        if (productimage!='/storage/no_image.png') {
+            document.getElementById("modalImage").innerHTML='<img width="50%" src="'+productimage+'">'
+        }else{
+            document.getElementById("modalImage").innerHTML=''
+        }
         document.getElementById("modalTitle").innerHTML=productname
         if(!productdescription==null){
             document.getElementById("modalDescription").innerHTML=productdescription
         }
         document.getElementById("modalPrice").innerHTML="Precio: (<strong>$"+productprice+"</strong>)"
 
-        })
+        });
+
+        // ==============================================================
+
+        $('#restaurantInfo').on('show.bs.modal', function(event){
+        var button = $(event.relatedTarget)
+
+        var restaurantname = button.data('name')
+        var restaurantimage = button.data('image')
+        var restaurantaddress = button.data('address')
+        var restaurantphone = button.data('phone')
+
+        var modal = $(this)
+
+
+        //modal
+        document.getElementById("restaurantName").innerHTML=restaurantname
+        document.getElementById("restaurantAddress").innerHTML=restaurantaddress
+        document.getElementById("restaurantPhone").innerHTML=restaurantphone
+
+        });
+
+        // =================================================================
 
         function confirmAlert(){
             alert = document.getElementById("confirmEmptyCart");

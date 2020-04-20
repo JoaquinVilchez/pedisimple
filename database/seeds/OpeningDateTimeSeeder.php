@@ -17,8 +17,10 @@ class OpeningDateTimeSeeder extends Seeder
             OpeningDateTime::create([
                 'restaurant_id' => 1,
                 'weekday' => $dia,
-                'start_hour' => '20:00',
-                'end_hour' => '00:00',
+                'start_hour_1' => '10:00',
+                'end_hour_1' => '14:00',
+                'start_hour_2' => '20:00',
+                'end_hour_2' => '00:00',
             ]);
         }
 
@@ -26,8 +28,8 @@ class OpeningDateTimeSeeder extends Seeder
             OpeningDateTime::create([
                 'restaurant_id' => 2,
                 'weekday' => $dia,
-                'start_hour' => '09:00',
-                'end_hour' => '21:30',
+                'start_hour_1' => '09:00',
+                'start_hour_1' => '21:30',
             ]);
         }
     }

@@ -6,7 +6,9 @@
 
     <section class="userCard col-6 mb-4" id="userDataShow">
         
-        <figure><img width="150px" src="https://images.pexels.com/photos/1310522/pexels-photo-1310522.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></figure>
+        <figure>
+            <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
+        </figure>
         
         <section>
             <h4>{{$user->fullName()}}</h4>
@@ -19,8 +21,13 @@
     </section>
     
     <section class="userFormData col-lg-6 col-xs-12" id="userDataEdit" hidden>
-        <form action="{{route('user.update', Auth::user())}}" method="POST">
+        <form action="{{route('user.update', Auth::user()->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
+            <figure>
+                <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
+                <input type="file" name="image" class="form-control-file">
+            </figure>
             <div class="form-group">
                 <label>Nombre *</label>
                 <input type="text" class="form-control" name="first_name" value="{{$user->first_name}}">

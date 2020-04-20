@@ -18,8 +18,10 @@ class CreateOpeningDateTimesTable extends Migration
             $table->unsignedBigInteger('restaurant_id');
                 $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->integer('weekday');
-            $table->string('start_hour');
-            $table->string('end_hour');
+            $table->time('start_hour_1')->nullable();
+            $table->time('end_hour_1')->nullable();
+            $table->time('start_hour_2')->nullable();
+            $table->time('end_hour_2')->nullable();
             $table->timestamps();
         });
     }

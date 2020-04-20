@@ -85,7 +85,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-                <form action="{{route('address.destroy')}}" method="POST">
+                <form action="{{route('address.destroy', $address)}}" method="POST">
                     @method('DELETE')
                     @csrf
 

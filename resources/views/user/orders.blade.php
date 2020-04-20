@@ -27,6 +27,6 @@
     @else
         <p class="ml-2">No tienes pedidos todavía</p>
     @endif
-    <a href="{{route('list')}}">+ Hacer un pedido</a>
+    <a href="{{route('list.index')}}">+ Hacer un pedido</a>
 
 @endsection

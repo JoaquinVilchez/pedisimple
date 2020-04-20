@@ -171,7 +171,7 @@
             </div>   
 
             <div class="footer">
-                <a href="{{route('myOrders')}}" class="Cbtn Cbtn-primary">Volver</a>
+                <a href="{{route('order.index')}}" class="Cbtn Cbtn-primary">Volver</a>
                 <a href="#" class="Cbtn Cbtn-danger" @if($order->state=='pendiente') hidden @endif)>Repetir</a>
             </div>
         </div>

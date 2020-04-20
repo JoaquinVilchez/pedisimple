@@ -18,7 +18,7 @@ class RestaurantSeeder extends Seeder
             'slug' => 'pizzeria-italia',
             'phone' => '425339',
             'shipping_price' => 50,
-            'delivery' => true,
+            'shipping_method' => 'delivery-pickup',
             'user_id' => 1
         ]);
 
@@ -28,7 +28,7 @@ class RestaurantSeeder extends Seeder
             'slug' => 'despensa-mari',
             'phone' => '433967',
             'shipping_price' => 60,
-            'delivery' => true,
+            'shipping_method' => 'delivery',
             'user_id' => 3
         ]);
     }

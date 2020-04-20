@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $guarded = [];
+
     public function restaurant(){
         return $this->belongsTo(Restaurant::class);
     }
@@ -17,4 +19,16 @@ class Product extends Model
     public function orders(){
         return $this->belongsToMany(Order::class);
     }
+
+    public function stateStyle(){
+        switch ($this->state) {
+            case 'not-available':
+                return 'badge badge-danger';
+                break;
+            case 'available':
+                return 'badge badge-success';
+                break;
+       }
+    }
+
 }

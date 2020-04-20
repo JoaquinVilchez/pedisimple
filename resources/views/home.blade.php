@@ -3,21 +3,21 @@
 @section('content')
 <section class="jumbotron text-center" style="background: url('https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260') no-repeat scroll 0px 10% / cover transparent;">
     <div class="container">
-      <h1><strong>Pedi online lo que estabas buscando</strong></h1>
+      <h1><strong>Consulta online los productos</strong></h1>
       <p class="lead">Ahora podes encontrar comercios de Venado Tuerto y hacer pedidos online</p>
-        <form action="{{route('list')}}" class="form-inline justify-content-center">
+        {{-- <form action="{{route('list.index')}}" class="form-inline justify-content-center">
           <select class="form-control">
             <option value="1">Pizzas</option>
             <option value="1">Empanadas</option>
           </select>
           <input type="text" placeholder="Buscar comercio" class="form-control">
           <input type="submit" value="Buscar" class="btn btn-primary mx-2">
-      </form>
-      <a href="{{route('list')}}" class="btn btn-warning btn-sm mt-2"><strong>Ver todos los comercios</strong></a> 
+      </form> --}}
+      <a href="{{route('list.index')}}" class="btn btn-warning btn-sm mt-2"><strong>Ver todos los comercios</strong></a> 
     </div>
 </section>
 
-<section class="pt-1 bg-light">
+{{-- <section class="pt-1 bg-light">
     <h4 class="mb-4 d-flex justify-content-center">Comercios destacados</h4>
     <div class="container">
       <div class="row">
@@ -53,7 +53,7 @@
         </div>
     </div>
     </div>
-</section>
+</section> --}}
 
 <section class="text-center">
     <div class="container mt-5">
