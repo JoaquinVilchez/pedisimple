@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('cuit')->unique()->nullable();
             $table->string('phone')->nullable();
-            $table->string('type')->default('customer');
+            $table->string('type')->default('merchant');
             $table->string('state')->default('new');
             $table->string('image')->default('public/user.png');
             $table->rememberToken();

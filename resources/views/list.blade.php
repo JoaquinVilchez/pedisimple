@@ -24,7 +24,8 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
-            @foreach($restaurants as $restaurant)
+          @foreach($restaurants as $restaurant)
+            @if(count($restaurant->products)!=0 && count($restaurant->categories))
             <div class="card p-2 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
@@ -47,6 +48,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             @endforeach
 
             <nav aria-label="..." class="float-right mt-3">

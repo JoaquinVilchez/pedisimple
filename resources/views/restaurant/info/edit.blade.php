@@ -7,6 +7,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom">
         <h1 class="h2"><strong>Informacion general</strong></h1>
         <div class="btn-toolbar mb-2 mb-md-0 ml-5">
+        <a href="{{route('restaurant.info')}}" class="btn btn-secondary mx-2">Cancelar</a>
         <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
     </div>
@@ -15,18 +16,21 @@
     <div class="col-xl-6">
             <div class="form-group">
               <label>Nombre</label>
-                <input type="text" class="form-control" name="name" value="{{$restaurant->name}}">
+                <input type="text" class="form-control" name="name" value="{{old('name', $restaurant->name)}}">
+                {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <hr class="my-2">
             <div class="form-group">
                 <div class="row">
                     <div class="col-6">
                         <label>Direccion</label>
-                        <input type="text" class="form-control" name="street" value="{{$address->street}}">
+                        <input type="text" class="form-control" name="street" value="{{old('street', $address->street)}}">
+                        {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
                     <div class="col-2">
                         <label>Numero</label>
-                        <input type="text" class="form-control" name="number" value="{{$address->number}}">
+                        <input type="text" class="form-control" name="number" value="{{old('number', $address->number)}}">
+                        {!!$errors->first('number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
                     <div class="col-4">
                         <label>Ciudad</label>
@@ -41,12 +45,13 @@
             <hr class="my-2">
             <div class="form-group col-4 pl-0">
                 <label>Telefono</label>
-                <input type="text" class="form-control" name="phone" value="{{$restaurant->phone}}">
+                <input type="text" class="form-control" name="phone" value="{{old('phone', $restaurant->phone)}}">
+                {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <hr class="my-2">
             <div class="form-group">
                 <label>Descripcion</label>
-                <textarea class="form-control" rows="3" name="description" value="{{$restaurant->description}}">{{$restaurant->description}}</textarea>
+                <textarea class="form-control" rows="3" name="description" value="{{old('description', $restaurant->description)}}">{{old('description', $restaurant->description)}}</textarea>
             </div>
             <hr class="my-2">
             <div class="form-group col-6 pl-0">
@@ -63,12 +68,13 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">$</span>
                         </div>
-                        <input type="number" class="form-control" name="shipping_price" value="{{$restaurant->shipping_price}}">
+                        <input type="number" class="form-control" name="shipping_price" value="{{old('shipping_price', $restaurant->shipping_price)}}">
+                        {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                       </div>
 
                     <label>Tiempo aproximado de envio</label>
                     <div class="input-group mb-3 col-8">
-                    <input type="number" class="form-control" name="shipping_time" value="{{$restaurant->shipping_time}}">
+                    <input type="number" class="form-control" name="shipping_time" value="{{old('shipping_time', $restaurant->shipping_time)}}">
                         <div class="input-group-append">
                           <span class="input-group-text" id="basic-addon2">min.</span>
                         </div>

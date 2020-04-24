@@ -59,7 +59,7 @@
     <div class="container mt-5">
         <h4 class="d-flex justify-content-center">Unite a la plataforma</h4>
         <hr width="30%">
-        <a href="{{route('register')}}" class="btn btn-success">Registrarme</a>
+        <a href="{{route('register.request')}}" class="btn btn-success">Registrarme</a>
     </div>
     <div class="container my-5">
         <p>Tenes un comercio y queres estar en la plataforma? <a href="#">Trabaja con nosotros</a></p>

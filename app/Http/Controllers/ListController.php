@@ -18,7 +18,7 @@ class ListController extends Controller
     {        
         // $categories = DB::table('relation_restaurant_category')->select('category_restaurant_id')->get()->groupBy('category_restaurant_id');
         $categories = RestaurantCategory::all();
-        $restaurants = Restaurant::all();
+        $restaurants = Restaurant::where('state', 'active')->get();
 
         return view('list')->with([
             'categories'=>$categories,

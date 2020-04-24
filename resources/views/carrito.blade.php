@@ -31,6 +31,7 @@
         </div>
     </li>
         @endforeach
+    @if($restaurant->shipping_method!='pickup')
     <li class="list-group-item d-flex justify-content-between">
     <form action="{{route('cart.deliveryTax')}}" method="POST" id="taxForm">
         @csrf
@@ -45,6 +46,7 @@
         </div>
     </form>        
     </li>
+    @endif
     <li class="list-group-item d-flex justify-content-between">
         <span>Subtotal </span>
         <strong>${{Cart::getSubTotal()}}</strong>

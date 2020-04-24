@@ -27,7 +27,17 @@
         <div style="text-align:center">
           <img width="100px" src="{{Storage::url(Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
           <h6>{{Auth::user()->restaurant->name}}</h6>
-        <a href="{{route('restaurant.show', Auth::user()->restaurant->slug)}}">Ver perfil</a>
+          @if(Auth::user()->restaurant->state=='active')
+            @if(count(Auth::user()->restaurant->products)==0)
+            <div class="alert alert-warning m-2" role="alert">Para que tu comercio esté visible debes: <br><a href="{{route('product.create')}}" class="alert-link">Crear un producto</a></div>
+            @else
+              <a href="{{route('restaurant.show', Auth::user()->restaurant->slug)}}" target=”_blank” >Ver perfil</a>
+            @endif
+          @elseif(Auth::user()->restaurant->state=='pending')
+            <div class="alert alert-warning m-2" role="alert">Tu comercio está pendiente de aprobación</div>
+          @elseif(Auth::user()->restaurant->state=='cancelled')
+            <div class="alert alert-danger m-2" role="alert">Tu comercio fue cancelado</div>
+          @endif
           <hr>
         </div>
         <ul class="nav flex-column">

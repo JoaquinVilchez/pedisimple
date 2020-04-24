@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-3">
   <h4 style="font-weight: 900">Editar producto</h4>
   <div class="btn-toolbar mb-2 mb-md-0 mr-3">
-    <button class="btn btn-outline-success mx-2"><i class="far fa-file-excel"></i> Importar Excel</button>
+    <a href="{{route('product.index')}}" class="btn btn-secondary mx-2">Cancelar</a>
     <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
 </div>
@@ -19,11 +19,12 @@
         <div class="card-body">
           <div class="form-group">
             <label>Nombre</label>
-          <input type="text" name="name" class="form-control" value="{{$product->name}}">
+          <input type="text" name="name" class="form-control" value="{{old('name', $product->name)}}">
+          {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
           </div>
           <div class="form-group">
             <label >Detalles</label>
-            <textarea class="form-control" name="details" rows="3" value="{{$product->details}}"></textarea>
+            <textarea class="form-control" name="details" rows="3" value="{{old('description', $product->details)}}"></textarea>
             <small class="form-text text-muted">Este campo es opcional</small>
           </div>
         </div>
@@ -38,8 +39,9 @@
             <div class="input-group-prepend">
               <span class="input-group-text">$</span>
             </div>
-            <input type="text" name="price" class="form-control" value="{{$product->price}}">
+            <input type="text" name="price" class="form-control" value="{{old('price', $product->price)}}">
           </div>
+          {!!$errors->first('price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
           <div class="form-group">
             <label>Estado</label>
             <select class="form-control" name="state">
@@ -72,7 +74,7 @@
           <div class="row">
             <div class="col-6">
             <div class="form-check">
-            <input class="form-check-input" type="radio" name="category_id" value="{{$product->category_id}}" @if($product->category_id==$category->id) checked @endif>
+            <input class="form-check-input" type="radio" name="category_id" value="{{old('category_id', $product->category_id)}}" @if($product->category_id==$category->id) checked @endif>
               <label class="form-check-label">
                 {{$category->name}} 
               </label>
@@ -80,6 +82,7 @@
           </div>
           </div>
           @endforeach
+          {!!$errors->first('category_id', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
         </div>
       </div>
     </div>

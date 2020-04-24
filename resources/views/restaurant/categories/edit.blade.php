@@ -7,6 +7,7 @@
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-3">
     <h4 style="font-weight: 900">Editar categoria</h4>
     <div class="btn-toolbar mb-2 mb-md-0 mr-3">
+      <a href="{{route('category.index')}}" class="btn btn-secondary mx-2">Cancelar</a>
       <button type="submit" class="btn btn-primary">Guardar</button>
       </div>
   </div>
@@ -18,11 +19,12 @@
           <div class="card-body">
             <div class="form-group">
               <label>Nombre</label>
-            <input type="text" class="form-control" name="name" value="{{$category->name}}">
+            <input type="text" class="form-control" name="name" value="{{old('name', $category->name)}}">
+            {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
               <label>Descripcion</label>
-              <textarea class="form-control" rows="3" name="description" value="{{$category->description}}"></textarea>
+              <textarea class="form-control" rows="3" name="description" value="{{old('description', $category->description)}}"></textarea>
               <small class="form-text text-muted">Este campo es opcional</small>
             </div>
             <div class="form-group">

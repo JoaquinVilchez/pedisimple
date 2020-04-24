@@ -5,11 +5,122 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Product;
+use App\RestaurantCategory;
+use App\Category;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProductsImport;
+use App\Exports\ProductsExport;
 
 class ProductController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exportExcel()
+    {
+        return Excel::download(new ProductsExport, 'productos-'.Auth::user()->restaurant->slug.'.xlsx');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importExcel(Request $request)
+    {
+        request()->validate([
+            'method'=>'required',
+            'file'=>'required'
+        ]);
+        
+        $file = $request->file('file');
+        $items = Excel::toCollection(new ProductsImport, $file);
+        $restaurant = Auth::user()->restaurant;
+
+
+
+        if($request->method == "update"){
+            foreach($items as $item){
+                for ($i=0; $i < count($item) ; $i++) { 
+                    $category_name = $item[$i]['categoria'];
+                    $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+
+                    if($category==null){
+                        Category::create([
+                            'name' => $category_name,
+                            'state' => 'available',
+                            'restaurant_id' => $restaurant->id
+                        ]);
+
+                        $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+                    }
+
+                    if($item[$i]['token_no_borrar']==null){
+                        Product::create([
+                            'name' => $item[$i]['nombre'],
+                            'details' => $item[$i]['descripcion'],
+                            'price' => $item[$i]['precio'],
+                            'category_id' => $category->id,
+                            'restaurant_id' => $restaurant->id,
+                        ]);
+
+                    }else{
+                        $product_id = decrypt($item[$i]['token_no_borrar']);
+                        $product = Product::where('restaurant_id', $restaurant->id)->where('id', $product_id)->first();
+                        $product->update([
+                            'name' => $item[$i]['nombre'],
+                            'details' => $item[$i]['descripcion'],
+                            'price' => $item[$i]['precio'],
+                            'category_id' => $category->id
+                        ]);
+                    }
+                }
+            }
+
+        }elseif($request->method == "replace"){
+
+            $products = Product::where('restaurant_id', $restaurant->id)->get();
+
+            if($products!=null){
+                foreach ($products as $product) {
+                    $product->delete();
+                }
+            }
+            
+            foreach($items as $item){
+                for ($i=0; $i < count($item) ; $i++) { 
+                    $category_name = $item[$i]['categoria'];
+                    $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+
+                    if($category==null){
+                        Category::create([
+                            'name' => $category_name,
+                            'state' => 'available',
+                            'restaurant_id' => $restaurant->id
+                        ]);
+
+                        $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+                    }
+
+                    Product::create([
+                        'name' => $item[$i]['nombre'],
+                        'details' => $item[$i]['descripcion'],
+                        'price' => $item[$i]['precio'],
+                        'category_id' => $category->id,
+                        'restaurant_id' => $restaurant->id,
+                    ]);
+                }
+            }
+        }//endif
+
+        return redirect()->back()->with('success_message', 'Productos importados con exito');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,6 +170,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'method' => 'required',
+            'file' => 'required'
+        ]);
+
         $restaurant_id = Auth::user()->restaurant->id;
 
         if($request->hasFile('image')){
@@ -155,8 +271,6 @@ class ProductController extends Controller
 
             $path = $file->hashName('public');
 
-            // dd($path);
-
             $image = Image::make($file)->encode('jpg', 75);
             
             // $image->fit(250, 250, function ($constraint) {
@@ -185,9 +299,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($request->productid);
         $product->delete();
         return redirect(route('product.index'))->with('success_message', 'Producto eliminado con éxito');
     }

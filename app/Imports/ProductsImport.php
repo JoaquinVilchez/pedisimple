@@ -4,22 +4,19 @@ namespace App\Imports;
 
 use App\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Auth;
 
-class ProductsImport implements ToModel
+class ProductsImport implements ToModel, WithHeadingRow
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
     public function model(array $row)
     {
         return new Product([
             'name' => $row[0],
-            'details' => $row[0],
-            'price' => $row[0],
-            'category_id' => $row[0],
-            'restaurant_id' => Auth::user()->restaurant->id,
+            'details' => $row[1],
+            'price' => $row[2],
+            'category' => $row[3],
+            'product_id' => $row[4]
         ]);
     }
 }

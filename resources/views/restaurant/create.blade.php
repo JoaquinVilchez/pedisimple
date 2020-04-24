@@ -13,24 +13,27 @@
         <div class="col-xl-6">
                 <div class="form-group">
                 <label>Nombre</label>
-                    <input type="text" class="form-control" name="name">
+                    <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                    {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
                 <hr class="my-2">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-6">
                             <label>Direccion</label>
-                            <input type="text" class="form-control" name="street">
+                            <input type="text" class="form-control" name="street" value="{{old('street')}}">
+                            {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
                         <div class="col-2">
                             <label>Numero</label>
-                            <input type="text" class="form-control" name="number">
+                            <input type="text" class="form-control" name="number" value="{{old('number')}}">
+                            {!!$errors->first('number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
                         <div class="col-4">
                             <label>Ciudad</label>
                             <select class="form-control" name="city_id">
                                 @foreach ($cities as $city)
-                                <option value="{{$city->id}}">{{$city->name}}</option>
+                                <option value="{{$city->id}}" {{old('city_id') == $city->id ? 'selected' : ''}}>{{$city->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -39,21 +42,22 @@
                 <hr class="my-2">
                 <div class="form-group col-4 pl-0">
                     <label>Telefono</label>
-                    <input type="text" class="form-control" name="phone">
+                    <input type="text" class="form-control" name="phone" value="{{old('phone')}}">
+                    {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
                 <hr class="my-2">
                 <div class="form-group">
                     <label>Descripcion</label>
                     <small>(Opcional)</small>
-                    <textarea class="form-control" rows="3" name="description"></textarea>
+                    <textarea class="form-control" rows="3" name="description" value="{{old('description')}}">{{old('description')}}</textarea>
                 </div>
                 <hr class="my-2">
                 <div class="form-group col-6 pl-0">
                     <label>Retiro o delivery</label>
                     <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()">                    
-                        <option value="delivery-pickup" checked>Delivery y Retiro en local</option>
-                        <option value="delivery">Delivery</option>
-                        <option value="pickup">Retiro en local</option>
+                        <option value="delivery-pickup" {{old('shipping_method') == 'delivery-pickup' ? 'selected' : ''}}>Delivery y Retiro en local</option>
+                        <option value="delivery" {{old('shipping_method') == 'delivery' ? 'selected' : ''}}>Delivery</option>
+                        <option value="pickup" {{old('shipping_method') == 'pickup' ? 'selected' : ''}}>Retiro en local</option>
                     </select>
 
                     <div class="row mt-2 ml-1" id="delivery_options">
@@ -62,12 +66,13 @@
                             <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">$</span>
                             </div>
-                            <input type="number" class="form-control" name="shipping_price">
+                            <input type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}">
+                            {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
 
-                        <label>Tiempo de envio</label><small>(Opcional)</small>
+                        <label>Tiempo de envio</label><small>  (Opcional)</small>
                         <div class="input-group mb-3 col-8">
-                        <input type="number" class="form-control" name="shipping_time">
+                        <input type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}">
                             <div class="input-group-append">
                             <span class="input-group-text" id="basic-addon2" >min.</span>
                             </div>
@@ -76,7 +81,7 @@
                 </div>
                 <hr class="my-2">
                 <div class="form-group" id="foto">
-                    <label>Foto</label><small>(Opcional)</small>
+                    <label>Foto</label><small> (Opcional)</small>
                     <div class="row">
                         <div class="col-xl-4">
                         <div class="form-group">
@@ -101,16 +106,17 @@
                 <div class="form-group p-2">
                 @foreach($categories as $category)
                     <div class="chiller_cb d-inline mx-3">
-                        <input type="checkbox" name="food_categories[]" value="{{$category->id}}" id="{{$category->id}}">
+                        <input type="checkbox" name="food_categories[]" value="{{$category->id}}" id="{{$category->id}}" {{ (is_array(old('food_categories')) and in_array($category->id, old('food_categories'))) ? ' checked' : '' }}>
                         <label>{{$category->name}}</label>
                         <span></span>
                     </div>
                 @endforeach
+                <br>{!!$errors->first('food_categories', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
             </div>
 
             <div class="form-group">
-                <button type="submit" style="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
             </div>
         </div>
         </form>

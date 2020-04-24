@@ -51,10 +51,12 @@
                         @if(!$restaurant->shipping_method==null)
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
                         <small>{{$restaurant->shippingMethod()}}</small>
+                        @if($restaurant->shipping_method != 'pickup')
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>${{$restaurant->shipping_price}}</small>
+                        <small>Costo delivery: ${{$restaurant->shipping_price}}</small>
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>{{$restaurant->shipping_time}} min.</small>
+                        <small>Tiempo delivery: {{$restaurant->shipping_time}} min.</small>
+                        @endif
                         @endif
                     </div>
                 </section>
@@ -244,11 +246,10 @@
                 <h5><i class="fas fa-phone"></i> Telefono</h5>
                 <h6 class="modal-title" id="restaurantPhone"></h6>                  
             </div>
-            {{-- <div class="modal-footer"> --}}
-                <div class="alert alert-primary mx-2" role="alert">
-                    Proximamente se podra pedir online
-                </div>
-            {{-- </div> --}}
+            <div class="modal-footer justify-content-center">
+            <a class="btn btn-primary btn-lg btn-block" href="{{route('cart.empty')}}">Finalizar pedido</a>
+                    <span class="badge badge-warning">Próximamente se podrá pedir online</span>       
+            </div>
         </div>
         </div>
     </div>

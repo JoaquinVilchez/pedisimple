@@ -15,9 +15,23 @@ use Illuminate\Support\Facades\DB;
 use Auth;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\RequestMail;
+use Illuminate\Support\Facades\Mail; 
 
 class RestaurantController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function request(Request $request)
+    {
+        
+        Mail::to($request->email)->send(new RequestMail);
+        return redirect()->back()->with('success_message', 'Mensaje enviado con exito.');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -77,7 +91,11 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {  
-
+        if($request->shipping_method == 'pickup'){
+            $rule = 'nullable';
+        }else{
+            $rule = 'required';
+        }
         $data=request()->validate([
             'name'=> ['required', 'string'],
             'street'=> ['required', 'string'],
@@ -86,7 +104,7 @@ class RestaurantController extends Controller
             'phone'=> ['required', 'string'],
             'description'=> ['nullable', 'string'],
             'shipping_method'=> ['required'],
-            'shipping_price'=> ['required'],
+            'shipping_price'=> $rule,
             'shipping_time'=> ['nullable'],
             'food_categories'=> ['required'],
             'image'=> ['nullable'],
@@ -192,6 +210,12 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::findOrFail($id);
 
+        if($request->shipping_method == 'pickup'){
+            $rule = 'nullable';
+        }else{
+            $rule = 'required';
+        }
+
         $data=request()->validate([
             'name'=>'required',
             'street'=>'required',
@@ -200,7 +224,7 @@ class RestaurantController extends Controller
             'phone' => 'nullable',
             'description' => 'nullable',
             'shipping_method' => 'required',
-            'shipping_price' => 'nullable',
+            'shipping_price' => $rule,
             'shipping_time' => 'nullable',
             'food_categories' => 'required'
         ]);

@@ -5,9 +5,89 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;   
 use App\Category;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CategoriesImport;
+use App\Exports\CategoriesExport;
 
 class CategoryController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exportExcel()
+    {
+        return Excel::download(new CategoriesExport, 'categorias-'.Auth::user()->restaurant->slug.'.xlsx');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function importExcel(Request $request)
+    {
+        request()->validate([
+            'method'=>'required',
+            'file'=>'required'
+        ]);
+        
+        $file = $request->file('file');
+        $items = Excel::toCollection(new CategoriesImport, $file);
+        $restaurant = Auth::user()->restaurant;
+
+        if($request->method == "update"){
+            foreach($items as $item){
+                for ($i=0; $i < count($item) ; $i++) { 
+
+                    if($item[$i]['token_no_borrar']==null){
+                        Category::create([
+                            'name' => $item[$i]['nombre'],
+                            'description' => $item[$i]['descripcion'],
+                            'restaurant_id' => $restaurant->id
+                        ]);
+
+                    }else{
+                        $category_id = decrypt($item[$i]['token_no_borrar']);
+                        $category = Category::where('restaurant_id', $restaurant->id)->where('id', $category_id)->first();
+                        $product->update([
+                            'name' => $item[$i]['nombre'],
+                            'description' => $item[$i]['descripcion']
+                        ]);
+                    }
+
+                }
+            }
+
+        }elseif($request->method == "replace"){
+
+            $category = Category::where('restaurant_id', $restaurant->id)->get();
+
+            if($categories!=null){
+                foreach ($categories as $category) {
+                    $category->delete();
+                }
+            }
+            
+            foreach($items as $item){
+                for ($i=0; $i < count($item) ; $i++) { 
+                    $category_name = $item[$i]['categoria'];
+                    
+                    Category::create([
+                        'name' => $category_name,
+                        'state' => 'available',
+                        'restaurant_id' => $restaurant->id
+                    ]);
+                }
+            }
+        }//endif
+
+        return redirect()->back()->with('success_message', 'Categorias importadas con exito');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +134,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'name' => 'required',
+            'state' => 'required'
+        ]);
+
         $restaurant_id = Auth::user()->restaurant->id;
 
         Category::create([
@@ -116,7 +201,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         $category = Category::findOrFail($id);
         $category->delete();
