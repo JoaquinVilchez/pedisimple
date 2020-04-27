@@ -31,11 +31,11 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron pb-0" style="background: url('https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;">
+    <section class="jumbotron pb-0 mb-0" style="background: url('https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;">
         <div class="container text-white d-flex align-items-end col-lg-8">
             <div class="row d-flex align-items-end">
                 <figure>
-                <img class="d-block border m-1" width="110px" src="{{Storage::url($restaurant->image)}}" alt="">
+                    <img class="border m-1" width="110px" src="{{Storage::url($restaurant->image)}}" alt="">
                 </figure>
                 <section class="ml-3 mb-3">
                     <div class="title"><h3><strong>{{$restaurant->name}}</strong></h3></div>
@@ -55,7 +55,7 @@
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
                         <small>Costo delivery: ${{$restaurant->shipping_price}}</small>
                         <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>Tiempo delivery: {{$restaurant->shipping_time}} min.</small>
+                        <small>Tiempo: {{$restaurant->shipping_time}} min.</small>
                         @endif
                         @endif
                     </div>
@@ -63,6 +63,12 @@
             </div>  
         </div>
     </section>
+    <div class="sticky-top mb-4">
+        <div class="alert alert-primary m-0 p-1 px-2" role="alert" style="text-align:center">
+            <strong>Recuerda: La plataforma aún no está en línea para el público.</strong><br>
+            Esto es una vista previa de como se vería tu comercio.
+        </div>
+    </div>
 
     <!-- Page Content -->
     <div class="container">
@@ -92,11 +98,11 @@
                     @include('carrito')
                     
                     <div class="alert alert-primary" role="alert" id="confirmEmptyCart" hidden>
-                        Estas seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" href="#">No</a>
+                        ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" href="#">No</a>
                     </div>
                     <div class="float-right">
                         <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
-                        <a href="#" class="btn btn-danger" data-name="{{$restaurant->name}}" 
+                        <a href="#" class="btn btn-primary" data-name="{{$restaurant->name}}" 
                             data-image="{{$restaurant->image}}" 
                             data-address="{{$restaurant->address->getFullAddress()}}" 
                             data-phone="{{$restaurant->phone}}" 
@@ -107,7 +113,7 @@
                     @else
                     <div class="list-group mb-3">
                         <h6>No tienes productos en tu pedido</h6>
-                        <a href="{{route('list.index')}}" class="btn btn-danger">Ver comercios</a>
+                        <a href="{{route('list.index')}}" class="btn btn-primary disabled">Ver comercios</a>
                     </div>
                     @endif
             </div>
@@ -133,7 +139,7 @@
                                         <h6><strong>{{$product->name}}</strong></h6>
                                         <span>${{$product->price}}</span>
                                         <span class="float-right mr-2" style="font-size:20px">
-                                            <a style="color:red" href="#" 
+                                            <a style="color:#ffa64d" href="#" 
                                             data-productid="{{$product->id}}" 
                                             data-productname="{{$product->name}}" 
                                             data-productprice="{{$product->price}}" 
@@ -156,15 +162,15 @@
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="card" >
                         <div class="card-body">
-                          <h5 class="card-title">Informacion del comercio</h5>
+                          <h5 class="card-title">Información del comercio</h5>
                           
-                        <h6 class="card-subtitle mb-2 text-muted mt-3">Direccion</h6>
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Dirección</h6>
                             <p><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
 
-                        <h6 class="card-subtitle mb-2 text-muted mt-3">Telefono</h6>
+                        <h6 class="card-subtitle mb-2 text-muted mt-3">Teléfono</h6>
                             <p><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
 
-                          <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios de apertura</h6>
+                          {{-- <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios de apertura</h6>
                           <table class="table table-striped table-responsive">
                             @foreach ($opening_times as $day)
                             <tr>
@@ -175,7 +181,7 @@
                                 <td>{{substr($day->end_hour_2, 3)}} hs</td>
                             </tr>
                             @endforeach
-                        </table>
+                        </table> --}}
                         </div>
                     </div>
                     <!--Google map-->
@@ -222,7 +228,7 @@
                     </div> --}}
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger float-right mr-2">Agregar a mi pedido</button>
+                    <button type="submit" class="btn btn-primary float-right mr-2">Agregar a mi pedido</button>
             </form>
             </div>  
         </div>
@@ -240,10 +246,10 @@
             </button>
             </div>
             <div class="modal-body">
-                <h5><i class="fas fa-map-marker-alt"></i> Direccion</h5>
+                <h5><i class="fas fa-map-marker-alt"></i> Dirección</h5>
                 <h6 class="modal-title" id="restaurantAddress"></h6>
                 <hr>
-                <h5><i class="fas fa-phone"></i> Telefono</h5>
+                <h5><i class="fas fa-phone"></i> Teléfono</h5>
                 <h6 class="modal-title" id="restaurantPhone"></h6>                  
             </div>
             <div class="modal-footer justify-content-center">

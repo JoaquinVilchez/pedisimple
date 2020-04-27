@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row justify-content-center mt-3">
       <div class="col-xl-4" style="text-align:center">
-        <h3>Completa el siguiente formulario</h3>
+        <h3>Completá el siguiente formulario</h3>
         <p>Nos pondremos en contacto contigo una vez enviado el formulario.</p>
       </div>
     </div>
@@ -28,7 +28,7 @@
                           <input name="email" type="email" class="form-control">
                         </div>
                         <div class="form-group">
-                          <label>Telefono</label>
+                          <label>Teléfono</label>
                           <input name="phone" type="text" class="form-control">
                         </div>
                         <div class="form-group">

@@ -4,7 +4,7 @@
 
 <section class="jumbotron text-center p-5" style="background: url('https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
     <div class="container">
-    <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>{{count($restaurants)}} Locales disponibles</strong></h1>
+    <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>{{count($restaurants)}} Comercios disponibles</strong></h1>
     </div>
 </section>
   <!-- Page Content -->
@@ -51,7 +51,7 @@
             @endif
             @endforeach
 
-            <nav aria-label="..." class="float-right mt-3">
+            {{-- <nav aria-label="..." class="float-right mt-3">
                 <ul class="pagination">
                   <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
@@ -65,7 +65,7 @@
                     <a class="page-link" href="#">Next</a>
                   </li>
                 </ul>
-              </nav>
+              </nav> --}}
         </div>
     </div>
 </div>
@@ -74,7 +74,7 @@
 <div class="row justify-content-center" style="background-color:white">        
     <section class="text-center">
         <div class="container my-5">
-            <p>Tenes un comercio y queres estar en la plataforma? <a href="#">Trabaja con nosotros</a></p>
+            <p>¿Tenés un comercio y querés estar en la plataforma? <a href="#">¡Sumate!</a></p>
         </div>
     </section>
 </div>

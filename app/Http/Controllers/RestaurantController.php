@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\User;
 use App\Restaurant;
@@ -12,10 +13,13 @@ use App\Address;
 use App\OpeningDateTime;
 use Darryldecode\Cart\Cart;
 use Illuminate\Support\Facades\DB;
-use Auth;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\RequestMail;
+use App\Mail\RequestMailAdmin;
+use App\Mail\newCommerce;
+use App\Mail\newCommerceAdmin;
+use App\Mail\UpdateStatusMail;
 use Illuminate\Support\Facades\Mail; 
 
 class RestaurantController extends Controller
@@ -25,11 +29,55 @@ class RestaurantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function list()
+    {            
+        $restaurants = Restaurant::orderBy('state', 'desc')->get();
+        return view('admin.restaurant.list')->with('restaurants', $restaurants);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request)
+    {    
+        $restaurant = Restaurant::findOrFail($request->restaurant_id);
+        $restaurant->update(['state' => $request->state]);
+
+        $data = [
+            'name' => $restaurant->name,
+            'slug' => $restaurant->slug,
+            'user_name' => $restaurant->user->first_name,
+        ];
+
+        if($request->state == 'active'){
+            Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
+        }
+
+        return redirect()->route('restaurant.admin.list')->with('success_message', 'Estado actualizado con éxito');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function request(Request $request)
-    {
-        
+    {            
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'commerce' => $request->commerce,
+            'aditional_notes' => $request->aditional_notes
+        ];
+
         Mail::to($request->email)->send(new RequestMail);
-        return redirect()->back()->with('success_message', 'Mensaje enviado con exito.');
+        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new RequestMailAdmin($data));
+
+        return redirect()->back()->with('success_message', 'Mensaje enviado con éxito');
     }
 
     /**
@@ -65,7 +113,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return view('restaurant.dashboard');
+        return redirect()->route('product.index');
     }
 
     /**
@@ -110,6 +158,7 @@ class RestaurantController extends Controller
             'image'=> ['nullable'],
         ]);
 
+
         $slug = str_replace(' ', '-', strtolower($data['name']));
 
         if($request->hasFile('image')){
@@ -123,6 +172,9 @@ class RestaurantController extends Controller
             Storage::put($path, (string) $image->encode());
 
             $data['image'] = $path;
+            
+        }else{
+            $data['image'] = 'public/commerce.png';
         }
 
         Restaurant::create([
@@ -138,21 +190,28 @@ class RestaurantController extends Controller
             'image' => $data['image'],
         ]);
 
-        $restaurant = Restaurant::where('user_id', Auth::user()->id)->first();
+        $restaurant = Restaurant::where('user_id', Auth::user()->id)->first();        
+
         
         Address::create([
             'street' => $data['street'],
             'number' => $data['number'],
             'restaurant_id' => $restaurant->id,
             'city_id' => $data['city_id']
-        ]);
-        
-        for ($i=0; $i < count($data['food_categories']); $i++) { 
-            DB::table('relation_restaurant_category')->insert([
-                'restaurant_id' => $restaurant->id,
-                'category_restaurant_id' => $data['food_categories'][$i]
-            ]);   
-        }
+            ]);
+            
+            
+            for ($i=0; $i < count($data['food_categories']); $i++) { 
+                DB::table('relation_restaurant_category')->insert([
+                    'restaurant_id' => $restaurant->id,
+                    'category_restaurant_id' => $data['food_categories'][$i]
+                    ]);   
+                }
+                
+                $restaurant = Auth::user()->restaurant;
+
+        Mail::to(Auth::user()->email)->send(new newCommerce($restaurant));
+        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new newCommerceAdmin($restaurant));
 
         return redirect()->route('restaurant.index');
 

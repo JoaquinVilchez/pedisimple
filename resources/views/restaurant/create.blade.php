@@ -5,32 +5,36 @@
     <form action="{{route('restaurant.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="align-items-center pt-3 pb-2 border-bottom" style="text-align:center">
-            <h3><i class="fas fa-cogs"></i></h3>
-            <h1 class="h2"><strong>Configurar comercio</strong></h1>
+            <img src="{{asset('images/design/shop.svg')}}" class="img-default my-3">
+            <h4 class="txt-bold">Configura tu comercio</h4>
+            <p>Completa los datos de tu comercio por única vez.</p>
         </div>
 
     <div class="row mt-2 justify-content-center">
-        <div class="col-xl-6">
+        <div class="col-xl-6 mt-2">
+                <div class="mb-4" style="text-align:center">
+                    <small style="color:red">Los campos que tienen * son obligatorios</small>
+                </div>
                 <div class="form-group">
-                <label>Nombre</label>
-                    <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                <label>Nombre del comercio <small style="color:red">*</small></label>
+                    <input type="text" class="form-control" name="name" value="{{old('name')}}" autocomplete="flase">
                     {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
                 <hr class="my-2">
                 <div class="form-group">
                     <div class="row">
                         <div class="col-6">
-                            <label>Direccion</label>
-                            <input type="text" class="form-control" name="street" value="{{old('street')}}">
-                            {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                            <label>Dirección <small style="color:red">*</small></label>
+                            <input type="text" class="form-control" name="street" value="{{old('street')}}" autocomplete="flase">
+                            
                         </div>
                         <div class="col-2">
-                            <label>Numero</label>
-                            <input type="text" class="form-control" name="number" value="{{old('number')}}">
-                            {!!$errors->first('number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                            <label>Número<small style="color:red">*</small></label>
+                            <input type="text" class="form-control" name="number" value="{{old('number')}}" autocomplete="flase">
+                            {{-- {!!$errors->first('number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!} --}}
                         </div>
                         <div class="col-4">
-                            <label>Ciudad</label>
+                            <label>Ciudad <small style="color:red">*</small></label>
                             <select class="form-control" name="city_id">
                                 @foreach ($cities as $city)
                                 <option value="{{$city->id}}" {{old('city_id') == $city->id ? 'selected' : ''}}>{{$city->name}}</option>
@@ -38,41 +42,41 @@
                             </select>
                         </div>
                     </div>
+                    {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
                 <hr class="my-2">
                 <div class="form-group col-4 pl-0">
-                    <label>Telefono</label>
-                    <input type="text" class="form-control" name="phone" value="{{old('phone')}}">
-                    {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                    <label>Teléfono <small style="color:red">*</small></label>
+                    <input type="text" class="form-control" name="phone" value="{{old('phone')}}" autocomplete="flase">
                 </div>
+                {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 <hr class="my-2">
                 <div class="form-group">
-                    <label>Descripcion</label>
-                    <small>(Opcional)</small>
-                    <textarea class="form-control" rows="3" name="description" value="{{old('description')}}">{{old('description')}}</textarea>
+                    <label>Descripción</label>
+                    <textarea class="form-control" rows="3" name="description" value="{{old('description')}}" autocomplete="flase">{{old('description')}}</textarea>
                 </div>
                 <hr class="my-2">
                 <div class="form-group col-6 pl-0">
-                    <label>Retiro o delivery</label>
-                    <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()">                    
+                    <label>Retiro o delivery <small style="color:red">*</small></label>
+                    <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()" autocomplete="flase">                    
                         <option value="delivery-pickup" {{old('shipping_method') == 'delivery-pickup' ? 'selected' : ''}}>Delivery y Retiro en local</option>
                         <option value="delivery" {{old('shipping_method') == 'delivery' ? 'selected' : ''}}>Delivery</option>
                         <option value="pickup" {{old('shipping_method') == 'pickup' ? 'selected' : ''}}>Retiro en local</option>
                     </select>
 
                     <div class="row mt-2 ml-1" id="delivery_options">
-                        <label>Costo de envio</label>
+                        <label>Costo de envío <small style="color:red">*</small></label>
                         <div class="input-group mb-3 col-8">
                             <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">$</span>
                             </div>
-                            <input type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}">
-                            {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                            <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}" autocomplete="flase">
                         </div>
+                        {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
 
-                        <label>Tiempo de envio</label><small>  (Opcional)</small>
+                        <label>Tiempo aproximado de envío</label>
                         <div class="input-group mb-3 col-8">
-                        <input type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}">
+                        <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}" autocomplete="flase">
                             <div class="input-group-append">
                             <span class="input-group-text" id="basic-addon2" >min.</span>
                             </div>
@@ -81,7 +85,7 @@
                 </div>
                 <hr class="my-2">
                 <div class="form-group" id="foto">
-                    <label>Foto</label><small> (Opcional)</small>
+                    <label>Foto</label>
                     <div class="row">
                         <div class="col-xl-4">
                         <div class="form-group">
@@ -94,21 +98,25 @@
                         </div>
                         <div class="col-xl-6 d-flex align-items-center">
                             <div class="form-group">
-                                <label for="exampleFormControlFile1">Buscar imagen</label>
+                                <label for="exampleFormControlFile1">Buscar imágen</label>
                                 <input type="file" id="upload_image"  onchange="readURL(this);" name="image" class="form-control-file" id="exampleFormControlFile1">
                             </div>
                         </div>
                     </div>
-                    <small>En caso de no seleccionar una foto, se le asignara una por defecto.</small>
+                    <small>En caso de no seleccionar una foto, se le asignará una por defecto.</small>
                 </div>
             <div class="form-group">
-                <label>Comidas</label>
+                <label>Comidas <small style="color:red">*</small></label>
                 <div class="form-group p-2">
                 @foreach($categories as $category)
-                    <div class="chiller_cb d-inline mx-3">
-                        <input type="checkbox" name="food_categories[]" value="{{$category->id}}" id="{{$category->id}}" {{ (is_array(old('food_categories')) and in_array($category->id, old('food_categories'))) ? ' checked' : '' }}>
-                        <label>{{$category->name}}</label>
-                        <span></span>
+                    <div class="chiller_cb d-inline mx-2">
+                        <label>
+                            <span class="btn btn-checkbox">
+                            <input type="checkbox" name="food_categories[]" value="{{$category->id}}" id="{{$category->id}}" {{ (is_array(old('food_categories')) and in_array($category->id, old('food_categories'))) ? ' checked' : '' }}>
+                            {{$category->name}}
+                            </span>
+                        </label>
+                        
                     </div>
                 @endforeach
                 <br>{!!$errors->first('food_categories', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}

@@ -84,7 +84,7 @@ class CategoryController extends Controller
             }
         }//endif
 
-        return redirect()->back()->with('success_message', 'Categorias importadas con exito');
+        return redirect()->back()->with('success_message', 'Archivo importado con exito');
     }
 
 

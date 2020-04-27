@@ -39,7 +39,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -73,6 +73,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'phone' => 'nullable',
+        ]);
+
         $user = User::findOrFail($id);
         
         if($request->hasFile('image')){

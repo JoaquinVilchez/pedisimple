@@ -1,8 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.commerce')
 
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-3">
-  <h4 style="font-weight: 900">Documentacion</h4>
+  <h4 style="font-weight: 900">Documentación</h4>
 </div>
 <div class="container container-fluid">
   <h4>¿Cómo agrego un producto?</h4>

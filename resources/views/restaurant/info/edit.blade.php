@@ -1,11 +1,11 @@
-@extends('layouts.admin')
+@extends('layouts.commerce')
 
 @section('main')
 <form action="{{route('restaurant.update', $restaurant->id)}}" method="post" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom">
-        <h1 class="h2"><strong>Informacion general</strong></h1>
+        <h1 class="h2"><strong>Información general</strong></h1>
         <div class="btn-toolbar mb-2 mb-md-0 ml-5">
         <a href="{{route('restaurant.info')}}" class="btn btn-secondary mx-2">Cancelar</a>
         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -23,12 +23,12 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-6">
-                        <label>Direccion</label>
+                        <label>Dirección</label>
                         <input type="text" class="form-control" name="street" value="{{old('street', $address->street)}}">
                         {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
                     <div class="col-2">
-                        <label>Numero</label>
+                        <label>Número</label>
                         <input type="text" class="form-control" name="number" value="{{old('number', $address->number)}}">
                         {!!$errors->first('number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
@@ -44,13 +44,13 @@
             </div>
             <hr class="my-2">
             <div class="form-group col-4 pl-0">
-                <label>Telefono</label>
+                <label>Teléfono</label>
                 <input type="text" class="form-control" name="phone" value="{{old('phone', $restaurant->phone)}}">
                 {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <hr class="my-2">
             <div class="form-group">
-                <label>Descripcion</label>
+                <label>Descripción</label>
                 <textarea class="form-control" rows="3" name="description" value="{{old('description', $restaurant->description)}}">{{old('description', $restaurant->description)}}</textarea>
             </div>
             <hr class="my-2">
@@ -63,18 +63,18 @@
                 </select>
 
                 <div class="row mt-2 ml-1" id="delivery_options">
-                    <label>Costo de envio</label>
+                    <label>Costo de envío</label>
                     <div class="input-group mb-3 col-8">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">$</span>
                         </div>
-                        <input type="number" class="form-control" name="shipping_price" value="{{old('shipping_price', $restaurant->shipping_price)}}">
+                        <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price', $restaurant->shipping_price)}}">
                         {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                       </div>
 
-                    <label>Tiempo aproximado de envio</label>
+                    <label>Tiempo aproximado de envío</label>
                     <div class="input-group mb-3 col-8">
-                    <input type="number" class="form-control" name="shipping_time" value="{{old('shipping_time', $restaurant->shipping_time)}}">
+                    <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time', $restaurant->shipping_time)}}">
                         <div class="input-group-append">
                           <span class="input-group-text" id="basic-addon2">min.</span>
                         </div>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="col-xl-6 d-flex align-items-center">
                         <div class="form-group">
-                            <label for="exampleFormControlFile1">Buscar imagen</label>
+                            <label for="exampleFormControlFile1">Buscar imágen</label>
                             <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
                           </div>
                     </div>
@@ -105,13 +105,13 @@
             <div class="form-group">
             @foreach($foodCategories as $category)
                 <div class="chiller_cb">
+                    <label>
                     <input type="checkbox" name="food_categories[]" value="{{$category->id}}" id="{{$category->id}}" 
                     @foreach($restaurantFoodCategories as $restaurantFoodCategory)
                     @if($restaurantFoodCategory->id===$category->id) checked @endif
                     @endforeach
                     >
-                    <label>{{$category->name}}</label>
-                    <span></span>
+                    {{$category->name}}</label>
                 </div>
             @endforeach
             </div>

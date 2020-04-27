@@ -14,12 +14,15 @@ use App\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Auth::routes(['verify' => true]);
+Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
+// Route::resource('register', 'Auth\RegisterController')->names('commerce.register')->middleware('Invitation');
 
-Route::get('/',function(){
-    return view('home');
-})->name('home');
+Route::get('/', 'RestaurantController@index')->name('home')->middleware('auth');
+
+Route::get('/bienvenido',function(){
+    return view('auth.welcome');
+})->name('welcome');
 
 Route::get('/comercios/solicitud', function(){
     return view('request');
@@ -43,9 +46,15 @@ Route::resource('/carrito', 'CartController')->names('cart');
 
 // Route::resource('/pedidos', 'OrderController')->names('order');
 
-Route::resource('/datos', 'UserController')->names('user')->middleware(['verified']);;
+Route::resource('/datos', 'UserController')->names('user')->middleware(['verified']);
+
+Route::post('/administracion/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['verified', 'Admin']);
+Route::resource('/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['verified', 'Admin']);
 
 Route::resource('/comercios', 'ListController')->names('list');
+
+Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['verified', 'Admin']);
+Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['verified', 'Admin']);
 
 Route::post('/comercios/solicitud', 'RestaurantController@request')->name('restaurant.request');
 Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
@@ -53,7 +62,7 @@ Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('rest
 Route::resource('/comercio', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
 Route::post('/comercio', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
-Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware('Visible');
+Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['verified']);
 
 
 //PRODUCTOS

@@ -42,7 +42,36 @@ class restaurant extends Model
                 return 'Delivery';
                 break;
             case 'delivery-pickup':
-                return 'Retiro y Delivery';
+                return 'Retiro y delivery';
+                break;
+       }
+    }
+
+    
+    public function stateStyle(){
+        switch ($this->state) {
+            case 'cancelled':
+                return 'badge badge-danger';
+                break;
+            case 'active':
+                return 'badge badge-success';
+                break;
+            case 'pending':
+                return 'badge badge-warning';
+                break;
+       }
+    }
+
+    public function translateState(){
+        switch ($this->state) {
+            case 'pending':
+                return 'Pendiente';
+                break;
+            case 'active':
+                return 'Activo';
+                break;
+            case 'cancelled':
+                return 'Cancelado';
                 break;
        }
     }

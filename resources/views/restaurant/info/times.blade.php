@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.commerce')
 
 @section('main')
 <form action="{{route('restaurant.update', $restaurant->id)}}" method="post" enctype="multipart/form-data">
@@ -40,15 +40,5 @@
 </div>    
 @endsection
 
-@section('js-scripts')
-<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker3').datetimepicker({
-            format: 'LT',
-            date: false
-        });
-    });
-</script>
-@endsection
 
 

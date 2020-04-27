@@ -1,10 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.commerce')
 
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
     <h1 class="h2"><strong>Productos</strong></h1>
     <div class="btn-toolbar mb-2 mb-md-0 mr-3">
-    <div class="btn-group" role="group">
+    <div class="btn-group d-none d-xl-block" role="group" >
       <button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Acciones
       </button>
@@ -20,7 +20,12 @@
   @include('messages')
   
   @if(count($products)==0)
-    <p>Todavia no tienes productos. <a href="{{route('product.create')}}">Agregar uno</a></p>
+    <div style="text-align:center" class="m-auto">
+      <img src="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
+      <p>Todavía no tienes productos.<br>
+      <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
+      {{-- <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2 d-inline">Importar planilla</a></p> --}}
+    </div>
   @else
   <div class="table-responsive">
     <table class="table table-striped">
@@ -29,12 +34,12 @@
           {{-- <th></th> --}}
           <th>Foto</th>
           <th>Nombre</th>
-          <th>Descripcion</th>
-          <th>Categoria</th>
+          <th>Descripción</th>
+          <th>Categoría</th>
           <th>Precio</th>
           <th>Estado</th>
           <th>Producto no disponible</th>
-          <th>Ultima actualizacion</th>
+          <th>Última actualización</th>
           <th></th>
         </tr>
       </thead>
@@ -59,7 +64,7 @@
                 >
               </form>
             </td>
-            <td>{{$product->updated_at}}</td>
+            <td>{{ucfirst($product->updated_at->calendar())}}</td>
             <td>
               <a href="{{route('product.edit', $product)}}">Editar</a>
               <a href="#" data-productid="{{$product->id}}" data-toggle="modal" data-target="#deleteProductModal">Eliminar</a>
@@ -116,20 +121,18 @@
           @csrf
           <h6>Seleccione una opcion: </h6>
           <div class="form-group">
-            <div class="btn-group-toggle my-3" width="100%" data-toggle="buttons">
-              <label class="btn btn-outline-success">
-                <input type="checkbox" value="update" id="method_1" name="method"><strong>Agregue nuevos productos y actualice los existentes</strong>
+              <label class="btn btn-outline-primary">
+                <input class="mr-1" type="radio" value="update" id="method_1" name="method"><strong>Agregue nuevos productos y actualice los existentes</strong>
                 <p class="m-0"><small>Los productos existentes serán revisados, no eliminados.</small></p>
               </label>
-            </div>
-            <div id="export_info"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}">Descargue su archivo de productos</a> y actualice la información.</span></div>
-            <div class="btn-group-toggle my-3" width="100%" data-toggle="buttons">
-              <label class="btn btn-outline-success">
-                <input type="checkbox" value="replace" id="method_2" name="method"><strong>Reemplazar productos</strong>
+            <div id="export_info" class="mb-3"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}">Descargue su archivo de productos</a> y actualice la información.</span></div>
+
+              <hr>
+              <label class="btn btn-outline-primary mw-100" style="width: 466px">
+                <input class="mr-1" type="radio" value="replace" id="method_2" name="method"><strong>Reemplazar productos</strong>
                 <p class="m-0"><small>Todos los artículos serán eliminados y reemplazados.</small></p>
               </label>
-            </div>
-          </div>
+          
           <hr>
           <h6>Seleccione un archivo de Excel: </h6>
           <div class="form-group">
@@ -137,7 +140,7 @@
           </div>
           <hr>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Importar</button>
+            <button type="submit" class="btn btn-primary btn-block">Importar</button>
           </div>
 
         </form>

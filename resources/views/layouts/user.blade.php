@@ -2,18 +2,19 @@
 
 @section('content')
 
-<section class="jumbotron text-center p-5" style="background: url('https://images.pexels.com/photos/3184192/pexels-photo-3184192.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
+<section class="jumbotron text-center p-5 rounded-0" style="background: url('{{asset('images/banners/food.png')}}') no-repeat scroll 0px / cover transparent;">
+    {{-- {{asset('images/banners/food.png')}} --}}
     <div class="container">
-      <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>Mi Cuenta</strong></h1>
+      <h1 class="text-white txt-bold" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);">Mi Cuenta</h1>
     </div>
 </section>
   <!-- Page Content -->
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-2">
+        <div class="col-lg-2" style="text-align:center">
             <img src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
             <div class="d-flex justify-content-center mb-2">
-                <span><strong>{{Auth::user()->first_name}}</strong></span>
+                <span class="mt-2"><strong>{{Auth::user()->first_name}}</strong></span>
             </div>
             <hr>
             

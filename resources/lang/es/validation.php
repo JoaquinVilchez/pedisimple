@@ -146,6 +146,28 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'method' => 'método',
+        'file' => 'archivo',
+        'name' => 'nombre',
+        'state' => 'estado',
+        'description' => 'descripción',
+        'first_name' => 'nombre',
+        'last_name' => 'apellido',
+        'price' => 'precio',
+        'category_id' => 'categoría',
+        'details' => 'descripción',
+        'password' => 'contraseña',
+        'restaurant_id' => 'comercio',
+        'street' => 'calle',
+        'number' => 'número',
+        'city_id' => 'ciudad',
+        'phone' => 'teléfono',
+        'shipping_method' => 'método de envío',
+        'shipping_price' => 'precio de envío',
+        'shipping_time' => 'tiempo de envío',
+        'food_categories' => 'categorías de comidas',
+        'image' => 'imágen'
+    ],
 
 ];

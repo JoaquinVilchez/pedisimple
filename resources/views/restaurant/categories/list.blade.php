@@ -1,8 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.commerce')
 
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
-    <h1 class="h2"><strong>Categorias</strong></h1>
+    <h1 class="h2"><strong>Categorías</strong></h1>
     <div class="btn-toolbar mb-2 mb-md-0 mr-3">
     <div class="btn-group" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -19,7 +19,11 @@
 
 @include('messages')
 @if(count($categories)==0)
-<p>Todavia no tienes categorias. <a href="{{route('category.create')}}">Agregar una</a></p>
+  <div style="text-align:center" class="m-auto">
+    <img src="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
+    <p>Todavia no tienes categorías.<br>
+    <a href="{{route('category.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
+  </div>  
 @else
   <div class="table-responsive">
     <table class="table table-striped">
@@ -27,9 +31,9 @@
         <tr>
           {{-- <th></th> --}}
           <th>Nombre</th>
-          <th>Descripcion</th>
+          <th>Descripción</th>
           <th>Estado</th>
-          <th>Categoria no disponible</th>
+          <th>Categoría no disponible</th>
           <th>Ultima actualizacion</th>
           <th></th>
         </tr>
@@ -68,7 +72,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
       <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar Categoria</h5>
+      <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar categoría</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
       </button>
@@ -78,7 +82,7 @@
               @csrf
 
       <div class="modal-body">
-              <h5>¿Estás seguro de eliminar esta categoria?</h5>  
+              <h5>¿Estás seguro de eliminar esta categoría?</h5>  
               <input type="hidden" id="categoryid" name="categoryid" value="">
       </div>
       <div class="modal-footer">
@@ -104,24 +108,22 @@
       </div>
       <div class="modal-body d-flex justify-content-center" style="text-align:center">
 
-        <form action="{{route('category.import.excel')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('product.import.excel')}}" method="post" enctype="multipart/form-data">
           @csrf
           <h6>Seleccione una opcion: </h6>
           <div class="form-group">
-            <div class="btn-group-toggle my-3" width="100%" data-toggle="buttons">
-              <label class="btn btn-outline-success">
-                <input type="checkbox" value="update" id="method_1" name="method"><strong>Agregue nuevas categorias y actualice los existentes</strong>
-                <p class="m-0"><small>Las categorias existentes serán revisados, no eliminados.</small></p>
+              <label class="btn btn-outline-primary">
+                <input class="mr-1" type="radio" value="update" id="method_1" name="method"><strong>Agregue nuevos productos y actualice los existentes</strong>
+                <p class="m-0"><small>Los productos existentes serán revisados, no eliminados.</small></p>
               </label>
-            </div>
-            <div id="export_info"><span class="badge badge-warning"><a href="{{route('category.export.excel')}}">Descargue su archivo de categorias</a> y actualice la información.</span></div>
-            <div class="btn-group-toggle my-3" width="100%" data-toggle="buttons">
-              <label class="btn btn-outline-success">
-                <input type="checkbox" value="replace" id="method_2" name="method"><strong>Reemplazar categorias</strong>
-                <p class="m-0"><small>Todos las categorias serán eliminados y reemplazados.</small></p>
+            <div id="export_info" class="mb-3"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}">Descargue su archivo de productos</a> y actualice la información.</span></div>
+
+              <hr>
+              <label class="btn btn-outline-primary mw-100" style="width: 466px">
+                <input class="mr-1" type="radio" value="replace" id="method_2" name="method"><strong>Reemplazar productos</strong>
+                <p class="m-0"><small>Todos los artículos serán eliminados y reemplazados.</small></p>
               </label>
-            </div>
-          </div>
+          
           <hr>
           <h6>Seleccione un archivo de Excel: </h6>
           <div class="form-group">
@@ -129,7 +131,7 @@
           </div>
           <hr>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Importar</button>
+            <button type="submit" class="btn btn-primary btn-block">Importar</button>
           </div>
 
         </form>

@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="jumbotron text-center" style="background: url('https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260') no-repeat scroll 0px 10% / cover transparent;">
+
+{{-- <section class="jumbotron text-center" style="url('https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;"> --}}
+  <section class="jumbotron text-center">
     <div class="container">
       <h1><strong>Consulta online los productos</strong></h1>
       <p class="lead">Ahora podes encontrar comercios de Venado Tuerto y hacer pedidos online</p>

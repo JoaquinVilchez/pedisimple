@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Invitation;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,14 +24,14 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
+    
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
+    protected $redirectTo = '/email/verify';
+    
     /**
      * Create a new controller instance.
      *
@@ -39,6 +40,18 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function commerceRegister($token)
+    {
+        $person = Invitation::where('token', $token)->first();
+        return view('auth.register')->with('person', $person);
     }
 
     /**
@@ -66,6 +79,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {   
+        $invitation = Invitation::where('token', $data['token'])->first();
+        $invitation->update(['state'=>'used']);
+        
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -73,5 +89,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'phone' => $data['phone']
         ]);
+
+
     }
 }

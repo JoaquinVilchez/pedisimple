@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,900&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #3f3a34;
+}
+
+footer{
+    margin-top: auto;
+    background-color: #3f3a34;
+    color: white;
+    padding: 20px 0px
+}
+
+a{
+    color: #3f3a34;
+}
+
+.img-default{
+    width: 100px;
+}
+
+textarea:focus, input:focus, input[type]:focus {
+    border-color: #ffa64d;
+    box-shadow: 0 1px 1px #ffa64d inset, 0 0 8px #ffa64d;
+    outline: 0 none;
+}
+
+.txt-bold{
+    font-weight: 900;
+}
+
+.btn-primary{
+    background-color: #ffa64d;
+    border: 0px;
+    color: #3f3a34;
+}
+
+.btn-primary:hover{
+    background-color: #faad60;
+}
+
+.btn .btn-primary .disabled{
+    background-color: #ffc284;
+}
+
+.btn .active {
+    background-color: #e7913b;
+}
+
+.btn-outline-primary{
+    border: 1px solid #ff9f3f;
+    color: #3f3a34;
+}
+
+.btn-outline-primary:hover{
+    border: 1px solid #ffa64d;
+    background-color: #f0f0f0;
+    color: #3f3a34;color: #3f3a34;
+}
+
+.btn-outline-primary input[type="radio"]{
+    box-shadow: 0 0 0 0px;
+}
+
+.btn-outline-primary:active:focus{
+    box-shadow: none;
+    background-color: red;
+}
+
+.btn-outline-image{
+    border: 1px solid #f0f0f0;
+}
+
+.btn-outline-image:hover{
+    border: 1px solid #ffa64d;
+    background-color: #f0f0f0;
+}
+
+.btn-outline-image input[type="radius"]
+
+.btn-outline-image img{
+    width: 80px;
+}
+
+.btn-checkbox{
+    background-color: #e4e4e4;
+    border: 0px;
+    color: #3f3a34;
+}
+
+.btn-checkbox input[type="checkbox"] input[type="radio"], .btn-primary:focus, .btn-primary:active{
+    box-shadow: 0 0 0 0px;
+}
+
+.img-nav{
+    width: 25px;
+    border-radius: 50px;
+}
+
+.map-container{
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height:0;
+}
+
+.map-container iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}
+
+.img-card {
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+}
+
+.img-modal img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}

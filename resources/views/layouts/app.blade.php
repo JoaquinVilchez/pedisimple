@@ -10,6 +10,7 @@
     <title>{{ config('app.name') }}</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
 
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/e739f5c7c6.js" crossorigin="anonymous"></script>
@@ -18,21 +19,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">    
 
     @yield('css-scripts')
-
-    <style>
-        body{
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        footer{
-            margin-top: auto;
-            background-color: #333333;
-            color: white;
-            padding: 20px 0px
-        }
-    </style>
     
 </head>
 <body>
@@ -40,19 +26,16 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{asset('images/logo.png')}}"width="15%"  alt="">
+                <img src="{{asset('images/logo.png')}}" width="150px" alt="">
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
+                @if(Auth::user())
+                <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-nav d-inline m-1">
                 </button>
+                @endif
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -67,13 +50,18 @@
                             @endif --}}
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-nav d-inline m-1">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{Auth::user()->first_name}} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if(Auth::user()->restaurant || Auth::user()->type=='merchant')
                                     <a class="dropdown-item" href="{{route('restaurant.index')}}">Mi comercio</a>
+                                    @endif
+
+                                    @if(Auth::user()->type=='administrator')
+                                    <a class="dropdown-item" href="{{route('restaurant.admin.list')}}">Panel de administracion</a>
                                     @endif
                                     {{-- <a class="dropdown-item" href="{{route('address.index')}}">Mis direcciones</a>
                                     <a class="dropdown-item" href="{{route('order.index')}}">Mis pedidos</a> --}}
@@ -103,9 +91,9 @@
 <footer class="footer">
     <div class="container d-flex justify-content-between">
         <div class="col-xl-6">
-            <span class="d-flex p-0">Place sticky footer content here.</span>
+            <span class="d-flex p-0"></span>
         </div>
-        <div class="col-xl-6">
+        <div class="col-xl-6 col-sm-12">
             @guest
             <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
             @endguest
@@ -119,12 +107,6 @@
 
 @yield('js-scripts-carrito')
 @yield('js-scripts')
-
-{{-- <script>
-    $(document).ready(function() {
-        $(".message").delay(3000).fadeOut(1000);
-    });
-</script> --}}
 
 </body>
 </html>

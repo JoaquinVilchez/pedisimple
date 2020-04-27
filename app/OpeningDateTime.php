@@ -16,7 +16,7 @@ class OpeningDateTime extends Model
                 return "Martes";
                 break;
             case 3:
-                return "Miercoles";
+                return "Miércoles";
                 break;
             case 4:
                 return "Jueves";
@@ -25,7 +25,7 @@ class OpeningDateTime extends Model
                 return "Viernes";
                 break;
             case 6:
-                return "Sabado";
+                return "Sábado";
                 break;
             case 7:
                 return "Domingo";

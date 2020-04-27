@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderSeeder::class);
         $this->call(LineItemSeeder::class);
         $this->call(RelationRestaurantCategory::class);
+        $this->call(InvitationSeeder::class);
     }
 }

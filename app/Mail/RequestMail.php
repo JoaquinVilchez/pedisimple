@@ -15,10 +15,10 @@ class RequestMail extends Mailable
      * Create a new message instance.
      *
      * @return void
-     */
+     */ 
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -28,6 +28,8 @@ class RequestMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.request');
+        $subject = '['.env('APP_NAME').'] Tu solicitud fue enviada con éxito';
+
+        return $this->markdown('emails.request.user')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));
     }
 }

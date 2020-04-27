@@ -50,7 +50,7 @@ class CartController extends Controller
                 'associatedModel' => $product
             ));
 
-            return redirect()->back()->with('success_message', 'Agregado al carrito con exito');
+            return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
         }else{
             $firstItem = \Cart::getContent()->first();
             $product = Product::find($request->id);
@@ -64,7 +64,7 @@ class CartController extends Controller
                     'associatedModel' => $product
                 ));
 
-                return redirect()->back()->with('success_message', 'Agregado al carrito con exito');
+                return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
             }else{
                 return redirect()->back()->with('error_message', 'El producto debe ser del mismo comercio.');
             }
@@ -85,7 +85,7 @@ class CartController extends Controller
     public function empty(){
         \Cart::clearCartConditions();
         \Cart::clear();
-        return redirect()->back()->with('success_message', 'Carrito vaciado con exito');
+        return redirect()->back()->with('success_message', 'Carrito vaciado con éxito');
     }
 
     /**
@@ -157,7 +157,7 @@ class CartController extends Controller
             ),
         ));
 
-        return redirect()->back()->with('success_message', 'Cantidad editada con exito');
+        return redirect()->back()->with('success_message', 'Cantidad editada con éxito');
     }
 
     /**
@@ -169,6 +169,6 @@ class CartController extends Controller
     public function destroy($id)
     {
         \Cart::remove($id);
-        return redirect()->back()->with('success_message', 'Producto removido con exito del carrito.');
+        return redirect()->back()->with('success_message', 'Producto removido con éxito del carrito.');
     }
 }

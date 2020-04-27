@@ -38,6 +38,10 @@ class ProductController extends Controller
             'file'=>'required'
         ]);
         
+        $messages = [
+            'file.required' => 'Debes cargar un archivo para proceder con la accion.',
+        ];
+
         $file = $request->file('file');
         $items = Excel::toCollection(new ProductsImport, $file);
         $restaurant = Auth::user()->restaurant;
@@ -118,7 +122,7 @@ class ProductController extends Controller
             }
         }//endif
 
-        return redirect()->back()->with('success_message', 'Productos importados con exito');
+        return redirect()->back()->with('success_message', 'Archivo importado con éxito');
     }
 
     /**
@@ -171,8 +175,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'method' => 'required',
-            'file' => 'required'
+            'name' => 'required',
+            'price' => 'required',
+            'category_id' => 'required'
         ]);
 
         $restaurant_id = Auth::user()->restaurant->id;

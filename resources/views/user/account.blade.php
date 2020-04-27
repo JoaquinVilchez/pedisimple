@@ -2,13 +2,14 @@
 
 @section('info-content')
 
-    <h5>Mis datos <small></small></h5>
+    <h5 class="txt-bold">Mis datos</h5>
+    <hr>
 
-    <section class="userCard col-6 mb-4" id="userDataShow">
+    <section class="userCard col-xl-6 col-xs-12 mb-4" id="userDataShow">
         
-        <figure>
+        {{-- <figure>
             <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
-        </figure>
+        </figure> --}}
         
         <section>
             <h4>{{$user->fullName()}}</h4>
@@ -16,41 +17,59 @@
             <span><i class="fas fa-phone mr-2"></i>{{$user->phone}}</span>
         </section> 
         <hr>
-        
-    <a href="#" class="btn btn-outline-danger" id="editData">Editar datos</a>
+    <a href="#" class="btn btn-primary btn-block" id="editData">Editar datos</a>
     </section>
     
     <section class="userFormData col-lg-6 col-xs-12" id="userDataEdit" hidden>
         <form action="{{route('user.update', Auth::user()->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <figure>
+            {{-- <figure>
                 <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
-                <input type="file" name="image" class="form-control-file">
-            </figure>
+                <div class="form-group">
+                    <input type="file" name="image" class="form-control-file mt-4">
+                </div>
+            </figure> --}}
+
+            <label>Imágen</label>
             <div class="form-group">
-                <label>Nombre *</label>
+              <div id="image_container" ><img id="view_image" src="{{Storage::url($user->image)}}" class="img-thumbnail" width="150px"></div>
+              <div id="delete_image"><a href="#" onclick="removeImage();">Eliminar</a></div>
+            </div>
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input type="file" name="image" class="custom-file-input" onchange="readURL(this);">
+                <label class="custom-file-label" id="upload_image" for="inputGroupFile01">Seleccionar archivo</label>
+                <input type="hidden" id="img_action" name="action" value="">
+              </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre <small style="color:red">*</small></label>
                 <input type="text" class="form-control" name="first_name" value="{{$user->first_name}}">
+                {!!$errors->first('first_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
-                <label>Apellido *</label>
+                <label>Apellido <small style="color:red">*</small></label>
                 <input type="text" class="form-control" name="last_name" value="{{$user->last_name}}">
+                {!!$errors->first('last_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
-                <label>Email *</label>
+                <label>Email <small style="color:red">*</small></label>
                 <input type="email" class="form-control" name="email" value="{{$user->email}}">
+                {!!$errors->first('email', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
-                <label>Phone </label>
+                <label>Teléfono </label>
                 <input type="text" class="form-control" name="phone" value="{{$user->phone}}">
+                {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
-                <a href="#">Cambiar contraseña</a>
+                <a href="/password/reset">Cambiar contraseña</a>
             </div>
-            <small>Todos los campos son requeridos</small>
             <div class="form-group mt-2">
-                <button type="button" class="btn btn-outline-secondary" id="cancelData">Cancelar</button>
-                <button type="submit" class="btn btn-danger">Cambiar</button>
+                <button type="button" class="btn btn-secondary" id="cancelData">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Cambiar</button>
             </div>
         </form>
     </section>
@@ -73,4 +92,34 @@
     }
 
 </script>
+
+<script>
+  function readURL(input) {
+    document.getElementById('image_container').removeAttribute('hidden');
+    document.getElementById("img_action").value = "";
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $('#view_image')
+                  .attr('src', e.target.result)
+
+              document.getElementById('delete_image').removeAttribute('hidden')
+          };
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  function removeImage(){
+      document.getElementById('image_container').setAttribute('hidden', '');
+      document.getElementById('delete_image').setAttribute('hidden', '');
+      document.getElementById("upload_image").value = "";
+      document.getElementById("img_action").value = "delete";
+  }
+
+
+</script>
+
+
 @endsection
