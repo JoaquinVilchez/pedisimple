@@ -14,7 +14,8 @@
 </div>
 <div class="container container-fluid">
 @if(count($categories)==0)
-  <p>Primero debes crear una categoría antes que un producto. <br> <a href="{{route('category.create')}}">Crear categorías</a></p>
+  <p>Primero debes crear una categoría antes que un producto. <br>
+    <a class="btn btn-sm btn-secondary my-2" href="{{route('category.create')}}">Crear categorías</a></p>
 @else
   <div class="row">
       <div class="col-xl-6 col-12 my-2">

@@ -15,6 +15,10 @@
 
                     {{ __('Before proceeding, please check your email for a verification link.') }}
                     <br><br>
+
+                    <small><strong>El correo puede tardar unos minutos en llegar.</strong></small>
+
+                    <br><br>
                     {{ __('If you did not receive the email') }},
                     <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                         @csrf

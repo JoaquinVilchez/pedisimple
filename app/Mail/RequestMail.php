@@ -28,8 +28,8 @@ class RequestMail extends Mailable
      */
     public function build()
     {
-        $subject = '['.env('APP_NAME').'] Tu solicitud fue enviada con éxito';
+        $subject = 'Tu solicitud fue enviada con éxito';
 
-        return $this->markdown('emails.request.user')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));
+        return $this->markdown('emails.request.user')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

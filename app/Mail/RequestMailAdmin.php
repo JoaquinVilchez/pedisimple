@@ -30,8 +30,8 @@ class RequestMailAdmin extends Mailable
      */
     public function build()
     {
-        $subject = 'El comercio '.$data['name'].' fue creado.';
+        $subject = 'Un nuevo comercio quiere sumarse.';
 
-        return $this->markdown('emails.request.admin')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));
+        return $this->markdown('emails.request.admin')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

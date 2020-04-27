@@ -49,7 +49,7 @@
             {{-- <td><input type="checkbox"></td> --}}
             <td><img src="{{Storage::url($product->image)}}" class="img-thumbnail" width="70px" alt=""></td>
             <td>{{$product->name}}</td>
-            <td>{{$product->description}}</td>
+            <td>{{$product->details}}</td>
             <td>{{$product->category->name}}</td>
             <td>${{$product->price}}</td>
             <td><span class="{{$product->stateStyle()}}">{{$product->translateState()}}</span></td>

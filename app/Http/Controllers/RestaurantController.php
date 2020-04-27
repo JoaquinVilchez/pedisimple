@@ -119,7 +119,7 @@ class RestaurantController extends Controller
             if(Auth::user()->restaurant == null){
                 return redirect()->route('welcome');
             }else{
-                return redirect()->route('restaurant.index');
+                return redirect('/productos');
             }
         }
     }
@@ -217,11 +217,11 @@ class RestaurantController extends Controller
                 }
                 
                 $restaurant = Auth::user()->restaurant;
-
+        
         Mail::to(Auth::user()->email)->send(new newCommerce($restaurant));
         Mail::to(env('MAIL_FROM_ADDRESS'))->send(new newCommerceAdmin($restaurant));
 
-        return redirect()->route('restaurant.index');
+        return redirect()->route('product.index');
 
     }
 
@@ -337,7 +337,7 @@ class RestaurantController extends Controller
         }
         //FIN ADDRESS
 
-                        //OPTIMIZAR
+                    //OPTIMIZAR
         //FOOD CATEGORIES
         $foodCategories = DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->get();
         for ($i=0; $i < count($foodCategories); $i++){

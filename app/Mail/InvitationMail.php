@@ -33,7 +33,6 @@ class InvitationMail extends Mailable
     public function build()
     {
         $subject = '¡Hola, queremos invitarte a '.env('APP_NAME').'!';
-
-        return $this->markdown('emails.invitation')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));
+        return $this->markdown('emails.invitation')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }
