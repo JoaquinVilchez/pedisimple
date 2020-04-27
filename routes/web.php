@@ -28,6 +28,10 @@ Route::get('/comercios/solicitud', function(){
     return view('request');
 })->name('register.request');
 
+Route::get('/confirmacioncorreo', function(){
+    return view('auth.verify');
+});
+
 // Route::get('/gracias', function(){
 //     return view('thankyou');
 // })->name('thankyou')->name('thankyou');

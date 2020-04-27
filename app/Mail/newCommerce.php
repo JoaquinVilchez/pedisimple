@@ -30,7 +30,7 @@ class newCommerce extends Mailable
      */
     public function build()
     {
-        $subject = '['.env('APP_NAME').'] Tu nuevo comercio se configuró con éxito.';
-        return $this->markdown('emails.newcommerce.user')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));
+        $subject = 'Tu nuevo comercio se configuró con éxito.';
+        return $this->markdown('emails.newcommerce.user')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

@@ -37,16 +37,10 @@ class ProductController extends Controller
             'method'=>'required',
             'file'=>'required'
         ]);
-        
-        $messages = [
-            'file.required' => 'Debes cargar un archivo para proceder con la accion.',
-        ];
 
         $file = $request->file('file');
         $items = Excel::toCollection(new ProductsImport, $file);
         $restaurant = Auth::user()->restaurant;
-
-
 
         if($request->method == "update"){
             foreach($items as $item){

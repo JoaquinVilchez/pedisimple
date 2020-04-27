@@ -32,6 +32,6 @@ class newCommerceAdmin extends Mailable
     {
         $subject = 'Un nuevo comercio fue creado.';
 
-        return $this->markdown('emails.newcommerce.admin')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));
+        return $this->markdown('emails.newcommerce.admin')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

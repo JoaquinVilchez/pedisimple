@@ -86,7 +86,7 @@
                             <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
                                 <label>Tiempo aproximado de envío</label>
                                 <div class="input-group mb-3">
-                                <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}" autocomplete="flase">
+                                <input min="0" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}" autocomplete="flase">
                                     <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2" >min.</span>
                                     </div>
@@ -138,7 +138,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" id="btn_submit" class="btn btn-primary btn-block" onclick="show()">Guardar</button>
+                <button  onclick="show()" type="submit" id="btn_submit" class="btn btn-primary btn-block">Guardar</button>
             </div>
         </div>
         </form>

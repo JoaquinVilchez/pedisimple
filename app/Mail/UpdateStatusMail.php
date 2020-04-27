@@ -30,7 +30,7 @@ class UpdateStatusMail extends Mailable
      */
     public function build()
     {
-        $subject = '['.env('APP_NAME').'] Tu comercio fue activado.';
-        return $this->markdown('emails.updateStatus')->subject($subject)->from(env('MAIL_FROM_ADDRESS'));;
+        $subject = 'Felicitaciones, tu comercio fue activado.';
+        return $this->markdown('emails.updateStatus')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

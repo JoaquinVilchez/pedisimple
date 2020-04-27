@@ -69,7 +69,7 @@
             </div>
             <div class="form-group mt-2">
                 <button type="button" class="btn btn-secondary" id="cancelData">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Cambiar</button>
+                <button type="submit" class="btn btn-primary">Confirmar</button>
             </div>
         </form>
     </section>
