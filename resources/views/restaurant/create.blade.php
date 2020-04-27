@@ -11,7 +11,7 @@
         </div>
 
     <div class="row mt-2 justify-content-center">
-        <div class="col-xl-6 mt-2">
+        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 mt-2">
                 <div class="mb-4" style="text-align:center">
                     <small style="color:red">Los campos que tienen * son obligatorios</small>
                 </div>
@@ -23,17 +23,17 @@
                 <hr class="my-2">
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
                             <label>Dirección <small style="color:red">*</small></label>
                             <input type="text" class="form-control" name="street" value="{{old('street')}}" autocomplete="flase">
                             
                         </div>
-                        <div class="col-2">
+                        <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-4">
                             <label>Número<small style="color:red">*</small></label>
                             <input type="text" class="form-control" name="number" value="{{old('number')}}" autocomplete="flase">
                             {{-- {!!$errors->first('number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!} --}}
                         </div>
-                        <div class="col-4">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                             <label>Ciudad <small style="color:red">*</small></label>
                             <select class="form-control" name="city_id">
                                 @foreach ($cities as $city)
@@ -45,9 +45,13 @@
                     {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
                 <hr class="my-2">
-                <div class="form-group col-4 pl-0">
-                    <label>Teléfono <small style="color:red">*</small></label>
-                    <input type="text" class="form-control" name="phone" value="{{old('phone')}}" autocomplete="flase">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
+                            <label>Teléfono <small style="color:red">*</small></label>
+                            <input type="text" class="form-control" name="phone" value="{{old('phone')}}" autocomplete="flase">
+                        </div>
+                    </div>
                 </div>
                 {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 <hr class="my-2">
@@ -56,54 +60,60 @@
                     <textarea class="form-control" rows="3" name="description" value="{{old('description')}}" autocomplete="flase">{{old('description')}}</textarea>
                 </div>
                 <hr class="my-2">
-                <div class="form-group col-6 pl-0">
-                    <label>Retiro o delivery <small style="color:red">*</small></label>
-                    <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()" autocomplete="flase">                    
-                        <option value="delivery-pickup" {{old('shipping_method') == 'delivery-pickup' ? 'selected' : ''}}>Delivery y Retiro en local</option>
-                        <option value="delivery" {{old('shipping_method') == 'delivery' ? 'selected' : ''}}>Delivery</option>
-                        <option value="pickup" {{old('shipping_method') == 'pickup' ? 'selected' : ''}}>Retiro en local</option>
-                    </select>
-
-                    <div class="row mt-2 ml-1" id="delivery_options">
-                        <label>Costo de envío <small style="color:red">*</small></label>
-                        <div class="input-group mb-3 col-8">
-                            <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">$</span>
+                <div class="form-group pl-0">
+                    <div class="col-xl-6 col-lg-8 col-md-8 col-sm-12 col-12">
+                        <label>Retiro o delivery <small style="color:red">*</small></label>
+                        <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()" autocomplete="flase">                    
+                            <option value="delivery-pickup" {{old('shipping_method') == 'delivery-pickup' ? 'selected' : ''}}>Delivery y Retiro en local</option>
+                            <option value="delivery" {{old('shipping_method') == 'delivery' ? 'selected' : ''}}>Delivery</option>
+                            <option value="pickup" {{old('shipping_method') == 'pickup' ? 'selected' : ''}}>Retiro en local</option>
+                        </select>
+                    </div>
+                    <div id="delivery_options">
+                        <div class="row mt-2 ml-1">
+                            <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
+                                <label>Costo de envío <small style="color:red">*</small></label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">$</span>
+                                    </div>
+                                    <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}" autocomplete="flase">
+                                </div>
                             </div>
-                            <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}" autocomplete="flase">
+                            {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
-                        {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-
-                        <label>Tiempo aproximado de envío</label>
-                        <div class="input-group mb-3 col-8">
-                        <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}" autocomplete="flase">
-                            <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2" >min.</span>
+                        <div class="row mt-2 ml-1">
+                            <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
+                                <label>Tiempo aproximado de envío</label>
+                                <div class="input-group mb-3">
+                                <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time')}}" autocomplete="flase">
+                                    <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2" >min.</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr class="my-2">
-                <div class="form-group" id="foto">
-                    <label>Foto</label>
-                    <div class="row">
-                        <div class="col-xl-4">
-                        <div class="form-group">
-                            <div id="image_container" hidden>
-                                <img id="view_image" src="" class="img-thumbnail" width="150px">
-                                <div id="delete_image"><a href="#foto" onclick="removeImage();">Eliminar</a></div>
+                <div class="form-group" id="foto">  
+                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
+                            <label>Foto</label>
+                            <div class="row mt-2 ml-1">
+                                    <div id="image_container" hidden>
+                                        <img id="view_image" src="" class="img-thumbnail" width="150px">
+                                        <div id="delete_image"><a href="#foto" onclick="removeImage();">Eliminar</a></div>
+                                    </div>
+                                    {{-- <img src="" class="img-thumbnail" width="150px"> --}}
                             </div>
-                            {{-- <img src="" class="img-thumbnail" width="150px"> --}}
-                        </div>
-                        </div>
-                        <div class="col-xl-6 d-flex align-items-center">
-                            <div class="form-group">
+                            <div class="row mt-2 ml-1">
                                 <label for="exampleFormControlFile1">Buscar imágen</label>
                                 <input type="file" id="upload_image"  onchange="readURL(this);" name="image" class="form-control-file" id="exampleFormControlFile1">
                             </div>
                         </div>
-                    </div>
-                    <small>En caso de no seleccionar una foto, se le asignará una por defecto.</small>
+                        <div class="row mt-2 ml-1">
+                            <small>En caso de no seleccionar una foto, se le asignará una por defecto.</small>
+                        </div>
                 </div>
             <div class="form-group">
                 <label>Comidas <small style="color:red">*</small></label>
@@ -122,9 +132,13 @@
                 <br>{!!$errors->first('food_categories', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
             </div>
+            
+            <div id="alert_info" class="alert alert-danger" role="alert" hidden>
+                Espere mientras guardamos sus datos...
+            </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+                <button type="submit" id="btn_submit" class="btn btn-primary btn-block" onclick="show()">Guardar</button>
             </div>
         </div>
         </form>
@@ -167,6 +181,10 @@
             document.getElementById('delete_image').setAttribute('hidden', '');
             document.getElementById("upload_image").value = "";
             document.getElementById("img_action").value = "delete";
+        }
+
+        function show(){
+            document.getElementById('alert_info').removeAttribute('hidden')
         }
     </script>
 @endsection

@@ -46,6 +46,7 @@ textarea:focus, input:focus, input[type]:focus {
     background-color: #faad60;
 }
 
+
 .btn .btn-primary .disabled{
     background-color: #ffc284;
 }
@@ -63,6 +64,10 @@ textarea:focus, input:focus, input[type]:focus {
     border: 1px solid #ffa64d;
     background-color: #f0f0f0;
     color: #3f3a34;color: #3f3a34;
+}
+
+.btn-outline-primary:{
+    background-color: red;
 }
 
 .btn-outline-primary input[type="radio"]{
