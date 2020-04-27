@@ -12,7 +12,34 @@ class RestaurantCategorySeeder extends Seeder
      */
     public function run()
     {
-        $categories = array('Empanadas', 'Pizzas', 'Ensaladas', 'Hamburguesas', 'Helados', 'Lomitos', 'Menu del dia', 'Milanesas', 'Papas Fritas', 'Parrilla', 'Pastas', 'Pescados y Mariscos', 'Picadas', 'Pollo', 'Postres', 'Sandwiches');
+        $categories = array(
+            'Bebidas',
+            'Comida Vegetariana',
+            'Carnes',
+            'Celíacos',
+            'Desayunos',
+            'Dulce',
+            'Empanadas',
+            'Ensaladas',
+            'Hamburguesas',
+            'Helados',
+            'Lomitos',
+            'Menú del día',
+            'Meriendas',
+            'Milanesas',
+            'Papas fritas',
+            'Parrilla',
+            'Pastas',
+            'Pescados',
+            'Picadas',
+            'Pizzas',
+            'Pollo',
+            'Postres',
+            'Sandwiches',
+            'Sushi',
+            'Tartas',
+            'Woks'
+        );
         
         for ($i=0; $i < count($categories); $i++) { 
             RestaurantCategory::create([

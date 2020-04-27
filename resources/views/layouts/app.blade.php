@@ -61,7 +61,7 @@
                                     @endif
 
                                     @if(Auth::user()->type=='administrator')
-                                    <a class="dropdown-item" href="{{route('restaurant.admin.list')}}">Panel de administracion</a>
+                                    <a class="dropdown-item" href="{{route('restaurant.admin.list')}}">Panel de administración</a>
                                     @endif
                                     {{-- <a class="dropdown-item" href="{{route('address.index')}}">Mis direcciones</a>
                                     <a class="dropdown-item" href="{{route('order.index')}}">Mis pedidos</a> --}}

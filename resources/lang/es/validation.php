@@ -170,4 +170,8 @@ return [
         'image' => 'imágen'
     ],
 
+    'email-confirmation' => [
+        'outro' => 'If you did not request a password reset, no further action is required.',
+    ]
+
 ];
