@@ -87,7 +87,7 @@ class UserController extends Controller
 
             $file = $request->file('image');
 
-            $path = $file->hashName('public');
+            $path = $file->hashName('');
 
             $image = Image::make($file)->encode('jpg', 75);
             
@@ -103,7 +103,6 @@ class UserController extends Controller
             $user->image = $path;         
         }
 
-        $user->image = $path;
         $user->update($request->only('first_name','last_name','email','phone'));
 
         return redirect(route('user.index'))->with('success_message', 'Datos editados con éxito');

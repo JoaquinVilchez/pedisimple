@@ -24,7 +24,7 @@
             {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
               <div class="form-group">
                 <label >Detalles</label>
-                <textarea class="form-control" name="details" rows="3" value="{{old('description', $product->details)}}"></textarea>
+              <textarea class="form-control" name="details" rows="3" value="{{old('details', $product->details)}}">{{$product->details}}</textarea>
               </div>
           </div>
         </div>
