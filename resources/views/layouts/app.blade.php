@@ -14,9 +14,6 @@
 
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/e739f5c7c6.js" crossorigin="anonymous"></script>
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">    
 
     @yield('css-scripts')
     
@@ -31,7 +28,7 @@
                 </a>
                 @if(Auth::user())
                 <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-nav d-inline m-1">
+                    <img width="150px" src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1">
                 </button>
                 @endif
 
@@ -50,7 +47,7 @@
                             @endif --}}
                         @else
                             <li class="nav-item dropdown">
-                                <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-nav d-inline m-1">
+                                <img width="150px" src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{Auth::user()->first_name}} <span class="caret"></span>
                                 </a>

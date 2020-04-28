@@ -47,7 +47,7 @@
           @foreach($products as $product)
           <tr>
             {{-- <td><input type="checkbox"></td> --}}
-            <td><img src="{{Storage::url($product->image)}}" class="img-thumbnail" width="70px" alt=""></td>
+            <td><img src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" width="70px" alt=""></td>
             <td>{{$product->name}}</td>
             <td>{{$product->details}}</td>
             <td>{{$product->category->name}}</td>

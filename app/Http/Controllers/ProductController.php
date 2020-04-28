@@ -178,17 +178,20 @@ class ProductController extends Controller
 
         if($request->hasFile('image')){
 
+            $old_image = $product->image;
+
             $file = $request->file('image');
 
-            $path = $file->hashName('public');
+            $path = $file->hashName();
 
             $image = Image::make($file)->encode('jpg', 75);
             
-            $image->fit(250, 250, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            Storage::put($path, (string) $image->encode());       
+            if($old_image != 'no_image.png'){
+                $path_old_image = public_path('images/uploads/products/'.$old_image);
+                    unlink($path_old_image);
+            }    
+            
+            $image->save(public_path('images/uploads/products/'.$path));               
 
             Product::create([
                 'name' => $request->name,
@@ -268,24 +271,22 @@ class ProductController extends Controller
 
             $file = $request->file('image');
 
-            $path = $file->hashName('public');
+            $path = $file->hashName();
 
             $image = Image::make($file)->encode('jpg', 75);
             
-            // $image->fit(250, 250, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
+            if($old_image != 'no_image.png'){
+                $path_old_image = public_path('images/uploads/products/'.$old_image);
+                    unlink($path_old_image);
+            }    
 
-            if($old_image != 'public/no_image.png'){
-                Storage::delete($old_image);
-            }
-            Storage::put($path, (string) $image->encode());
+            $image->save(public_path('images/uploads/products/'.$path));         
 
             $product->update(['image'=>$path]);  
         }
 
         if($request->action==='delete'){
-            $product->update(['image'=>'public/no_image.png']); 
+            $product->update(['image'=>'no_image.png']); 
         }
 
         $product->update($data);

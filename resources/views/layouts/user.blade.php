@@ -12,7 +12,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-2" style="text-align:center">
-            <img src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
+            <img src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-thumbnail">
             <div class="d-flex justify-content-center mb-2">
                 <span class="mt-2"><strong>{{Auth::user()->first_name}}</strong></span>
             </div>

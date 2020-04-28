@@ -173,16 +173,16 @@ class RestaurantController extends Controller
 
             $file = $request->file('image');
 
-            $path = $file->hashName('public');
+            $path = $file->hashName();
 
             $image = Image::make($file)->encode('jpg', 75);
-
-            Storage::put($path, (string) $image->encode());
+            
+            $image->save(public_path('images/uploads/commerce/'.$path));         
 
             $data['image'] = $path;
-            
+
         }else{
-            $data['image'] = 'public/commerce.png';
+            $data['image'] = 'commerce.png';
         }
 
         Restaurant::create([
@@ -298,22 +298,21 @@ class RestaurantController extends Controller
 
         //IMAGE
         if($request->hasFile('image')){
+
             $old_image = $restaurant->image;
 
             $file = $request->file('image');
 
-            $path = $file->hashName('public');
+            $path = $file->hashName();
 
             $image = Image::make($file)->encode('jpg', 75);
             
-            $image->fit(250, 250, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            if($old_image != 'public/commerce.png'){
-                Storage::delete($old_image);
-            }
-            Storage::put($path, (string) $image->encode());
+            if($old_image != 'commerce.png'){
+                $path_old_image = public_path('images/uploads/commerce/'.$old_image);
+                    unlink($path_old_image);
+            }    
+            
+            $image->save(public_path('images/uploads/commerce/'.$path));         
 
             $restaurant->update(['image'=>$path]);  
         }

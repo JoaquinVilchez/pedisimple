@@ -72,7 +72,7 @@
               </div>
             <label>Imágen</label>
               <div class="form-group">
-                <div id="image_container" ><img id="view_image" src="{{Storage::url($product->image)}}" class="img-thumbnail" width="150px"></div>
+                <div id="image_container" ><img id="view_image" src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" width="150px"></div>
                 <div id="delete_image"><a href="#" onclick="removeImage();">Eliminar</a></div>
               </div>
               <div class="input-group mb-3">

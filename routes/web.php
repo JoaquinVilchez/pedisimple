@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Exports\UsersExport;
 use App\User;
 
@@ -14,6 +15,10 @@ use App\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/storage-link', function(){
+    Artisan::call('storage:link');
+});
+
 Auth::routes(['verify' => true]);
 Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
 // Route::resource('register', 'Auth\RegisterController')->names('commerce.register')->middleware('Invitation');

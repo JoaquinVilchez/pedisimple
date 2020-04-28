@@ -13,7 +13,7 @@
     <nav class="col-xl-2 bg-light sidebar ">      
       <div class="sidebar-sticky">
         <div style="text-align:center">
-          <img width="100px" src="{{Storage::url(Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
+          <img width="100px" src="{{asset('images/uploads/commerce/'.Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
           <h6>{{Auth::user()->restaurant->name}}</h6>
           @if(Auth::user()->restaurant->state=='active')
             @if(count(Auth::user()->restaurant->products)==0)

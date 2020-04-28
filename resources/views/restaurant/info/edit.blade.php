@@ -87,7 +87,7 @@
                 <div class="row">
                     <div class="col-xl-4">
                     <div class="form-group">
-                        <img src="{{Storage::url($restaurant->image)}}" class="img-thumbnail" width="150px">
+                        <img src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px">
                     </div>
                     </div>
                     <div class="col-xl-6 d-flex align-items-center">

@@ -35,7 +35,7 @@
         <div class="container text-white d-flex align-items-end col-lg-8">
             <div class="row d-flex align-items-end">
                 <figure>
-                    <img class="border m-1" width="110px" src="{{Storage::url($restaurant->image)}}" alt="">
+                    <img class="border m-1" width="110px" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                 </figure>
                 <section class="ml-3 mb-3">
                     <div class="title"><h3><strong>{{$restaurant->name}}</strong></h3></div>
@@ -131,7 +131,7 @@
                             <div class="card p-2 m-1">
                                 <div class="row">
                                     <div class="col-4 pr-0">
-                                    <img class="d-block border m-1 img-card" src="{{Storage::url($product->image)}}" alt="">
+                                    <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
                                     </div>
                                     <div class="col-8 pl-0">
                                     <div class="card-block mt-2">
@@ -143,7 +143,7 @@
                                             data-productid="{{$product->id}}" 
                                             data-productname="{{$product->name}}" 
                                             data-productprice="{{$product->price}}" 
-                                            data-productimage="{{Storage::url($product->image)}}" 
+                                            data-productimage={{asset('images/uploads/products/'.$product->image)}}" 
                                             
                                             data-toggle="modal" data-target="#addItemModal">
                                             <i class="fas fa-plus-circle"></i></a>
