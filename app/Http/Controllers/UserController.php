@@ -83,6 +83,31 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         
         if($request->hasFile('image')){
+
+            $old_image = $user->image;
+
+            $file = $request->file('image');
+
+            $path = $file->hashName();
+
+            $image = Image::make($file)->encode('jpg', 75);
+            
+            $image->fit(250, 250, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            
+            if($old_image != 'user.png'){
+                $path_old_image = public_path('images/uploads/user/'.$old_image);
+                    unlink($path_old_image);
+            }    
+            
+            $image->save(public_path('images/uploads/user/'.$path));         
+
+            $user->update(['image'=>$path]);  
+        }
+
+
+        if($request->hasFile('image')){
             $old_image = $user->image;
 
             $file = $request->file('image');

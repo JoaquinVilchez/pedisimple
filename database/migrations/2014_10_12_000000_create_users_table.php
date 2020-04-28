@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('type')->default('merchant');
             $table->string('state')->default('new');
-            $table->string('image')->default('public/user.png');
+            $table->string('image')->default('user.png');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
                 $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedBigInteger('restaurant_id');
                 $table->foreign('restaurant_id')->references('id')->on('restaurants');
-            $table->string('image')->default('public/no_image.png');
+            $table->string('image')->default('no_image.png');
             $table->timestamps();
         });
     }

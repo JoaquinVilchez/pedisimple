@@ -7,10 +7,6 @@
 
     <section class="userCard col-xl-6 col-xs-12 mb-4" id="userDataShow">
         
-        {{-- <figure>
-            <img width="150px" src="{{Storage::url(Auth::user()->image)}}" class="img-thumbnail">
-        </figure> --}}
-        
         <section>
             <h4>{{$user->fullName()}}</h4>
             <span><i class="fas fa-envelope mr-2"></i>{{$user->email}}</span><br>
@@ -33,7 +29,7 @@
 
             <label>Imágen</label>
             <div class="form-group">
-              <div id="image_container" ><img id="view_image" src="{{Storage::url($user->image)}}" class="img-thumbnail" width="150px"></div>
+              <div id="image_container" ><img id="view_image" src="{{asset('images/uploads/user/'.$user->image)}}" class="img-thumbnail" width="150px"></div>
               <div id="delete_image"><a href="#" onclick="removeImage();">Eliminar</a></div>
             </div>
             <div class="input-group mb-3">
