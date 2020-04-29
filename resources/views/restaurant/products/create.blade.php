@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
               <label for="exampleFormControlTextarea1">Detalles</label>
-              <textarea class="form-control" name="details" id="exampleFormControlTextarea1" rows="3"></textarea>
+              <textarea class="form-control" name="details" id="exampleFormControlTextarea1" rows="3" value={{old('name')}}>{{old('name')}}</textarea>
               <small class="form-text text-muted">Este campo es opcional</small>
             </div>
           </div>

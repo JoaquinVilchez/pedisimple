@@ -97,11 +97,11 @@ class UserController extends Controller
             });
             
             if($old_image != 'user.png'){
-                $path_old_image = public_path('images/uploads/user/'.$old_image);
+                $path_old_image = 'images/uploads/user/'.$old_image;
                     unlink($path_old_image);
             }    
             
-            $image->save(public_path('images/uploads/user/'.$path));         
+            $image->save('images/uploads/user/'.$path);         
 
             $user->update(['image'=>$path]);  
         }
