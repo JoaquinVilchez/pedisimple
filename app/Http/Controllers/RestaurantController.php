@@ -177,7 +177,7 @@ class RestaurantController extends Controller
 
             $image = Image::make($file)->encode('jpg', 75);
             
-            $image->save(public_path('images/uploads/commerce/'.$path));         
+            $image->save('images/uploads/commerce/'.$path);         
 
             $data['image'] = $path;
 
@@ -308,11 +308,11 @@ class RestaurantController extends Controller
             $image = Image::make($file)->encode('jpg', 75);
             
             if($old_image != 'commerce.png'){
-                $path_old_image = public_path('images/uploads/commerce/'.$old_image);
+                $path_old_image = 'images/uploads/commerce/'.$old_image;
                     unlink($path_old_image);
             }    
             
-            $image->save(public_path('images/uploads/commerce/'.$path));         
+            $image->save('images/uploads/commerce/'.$path);         
 
             $restaurant->update(['image'=>$path]);  
         }

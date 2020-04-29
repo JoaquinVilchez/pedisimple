@@ -120,12 +120,12 @@
         <form action="{{route('product.import.excel')}}" method="post" enctype="multipart/form-data">
           @csrf
           <h6>Seleccione una opcion: </h6>
+          <div id="export_info" class="mb-3"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}" style="color:#4280C7">Descargue su archivo de productos</a> y actualice la información.</span></div>
           <div class="form-group">
               <label class="btn btn-outline-primary">
                 <input class="mr-1" type="radio" value="update" id="method_1" name="method"><strong>Agregue nuevos productos y actualice los existentes</strong>
                 <p class="m-0"><small>Los productos existentes serán revisados, no eliminados.</small></p>
               </label>
-            <div id="export_info" class="mb-3"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}">Descargue su archivo de productos</a> y actualice la información.</span></div>
 
               <hr>
               <label class="btn btn-outline-primary mw-100" style="width: 466px">

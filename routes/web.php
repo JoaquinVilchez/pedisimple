@@ -27,7 +27,7 @@ Route::get('/', 'RestaurantController@index')->name('home')->middleware('auth');
 
 Route::get('/bienvenido',function(){
     return view('auth.welcome');
-})->name('welcome');
+})->name('welcome')->middleware(['auth','verified']);
 
 Route::get('/comercios/solicitud', function(){
     return view('request');
@@ -55,15 +55,15 @@ Route::resource('/carrito', 'CartController')->names('cart');
 
 // Route::resource('/pedidos', 'OrderController')->names('order');
 
-Route::resource('/datos', 'UserController')->names('user')->middleware(['verified']);
+Route::resource('/datos', 'UserController')->names('user')->middleware(['auth', 'verified']);
 
-Route::post('/administracion/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['verified', 'Admin']);
-Route::resource('/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['verified', 'Admin']);
+Route::post('/administracion/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth','verified', 'Admin']);
+Route::resource('/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth','verified', 'Admin']);
 
 Route::resource('/comercios', 'ListController')->names('list');
 
-Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['verified', 'Admin']);
-Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['verified', 'Admin']);
+Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
+Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
 
 Route::post('/comercios/solicitud', 'RestaurantController@request')->name('restaurant.request');
 Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
@@ -75,28 +75,28 @@ Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restauran
 
 
 //PRODUCTOS
-Route::get('/producto/export-excel', 'ProductController@exportExcel')->name('product.export.excel')->middleware('verified');
-Route::post('/producto/import-excel', 'ProductController@importExcel')->name('product.import.excel')->middleware('verified');
-Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware('verified');
+Route::get('/producto/export-excel', 'ProductController@exportExcel')->name('product.export.excel')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/producto/import-excel', 'ProductController@importExcel')->name('product.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
 
-Route::get('/productos', 'ProductController@index')->name('product.index')->middleware('verified');
-Route::get('/productos/create', 'ProductController@create')->name('product.create')->middleware('verified');
-Route::post('/productos', 'ProductController@store')->name('product.store')->middleware('verified');
-Route::get('/productos/{producto}', 'ProductController@edit')->name('product.edit')->middleware('verified');
-Route::put('/productos/{producto}', 'ProductController@update')->name('product.update')->middleware('verified');
-Route::delete('/productos', 'ProductController@destroy')->name('product.destroy')->middleware('verified');
+Route::get('/productos', 'ProductController@index')->name('product.index')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/productos/create', 'ProductController@create')->name('product.create')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/productos', 'ProductController@store')->name('product.store')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/productos/{producto}', 'ProductController@edit')->name('product.edit')->middleware(['auth','verified', 'hasRestaurant']);
+Route::put('/productos/{producto}', 'ProductController@update')->name('product.update')->middleware(['auth','verified', 'hasRestaurant']);
+Route::delete('/productos', 'ProductController@destroy')->name('product.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
 //CATEGORIAS
-Route::get('/categoria/export-excel', 'CategoryController@exportExcel')->name('category.export.excel')->middleware('verified');
-Route::post('/categoria/import-excel', 'CategoryController@importExcel')->name('category.import.excel')->middleware('verified');
-Route::post('/categoria/{id}', 'CategoryController@isAvailable')->name('category.available')->middleware('verified');
+Route::get('/categoria/export-excel', 'CategoryController@exportExcel')->name('category.export.excel')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/categoria/import-excel', 'CategoryController@importExcel')->name('category.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/categoria/{id}', 'CategoryController@isAvailable')->name('category.available')->middleware(['auth','verified', 'hasRestaurant']);
 
-Route::get('/categorias', 'CategoryController@index')->name('category.index')->middleware('verified');
-Route::get('/categorias/create', 'CategoryController@create')->name('category.create')->middleware('verified');
-Route::post('/categorias', 'CategoryController@store')->name('category.store')->middleware('verified');
-Route::get('/categorias/{categoria}', 'CategoryController@edit')->name('category.edit')->middleware('verified');
-Route::put('/categorias/{categoria}', 'CategoryController@update')->name('category.update')->middleware('verified');
-Route::delete('/categorias', 'CategoryController@destroy')->name('category.destroy')->middleware('verified');
+Route::get('/categorias', 'CategoryController@index')->name('category.index')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/categorias/create', 'CategoryController@create')->name('category.create')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/categorias', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/categorias/{categoria}', 'CategoryController@edit')->name('category.edit')->middleware(['auth','verified', 'hasRestaurant']);
+Route::put('/categorias/{categoria}', 'CategoryController@update')->name('category.update')->middleware(['auth','verified', 'hasRestaurant']);
+Route::delete('/categorias', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
 // Route::resource('/categorias', 'CategoryController')->names('category')->middleware('verified');
 

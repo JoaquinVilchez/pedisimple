@@ -178,20 +178,13 @@ class ProductController extends Controller
 
         if($request->hasFile('image')){
 
-            $old_image = $product->image;
-
             $file = $request->file('image');
 
             $path = $file->hashName();
 
             $image = Image::make($file)->encode('jpg', 75);
             
-            if($old_image != 'no_image.png'){
-                $path_old_image = public_path('images/uploads/products/'.$old_image);
-                    unlink($path_old_image);
-            }    
-            
-            $image->save(public_path('images/uploads/products/'.$path));               
+            $image->save('images/uploads/products/'.$path);               
 
             Product::create([
                 'name' => $request->name,
@@ -276,11 +269,11 @@ class ProductController extends Controller
             $image = Image::make($file)->encode('jpg', 75);
             
             if($old_image != 'no_image.png'){
-                $path_old_image = public_path('images/uploads/products/'.$old_image);
+                $path_old_image = 'images/uploads/products/'.$old_image;
                     unlink($path_old_image);
             }    
 
-            $image->save(public_path('images/uploads/products/'.$path));         
+            $image->save('images/uploads/products/'.$path);         
 
             $product->update(['image'=>$path]);  
         }

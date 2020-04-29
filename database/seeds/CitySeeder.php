@@ -17,11 +17,5 @@ class CitySeeder extends Seeder
             'name' => 'Venado Tuerto',
             'province_id' => 1
         ]);
-
-        City::create([
-            'zip_code' => '6100',
-            'name' => 'Rufino',
-            'province_id' => 1
-        ]);
     }
 }

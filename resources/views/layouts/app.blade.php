@@ -104,6 +104,7 @@
 
 @yield('js-scripts-carrito')
 @yield('js-scripts')
+@yield('messages-script')
 
 </body>
 </html>

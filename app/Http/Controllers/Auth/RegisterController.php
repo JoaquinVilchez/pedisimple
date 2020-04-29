@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -9,6 +10,8 @@ use App\Invitation;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -54,6 +57,18 @@ class RegisterController extends Controller
         return view('auth.register')->with('person', $person);
     }
 
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+    
+        event(new Registered($user = $this->create($request->all())));
+    
+        // $this->guard()->login($user);
+    
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -82,7 +97,7 @@ class RegisterController extends Controller
         $invitation = Invitation::where('token', $data['token'])->first();
         $invitation->update(['state'=>'used']);
         
-        return User::create([
+        $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
@@ -90,6 +105,6 @@ class RegisterController extends Controller
             'phone' => $data['phone']
         ]);
 
-
+        return $user;
     }
 }
