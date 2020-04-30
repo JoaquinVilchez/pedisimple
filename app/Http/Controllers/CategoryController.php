@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;   
+use Illuminate\Support\Facades\Auth;
 use App\Category;
+use App\Product;
 
 class CategoryController extends Controller
 {
@@ -123,8 +124,14 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::findOrFail($request->categoryid);
+        $products = Product::where('category_id', $category->id)->get();
+        if($products!=null){
+            foreach($products as $product){
+                $product->delete();
+            }
+        }
         $category->delete();
-        return redirect(route('category.index'))->with('success_message', 'Categoria eliminada con éxito');
+        return redirect()->route('category.index')->with('success_message', 'Categoria eliminada con éxito');
     }
 }

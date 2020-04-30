@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Darryldecode\Cart\Cart;
-use Auth;
 use Carbon\Carbon;
 use App\Order;
 use Illuminate\Support\Facades\DB;

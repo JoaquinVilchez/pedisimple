@@ -113,7 +113,8 @@
                     @else
                     <div class="list-group mb-3">
                         <h6>No tienes productos en tu pedido</h6>
-                        <a href="{{route('list.index')}}" class="btn btn-primary disabled">Ver comercios</a>
+                        <a href="#" class="btn btn-primary disabled">Ver comercios</a>
+                        {{-- <a href="{{route('list.index')}}" class="btn btn-primary disabled">Ver comercios</a> --}}
                     </div>
                     @endif
             </div>

@@ -2,11 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Darryldecode\Cart\Cart;
 use App\Product;
 use App\Restaurant;
 use Carbon\Carbon;
-use Auth;
 
 class CartController extends Controller
 {

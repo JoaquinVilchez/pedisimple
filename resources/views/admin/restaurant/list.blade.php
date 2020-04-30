@@ -40,7 +40,7 @@
               </select>
               <span class="{{$restaurant->stateStyle()}}">{{$restaurant->translateState()}}</span></td>
             </form>       
-              <td>{{$restaurant->created_at}}</td>
+              <td>{{$restaurant->created_at->calendar()}}</td>
             <td><a data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#resendInvitationModal" href="#">Eliminar</a></td>
           </tr>
           @endforeach

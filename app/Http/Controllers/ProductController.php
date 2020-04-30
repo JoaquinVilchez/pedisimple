@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\RestaurantCategory;
 use App\Category;
@@ -297,5 +297,14 @@ class ProductController extends Controller
         $product = Product::findOrFail($request->productid);
         $product->delete();
         return redirect(route('product.index'))->with('success_message', 'Producto eliminado con éxito');
+    }
+
+    public function destroyAll()
+    {
+        $products = Product::all();
+        foreach($products as $product){
+            $product->delete();
+        }
+        return redirect(route('product.index'))->with('success_message', 'Productos eliminados con éxito');
     }
 }

@@ -66,7 +66,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
               </div>
-              <input type="text" name="price" class="form-control" value="{{old('price')}}">
+              <input type="number" name="price" class="form-control" value="{{old('price')}}">
               {!!$errors->first('price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">

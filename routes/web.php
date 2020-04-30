@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Exports\UsersExport;
 use App\User;
 
@@ -15,9 +14,6 @@ use App\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/storage-link', function(){
-    Artisan::call('storage:link');
-});
 
 Auth::routes(['verify' => true]);
 Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
@@ -60,7 +56,7 @@ Route::resource('/datos', 'UserController')->names('user')->middleware(['auth', 
 Route::post('/administracion/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth','verified', 'Admin']);
 Route::resource('/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth','verified', 'Admin']);
 
-Route::resource('/comercios', 'ListController')->names('list');
+// Route::resource('/comercios', 'ListController')->names('list');
 
 Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
 Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
@@ -85,6 +81,7 @@ Route::post('/productos', 'ProductController@store')->name('product.store')->mid
 Route::get('/productos/{producto}', 'ProductController@edit')->name('product.edit')->middleware(['auth','verified', 'hasRestaurant']);
 Route::put('/productos/{producto}', 'ProductController@update')->name('product.update')->middleware(['auth','verified', 'hasRestaurant']);
 Route::delete('/productos', 'ProductController@destroy')->name('product.destroy')->middleware(['auth','verified', 'hasRestaurant']);
+Route::delete('/productos/delete-all', 'ProductController@destroyAll')->name('product.destroyAll')->middleware(['auth','verified', 'hasRestaurant']);
 
 //CATEGORIAS
 Route::get('/categoria/export-excel', 'CategoryController@exportExcel')->name('category.export.excel')->middleware(['auth','verified', 'hasRestaurant']);
@@ -96,7 +93,7 @@ Route::get('/categorias/create', 'CategoryController@create')->name('category.cr
 Route::post('/categorias', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/categorias/{categoria}', 'CategoryController@edit')->name('category.edit')->middleware(['auth','verified', 'hasRestaurant']);
 Route::put('/categorias/{categoria}', 'CategoryController@update')->name('category.update')->middleware(['auth','verified', 'hasRestaurant']);
-Route::delete('/categorias', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/categorias/borrar', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
 // Route::resource('/categorias', 'CategoryController')->names('category')->middleware('verified');
 

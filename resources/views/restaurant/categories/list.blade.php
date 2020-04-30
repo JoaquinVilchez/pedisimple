@@ -25,7 +25,7 @@
           <th>Descripción</th>
           <th>Estado</th>
           <th>Categoría no disponible</th>
-          <th>Ultima actualizacion</th>
+          <th>Ultima actualización</th>
           <th></th>
         </tr>
       </thead>
@@ -69,22 +69,30 @@
       </button>
       </div>
           <form action="{{route('category.destroy')}}" method="POST">
-              @method('delete')
               @csrf
 
-      <div class="modal-body">
-              <h5>¿Estás seguro de eliminar esta categoría?</h5>  
-              <input type="hidden" id="categoryid" name="categoryid" value="">
-      </div>
+          <div class="modal-body">
+                  <div style="text-align:center">
+                      <img src="{{asset('images/design/alarm.svg')}}" width="70px" class="my-2" alt="">
+                      <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
+                      <hr>
+                      <h5>¿Estás seguro de eliminar esta categoría?</h5>
+                      <p>Si eliminas esta categoría se eliminarán todos los productos que estén relacionados a la categoría.</p>  
+                      <p>Los cambios serán permanentes.<br>
+                        ¿Estás seguro de realizar esta acción?</p>  
+                  </div>
+                  <input type="hidden" id="categoryid" name="categoryid" value="">
+          </div>
       <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-danger">Eliminar</button>
+              <button type="submit" class="btn btn-danger">Si, estoy seguro</button>
           </form>
       </div>
   </div>
   </div>
 </div>
 @endif
+
 
 
 @endsection

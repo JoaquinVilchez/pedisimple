@@ -9,8 +9,12 @@
         Acciones
       </button>
       <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importExcelModal" >Importar</a>
-        <a class="dropdown-item" href="{{route('product.export.excel')}}">Exportar</a>
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importExcelModal">Importar</a>
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exportExcelModal">Exportar</a>
+        {{-- href="{{route('product.export.excel')}}" --}}
+        @if(count($products)!=0)
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteAllModal">Eliminar todos</a>
+        @endif
       </div>
     </div>
     <a href="{{route('product.create')}}" type="button" class="btn btn-primary">Agregar<i class="fas fa-plus ml-2"></i></a>
@@ -80,37 +84,69 @@
 <!-- Modal -->
 <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-  <div class="modal-content">
+    <div class="modal-content">
       <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar producto</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-      </button>
+        <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-          <form action="{{route('product.destroy')}}" method="POST">
-              @method('delete')
-              @csrf
-
+      <form action="{{route('product.destroy')}}" method="POST">
+          @method('delete')
+          @csrf
       <div class="modal-body">
-              <h5>¿Estás seguro de eliminar este producto?</h5>  
-              <input type="hidden" id="productid" name="productid" value="">
+          <h5>¿Estás seguro de eliminar este producto?</h5>  
+          <input type="hidden" id="productid" name="productid" value="">
       </div>
       <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-danger">Eliminar</button>
-          </form>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
       </div>
-  </div>
+    </div>
   </div>
 </div>
 @endif
+
+@if(count($products)!=0)
+<!-- Modal -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="text-align:center">
+        <img src="{{asset('images/design/alarm.svg')}}" width="70px" class="my-2" alt="">
+        <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
+      </div>
+      <form action="{{route('product.destroyAll')}}" method="POST">
+          @method('delete')
+          @csrf
+
+      <div class="modal-body" style="text-align:center">
+              <h5>¡Estás a punto de eliminar todos los productos existentes!</h5>  
+              <p>Los cambios serán permanentes.<br>
+                ¿Estás seguro de realizar esta acción?</p>
+      </div>
+      <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-danger">Sí, estoy seguro</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+
 
 <!-- Modal -->
 <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Importar productos</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -119,8 +155,11 @@
 
         <form action="{{route('product.import.excel')}}" method="post" enctype="multipart/form-data">
           @csrf
-          <h6>Seleccione una opcion: </h6>
+          <img src="{{asset('images/design/upload.svg')}}" width="70px" class="my-2" alt="">
+          <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">Importar mis productos.</h5>
           <div id="export_info" class="mb-3"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}" style="color:#4280C7">Descargue su archivo de productos</a> y actualice la información.</span></div>
+          <hr>
+          <h6>Seleccione una opción: </h6>
           <div class="form-group">
               <label class="btn btn-outline-primary">
                 <input class="mr-1" type="radio" value="update" id="method_1" name="method"><strong>Agregue nuevos productos y actualice los existentes</strong>
@@ -132,7 +171,7 @@
                 <input class="mr-1" type="radio" value="replace" id="method_2" name="method"><strong>Reemplazar productos</strong>
                 <p class="m-0"><small>Todos los artículos serán eliminados y reemplazados.</small></p>
               </label>
-          
+          </div>
           <hr>
           <h6>Seleccione un archivo de Excel: </h6>
           <div class="form-group">
@@ -144,6 +183,32 @@
           </div>
 
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exportExcelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align:center">
+          <img src="{{asset('images/design/download.svg')}}" width="70px" class="my-2" alt="">
+          <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">Exportar mi lista de productos</h5>
+          <hr>
+          <p>Exporte su lista de productos para modificar o agregar los productos de manera más sencilla. Una vez modificada la hoja de Excel, podrá importar su archivo a la plataforma.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <a href="{{route('product.export.excel')}}" class="btn btn-primary">Exportar</a>
+      </div>
     </div>
   </div>
 </div>

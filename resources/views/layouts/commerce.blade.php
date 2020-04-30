@@ -49,29 +49,13 @@
         <nav class="nav d-none d-xl-block">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="{{route('product.index')}}">Menú</a>
-              <ul>
-                  <li class="nav-item">
-                  <a class="nav-link" href="{{route('product.index')}}">Productos</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="{{route('category.index')}}">Categorías</a>
-                  </li>
-                  {{-- <li class="nav-item">
-                      <a class="nav-link active" href="#">Tamaños</a>
-                  </li> --}}
-              </ul>
+                <a class="nav-link" href="{{route('product.index')}}">Productos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Configuración</a>
-              <ul>
-                  <li class="nav-item">
-                      <a class="nav-link" href="{{route('restaurant.info')}}">Información del comercio</a>
-                  </li>
-                  {{-- <li class="nav-item">
-                      <a class="nav-link active" href="{{route('restaurant.times')}}">Horarios</a>
-                  </li> --}}
-              </ul>
+                <a class="nav-link" href="{{route('category.index')}}">Categorías</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('restaurant.info')}}">Información del comercio</a>
             </li>
           </ul>
         </nav>

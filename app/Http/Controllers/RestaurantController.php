@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Restaurant;
 use App\Category;   
@@ -317,6 +317,10 @@ class RestaurantController extends Controller
             $restaurant->update(['image'=>$path]);  
         }
         //FIN IMAGE
+
+        if($request->action==='delete'){
+            $restaurant->update(['image'=>'commerce.png']); 
+        }
 
         //ADDRESS
         $address = Address::where([

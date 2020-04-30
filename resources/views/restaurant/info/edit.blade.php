@@ -82,19 +82,34 @@
                 </div>
             </div>
             <hr class="my-2">
+
+            {{-- <div class="form-group">
+                <div id="image_container" ><img id="view_image" src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" width="150px"></div>
+                <div id="delete_image"><a href="#" onclick="removeImage();">Eliminar</a></div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input type="file" name="image" class="custom-file-input" onchange="readURL(this);">
+                  <label class="custom-file-label" id="upload_image" for="inputGroupFile01">Seleccionar archivo</label>
+                  <input type="hidden" id="img_action" name="action" value="">
+                </div>
+              </div> --}}
+
             <div class="form-group">
                 <label>Foto</label>
                 <div class="row">
                     <div class="col-xl-4">
-                    <div class="form-group">
-                        <img src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px">
-                    </div>
+                        <div class="form-group">
+                            <div id="image_container"><img id="view_image" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></div>
+                            <div id="delete_image"><a href="#image_container" onclick="removeImage();">Eliminar</a></div>
+                        </div>
                     </div>
                     <div class="col-xl-6 d-flex align-items-center">
                         <div class="form-group">
-                            <label for="exampleFormControlFile1">Buscar imágen</label>
-                            <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
-                          </div>
+                            <label id="upload_image" for="exampleFormControlFile1">Buscar imágen</label>
+                            <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" onchange="readURL(this);">
+                            <input type="hidden" id="img_action" name="action" value="">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,6 +128,8 @@
                     >
                     {{$category->name}}</label>
                 </div>
+
+                
             @endforeach
             </div>
         </div>
@@ -124,6 +141,31 @@
 
 @section('js-scripts')
     <script>
+        function readURL(input) {
+            document.getElementById('image_container').removeAttribute('hidden');
+            document.getElementById("img_action").value = "";
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#view_image')
+                        .attr('src', e.target.result)
+
+                    document.getElementById('delete_image').removeAttribute('hidden')
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeImage(){
+            document.getElementById('delete_image').setAttribute('hidden', '');
+            document.getElementById("upload_image").value = "";
+            document.getElementById("img_action").value = "delete";
+            document.getElementById("view_image").src = "{{ asset('images/uploads/commerce/commerce.png') }}";
+
+        }
+
         showDeliveryInputs();
 
         function showDeliveryInputs(){
