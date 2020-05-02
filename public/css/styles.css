@@ -135,3 +135,11 @@ textarea:focus, input:focus, input[type]:focus {
     height: 150px;
     object-fit: cover;
 }
+
+.element {
+    background: linear-gradient(
+      to top,
+      black, 
+      transparent
+    );
+  }

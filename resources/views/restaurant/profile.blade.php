@@ -31,8 +31,9 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron pb-0 mb-0" style="background: url('https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;">
-        <div class="container text-white d-flex align-items-end col-lg-8">
+    <section class="jumbotron px-0 pb-0 mb-0" style="background: url('https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;">
+        <div class="element">
+        <div class="container text-white d-flex align-items-end col-lg-8 ">
             <div class="row d-flex align-items-end">
                 <figure>
                     <img class="border m-1" width="110px" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
@@ -41,26 +42,26 @@
                     <div class="title"><h3><strong>{{$restaurant->name}}</strong></h3></div>
                     <div class="info mb-0 ml-3"><p class="mb-0"><i class="fas fa-phone"></i> {{$restaurant->phone}}</p></div>
                     <div class="info mb-0 ml-3"><p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p></div>
-                    <div class="extra ml-3 mb-10">
-                        <small>
-                            @foreach($restaurant->restaurantCategories as $restaurantCategory)
-                                {{$restaurantCategory->name}}
-                                -
-                            @endforeach
-                        </small>
-                        @if(!$restaurant->shipping_method==null)
-                        <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>{{$restaurant->shippingMethod()}}</small>
-                        @if($restaurant->shipping_method != 'pickup')
-                        <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>Costo delivery: ${{$restaurant->shipping_price}}</small>
-                        <span class="mx-2" style="border-left: 1px solid white;height: 100px;"></span>
-                        <small>Tiempo: {{$restaurant->shipping_time}} min.</small>
-                        @endif
-                        @endif
+                    
+                    <div class="container d-flex">
+                        <div class="profile_info d-inline mt-3 mx-2">
+                            <span class="d-block profile_info_price">{{$restaurant->shipping_method}}</span>
+                            <small class="d-block">Método de envío</small>
+                        </div>
+                        <div class="profile_info d-inline mt-3 mx-2">
+                            <span class="d-block profile_info_price">${{$restaurant->shipping_price}}</span>
+                            <small class="d-block">Costo de envío</small>
+                        </div>
+                        {{-- @if($restaurant->shipping_time) --}}
+                        <div class="profile_info d-inline mt-3 mx-2">
+                            <span class="d-block profile_info_price my-0">{{$restaurant->shipping_time}} min</span>
+                            <small class="d-block my-0">Tiempo de envío</small>
+                        </div>
+                        {{-- @endif --}}
                     </div>
                 </section>
             </div>  
+        </div>
         </div>
     </section>
     <div class="sticky-top mb-4">

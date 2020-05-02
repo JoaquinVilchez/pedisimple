@@ -17,9 +17,8 @@ use App\User;
 
 Auth::routes(['verify' => true]);
 Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
-// Route::resource('register', 'Auth\RegisterController')->names('commerce.register')->middleware('Invitation');
 
-Route::get('/', 'RestaurantController@index')->name('home')->middleware('auth');
+Route::get('/', 'RestaurantController@index')->name('home');
 
 Route::get('/bienvenido',function(){
     return view('auth.welcome');
@@ -29,9 +28,6 @@ Route::get('/comercios/solicitud', function(){
     return view('request');
 })->name('register.request');
 
-Route::get('/confirmacioncorreo', function(){
-    return view('auth.verify');
-});
 
 // Route::get('/gracias', function(){
 //     return view('thankyou');
@@ -41,22 +37,22 @@ Route::get('/confirmacioncorreo', function(){
 //     return view('confirmation');
 // })->name('confirmation')->name('confirmation');
 
-Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
-Route::get('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
-Route::resource('/carrito', 'CartController')->names('cart');
-
 // Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 // Route::resource('/direcciones', 'AddressController')->names('address');
 
 // Route::resource('/pedidos', 'OrderController')->names('order');
 
+Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
+Route::get('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
+Route::resource('/carrito', 'CartController')->names('cart');
+
 Route::resource('/datos', 'UserController')->names('user')->middleware(['auth', 'verified']);
 
 Route::post('/administracion/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth','verified', 'Admin']);
 Route::resource('/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth','verified', 'Admin']);
 
-// Route::resource('/comercios', 'ListController')->names('list');
+Route::resource('/comercios', 'ListController')->names('list');
 
 Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
 Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
@@ -94,11 +90,3 @@ Route::post('/categorias', 'CategoryController@store')->name('category.store')->
 Route::get('/categorias/{categoria}', 'CategoryController@edit')->name('category.edit')->middleware(['auth','verified', 'hasRestaurant']);
 Route::put('/categorias/{categoria}', 'CategoryController@update')->name('category.update')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/categorias/borrar', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
-
-// Route::resource('/categorias', 'CategoryController')->names('category')->middleware('verified');
-
-
-
-// Route::get('/download', function(){
-//     return Excel::download(new UsersExport, 'users.xlsx');
-// });

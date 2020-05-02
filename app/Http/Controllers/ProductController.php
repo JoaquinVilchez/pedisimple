@@ -301,7 +301,7 @@ class ProductController extends Controller
 
     public function destroyAll()
     {
-        $products = Product::all();
+        $products = Product::where('restaurant_id', Auth::user()->restaurant->id)->get();
         foreach($products as $product){
             $product->delete();
         }
