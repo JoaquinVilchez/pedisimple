@@ -3,12 +3,19 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="image" style="text-align:center">
-                <img src="{{asset('images/logo.png')}}" class="mt-4" width="300px">
-                <p class="my-2">Ingreso comerciantes</p>
+            <div class="image my-4" style="text-align:center">
+                <img src="{{asset('images/logo.png')}}" class="mt-1" width="300px">
+                <h5>Próximamente</h5>
+                <div class="icons d-inline ml-3">
+                    <a target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
+                    <a target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
+                    <a target=”_blank” href="http://twitter.com/pedisimple"><i class="fab fa-twitter mr-1"></i></a>
+                    <a target=”_blank” href="mailto:contacto@pedisimple.com"><i class="far fa-envelope mr-1"></i></a>
+                </div>
             </div>
             <hr>
             <div class="container mt-4">
+                <p class="my-2 txt-bold mt-4 mb-4" style="text-align: center">Ingreso comerciantes</p>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 

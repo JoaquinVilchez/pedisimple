@@ -91,9 +91,9 @@
             <span class="d-flex p-0"></span>
         </div>
         <div class="col-xl-6 col-sm-12">
-            @guest
+            {{-- @guest
             <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
-            @endguest
+            @endguest --}}
         </div>
     </div>
 </footer>
