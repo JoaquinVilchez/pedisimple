@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="container-fluid">
-  <div class="row">
+  {{-- <div class="row">
     <div class="col-12 px-0">
       <div style="text-align:center" class="alert alert-warning mb-0 rounded-0 mw-100" role="alert">
         <strong>Recuerda: </strong>La plataforma momentáneamente está abierta solo para que cargues tus datos. Te avisaremos cuando esté abierta al público.
       </div>
     </div>
-  </div>
+  </div> --}}
   <div class="row">
     <nav class="col-xl-2 bg-light sidebar ">      
       <div class="sidebar-sticky">

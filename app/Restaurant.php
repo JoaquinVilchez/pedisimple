@@ -2,7 +2,6 @@
 
 namespace App;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Database\Eloquent\Model;
 
 class restaurant extends Model
@@ -42,12 +41,11 @@ class restaurant extends Model
                 return 'Delivery';
                 break;
             case 'delivery-pickup':
-                return 'Retiro y delivery';
+                return 'Retiro y Delivery';
                 break;
        }
     }
 
-    
     public function stateStyle(){
         switch ($this->state) {
             case 'cancelled':

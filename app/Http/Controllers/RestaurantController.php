@@ -113,15 +113,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->type=='administrator'){
-            return redirect()->route('restaurant.admin.list');
-        }elseif(Auth::user()->type=='merchant'){
-            if(Auth::user()->restaurant == null){
-                return redirect()->route('welcome');
-            }else{
-                return redirect('/productos');
-            }
-        }
+        return view('home');
     }
 
     /**

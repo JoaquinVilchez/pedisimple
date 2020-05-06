@@ -14,15 +14,15 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(ProvinceSeeder::class);
         $this->call(CitySeeder::class);
-        // $this->call(RestaurantSeeder::class);
-        // $this->call(AddressSeeder::class);
-        // $this->call(OpeningDateTimeSeeder::class);
+        $this->call(RestaurantSeeder::class);
+        $this->call(AddressSeeder::class);
+        $this->call(OpeningDateTimeSeeder::class);
         $this->call(RestaurantCategorySeeder::class);
-        // $this->call(CategorySeeder::class);
-        // $this->call(ProductSeeder::class);
-        // $this->call(OrderSeeder::class);
-        // $this->call(LineItemSeeder::class);
-        // $this->call(RelationRestaurantCategory::class);
-        // $this->call(InvitationSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(ProductSeeder::class);
+        $this->call(OrderSeeder::class);
+        $this->call(LineItemSeeder::class);
+        $this->call(RelationRestaurantCategory::class);
+        $this->call(InvitationSeeder::class);
     }
 }

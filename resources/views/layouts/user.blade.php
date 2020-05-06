@@ -25,7 +25,7 @@
         <div class="list-group mb-3">
             {{-- <a href="{{route('address.index')}}" class="list-group-item py-1">Mis direcciones</a> --}}
             {{-- <a href="{{route('order.index')}}" class="list-group-item py-1">Mis pedidos</a> --}}
-            <a href="{{route('restaurant.index', Auth::user()->restaurant)}}" class="list-group-item py-1">Mi comercio</a>
+            <a href="{{route('product.index')}}" class="list-group-item py-1">Mi comercio</a>
             <a href="{{route('user.index')}}" class="list-group-item py-1">Mis datos</a>
         </div>
 
@@ -44,7 +44,7 @@
             @endif
             @yield('info-content')
         </div>
-            
+    
     </div>
 </div>
 

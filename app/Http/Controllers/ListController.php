@@ -14,15 +14,35 @@ class ListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {        
         // $categories = DB::table('relation_restaurant_category')->select('category_restaurant_id')->get()->groupBy('category_restaurant_id');
-        $categories = RestaurantCategory::all();
-        $restaurants = Restaurant::where('state', 'active')->get();
+
+        $filter = $request->get('filter');
+        $filters = [];
+        $categories = RestaurantCategory::with('restaurants')->get();
+
+        if($filter!=null){
+            $category = RestaurantCategory::with('restaurants')->where('name', $filter)->get();
+                foreach ($category as $filter_category) {
+                    $restaurants = $filter_category->restaurants;
+                }
+            array_push($filters, $filter);
+        }else{
+            $restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->get();
+            $filter = false;
+        }
+        
+        $filtered_categories = $categories->filter(function ($categories) {
+            if(count($categories->restaurants)>0){
+                return $categories;
+            }
+        });
 
         return view('list')->with([
-            'categories'=>$categories,
-            'restaurants'=>$restaurants
+            'categories'=>$filtered_categories,
+            'restaurants'=>$restaurants,
+            'filters'=>$filters
         ]);
     }
 

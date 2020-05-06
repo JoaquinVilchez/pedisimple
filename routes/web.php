@@ -63,7 +63,7 @@ Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('rest
 Route::resource('/comercio', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
 Route::post('/comercio', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
-Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['verified']);
+Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show');
 
 
 //PRODUCTOS

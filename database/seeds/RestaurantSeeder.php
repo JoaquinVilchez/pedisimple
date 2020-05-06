@@ -29,7 +29,7 @@ class RestaurantSeeder extends Seeder
             'phone' => '433967',
             'shipping_price' => 60,
             'shipping_method' => 'delivery',
-            'user_id' => 3
+            'user_id' => 2
         ]);
     }
 }

@@ -2,70 +2,67 @@
 
 @section('content')
 
-{{-- <section class="jumbotron text-center" style="url('https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;"> --}}
-  <section class="jumbotron text-center">
-    <div class="container">
-      <h1><strong>Consulta online los productos</strong></h1>
-      <p class="lead">Ahora podes encontrar comercios de Venado Tuerto y hacer pedidos online</p>
-        {{-- <form action="{{route('list.index')}}" class="form-inline justify-content-center">
-          <select class="form-control">
-            <option value="1">Pizzas</option>
-            <option value="1">Empanadas</option>
-          </select>
-          <input type="text" placeholder="Buscar comercio" class="form-control">
-          <input type="submit" value="Buscar" class="btn btn-primary mx-2">
-      </form> --}}
-      <a href="{{route('list.index')}}" class="btn btn-warning btn-sm mt-2"><strong>Ver todos los comercios</strong></a> 
+<div class="text-center px-0 pb-0 mb-0 rounded-0 d-flex align-items-center" style="height:300px; background: url('{{ asset('images/design/home.jpg') }}') no-repeat scroll 0px 100% / cover transparent; black, transparent;">
+      <div class="container text-white"">
+          <div class="m-auto">
+          {{-- <h1 class="txt-shadow"><strong>Pedir comida, ahora es más simple</strong></h1> --}}
+          <h1 class="h1-responsive"><strong>Pedir lo que buscás, ahora es más simple</strong></h1>
+          <p>Consultá los productos de los comercios de Venado Tuerto y facilitá tu pedido</p>
+          {{-- <form action="{{route('list.index')}}" class="form-inline justify-content-center">
+            <select class="form-control">
+              <option value="1">Pizzas</option>
+              <option value="1">Empanadas</option>
+            </select>
+            <input type="text" placeholder="Buscar comercio" class="form-control">
+            <input type="submit" value="Buscar" class="btn btn-primary mx-2">
+          </form> --}}
+          </div>
+        <a href="{{route('list.index')}}" class="btn btn-primary btn-sm mt-2"><strong>Ver todos los comercios</strong></a> 
+      </div>
+</div>
+
+<section class="text-center">
+    <div class="container col-xl-8 my-3">
+      <h4 class="txt-bold">¿Cómo funciona Pedí Simple?</h4>
+      <hr class="mb-0">
+      <div class="row d-flex justify-content-center my-3">
+        <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
+          <img src="{{asset('images/design/store.svg')}}" class="img-step" alt="">
+          <div class="col-xl-12">
+            <div class="my-2"><small>1</small></div>
+            <h6 class="txt-bold">Elegí tu comercio favorito</h6>
+              <small>Consultá productos y precios de los comercios disponibles en nuestra plataforma.</small>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
+          <img src="{{asset('images/design/basket.svg')}}" class="img-step" alt="">
+          <div class="col-xl-12">
+            <div class="my-2"><small>2</small></div>
+            <h6 class="txt-bold">Armá tu pedido</h6>
+            <small class="col-md-6">Carga los productos al carrito y conocé el costo de tu pedido.</small>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
+          <img src="{{asset('images/design/conversation.svg')}}" class="img-step" alt="">
+          <div class="col-xl-12">
+            <div class="my-2"><small>3</small></div>
+            <h6 class="txt-bold">Coordiná con el comercio</h6>
+            <small class="col-md-6">Llamá al comercio con el pedido previamente armado, evitando demoras telefónicas.</small>
+          </div>
+        </div>
+      </div>
+      {{-- <hr class="mb-0"> --}}
     </div>
 </section>
 
-{{-- <section class="pt-1 bg-light">
-    <h4 class="mb-4 d-flex justify-content-center">Comercios destacados</h4>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
-              <div class="card-body">
-                <div class="d-flex justify-content-end align-items-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                </div>
-              </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
-            <div class="card-body">
-              <div class="d-flex justify-content-end align-items-center">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
-            <div class="card-body">
-              <div class="d-flex justify-content-end align-items-center">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
-    </div>
-</section> --}}
-
 <section class="text-center">
-    <div class="container mt-5">
-        <h4 class="d-flex justify-content-center">Unite a la plataforma</h4>
-        <hr width="30%">
-        <a href="{{route('register.request')}}" class="btn btn-success">Registrarme</a>
-    </div>
-    <div class="container my-5">
-        <p>Tenes un comercio y queres estar en la plataforma? <a href="#">Trabaja con nosotros</a></p>
-    </div>
+  <hr>
+  <div class="container col-xl-8 my-3">
+  <img src="{{asset('images/design/merchant.svg')}}" width="60px" class="my-2">
+    <h4 class="txt-bold">¿Comerciante?</h4>
+    <p>Sumate a Pedí Simple y obtené beneficios</p>
+    <a class="btn btn-sm btn-primary" href="{{route('register.request')}}">Más información</a>
+  </div>
 </section>
 
 @endsection
