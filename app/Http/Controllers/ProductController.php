@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProductsImport;
 use App\Exports\ProductsExport;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -23,7 +24,8 @@ class ProductController extends Controller
      */
     public function exportExcel()
     {
-        return Excel::download(new ProductsExport, 'productos-'.Auth::user()->restaurant->slug.'.xlsx');
+        $today = Carbon::today()->toDateString();
+        return Excel::download(new ProductsExport, 'productos-'.$today.'-'.Auth::user()->restaurant->slug.'.xlsx');
     }
 
     /**
@@ -127,6 +129,8 @@ class ProductController extends Controller
     public function isAvailable(Request $request)
     {
         $product = Product::find($request->product_id);
+        $this->authorize('pass', $product);
+
         if($product->state == 'available'){
             $product->update(['state'=>'not-available']);
             return redirect()->back()->with('success_message', 'Producto cambiado a no disponible');
@@ -231,6 +235,8 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
+        $this->authorize('pass', $product);
+
         $categories = Auth::user()->restaurant->categories;
         return view('restaurant.products.edit')->with([
             'categories' => $categories,
@@ -248,6 +254,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        $this->authorize('pass', $product);
 
         $data=request()->validate([
             'name'=>'required',
@@ -297,6 +304,8 @@ class ProductController extends Controller
     public function destroy(Request $request)
     {
         $product = Product::findOrFail($request->productid);
+        $this->authorize('pass', $product);
+        
         $product->delete();
         return redirect(route('product.index'))->with('success_message', 'Producto eliminado con éxito');
     }
@@ -305,6 +314,7 @@ class ProductController extends Controller
     {
         $products = Product::where('restaurant_id', Auth::user()->restaurant->id)->get();
         foreach($products as $product){
+            $this->authorize('pass', $product);
             $product->delete();
         }
         return redirect(route('product.index'))->with('success_message', 'Productos eliminados con éxito');
