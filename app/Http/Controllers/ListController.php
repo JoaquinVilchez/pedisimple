@@ -23,25 +23,40 @@ class ListController extends Controller
         $categories = RestaurantCategory::with('restaurants')->get();
 
         if($filter!=null){
-            $category = RestaurantCategory::with('restaurants')->where('name', $filter)->get();
+            $category = RestaurantCategory::with('restaurants')->where('name', $filter)->where('state', 'active')->get();
                 foreach ($category as $filter_category) {
                     $restaurants = $filter_category->restaurants;
                 }
-            array_push($filters, $filter);
+
+                $available_restaurants = $restaurants->filter(function ($restaurants) {
+                    if($restaurants->state == 'active'){
+                        return $restaurants;
+                    }
+                });
+                
+                array_push($filters, $filter);
         }else{
-            $restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->get();
+            $available_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->get();
             $filter = false;
         }
         
         $filtered_categories = $categories->filter(function ($categories) {
-            if(count($categories->restaurants)>0){
-                return $categories;
+            $active_restaurants = [];
+
+            foreach ($categories->restaurants as $restaurant) {
+                if($restaurant->state=='active'){
+                    array_push($active_restaurants, $restaurant);
+                }
+            }
+
+            if(count($active_restaurants)>0){
+                return $active_restaurants;
             }
         });
 
         return view('list')->with([
             'categories'=>$filtered_categories,
-            'restaurants'=>$restaurants,
+            'restaurants'=>$available_restaurants,
             'filters'=>$filters
         ]);
     }
