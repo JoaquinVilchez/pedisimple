@@ -177,6 +177,10 @@ class RestaurantController extends Controller
 
             $image = Image::make($file)->encode('jpg', 75);
             
+            $image->fit(250, 250, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
             $image->save('images/uploads/commerce/'.$path);         
 
             $data['image'] = $path;
@@ -312,6 +316,10 @@ class RestaurantController extends Controller
                     unlink($path_old_image);
             }    
             
+            $image->fit(250, 250, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
             $image->save('images/uploads/commerce/'.$path);         
 
             $restaurant->update(['image'=>$path]);  
