@@ -50,6 +50,21 @@ class CartController extends Controller
                 'associatedModel' => $product
             ));
 
+            if($restaurant->shipping_method == 'delivery'){
+
+                $condition = new \Darryldecode\Cart\CartCondition(array(
+                    'name' => 'Delivery',
+                    'type' => 'tax',
+                    'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
+                    'value' => $restaurant->shipping_price,
+                    'attributes' => array( // attributes field is optional
+                        'description' => 'Costo del envio'
+                    )
+                ));
+
+                \Cart::condition($condition);
+            }
+
             return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
         }else{
             $firstItem = \Cart::getContent()->first();
@@ -63,6 +78,21 @@ class CartController extends Controller
                     'quantity' => $request->quantity,
                     'associatedModel' => $product
                 ));
+
+                if($restaurant->shipping_method == 'delivery'){
+                
+                    $condition = new \Darryldecode\Cart\CartCondition(array(
+                        'name' => 'Delivery',
+                        'type' => 'tax',
+                        'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
+                        'value' => $restaurant->shipping_price,
+                        'attributes' => array( // attributes field is optional
+                            'description' => 'Costo del envio'
+                        )
+                    ));
+
+                    \Cart::condition($condition);
+                }
 
                 return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
             }else{
@@ -135,7 +165,7 @@ class CartController extends Controller
             $option="delivery";
         }else{
             \Cart::clearCartConditions();
-        $option="pickup";   
+            $option="pickup";   
         }
 
         return redirect()->back()->with('option', $option);

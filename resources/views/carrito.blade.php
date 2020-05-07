@@ -31,20 +31,27 @@
         </div>
     </li>
         @endforeach
-    @if($restaurant->shipping_method!='pickup')
+    @if($restaurant->shipping_method=='delivery-pickup')
     <li class="list-group-item d-flex justify-content-between">
-    <form action="{{route('cart.deliveryTax')}}" method="POST" id="taxForm">
+    <form action="{{route('cart.deliveryTax')}}" method="POST" id="taxForm-{{$restaurant->shipping_method}}">
         @csrf
         <input type="text" name="restaurant_id" hidden value="{{$restaurant->id}}">
         <div class="custom-control custom-radio custom-control-inline">
-            <input onchange="updateTax()" type="radio" id="customRadioInline1" name="shipping_method" class="custom-control-input" value="pickup" @if(!Cart::getCondition('Delivery')) checked @endif>
+            <input onchange="updateTax('{{$restaurant->shipping_method}}')" type="radio" id="customRadioInline1" name="shipping_method" class="custom-control-input" value="pickup" @if(!Cart::getCondition('Delivery')) checked @endif>
             <label class="custom-control-label" for="customRadioInline1">Retiro en local</label>
             </div>
-            <div onchange="updateTax()" class="custom-control custom-radio custom-control-inline">
+            <div onchange="updateTax('{{$restaurant->shipping_method}}')" class="custom-control custom-radio custom-control-inline">
             <input type="radio" id="customRadioInline2" name="shipping_method" class="custom-control-input" value="delivery" @if(Cart::getCondition('Delivery')) checked @endif>
             <label class="custom-control-label" for="customRadioInline2">Delivery</label>
         </div>
     </form>        
+    </li>
+    @elseif($restaurant->shipping_method=='delivery')
+    <li class="list-group-item d-flex justify-content-center">
+        <small style="color:red; text-align:center">
+            <p class="mb-0">Este comercio solo hace entregas por delivery.</p>
+            <p class="mb-0">El costo está incluido en el total del pedido.</p>
+        </small>        
     </li>
     @endif
     <li class="list-group-item d-flex justify-content-between">
@@ -71,10 +78,11 @@
             form.submit();
         }
 
-        function updateTax(){
-            var form = document.getElementById('taxForm')
+        function updateTax(shipping_method){
+            var form = document.getElementById('taxForm-'+shipping_method)
             form.submit();
         }
+        
     </script>
 
 
