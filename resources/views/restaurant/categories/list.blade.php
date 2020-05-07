@@ -93,8 +93,6 @@
 </div>
 @endif
 
-
-
 @endsection
 
 @section('js-scripts')

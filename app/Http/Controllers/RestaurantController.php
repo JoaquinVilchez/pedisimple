@@ -316,10 +316,13 @@ class RestaurantController extends Controller
                     unlink($path_old_image);
             }    
             
+<<<<<<< HEAD
             $image->fit(250, 250, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
+=======
+>>>>>>> 8216348214f84b698eccbf9ca7c495cb45e8972e
             $image->save('images/uploads/commerce/'.$path);         
 
             $restaurant->update(['image'=>$path]);  
