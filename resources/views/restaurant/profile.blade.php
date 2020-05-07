@@ -216,8 +216,17 @@
                             </div>
                                 <!--Google map-->
                                 <h6 class="card-subtitle mb-2 text-muted mt-3">Mapa</h6>
+
+                                {{-- {{dd($restaurant->address->street,$restaurant->address->number,$restaurant->address->city->name, $restaurant->address->city->province->name, $restaurant->address->city->province->country)}} --}}
+                                
                                 <div id="map-container-google-1" class="z-depth-1-half map-container" width="100%">
-                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                <iframe
+                                width="100%"
+                                frameborder="0" style="border:0"
+                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
+                        &q={{$restaurant->address->street}}+{{$restaurant->address->number}},{{$restaurant->address->city->name}}+{{$restaurant->address->city->province->country}}" allowfullscreen>
+                                </iframe>
+                                    {{-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe> --}}
                                 </div>                    
                                 <!--Google Maps-->
                             {{-- <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios de apertura</h6>
