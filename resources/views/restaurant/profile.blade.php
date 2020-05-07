@@ -123,7 +123,7 @@
                         @foreach($category->getProducts() as $product)
                         <div class="col-lg-6 px-1">
                             @if ($product->image == 'no_image.png')
-                                <div class="card p-2 m-1">
+                                <div class="card p-2 m-1" style="min-height:95%">
                                     <div class="row">
                                         <div class="col-10 pr-0 pl-4">
                                             <h6 class="mb-0"><strong>{{$product->name}}</strong></h6>
@@ -143,6 +143,7 @@
                                                 data-productname="{{$product->name}}" 
                                                 data-productprice="{{$product->price}}"       
                                                 data-productimage="{{$product->image}}"  
+                                                data-productdescription="{{$product->details}}"  
                                                 data-toggle="modal" data-target="#addItemModal">
                                                 <i class="fas fa-plus-circle"></i></a>
                                             </span>
@@ -150,7 +151,7 @@
                                     </div>                                
                                 </div>
                             @else
-                                <div class="card p-2 m-1">
+                                <div class="card p-2 m-1" style="min-height:95%">
                                     <div class="row">
                                         <div class="col-4 pr-0">
                                             <div class="d-flex align-items-center">
@@ -175,6 +176,7 @@
                                                 data-productname="{{$product->name}}" 
                                                 data-productprice="{{$product->price}}"  
                                                 data-productimage="{{asset('images/uploads/products/'.$product->image)}}"                                                
+                                                data-productdescription="{{$product->details}}"  
                                                 data-toggle="modal" data-target="#addItemModal">
                                                 <i class="fas fa-plus-circle"></i></a>
                                             </span>
@@ -254,17 +256,19 @@
                     <input type="hidden" id="productname" name="name">
                     <input type="hidden" id="productprice" name="price">
                     <div id="modalImage" class="img-fluid img-modal"></div>
-                    <p class="text-mute" id="modalDescription"></p>
-                    <div class="form-group">
-                        <h5 id="modalPrice"></h5>
-                    </div>
-                    <div class="form-group">
-                        <label>Cantidad</label>
-                        <select name="quantity" id="productquantity">
-                            @for ($i = 1; $i < 10; $i++)
-                                <option value="{{$i}}">{{$i}}</option>
-                            @endfor
-                        </select>
+                    <div class="px-2">
+                        <p class="text-mute" id="modalDescription"></p>
+                        <div class="form-group">
+                            <h5 id="modalPrice"></h5>
+                        </div>
+                        <div class="form-group">
+                            <label>Cantidad</label>
+                            <select name="quantity" id="productquantity">
+                                @for ($i = 1; $i < 10; $i++)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
                     </div>
                     {{-- <div class="form-group">
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Notas adicionales"></textarea>
@@ -317,12 +321,17 @@
         $('#addItemModal').on('show.bs.modal', function(event){
         var button = $(event.relatedTarget)
 
-
+        var productid = ""
+        var productname = ""
+        var productprice = ""
+        var productdescription = ""
+        var productimage = ""
+        
         var productid = button.data('productid')
         var productname = button.data('productname')
         var productprice = button.data('productprice')
-        var productimage = button.data('productimage')
         var productdescription = button.data('productdescription')
+        var productimage = button.data('productimage')
 
         var modal = $(this)
 
@@ -333,16 +342,20 @@
 
         //modal
         if (productimage=='no_image.png') {
-            document.getElementById("modalImage").hidden
+            document.getElementById("modalImage").innerHTML=""
         }else{
             document.getElementById("modalImage").innerHTML='<img width="50%" src="'+productimage+'">'
         }
 
-        document.getElementById("modalTitle").innerHTML=productname
-        if(!productdescription==null){
-            document.getElementById("modalDescription").innerHTML=productdescription
-        }
         document.getElementById("modalPrice").innerHTML="Precio: (<strong>$"+productprice+"</strong>)"
+
+        document.getElementById("modalTitle").innerHTML=productname
+        
+        if(!productdescription==""){
+            document.getElementById("modalDescription").innerHTML="<p class='mb-0 mt-2 txt-bold'>Descripción del producto:</p>"+productdescription
+        }else{
+            document.getElementById("modalDescription").innerHTML=""
+        }
 
         });
 
