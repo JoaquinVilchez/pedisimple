@@ -301,7 +301,9 @@ class RestaurantController extends Controller
             
             if($old_image != 'commerce.png'){
                 $path_old_image = 'images/uploads/commerce/'.$old_image;
-                    unlink($path_old_image);
+                    if(file_exists($path_old_image)){
+                        unlink($path_old_image);
+                    }
             }    
             
             $image->save('images/uploads/commerce/'.$path);         

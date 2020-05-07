@@ -270,7 +270,9 @@ class ProductController extends Controller
             
             if($old_image != 'no_image.png'){
                 $path_old_image = 'images/uploads/products/'.$old_image;
-                    unlink($path_old_image);
+                    if(file_exists($path_old_image)){
+                        unlink($path_old_image);
+                    }
             }    
 
             $image->save('images/uploads/products/'.$path);         

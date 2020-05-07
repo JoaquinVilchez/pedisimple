@@ -98,7 +98,9 @@ class UserController extends Controller
             
             if($old_image != 'user.png'){
                 $path_old_image = 'images/uploads/user/'.$old_image;
-                    unlink($path_old_image);
+                    if(file_exists($path_old_image)){
+                        unlink($path_old_image);
+                    }
             }    
             
             $image->save('images/uploads/user/'.$path);         
