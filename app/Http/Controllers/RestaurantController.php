@@ -348,10 +348,13 @@ class RestaurantController extends Controller
         }
         //FIN FOOD CATEGORIES
 
+        $slug = str_replace(' ', '-', strtolower($data['name']));
+
         $restaurant->update([
             'name'=> $data['name'],
             'phone'=> $data['phone'],
             'description'=> $data['description'],
+            'slug' => $slug,
             'shipping_method'=> $data['shipping_method'],
             'shipping_price'=> $data['shipping_price'],
             'shipping_time'=> $data['shipping_time']

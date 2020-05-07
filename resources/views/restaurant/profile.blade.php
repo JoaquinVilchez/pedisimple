@@ -43,8 +43,8 @@
                                 @if($restaurant->shipping_time)
                                     <div class="vl"></div>
                                     <div class="d-inline">
-                                        <span class="d-block">{{$restaurant->shipping_time}} min</span>
-                                        <small class="d-block txt-muted">Tiempo de envío</small>
+                                        <span class="d-block">{{$restaurant->shipping_time}} min. </span>
+                                        <small class="d-block txt-muted">Tiempo aprox. de envío </small>
                                     </div>
                                 @endif
                             @endif
