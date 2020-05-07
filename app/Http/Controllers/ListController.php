@@ -33,6 +33,8 @@ class ListController extends Controller
                         return $restaurants;
                     }
                 });
+
+                $available_restaurants->sortBy('name');
                 
                 array_push($filters, $filter);
         }else{
@@ -56,7 +58,7 @@ class ListController extends Controller
 
         return view('list')->with([
             'categories'=>$filtered_categories,
-            'restaurants'=>$available_restaurants,
+            'restaurants'=>$available_restaurants->sortBy('name'),
             'filters'=>$filters
         ]);
     }
