@@ -22,19 +22,27 @@ a{
     color: #3f3a34;
 }
 
+
+textarea:focus, input:focus, input[type]:focus {
+    border-color: #ffa64d;
+    box-shadow: 0 1px 1px #ffa64d inset, 0 0 8px #ffa64d;
+    outline: 0 none;
+}
+
+.home-image{
+    height:300px;
+    background-image: url('../images/design/home.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
 .img-default{
     width: 100px;
 }
 
 .img-step{
     width: 70px;
-}
-
-
-textarea:focus, input:focus, input[type]:focus {
-    border-color: #ffa64d;
-    box-shadow: 0 1px 1px #ffa64d inset, 0 0 8px #ffa64d;
-    outline: 0 none;
 }
 
 .txt-bold{
@@ -151,4 +159,13 @@ textarea:focus, input:focus, input[type]:focus {
       black, 
       transparent
     );
+    height: 100%;
 } 
+
+.element_home{
+    background: rgb(0,0,0);
+    background: -moz-linear-gradient(0deg, rgba(0,0,0,0.7794468129048494) 0%, rgba(255,255,255,0.017542051000087544) 50%);
+    background: -webkit-linear-gradient(0deg, rgba(0,0,0,0.7794468129048494) 0%, rgba(255,255,255,0.017542051000087544) 50%);
+    background: linear-gradient(0deg, rgba(0,0,0,0.7794468129048494) 0%, rgba(255,255,255,0.017542051000087544) 50%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#ffffff",GradientType=1);
+}
