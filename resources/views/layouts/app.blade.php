@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta name="description" content="Pedir comida, ahora es más simple">
+    <meta property="og:title" content="{{config('app.name')}}" />
+    <meta property="og:url" content="{{env('APP_URL')}}" />
+    <meta property="og:description" content="Pedir comida, ahora es más simple">
+    <meta property="og:image" content="{{asset('images/share_logo.png')}}">
+    <meta property="og:locale:alternate" content="es_ES" />
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -11,13 +18,23 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+    
+    @yield('css-scripts')
 
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/e739f5c7c6.js" crossorigin="anonymous"></script>
 
-    @yield('css-scripts')
-    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165580235-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-165580235-1');
+    </script>
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -54,7 +71,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if(Auth::user()->restaurant || Auth::user()->type=='merchant')
-                                    <a class="dropdown-item" href="{{route('restaurant.index')}}">Mi comercio</a>
+                                    <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio</a>
                                     @endif
 
                                     @if(Auth::user()->type=='administrator')
@@ -86,14 +103,22 @@
     </div>
     
 <footer class="footer">
-    <div class="container d-flex justify-content-between">
-        <div class="col-xl-6">
-            <span class="d-flex p-0"></span>
-        </div>
-        <div class="col-xl-6 col-sm-12">
-            {{-- @guest
-            <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
-            @endguest --}}
+    <div class="container">
+        <div class="row d-flex justify-content-between">
+            <div class="col-xl-6 col-xs-12">
+                <p class="d-inline">Seguinos</p> 
+                <div class="icons d-inline ml-3">
+                    <a style="color:white" target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
+                    <a style="color:white" target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
+                    <a style="color:white" target=”_blank” href="http://twitter.com/pedisimple"><i class="fab fa-twitter mr-1"></i></a>
+                    <a style="color:white" target=”_blank” href="mailto:contacto@pedisimple.com"><i class="far fa-envelope mr-1"></i></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-xs-12">
+                @guest
+                <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
+                @endguest
+            </div>
         </div>
     </div>
 </footer>

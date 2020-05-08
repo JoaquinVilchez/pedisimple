@@ -30,7 +30,7 @@ class AddressSeeder extends Seeder
             'restaurant_id' => 1,
             'street' => 'San Luis',
             'number' => '145',
-            'city_id' => 2
+            'city_id' => 1
         ]);
 
         Address::create([

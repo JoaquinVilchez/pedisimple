@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Restaurant;
+use Illuminate\Support\Facades\URL;
 
 class Visible
 {
@@ -16,10 +17,10 @@ class Visible
      */
     public function handle($request, Closure $next)
     {
-        $slug = substr($request->getRequestUri(), 10);
-        $commerce = Restaurant::where('slug', $slug)->first();
+        $slug = rawurldecode(substr($request->getRequestUri(), 10));
+        $restaurant = Restaurant::where('slug', $slug)->first();
 
-        if($commerce->state == 'active' && count($commerce->products) !=0 && count($commerce->categories) !=0){
+        if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
             return $next($request);
         }else{
             return redirect()->route('list.index');

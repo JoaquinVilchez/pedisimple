@@ -2,82 +2,123 @@
 
 @section('content')
 
-<section class="jumbotron text-center p-5" style="background: url('https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
-    <div class="container">
-    <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>{{count($restaurants)}} Comercios disponibles</strong></h1>
+<section class="jumbotron rounded-0 text-center p-0 mb-0" style="background: url('https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
+  <div class="element">
+    <div class="  container d-flex align-items-center justify-content-center" style="height:180px;">
+      {{-- <div class="m-auto"> --}}
+        <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>{{count($restaurants)}} @if (count($restaurants)==1) Comercio disponible @else Comercios disponibles @endif</strong></h1>
+      </div>
     </div>
+  </div>
 </section>
+
+<div class="alert alert-warning m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center" style="text-decoration: none">
+  <a target=”_blank” href="https://www.argentina.gob.ar/salud/coronavirus-COVID-19">
+    <strong><i class="fas fa-virus"></i> COVID-19</strong> | Conocé información y recomendaciones del Ministerio de Salud.
+  </a>
+</div>
   <!-- Page Content -->
-<div class="container">
-    <div class="row justify-content-center">
-        {{-- <div class="col-lg-2">
+<div class="container mt-4">
 
-        <div class="list-group mb-4">
-            <p><strong>Filtros</strong></p>
-            @foreach ($categories as $category)
-                <a href="#" class="list-group-item py-1">{{$category->name}}</a>
-            @endforeach
-            
+    {{-- mobile --}}
+    <div class="col-12 d-block d-sm-none">
+      <div class="d-flex justify-content-center">
+        <div class="mb-4">
+          <nav class="navbar navbar-dark">
+            <button class="navbar-toggler" style="color: brown" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span style="color: brown"><i class="fas fa-sliders-h"></i></span>
+              Filtros
+            </button>
+          </nav>
+          <div class="pos-f-t justify-content-center ">
+            <div class="collapse" id="navbarToggleExternalContent">
+              <div class="col-12">
+                @if (count($filters)>0)
+                  <small style="text-align: center"> <i class="fas fa-times" style="color: red"></i><a class="ml-1" style="color: red" href="{{route('list.index')}}">Quitar filtros</a></small> 
+                @endif
+                @foreach ($categories as $category)
+                <div class="d-flex justify-content-between">
+                  <a href="?filter={{$category->name}}" class="my-1 d-block">{{$category->name}}</a><span class="text-muted float-right d-flex align-items-center"><small>{{count($category->restaurants)}}</small></span>
+                </div>
+                @endforeach
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+    {{-- mobile --}}
 
-        </div> --}}
+    <div class="row justify-content-center">
+        <div class="col-lg-2">
+          <div class="d-none d-lg-block d-xl-block">
+            <div class="mb-3">
+              <p class="mb-0"><strong>Filtros</strong></p>
+              @if (count($filters)>0)
+                <small> <i class="fas fa-times" style="color: red"></i><a class="ml-1" style="color: red" href="{{route('list.index')}}">Quitar filtro</a></small> 
+              @endif
+            </div>
+            @foreach ($categories as $category)
+              <div class="d-flex justify-content-between">
+                <a href="?filter={{$category->name}}" class="my-1 d-block">{{$category->name}}</a><span class="text-muted float-right d-flex align-items-center"><small>{{count($category->activeRestaurants())}}</small></span>
+              </div>
+            @endforeach
+          </div>
+        </div>
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
+          @if (count($filters)>0)
+          <div class="alert alert-danger m-0 p-1 px-2 rounded-0 mb-2" role="alert" style="text-align:center" style="text-decoration: none">
+              <div>
+                <div class="mx-auto">@foreach ($filters as $item) {{$item}} @endforeach</div>
+                <div class="mx-auto"><a class="ml-1" href="{{route('list.index')}}"><i class="fas fa-times"></i> Quitar filtro</a></div>
+              </div>
+          </div>
+          @endif
           @foreach($restaurants as $restaurant)
             @if(count($restaurant->products)!=0 && count($restaurant->categories))
-            <div class="card p-2 mb-2">
+              <div class="card p-2 mb-3">
                 <div class="row">
-                    <div class="col-3 pr-0">
-                    <img class="d-block border m-1" width="120px" src="{{Storage::url($restaurant->image)}}" alt="">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-4" style="text-align: center">
+                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
+                  </div>
+                  <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
+                        <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
+                        <div class="ml-2">
+                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
+                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
+                        </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">
+                    <div class="row my-2">
+                      <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
                     </div>
-                    <div class="col-9 pl-0">
-                    <div class="card-block mt-2">
-                        <!--           <h4 class="card-title">Small card</h4> -->
-                        <h5><a href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
-                        <p><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
-                        <p><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
-                        <small>
-                          @foreach($restaurant->restaurantCategories as $restaurantCategory)
-                            {{$restaurantCategory->name.' - '}}
-                          @endforeach
-                        </small>
-                        <br>
-                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
-                    </div>
-                    </div>
+
+                  </div>   
                 </div>
-            </div>
+              </div>
             @endif
             @endforeach
-
-            {{-- <nav aria-label="..." class="float-right mt-3">
-                <ul class="pagination">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-                </ul>
-              </nav> --}}
         </div>
     </div>
 </div>
+<section class="text-center">
+  <hr>
+  <div class="container col-xl-8 my-3">
+  <img src="{{asset('images/design/merchant.svg')}}" width="60px" class="my-2">
+    <h4 class="txt-bold">¿Comerciante?</h4>
+    <p>Sumate a Pedí Simple y obtené beneficios</p>
+    <a class="btn btn-sm btn-primary" href="{{route('register.request')}}">Más información</a>
+  </div>
+</section>
 
-<div class="col-12">
-<div class="row justify-content-center" style="background-color:white">        
-    <section class="text-center">
-        <div class="container my-5">
-            <p>¿Tenés un comercio y querés estar en la plataforma? <a href="#">¡Sumate!</a></p>
-        </div>
-    </section>
-</div>
-</div>
+@endsection
 
+@section('js-scripts')
+    <script>
+      $('.popover-dismiss').popover({
+        trigger: 'focus'
+      })
+    </script>
 @endsection

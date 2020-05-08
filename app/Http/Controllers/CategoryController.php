@@ -17,6 +17,8 @@ class CategoryController extends Controller
     public function isAvailable(Request $request)
     {
         $category = Category::find($request->category_id);
+        $this->authorize('pass', $category);
+
         if($category->state == 'available'){
             $category->update(['state'=>'not-available']);
             return redirect()->back()->with('success_message', 'Categoria cambiada a no disponible');
@@ -91,6 +93,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
+        $this->authorize('pass', $category);
+
         return view('restaurant.categories.edit')->with('category', $category);
     }
 
@@ -104,6 +108,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
+        $this->authorize('pass', $category);
 
         $data=request()->validate([
             'name'=>'required',
@@ -125,9 +130,12 @@ class CategoryController extends Controller
     public function destroy(Request $request)
     {
         $category = Category::findOrFail($request->categoryid);
+        $this->authorize('pass', $category);
+
         $products = Product::where('category_id', $category->id)->get();
         if($products!=null){
             foreach($products as $product){
+                $this->authorize('pass', $product);
                 $product->delete();
             }
         }

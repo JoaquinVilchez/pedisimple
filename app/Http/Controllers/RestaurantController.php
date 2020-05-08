@@ -113,15 +113,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->type=='administrator'){
-            return redirect()->route('restaurant.admin.list');
-        }elseif(Auth::user()->type=='merchant'){
-            if(Auth::user()->restaurant == null){
-                return redirect()->route('welcome');
-            }else{
-                return redirect('/productos');
-            }
-        }
+        return view('home');
     }
 
     /**
@@ -313,7 +305,9 @@ class RestaurantController extends Controller
             
             if($old_image != 'commerce.png'){
                 $path_old_image = 'images/uploads/commerce/'.$old_image;
-                    unlink($path_old_image);
+                    if(file_exists($path_old_image)){
+                        unlink($path_old_image);
+                    }
             }    
             
             $image->fit(250, 250, function ($constraint) {
@@ -362,10 +356,13 @@ class RestaurantController extends Controller
         }
         //FIN FOOD CATEGORIES
 
+        $slug = str_replace(' ', '-', strtolower($data['name']));
+
         $restaurant->update([
             'name'=> $data['name'],
             'phone'=> $data['phone'],
             'description'=> $data['description'],
+            'slug' => $slug,
             'shipping_method'=> $data['shipping_method'],
             'shipping_price'=> $data['shipping_price'],
             'shipping_time'=> $data['shipping_time']
