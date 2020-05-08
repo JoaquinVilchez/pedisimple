@@ -118,6 +118,7 @@
         <div class="form-group">
             <label>Comidas</label>
             <div class="form-group">
+            {!!$errors->first('food_categories', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             @foreach($foodCategories as $category)
                 <div class="chiller_cb">
                     <label>
