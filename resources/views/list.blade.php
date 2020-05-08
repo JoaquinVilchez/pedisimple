@@ -4,7 +4,7 @@
 
 <section class="jumbotron rounded-0 text-center p-0 mb-0" style="background: url('https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
   <div class="element">
-    <div class="  container d-flex align-items-center justify-content-center" style="height:180px;">
+    <div class="container d-flex align-items-center justify-content-center" style="height:180px;">
       {{-- <div class="m-auto"> --}}
         <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>{{count($restaurants)}} @if (count($restaurants)==1) Comercio disponible @else Comercios disponibles @endif</strong></h1>
       </div>
@@ -80,7 +80,7 @@
             @if(count($restaurant->products)!=0 && count($restaurant->categories))
               <div class="card p-2 mb-3">
                 <div class="row">
-                  <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-4" style="text-align: center">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
