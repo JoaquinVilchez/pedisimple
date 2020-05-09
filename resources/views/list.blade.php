@@ -38,7 +38,7 @@
                 @endif
                 @foreach ($categories as $category)
                 <div class="d-flex justify-content-between">
-                  <a href="?filter={{$category->name}}" class="my-1 d-block">{{$category->name}}</a><span class="text-muted float-right d-flex align-items-center"><small>{{count($category->restaurants)}}</small></span>
+                  <a href="?filter={{$category->name}}" class="my-1 d-block">{{$category->name}}</a><span class="text-muted float-right d-flex align-items-center"><small>{{count($category->activeRestaurants())}}</small></span>
                 </div>
                 @endforeach
               </div>

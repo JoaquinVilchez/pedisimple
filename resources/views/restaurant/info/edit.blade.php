@@ -128,9 +128,7 @@
                     @endforeach
                     >
                     {{$category->name}}</label>
-                </div>
-
-                
+                </div>                
             @endforeach
             </div>
         </div>
