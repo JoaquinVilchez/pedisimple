@@ -56,12 +56,12 @@
     </section>
     @if ($restaurant->state != 'active')
         <div class="alert alert-danger m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center; color:white; background-color: rgb(226, 0, 0); border:none">
-            <p class="d-inline">Comecio pendiente de aprobación</p>
+            <p class="d-inline">Comercio pendiente de aprobación</p>
             @if(Auth::user()->type=='administrator')
                 <form class="d-inline" action="{{route('restaurant.admin.updateStatus')}}" id="stateSelect{{$restaurant->id}}" method="post">
                     @csrf
                     <input type="text" value="{{$restaurant->id}}" name="restaurant_id" hidden>
-                    <button type="submit" class="m-0 d-inline active_button" style="height: 28px"> | Activar</button>
+                    <a href="#" class="active_button" data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#activeRestaurantModal">Activar</a>
                 </form>
             @endif
         </div>
@@ -334,10 +334,44 @@
         </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="activeRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Activar comercio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{route('restaurant.admin.updateStatus')}}" method="post">
+                @csrf
+                <div class="modal-body">
+                <h5>¿Estás seguro de activar este comercio?</h5>  
+                <input type="hidden" id="restaurantid" name="restaurant_id" value="">
+                <input type="hidden" name="state" value="active">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-danger">Activar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js-scripts')
     <script>
+         $('#activeRestaurantModal').on('show.bs.modal', function(event){
+            var button = $(event.relatedTarget)
+
+            var restaurantid = button.data('restaurantid')
+            var modal = $(this)
+
+            modal.find('.modal-body #restaurantid').val(restaurantid)
+        })
         
         $('#addItemModal').on('show.bs.modal', function(event){
         var button = $(event.relatedTarget)
