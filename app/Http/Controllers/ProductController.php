@@ -41,49 +41,58 @@ class ProductController extends Controller
         ]);
 
         $file = $request->file('file');
-        $items = Excel::toCollection(new ProductsImport, $file);
+                
+        $items = Excel::toCollection(new ProductsImport, $file);        
+
+        // $items = Excel::toCollection(new ProductsImport, $file);
         $restaurant = Auth::user()->restaurant;
 
         if($request->method == "update"){
+            $errors = 0;
             foreach($items as $item){
                 for ($i=0; $i < count($item) ; $i++) { 
-                    $category_name = $item[$i]['categoria'];
-                    $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
-
-                    if($category==null){
-                        Category::create([
-                            'name' => $category_name,
-                            'state' => 'available',
-                            'restaurant_id' => $restaurant->id
-                        ]);
-
-                        $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
-                    }
-
-                    if($item[$i]['token_no_borrar']==null){
-                        Product::create([
-                            'name' => $item[$i]['nombre'],
-                            'details' => $item[$i]['descripcion'],
-                            'price' => $item[$i]['precio'],
-                            'category_id' => $category->id,
-                            'restaurant_id' => $restaurant->id,
-                        ]);
-
+                    if($item[$i]['nombre'] == null || $item[$i]['precio'] == null || $item[$i]['categoria'] == null){
+                        $errors = $errors+1;
                     }else{
-                        $product_id = decrypt($item[$i]['token_no_borrar']);
-                        $product = Product::where('restaurant_id', $restaurant->id)->where('id', $product_id)->first();
-                        $product->update([
-                            'name' => $item[$i]['nombre'],
-                            'details' => $item[$i]['descripcion'],
-                            'price' => $item[$i]['precio'],
-                            'category_id' => $category->id
-                        ]);
+                        $category_name = $item[$i]['categoria'];
+                        $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+
+                        if($category==null){
+                            Category::create([
+                                'name' => $category_name,
+                                'state' => 'available',
+                                'restaurant_id' => $restaurant->id
+                            ]);
+
+                            $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+                        }
+
+                        if($item[$i]['token_no_borrar']==null){
+                            Product::create([
+                                'name' => $item[$i]['nombre'],
+                                'details' => $item[$i]['descripcion'],
+                                'price' => $item[$i]['precio'],
+                                'category_id' => $category->id,
+                                'restaurant_id' => $restaurant->id,
+                            ]);
+
+                        }else{
+                            $product_id = decrypt($item[$i]['token_no_borrar']);
+                            $product = Product::where('restaurant_id', $restaurant->id)->where('id', $product_id)->first();
+                            $product->update([
+                                'name' => $item[$i]['nombre'],
+                                'details' => $item[$i]['descripcion'],
+                                'price' => $item[$i]['precio'],
+                                'category_id' => $category->id
+                            ]);
+                        }
                     }
                 }
             }
 
         }elseif($request->method == "replace"){
 
+            $errors = 0;
             $products = Product::where('restaurant_id', $restaurant->id)->get();
 
             if($products!=null){
@@ -94,31 +103,41 @@ class ProductController extends Controller
             
             foreach($items as $item){
                 for ($i=0; $i < count($item) ; $i++) { 
-                    $category_name = $item[$i]['categoria'];
-                    $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+                    if($item[$i]['nombre'] == null || $item[$i]['precio'] == null || $item[$i]['categoria'] == null){
+                        $errors = $errors+1;
+                    }else{
 
-                    if($category==null){
-                        Category::create([
-                            'name' => $category_name,
-                            'state' => 'available',
-                            'restaurant_id' => $restaurant->id
-                        ]);
-
+                        $category_name = $item[$i]['categoria'];
                         $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+    
+                        if($category==null){
+                            Category::create([
+                                'name' => $category_name,
+                                'state' => 'available',
+                                'restaurant_id' => $restaurant->id
+                            ]);
+    
+                            $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+                        }
+    
+                        Product::create([
+                            'name' => $item[$i]['nombre'],
+                            'details' => $item[$i]['descripcion'],
+                            'price' => $item[$i]['precio'],
+                            'category_id' => $category->id,
+                            'restaurant_id' => $restaurant->id,
+                        ]);
                     }
-
-                    Product::create([
-                        'name' => $item[$i]['nombre'],
-                        'details' => $item[$i]['descripcion'],
-                        'price' => $item[$i]['precio'],
-                        'category_id' => $category->id,
-                        'restaurant_id' => $restaurant->id,
-                    ]);
+                    
                 }
             }
         }//endif
 
-        return redirect()->back()->with('success_message', 'Archivo importado con éxito');
+        if($errors>0){
+            return redirect()->back()->with('success_message', 'Archivo importado con éxito')->with('error_message', $errors.' producto/s no fueron importados. Los campos nombre, precio y categoria son obligatorios.');
+        }else{
+            return redirect()->back()->with('success_message', 'Archivo importado con éxito');
+        }
     }
 
     /**

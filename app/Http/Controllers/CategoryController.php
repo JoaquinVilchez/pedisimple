@@ -65,8 +65,8 @@ class CategoryController extends Controller
         $restaurant_id = Auth::user()->restaurant->id;
 
         Category::create([
-            'name' => $request->name,
-            'description' => $request->description,
+            'name' => ucfirst(strtolower($request->name)),
+            'description' => ucfirst(strtolower($request->description)),
             'restaurant_id' => $restaurant_id
         ]);
 

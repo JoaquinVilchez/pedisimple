@@ -47,7 +47,7 @@
               >
             </form>
           </td>
-          <td>{{$category->updated_at}}</td>
+          <td>{{$category->updated_at->calendar()}}</td>
           <td><a href="{{route('category.edit', $category)}}">Editar</a></td>
           <td><a href="#" data-categoryid="{{$category->id}}" data-toggle="modal" data-target="#deleteCategoryModal">Eliminar</a></td>
         </tr>
