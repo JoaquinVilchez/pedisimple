@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Restaurant;
 use Illuminate\Support\Facades\URL;
+use Auth;
+use Policies\RestaurantPolicy;
 
 class Visible
 {
@@ -20,10 +22,27 @@ class Visible
         $slug = rawurldecode(substr($request->getRequestUri(), 10));
         $restaurant = Restaurant::where('slug', $slug)->first();
 
-        if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
-            return $next($request);
+        if(Auth::check()){
+            if(Auth::user()->type=='administrator') {
+                return $next($request);
+            }elseif(Auth::user()->type=='merchant'){
+                if($restaurant->state == 'active'){
+                    return $next($request);
+                }else{
+                    if (Auth::user()->restaurant->id == $restaurant->id) {
+                        return $next($request);
+                    }else{
+                        return redirect()->route('list.index');
+                    }
+                }
+               
+            }
         }else{
-            return redirect()->route('list.index');
+            if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
+                return $next($request);
+            }else{
+                return redirect()->route('list.index');
+            }
         }
     }
 }

@@ -19,7 +19,6 @@
 </div>
   <!-- Page Content -->
 <div class="container mt-4">
-
     {{-- mobile --}}
     <div class="col-12 d-block d-sm-none">
       <div class="d-flex justify-content-center">
@@ -68,6 +67,8 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
+          @include('messages')
+          
           @if (count($filters)>0)
           <div class="alert alert-danger m-0 p-1 px-2 rounded-0 mb-2" role="alert" style="text-align:center" style="text-decoration: none">
               <div>
@@ -75,6 +76,36 @@
                 <div class="mx-auto"><a class="ml-1" href="{{route('list.index')}}"><i class="fas fa-times"></i> Quitar filtro</a></div>
               </div>
           </div>
+          @endif
+          @if(Auth::check() and Auth::user()->type == 'administrator')
+            @foreach($pending_restaurants as $pending_restaurant)
+              <div class="card pt-2 mb-3" style="border: 1px solid rgb(226, 0, 0)">
+                <div class="row px-2">
+                  <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
+                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" src="{{asset('images/uploads/commerce/'.$pending_restaurant->image)}}" alt="">
+                  </div>
+                  <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
+                        <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $pending_restaurant->slug)}}">{{$pending_restaurant->name}}</a></h5>
+                        <div class="ml-2">
+                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$pending_restaurant->address->getFullAddress()}}</p>
+                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$pending_restaurant->phone}}</p>
+                        </div>
+                  </div>
+                  <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">
+                    <div class="row my-2">
+                      <a href="{{route('restaurant.show', $pending_restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
+                    </div>
+
+                  </div>   
+                </div>
+                <div style="background-color: rgb(226, 0, 0); height: 15px" class="p-0 mt-2 rounded-bottom">
+                  <div style="color:white; font-size:10px" class="ml-2 d-flex justify-content-between">
+                    <p class="m-0d-inline">Pendiente</p>
+                    <a href="#" class="active_button" data-restaurantid="{{$pending_restaurant->id}}" data-toggle="modal" data-target="#activeRestaurantModal">Activar</a>
+                  </div>
+                </div>
+              </div>
+            @endforeach
           @endif
           @foreach($restaurants as $restaurant)
             @if(count($restaurant->products)!=0 && count($restaurant->categories))
@@ -113,12 +144,46 @@
   </div>
 </section>
 
+
+<!-- Modal -->
+<div class="modal fade" id="activeRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Activar comercio</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{route('restaurant.admin.updateStatus')}}" method="post">
+        @csrf
+        <div class="modal-body">
+          <h5>¿Estás seguro de activar este comercio?</h5>  
+          <input type="hidden" id="restaurantid" name="restaurant_id" value="">
+          <input type="hidden" name="state" value="active">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Activar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('js-scripts')
-    <script>
-      $('.popover-dismiss').popover({
-        trigger: 'focus'
-      })
-    </script>
+<script>
+
+  $('#activeRestaurantModal').on('show.bs.modal', function(event){
+  var button = $(event.relatedTarget)
+
+  var restaurantid = button.data('restaurantid')
+  var modal = $(this)
+
+  modal.find('.modal-body #restaurantid').val(restaurantid)
+  })
+
+</script>
 @endsection

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\RestaurantCategory;
 use App\Restaurant;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class ListController extends Controller
 {
@@ -28,17 +29,26 @@ class ListController extends Controller
                     $restaurants = $filter_category->restaurants;
                 }
 
-                $available_restaurants = $restaurants->filter(function ($restaurants) {
+                $active_restaurants = $restaurants->filter(function ($restaurants) {
                     if($restaurants->state == 'active'){
                         return $restaurants;
                     }
                 });
 
-                $available_restaurants->sortBy('name');
-                
+                if(Auth::check() and Auth::user()->type == 'administrator'){
+                    $pending_restaurants = $restaurants->filter(function ($restaurants) {
+                        if($restaurants->state == 'pending'){
+                            return $restaurants;
+                        }
+                    });
+                }
+
                 array_push($filters, $filter);
         }else{
-            $available_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->get();
+            $active_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->get();
+            if(Auth::check() and Auth::user()->type=='administrator'){
+                $pending_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'pending')->get();
+            }
             $filter = false;
         }
         
@@ -56,11 +66,20 @@ class ListController extends Controller
             }
         });
 
-        return view('list')->with([
-            'categories'=>$filtered_categories,
-            'restaurants'=>$available_restaurants->sortBy('name'),
-            'filters'=>$filters
-        ]);
+        if(Auth::check() and Auth::user()->type == 'administrator'){
+            return view('list')->with([
+                'categories'=>$filtered_categories,
+                'restaurants'=>$active_restaurants->sortBy('name'),
+                'pending_restaurants'=>$pending_restaurants->sortBy('name'),
+                'filters'=>$filters
+            ]);
+        }else{
+            return view('list')->with([
+                'categories'=>$filtered_categories,
+                'restaurants'=>$active_restaurants->sortBy('name'),
+                'filters'=>$filters
+            ]);
+        }
     }
 
     /**

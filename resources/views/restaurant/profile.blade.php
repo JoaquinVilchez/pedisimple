@@ -54,6 +54,18 @@
             </div>
         </div>
     </section>
+    @if ($restaurant->state != 'active')
+        <div class="alert alert-danger m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center; color:white; background-color: rgb(226, 0, 0); border:none">
+            <p class="d-inline">Comecio pendiente de aprobación</p>
+            @if(Auth::user()->type=='administrator')
+                <form class="d-inline" action="{{route('restaurant.admin.updateStatus')}}" id="stateSelect{{$restaurant->id}}" method="post">
+                    @csrf
+                    <input type="text" value="{{$restaurant->id}}" name="restaurant_id" hidden>
+                    <button type="submit" class="m-0 d-inline active_button" style="height: 28px"> | Activar</button>
+                </form>
+            @endif
+        </div>
+    @endif
     <div class="alert alert-warning m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center" style="text-decoration: none">
         <a target=”_blank” href="https://www.argentina.gob.ar/salud/coronavirus-COVID-19">
           <strong><i class="fas fa-virus"></i> COVID-19</strong> | Conocé información y recomendaciones del Ministerio de Salud.

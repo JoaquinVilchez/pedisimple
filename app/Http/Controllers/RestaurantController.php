@@ -55,7 +55,7 @@ class RestaurantController extends Controller
             Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
         }
 
-        return redirect()->route('restaurant.admin.list')->with('success_message', 'Estado actualizado con éxito');
+        return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
     }
 
     /**

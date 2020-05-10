@@ -25,6 +25,7 @@
             <div class="alert alert-warning p-0" role="alert">
                 <img src="{{asset('images/design/padlock.svg')}}" alt="" width="50px" class="d-block mx-auto my-2">  
                 <p class="d-block m-0">Tu comercio está pendiente de aprobación</p>
+                <a class="btn btn-sm btn-danger my-2" href="{{route('restaurant.show', Auth::user()->restaurant->slug)}}" target=”_blank” >Vista previa del perfil</a>
             </div>
           @elseif(Auth::user()->restaurant->state=='cancelled')
             <div class="alert alert-danger m-2" role="alert">Tu comercio fue cancelado</div>
