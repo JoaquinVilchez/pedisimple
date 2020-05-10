@@ -79,12 +79,14 @@ class ProductController extends Controller
                         }else{
                             $product_id = decrypt($item[$i]['token_no_borrar']);
                             $product = Product::where('restaurant_id', $restaurant->id)->where('id', $product_id)->first();
-                            $product->update([
-                                'name' => $item[$i]['nombre'],
-                                'details' => $item[$i]['descripcion'],
-                                'price' => $item[$i]['precio'],
-                                'category_id' => $category->id
-                            ]);
+                            if($product !== null){
+                                $product->update([
+                                    'name' => $item[$i]['nombre'],
+                                    'details' => $item[$i]['descripcion'],
+                                    'price' => $item[$i]['precio'],
+                                    'category_id' => $category->id
+                                ]);
+                            }
                         }
                     }
                 }
@@ -106,7 +108,6 @@ class ProductController extends Controller
                     if($item[$i]['nombre'] == null || $item[$i]['precio'] == null || $item[$i]['categoria'] == null){
                         $errors = $errors+1;
                     }else{
-
                         $category_name = $item[$i]['categoria'];
                         $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
     
@@ -324,7 +325,16 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->productid);
         $this->authorize('pass', $product);
-        
+                
+        $old_image = $product->image;
+
+        if($old_image != 'no_image.png'){
+            $path_old_image = 'images/uploads/products/'.$old_image;
+                if(file_exists($path_old_image)){
+                    unlink($path_old_image);
+                }
+        }   
+
         $product->delete();
         return redirect(route('product.index'))->with('success_message', 'Producto eliminado con éxito');
     }
@@ -334,6 +344,16 @@ class ProductController extends Controller
         $products = Product::where('restaurant_id', Auth::user()->restaurant->id)->get();
         foreach($products as $product){
             $this->authorize('pass', $product);
+
+            $old_image = $product->image;
+
+            if($old_image != 'no_image.png'){
+                $path_old_image = 'images/uploads/products/'.$old_image;
+                    if(file_exists($path_old_image)){
+                        unlink($path_old_image);
+                    }
+            }   
+            
             $product->delete();
         }
         return redirect(route('product.index'))->with('success_message', 'Productos eliminados con éxito');
