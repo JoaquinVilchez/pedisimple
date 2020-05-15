@@ -168,9 +168,7 @@ class RestaurantController extends Controller
             'image'=> ['nullable'],
         ]);
 
-        // dd($data['food_categories']);
-
-        $slug = str_replace(' ', '-', strtolower($data['name']));
+        $slug = str_replace(' ', '-', normaliza($data['name']));
 
         if($request->hasFile('image')){
 
@@ -298,7 +296,7 @@ class RestaurantController extends Controller
         }else{
             $second_phone_rule = 'nullable';
         }
-
+        
         $data=request()->validate([
             'name'=>'required',
             'street'=>'required',
@@ -314,6 +312,8 @@ class RestaurantController extends Controller
             'shipping_time' => 'nullable',
             'food_categories' => 'required'
         ]);
+
+        $slug = str_replace(' ', '-', normaliza($data['name']));
 
         //IMAGE
         if($request->hasFile('image')){
@@ -378,8 +378,6 @@ class RestaurantController extends Controller
             ]);
         }
         //FIN FOOD CATEGORIES
-
-        $slug = str_replace(' ', '-', strtolower($data['name']));
 
         $restaurant->update([
             'name'=> $data['name'],
