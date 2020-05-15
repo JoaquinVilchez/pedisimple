@@ -49,3 +49,12 @@
   </div>
 </div>
 @endsection
+
+@section('js-scripts')
+<script>
+  function launchModal()
+  {
+     $("#exampleModal").modal("show");
+  });
+</script>
+@endsection

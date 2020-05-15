@@ -159,15 +159,18 @@ return [
         'details' => 'descripción',
         'password' => 'contraseña',
         'restaurant_id' => 'comercio',
-        'street' => 'calle',
+        'street' => 'dirección',
         'number' => 'número',
         'city_id' => 'ciudad',
         'phone' => 'teléfono',
+        'second_phone' => 'teléfono',
+        'characteristic' => 'característica',
+        'second_characteristic' => 'característica',
+        'image' => 'imágen',
         'shipping_method' => 'método de envío',
-        'shipping_price' => 'precio de envío',
+        'shipping_price' => 'costo de envío',
         'shipping_time' => 'tiempo de envío',
         'food_categories' => 'categorías de comidas',
-        'image' => 'imágen'
     ],
 
     'email-confirmation' => [

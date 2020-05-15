@@ -63,7 +63,7 @@
       </div>
     </nav>
 
-    <main role="main" class="col-auto ml-sm-auto col-xl-10 px-4">
+    <main role="main" class="col-auto ml-sm-auto col-xl-10 px-4" onload="">
       @yield('main')
     </main>
   </div>

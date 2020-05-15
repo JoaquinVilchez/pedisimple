@@ -24,7 +24,10 @@
                         <div class="ml-3">
                             <h3 class="txt-bold">{{$restaurant->name}}</h3>
                             <div>
-                                <p class="mb-0"><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
+                                <p class="mb-0 mr-2 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
+                                @if ($restaurant->second_phone)
+                                    <span> | </span><p class="mb-0 ml-2 d-inline"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
+                                @endif
                                 <p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                             </div>
                         </div>
@@ -217,13 +220,16 @@
                             <hr>
                             @endif
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-xl-6 col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Dirección</h6>
                                     <p><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-xl-6 col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Teléfono</h6>
-                                    <p><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
+                                    <p class="d-inline mr-1"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
+                                    @if ($restaurant->second_phone)
+                                        <span> | </span><p class="mb-0 ml-1 d-inline"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
+                                    @endif
                                 </div>
                             </div>
                                 <!--Google map-->

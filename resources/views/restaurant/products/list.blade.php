@@ -218,17 +218,17 @@
 @section('js-scripts')
 <script>
 
-$( document ).ready(function() {
-    var method_1 = document.getElementById('method_1');
-    var method_2 = document.getElementById('method_2');
+// $( document ).ready(function() {
+//     var method_1 = document.getElementById('method_1');
+//     var method_2 = document.getElementById('method_2');
 
-    if(method_1.checked){ 
-      console.log('El metodo 1 esta seleccionado');
-    }else if(method_2.checked){
-      console.log('El metodo 2 esta seleccionado');
-    }
+//     if(method_1.checked){ 
+//       console.log('El metodo 1 esta seleccionado');
+//     }else if(method_2.checked){
+//       console.log('El metodo 2 esta seleccionado');
+//     }
 
-});
+// });
 
 $('#deleteProductModal').on('show.bs.modal', function(event){
 var button = $(event.relatedTarget)

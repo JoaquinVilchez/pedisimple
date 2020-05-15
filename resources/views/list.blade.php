@@ -88,7 +88,10 @@
                         <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $pending_restaurant->slug)}}">{{$pending_restaurant->name}}</a></h5>
                         <div class="ml-2">
                           <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$pending_restaurant->address->getFullAddress()}}</p>
-                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$pending_restaurant->phone}}</p>
+                          <p class="my-1 mr-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$pending_restaurant->characteristic.'-'.$pending_restaurant->phone}}</p>
+                          @if ($pending_restaurant->second_phone)
+                            <span> | </span><p class="mb-0 ml-1 d-inline" style="font-size: 2vh"> {{$pending_restaurant->second_characteristic.'-'.$pending_restaurant->second_phone}}</p>
+                          @endif
                         </div>
                   </div>
                   <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">
@@ -118,7 +121,10 @@
                         <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
                         <div class="ml-2">
                           <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
-                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$restaurant->phone}}</p>
+                          <p class="my-1 ml-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
+                          @if ($restaurant->second_phone)
+                            <span> | </span><p class="mb-0 ml-1 d-inline" style="font-size: 2vh"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
+                          @endif
                         </div>
                   </div>
                   <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">

@@ -144,12 +144,22 @@ class RestaurantController extends Controller
         }else{
             $rule = 'required';
         }
+
+        if($request->second_phone != null or $request->second_characteristic != null ){
+            $second_phone_rule = 'required';
+        }else{
+            $second_phone_rule = 'nullable';
+        }
+
         $data=request()->validate([
             'name'=> ['required', 'string'],
             'street'=> ['required', 'string'],
             'number'=> ['required'],
             'city_id'=> ['required'],
-            'phone'=> ['required', 'string'],
+            'characteristic' => 'required|min:4',
+            'phone' => 'required|min:6',
+            'second_characteristic' => $second_phone_rule.'|min:4',
+            'second_phone' => $second_phone_rule.'|min:6',
             'description'=> ['nullable', 'string'],
             'shipping_method'=> ['required'],
             'shipping_price'=> $rule,
@@ -158,6 +168,7 @@ class RestaurantController extends Controller
             'image'=> ['nullable'],
         ]);
 
+        // dd($data['food_categories']);
 
         $slug = str_replace(' ', '-', strtolower($data['name']));
 
@@ -185,7 +196,10 @@ class RestaurantController extends Controller
             'name' => $data['name'],
             'description' => $data['description'],
             'slug' => $slug,
+            'characteristic' => $data['characteristic'],
             'phone' => $data['phone'],
+            'second_characteristic' => $data['second_characteristic'],
+            'second_phone' => $data['second_phone'],
             'shipping_price' => $data['shipping_price'],
             'shipping_time' => $data['shipping_time'],
             'shipping_method' => $data['shipping_method'],
@@ -202,17 +216,17 @@ class RestaurantController extends Controller
             'number' => $data['number'],
             'restaurant_id' => $restaurant->id,
             'city_id' => $data['city_id']
-            ]);
+        ]);
             
             
-            for ($i=0; $i < count($data['food_categories']); $i++) { 
-                DB::table('relation_restaurant_category')->insert([
-                    'restaurant_id' => $restaurant->id,
-                    'category_restaurant_id' => $data['food_categories'][$i]
-                    ]);   
-                }
-                
-                $restaurant = Auth::user()->restaurant;
+        for ($i=0; $i < count($data['food_categories']); $i++) { 
+        DB::table('relation_restaurant_category')->insert([
+            'restaurant_id' => $restaurant->id,
+            'category_restaurant_id' => $data['food_categories'][$i]
+            ]);   
+        }
+            
+        $restaurant = Auth::user()->restaurant;
         
         Mail::to(Auth::user()->email)->send(new newCommerce($restaurant));
         Mail::to(env('MAIL_FROM_ADDRESS'))->send(new newCommerceAdmin($restaurant));
@@ -274,9 +288,15 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::findOrFail($id);
 
         if($request->shipping_method == 'pickup'){
-            $rule = 'nullable';
+            $shipping_price_rule = 'nullable';
         }else{
-            $rule = 'required';
+            $shipping_price_rule = 'required';
+        }
+
+        if($request->second_phone != null or $request->second_characteristic != null ){
+            $second_phone_rule = 'required';
+        }else{
+            $second_phone_rule = 'nullable';
         }
 
         $data=request()->validate([
@@ -284,10 +304,13 @@ class RestaurantController extends Controller
             'street'=>'required',
             'number'=>'required',
             'city_id' => 'required',
-            'phone' => 'nullable',
+            'characteristic' => 'required|min:4',
+            'phone' => 'required|min:6',
+            'second_characteristic' => $second_phone_rule.'|min:4',
+            'second_phone' => $second_phone_rule.'|min:6',
             'description' => 'nullable',
             'shipping_method' => 'required',
-            'shipping_price' => $rule,
+            'shipping_price' => $shipping_price_rule,
             'shipping_time' => 'nullable',
             'food_categories' => 'required'
         ]);
@@ -360,7 +383,10 @@ class RestaurantController extends Controller
 
         $restaurant->update([
             'name'=> $data['name'],
+            'characteristic'=> $data['characteristic'],
             'phone'=> $data['phone'],
+            'second_characteristic'=> $data['second_characteristic'],
+            'second_phone'=> $data['second_phone'],
             'description'=> $data['description'],
             'slug' => $slug,
             'shipping_method'=> $data['shipping_method'],

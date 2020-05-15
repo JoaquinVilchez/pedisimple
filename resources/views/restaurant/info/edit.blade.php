@@ -43,10 +43,44 @@
                 </div>
             </div>
             <hr class="my-2">
-            <div class="form-group col-4 pl-0">
+            {{-- <div class="form-group col-4 pl-0">
                 <label>Teléfono</label>
                 <input type="text" class="form-control" name="phone" value="{{old('phone', $restaurant->phone)}}">
                 {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+            </div> --}}
+            <div class="form-row">
+                <div class="form-group col-6">
+                        <label>Teléfono</label>
+                        <div class="form-row">
+                            <div class="col-3">
+                            <input type="text" name="characteristic" value="{{old('characteristic', $restaurant->characteristic)}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
+                            <small class="form-text text-muted">Ej: 3462</small>
+                            </div>
+                            <div class="col-8">
+                            <input type="text" name="phone" value="{{old('phone', $restaurant->phone)}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)">
+                            <small class="form-text text-muted">Ej: 654321</small>
+                            </div>
+                        </div>
+                        {!!$errors->first('characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                        <br>
+                        {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                </div>
+                <div class="form-group col-6">
+                    <label>Segundo teléfono</label>
+                    <div class="form-row">
+                        <div class="col-3">
+                        <input type="text" name="second_characteristic" value="{{old('second_characteristic', $restaurant->second_characteristic)}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
+                        <small class="form-text text-muted">Ej: 3462</small>
+                        </div>
+                        <div class="col-8">
+                        <input type="text" name="second_phone" value="{{old('second_phone', $restaurant->second_phone)}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)">
+                        <small class="form-text text-muted">Ej: 654321</small>
+                        </div>
+                    </div>
+                    {!!$errors->first('second_characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                    <br>
+                    {!!$errors->first('second_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                </div>
             </div>
             <hr class="my-2">
             <div class="form-group">
@@ -139,6 +173,17 @@
 @endsection
 
 @section('js-scripts')
+    <script> 
+        function onlyNumberKey(evt) { 
+            
+            // Only ASCII charactar in that range allowed 
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
+                return false; 
+            return true; 
+        } 
+    </script> 
+
     <script>
         function readURL(input) {
             document.getElementById('image_container').removeAttribute('hidden');

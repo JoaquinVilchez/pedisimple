@@ -45,18 +45,43 @@
                     {!!$errors->first('street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
                 <hr class="my-2">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
+                <div class="form-row">
+                    <div class="col-xl-6 col-12">
                             <label>Teléfono <small style="color:red">*</small></label>
-                            <input type="text" class="form-control" name="phone" value="{{old('phone')}}" autocomplete="flase">
+                            <div class="form-row">
+                                <div class="col-4">
+                                <input type="text" name="characteristic" value="{{old('characteristic')}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)" autocomplete="flase">
+                                <small class="form-text text-muted">Ej: 3462</small>
+                                </div>
+                                <div class="col-8">
+                                <input type="text" name="phone" value="{{old('phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)" autocomplete="flase">
+                                <small class="form-text text-muted">Ej: 654321</small>
+                                </div>
+                            </div>
+                            {!!$errors->first('characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                            <br>
+                            {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                    </div>
+                    <div class="col-xl-6 col-12">
+                        <label>Segundo teléfono <small>(opcional)</small></label>
+                        <div class="form-row">
+                            <div class="col-4">
+                            <input type="text" name="second_characteristic" value="{{old('second_characteristic')}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)" autocomplete="flase">
+                            <small class="form-text text-muted">Ej: 3462</small>
+                            </div>
+                            <div class="col-8">
+                            <input type="text" name="second_phone" value="{{old('second_phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)" autocomplete="flase">
+                            <small class="form-text text-muted">Ej: 654321</small>
+                            </div>
                         </div>
+                        {!!$errors->first('second_characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                        <br>
+                        {!!$errors->first('second_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
                 </div>
-                {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                <hr class="my-2">
+                <hr class="mb-2">
                 <div class="form-group">
-                    <label>Descripción</label>
+                    <label>Descripción <small>(opcional)</small></label>
                     <textarea class="form-control" rows="3" name="description" value="{{old('description')}}" autocomplete="flase">{{old('description')}}</textarea>
                 </div>
                 <hr class="my-2">
@@ -80,8 +105,8 @@
                                     <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}" autocomplete="flase">
                                 </div>
                             </div>
-                            {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
+                        {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         <div class="row mt-2 ml-1">
                             <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
                                 <label>Tiempo aproximado de envío</label>
@@ -97,7 +122,7 @@
                 </div>
                 <hr class="my-2">
                 <div class="form-group" id="foto">  
-                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
+                        <div class="col-xl-12 col-lg-6 col-md-8 col-sm-8 col-8">
                             <label>Foto</label>
                             <div class="row mt-2 ml-1">
                                     <div id="image_container" hidden>
@@ -148,6 +173,16 @@
 
 @section('js-scripts')
     <script>
+    
+        function onlyNumberKey(evt) { 
+            
+            // Only ASCII charactar in that range allowed 
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
+                return false; 
+            return true; 
+        } 
+    
         showDeliveryInputs();
 
         function showDeliveryInputs(){

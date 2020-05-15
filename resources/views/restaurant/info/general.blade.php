@@ -21,11 +21,23 @@
           </tr>
           <tr>
             <td>Teléfono</td>
-            <td>{{$restaurant->phone}}</td>
+            <td>{{$restaurant->characteristic.' - '.$restaurant->phone}}</td>
+          </tr>
+          <tr>
+            <td>Segundo teléfono</td>
+            @if ($restaurant->second_phone == null)
+              <td>No tengo</td>
+            @else
+            <td>{{$restaurant->second_characteristic.' - '.$restaurant->second_phone}}</td>
+            @endif
           </tr>
           <tr>
             <td>Descripción</td>
-            <td>{{$restaurant->description}}</td>
+            @if ($restaurant->second_phone == null)
+              <td> - </td>
+            @else
+              <td>{{$restaurant->description}}</td>
+            @endif
           </tr>
           <tr>
             <td>Foto</td>
@@ -46,7 +58,11 @@
           @if($restaurant->shipping_method=='delivery' || $restaurant->shipping_method=='delivery-pickup')
           <tr>
             <td>Costo de envío</td>
-            <td>${{$restaurant->shipping_price}}</td>
+            @if ($restaurant->shipping_price != 0)
+              <td>${{$restaurant->shipping_price}}</td>
+            @else
+              <td>Sin cargo</td>
+            @endif
           </tr>
           <tr>
             @if($restaurant->shipping_time != null)
