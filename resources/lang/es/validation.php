@@ -171,6 +171,10 @@ return [
         'shipping_price' => 'costo de envío',
         'shipping_time' => 'tiempo de envío',
         'food_categories' => 'categorías de comidas',
+        'start_hour_1' => 'horario de apertura',
+        'end_hour_1' => 'horario de cierre',
+        'start_hour_2' => 'horario de apertura',
+        'end_hour_2' => 'horario de cierre'
     ],
 
     'email-confirmation' => [

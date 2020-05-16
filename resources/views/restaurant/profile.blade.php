@@ -22,7 +22,16 @@
                     </div>
                     <div class="col-xl-10 col-lg-10 col-md-10 pl-0">
                         <div class="ml-3">
-                            <h3 class="txt-bold">{{$restaurant->name}}</h3>
+                            <div class="d-flex align-items-center">
+                                <h3 class="txt-bold d-inline">{{$restaurant->name}}</h3>
+                                @if($days!=null)
+                                    @if($state=='Abierto')
+                                        <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> @if($state==true) Abierto @endif</span>
+                                    @else
+                                        <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> @if($state==false) Cerrado @endif</span>
+                                    @endif
+                                @endif
+                            </div>
                             <div>
                                 <p class="mb-0 mr-2 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
                                 @if ($restaurant->second_phone)
@@ -232,6 +241,55 @@
                                     @endif
                                 </div>
                             </div>
+
+                            @if($days!=null)
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios</h6>
+                                    <table class="table table-striped responsive" style="font-size: 15px">
+                                        <tbody>
+                                            @foreach($days as $day)
+                                            @if(is_array($day))
+                                                <tr>
+                                                    <td>{{getDayName($day)}}</td>
+                                                    @if($day['start_hour_1'] == null or $day['end_hour_1'] == null)
+                                                        <td>Cerrado</td>
+                                                        <td></td>
+                                                        <td>Cerrado</td>
+                                                    @else
+                                                        <td>{{substr($day['start_hour_1'], 0, -3)}}hs</td>
+                                                            <td>a</td>
+                                                        <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
+                                                    @endif
+                                                    
+                                                    @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
+                                                        <td>Cerrado</td>
+                                                        <td></td>
+                                                        <td>Cerrado</td>
+                                                    @else
+                                                        <td>{{substr($day['start_hour_2'], 0, -3)}}hs</td>
+                                                            <td>a</td>
+                                                        <td>{{substr($day['end_hour_2'], 0, -3)}}hs</td>
+                                                    @endif
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td>{{getDayName($day)}}</td>
+                                                    <td>Cerrado</td>
+                                                    <td></td>
+                                                    <td>Cerrado</td>
+                                                    <td>Cerrado</td>
+                                                    <td></td>
+                                                    <td>Cerrado</td>
+                                                </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endif
+
                                 <!--Google map-->
                                 <h6 class="card-subtitle mb-2 text-muted mt-3">Mapa</h6>
 
@@ -247,18 +305,6 @@
                                     {{-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe> --}}
                                 </div>                    
                                 <!--Google Maps-->
-                            {{-- <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios de apertura</h6>
-                            <table class="table table-striped table-responsive">
-                                @foreach ($opening_times as $day)
-                                <tr>
-                                    <td>{{$day->getDayName()}}</td>
-                                    <td>{{substr($day->start_hour_1, 3)}} hs</td>
-                                    <td>{{substr($day->end_hour_1, 3)}} hs</td>
-                                    <td>{{substr($day->start_hour_2, 3)}} hs</td>
-                                    <td>{{substr($day->end_hour_2, 3)}} hs</td>
-                                </tr>
-                                @endforeach
-                            </table> --}}
                         </div>
                     </div>
                 </div>

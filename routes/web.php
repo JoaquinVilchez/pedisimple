@@ -61,6 +61,7 @@ Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->n
 Route::post('/comercios/solicitud', 'RestaurantController@request')->name('restaurant.request');
 Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('restaurant.times')->middleware(['verified', 'hasRestaurant']);
+Route::put('/comercio/horarios', 'RestaurantController@openingTimeUpdate')->name('restaurant.times.update')->middleware(['verified', 'hasRestaurant']);
 Route::resource('/comercio', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
 Route::post('/comercio', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);

@@ -1,42 +1,98 @@
 @extends('layouts.commerce')
 
 @section('main')
-<form action="{{route('restaurant.update', $restaurant->id)}}" method="post" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom">
         <h1 class="h2"><strong>Horarios de apertura</strong></h1>
         <div class="btn-toolbar mb-2 mb-md-0 ml-5">
-        <a href="{{route('restaurant.info')}}" class="btn btn-secondary mr-2">Cancelar</a>
-        <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
     </div>
 
-    <table class="table mt-3">
-        @foreach($days as $day)
-            <tr style="text-align:center" class="mb-4">
-                <td width="4%"><input type="checkbox"></td>
-                <td width="10%">{{$day->getDayName()}}</td>
-                <td width="10%">
-                <input type="time" class="form-control" placeholder="Abre" value="{{$day->start_hour_1}}">
-                </td>
-                <td width="5%">a</td>
-                <td width="10%">
-                    <input type="time" class="form-control" placeholder="Cierra" value="{{$day->end_hour_1}}">
-                </td>
-                <td width="5%">/</td>
-                <td width="10%">
-                    <input type="time" class="form-control" placeholder="Abre" value="{{$day->start_hour_2}}">
-                </td>
-                <td width="5%">a</td>
-                <td width="10%">
-                    <input type="time" class="form-control" placeholder="Cierra" value="{{$day->end_hour_2}}">
-                </td>
-                <td width="100%"></td>
-            </tr>
+    <table class="table mt-3" style="text-align: center">
+            <td>Abierto/Cerrado</td>
+            <td>Día hábil</td>
+            <td>Apertura</td>
+            <td></td>
+            <td>Cierre</td>
+            <td></td>
+            <td>Apertura</td>
+            <td></td>
+            <td>Cierre</td>
+            <td></td>
+        @foreach($schedule as $day)
+            @if(is_array($day))
+            <form action="{{route('restaurant.times.update')}}" method="post">
+                @csrf
+                @method('PUT')
+                <tr class="mb-4">
+                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" name="state" @if($day['state']=='open') checked @endif></td>
+                    <td width="10%">
+                        {{getDayName($day)}}
+                        <input type="text" value="{{$day['id']}}" name="id" hidden>
+                    </td>
+                    <td width="10%">
+                    <input type="time" class="form-control" placeholder="Abre" value="{{$day['start_hour_1']}}"  name="start_hour_1">
+                    </td>
+                    <td width="5%">a</td>
+                    <td width="10%">
+                        <input type="time" class="form-control" placeholder="Cierra" value="{{$day['end_hour_1']}}" name="end_hour_1">
+                    </td>
+                    <td width="5%">|</td>
+                    <td width="10%">
+                        <input type="time" class="form-control" placeholder="Abre" value="{{$day['start_hour_2']}}" name="start_hour_2">
+                    </td>
+                    <td width="5%">a</td>
+                    <td width="10%">
+                        <input type="time" class="form-control" placeholder="Cierra" value="{{$day['end_hour_2']}}" name="end_hour_2">
+                    </td>
+                    <td width="100%">
+                        <button type="submit" class="float-left btn btn-sm mr-1 btn-primary">Actualizar</button>
+                    </td>
+                </tr>
+            </form>
+            @else
+            <form action="{{route('restaurant.times.update')}}" method="post">
+                @csrf
+                @method('PUT')
+                <tr class="mb-4">
+                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" name="state"></td>
+                    <td width="10%">
+                        {{getDayName($day)}}
+                    </td>
+                    <input type="text" value="{{$day}}" name="weekday" hidden>
+                    <td width="10%">
+                    <input type="time" class="form-control" placeholder="Abre" value="" name="start_hour_1">
+                    </td>
+                    <td width="5%">a</td>
+                    <td width="10%">
+                        <input type="time" class="form-control" placeholder="Cierra" value="" name="end_hour_1">
+                    </td>
+                    <td width="5%">|</td>
+                    <td width="10%">
+                        <input type="time" class="form-control" placeholder="Abre" value="" name="start_hour_2">
+                    </td>
+                    <td width="5%">a</td>
+                    <td width="10%">
+                        <input type="time" class="form-control" placeholder="Cierra" value="" name="end_hour_2">
+                    </td>
+                    <td width="100%">
+                        <button type="submit" class="float-left btn btn-sm mr-1 btn-primary">Actualizar</button>
+                    </td>
+                </tr>
+            </form>
+            @endif
         @endforeach
+            <div class="mt-2">
+                @include('messages')
+            </div>
+            @if($errors->any())
+            <div class="alert alert-danger mt-2" role="alert">
+                {!!$errors->first('start_hour_1', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}    
+                {!!$errors->first('end_hour_1', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}  
+                {!!$errors->first('start_hour_2', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}    
+                {!!$errors->first('end_hour_2', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}  
+              </div>
+            @endif
     </table>
-</form>
 </div>    
 @endsection
 
