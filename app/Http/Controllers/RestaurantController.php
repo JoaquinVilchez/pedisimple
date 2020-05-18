@@ -469,7 +469,7 @@ class RestaurantController extends Controller
         //FOOD CATEGORIES
         $foodCategories = DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->get();
         for ($i=0; $i < count($foodCategories); $i++){
-            DB::table('relation_restaurant_category')->where('category_restaurant_id', $foodCategories[$i]->category_restaurant_id)->delete();
+            DB::table('relation_restaurant_category')->where('category_restaurant_id', $foodCategories[$i]->category_restaurant_id)->where('restaurant_id', $restaurant->id)->delete();
         }
         for ($i=0; $i < count($data['food_categories']); $i++) { 
             DB::table('relation_restaurant_category')->insert([
