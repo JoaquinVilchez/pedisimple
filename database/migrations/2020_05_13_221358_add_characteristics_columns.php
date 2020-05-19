@@ -14,7 +14,7 @@ class AddCharacteristicsColumns extends Migration
     public function up()
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            $table->string('characteristic')->after('slug');
+            $table->string('characteristic')->nullable()->after('slug');
             $table->string('second_characteristic')->nullable()->after('phone');
         });
     }

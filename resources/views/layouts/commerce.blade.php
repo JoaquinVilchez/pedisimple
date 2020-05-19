@@ -41,9 +41,15 @@
             <li class="nav-item">
               <a class="nav-link btn btn-checkbox m-1" href="{{route('category.index')}}">Categorías</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link">Configuración</a>
+            </li>
             <ul class="nav justify-content-center">
               <li class="nav-item">
-                <a class="nav-link btn btn-checkbox m-1" href="{{route('restaurant.info')}}">Información del comercio</a>
+                  <a class="nav-link btn btn-checkbox m-1" href="{{route('restaurant.info')}}">Información del comercio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn btn-checkbox m-1" href="{{route('restaurant.times')}}">Horarios</a>
               </li>
             </ul>
           </ul>

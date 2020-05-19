@@ -7,9 +7,9 @@
         </div>
     </div>
 
-    <table class="table mt-3" style="text-align: center">
-            <td>Abierto/Cerrado</td>
+    <table class="table mt-3 table-responsive" style="text-align: center">
             <td>Día hábil</td>
+            <td>Abierto/Cerrado</td>
             <td>Apertura</td>
             <td></td>
             <td>Cierre</td>
@@ -24,11 +24,11 @@
                 @csrf
                 @method('PUT')
                 <tr class="mb-4">
-                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" name="state" @if($day['state']=='open') checked @endif></td>
                     <td width="10%">
-                        {{getDayName($day)}}
+                        <strong>{{getDayName($day)}}</strong>
                         <input type="text" value="{{$day['id']}}" name="id" hidden>
                     </td>
+                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" name="state" @if($day['state']=='open') checked @endif></td>
                     <td width="10%">
                     <input type="time" class="form-control" placeholder="Abre" value="{{$day['start_hour_1']}}"  name="start_hour_1">
                     </td>
@@ -54,10 +54,10 @@
                 @csrf
                 @method('PUT')
                 <tr class="mb-4">
-                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" name="state"></td>
                     <td width="10%">
-                        {{getDayName($day)}}
+                        <strong>{{getDayName($day)}}</strong>
                     </td>
+                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" name="state"></td>
                     <input type="text" value="{{$day}}" name="weekday" hidden>
                     <td width="10%">
                     <input type="time" class="form-control" placeholder="Abre" value="" name="start_hour_1">
@@ -83,6 +83,12 @@
         @endforeach
             <div class="mt-2">
                 @include('messages')
+                {{-- {{dd(array_sum($schedule))}} --}}
+                @if (array_sum($schedule)==28)
+                <div class="alert alert-primary" role="alert">
+                    Ingrese y actualice cada un día.
+                </div>
+                @endif
             </div>
             @if($errors->any())
             <div class="alert alert-danger mt-2" role="alert">
