@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Darryldecode\Cart\Cart;
 use Carbon\Carbon;
 use App\Order;
+use App\Product;
 use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
@@ -18,7 +19,21 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        return view('checkout');
+        if (\Cart::isEmpty()) {
+            return view('checkout');
+        }else{
+            foreach(\Cart::getContent() as $item) { 
+                $itemId = $item->id;
+                if($itemId!=null){
+                    break;
+                }
+            }
+    
+            $restaurant = Product::find($itemId)->restaurant;
+            
+            return view('checkout')->with('restaurant', $restaurant);
+        }
+
     }
 
     /**
@@ -38,7 +53,8 @@ class CheckoutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+        {
+        dd($request, \Cart::getContent());
         $userID = Auth::user()->id;
 
         //GENERAR UN CODIGO Y GUARDARLO EN UNA VARIABLE PARA GUARDARLO EN EL ORDER Y DESPEUS PODER BUSCAR LA ORDER CON ESE CODE.

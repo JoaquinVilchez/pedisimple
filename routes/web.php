@@ -38,7 +38,7 @@ Route::get('/comercios/solicitud', function(){
 //     return view('confirmation');
 // })->name('confirmation')->name('confirmation');
 
-// Route::resource('/checkout', 'CheckoutController')->names('checkout');
+Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 // Route::resource('/direcciones', 'AddressController')->names('address');
 

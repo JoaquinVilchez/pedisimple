@@ -117,13 +117,7 @@
                     </div>
                     <div class="float-right">
                         <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
-                        <a href="#" class="btn btn-primary" data-name="{{$restaurant->name}}" 
-                            data-image="{{$restaurant->image}}" 
-                            data-address="{{$restaurant->address->getFullAddress()}}" 
-                            data-phone="{{$restaurant->phone}}" 
-                            
-                            data-toggle="modal" data-target="#restaurantInfo">Continuar</a>
-                        {{-- <a href="{{route('checkout.index')}}" class="btn btn-danger">Continuar</a> --}}
+                        <a href="{{route('checkout.index')}}" class="btn btn-primary">Continuar</a>
                     </div>
                     @else
                     <div class="list-group mb-3" style="text-align: center">
