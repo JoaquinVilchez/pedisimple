@@ -24,7 +24,7 @@
             </form>
         </div>
         <div class="col-6">   
-            <h6 class="my-0">{{$item->name}}</h6>    
+            <h6 class="my-0">{{ucfirst($item->name)}}</h6>    
         </div>
         <div class="col">
             <span class="text-muted">{{'$'.$item->price}}</span>

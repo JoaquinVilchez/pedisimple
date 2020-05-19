@@ -119,7 +119,7 @@
                         <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
                         <a href="#" class="btn btn-primary" data-name="{{$restaurant->name}}" 
                             data-image="{{$restaurant->image}}" 
-                            data-address="{{$restaurant->address->getFullAddress()}}" 
+                            data-address="{{ucfirst($restaurant->address->getFullAddress())}}" 
                             data-phone="{{$restaurant->phone}}" 
                             
                             data-toggle="modal" data-target="#restaurantInfo">Continuar</a>
@@ -141,8 +141,8 @@
                 @foreach($categories as $category)
                 @if(count($category->getProducts())>0)
                 <div class="categoria mb-4">
-                    <h3>{{$category->name}}</h3>
-                    <p>{{$category->description}}</p>   
+                    <h3>{{ucfirst($category->name)}}</h3>
+                    <p>{{ucfirst($category->description)}}</p>   
                     <div class="row">
                         @foreach($category->getProducts() as $product)
                         <div class="col-lg-6 px-1">
@@ -150,10 +150,10 @@
                                 <div class="card p-2 m-1" style="min-height:95%">
                                     <div class="row">
                                         <div class="col-10 pr-0 pl-4">
-                                            <h6 class="mb-0"><strong>{{$product->name}}</strong></h6>
+                                            <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
                                             @if($product->details)
                                             <div class="ml-2 mt-1">
-                                                <small>{{$product->details}}</small><br>
+                                                <small>{{ucfirst($product->details)}}</small><br>
                                             </div>
                                             @endif
                                             <div class="ml-2 mt-1">
@@ -183,10 +183,10 @@
                                             </div>
                                         </div>
                                         <div class="col-6 pt-1 px-0">
-                                            <h6 class="mb-0"><strong>{{$product->name}}</strong></h6>
+                                            <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
                                                 @if($product->details)
                                                 <div class="mt-1">
-                                                    <small>{{$product->details}}</small><br>
+                                                    <small>{{ucfirst($product->details)}}</small><br>
                                                 </div>
                                                 @endif
                                                 <div class="mt-1">
@@ -223,7 +223,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Descripción</h6>
-                                    <p>{{$restaurant->description}}</p>
+                                    <p>{{ucfirst($restaurant->description)}}</p>
                                 </div>
                             </div>
                             <hr>
@@ -231,7 +231,7 @@
                             <div class="row">
                                 <div class="col-xl-6 col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Dirección</h6>
-                                    <p><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> {{($restaurant->address->getFullAddress())}}</p>
                                 </div>
                                 <div class="col-xl-6 col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Teléfono</h6>
