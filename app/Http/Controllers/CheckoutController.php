@@ -9,9 +9,11 @@ use Carbon\Carbon;
 use App\Order;
 use App\Product;
 use App\Address;
+use App\Restaurant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use App\LineItem;
+use App\Notifications\OrderProcessed;
 
 class CheckoutController extends Controller
 {
@@ -205,6 +207,9 @@ class CheckoutController extends Controller
         \Cart::clear();
 
         //WHATSAPP
+        $restaurant = Restaurant::find($request->restaurant_id);
+        $restaurant_owner = $restaurant->user;
+        $restaurant_owner->notify(new OrderProcessed($order));
 
         return redirect()->route('confirmed.order', Crypt::encryptString($code));
     }
