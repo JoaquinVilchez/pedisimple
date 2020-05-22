@@ -17,6 +17,8 @@
                     <br><br>
 
                     <small><strong>El correo puede tardar unos minutos en llegar.</strong></small>
+                    <br>
+                    <small><strong>Si no te aparece en la bandeja de entrada, revisa en los correos no deseados.</strong></small>
 
                     <br><br>
                     {{ __('If you did not receive the email') }},

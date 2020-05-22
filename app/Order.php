@@ -17,12 +17,16 @@ class Order extends Model
     }
 
     public function products(){
-        return $this->belongsToMany('App\Product'); 
+        return $this->hasMany(Product::class); 
     }
 
     public function payment(){
         return $this->hasOne('App\Payment');
     }
+
+    // public function lineitems(){
+    //     return $this->hasMany(LineItem::class);
+    // }
 
     public function stateStyle(){
         switch ($this->state) {

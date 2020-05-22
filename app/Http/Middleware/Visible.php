@@ -23,9 +23,9 @@ class Visible
         $restaurant = Restaurant::where('slug', $slug)->first();
 
         if(Auth::check()){
-            if(Auth::user()->type=='administrator') {
+            if(Auth::user()->hasRole('administrator')) {
                 return $next($request);
-            }elseif(Auth::user()->type=='merchant'){
+            }elseif(Auth::user()->hasRole('merchant')){
                 if($restaurant->state == 'active'){
                     return $next($request);
                 }else{
@@ -35,7 +35,12 @@ class Visible
                         return redirect()->route('list.index');
                     }
                 }
-               
+            }elseif(Auth::user()->hasRole('customer')){
+                if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
+                    return $next($request);
+                }else{
+                    return redirect()->route('list.index');
+                } 
             }
         }else{
             if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){

@@ -98,11 +98,6 @@ class CartController extends Controller
             }else{
                 return redirect()->back()->with('error_message', 'El producto debe ser del mismo comercio.');
             }
-
-            // foreach (\Cart::getContent() as $item) {
-            //     $item->attributes;
-            // }
-
         }   
     }
 

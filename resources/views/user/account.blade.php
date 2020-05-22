@@ -10,10 +10,11 @@
         <section>
             <h4>{{$user->fullName()}}</h4>
             <span><i class="fas fa-envelope mr-2"></i>{{$user->email}}</span><br>
-            <span><i class="fas fa-phone mr-2"></i>{{$user->phone}}</span>
+            <span><i class="fas fa-phone mr-2"></i>{{$user->characteristic.' - '.$user->phone}}</span>
         </section> 
         <hr>
     <a href="#" class="btn btn-primary btn-block" id="editData">Editar datos</a>
+    <a href="/password/reset" class="btn btn-secondary btn-block">Cambiar contraseña</a>
     </section>
     
     <section class="userFormData col-lg-6 col-xs-12" id="userDataEdit" hidden>
@@ -57,11 +58,16 @@
             </div>
             <div class="form-group">
                 <label>Teléfono </label>
-                <input type="text" class="form-control" name="phone" value="{{$user->phone}}">
+                <div class="row">
+                    <div class="col-md-4 col-12 pr-1">
+                        <input type="text" class="form-control" name="characteristic" value="{{old('characteristic',$user->characteristic)}}" autocomplete="false" placeholder="Prefijo">
+                    </div> 
+                    <div class="col-md-8 col-12 pl-1">
+                        <input id="phone" type="text" class="form-control" name="phone" value="{{old('phone',$user->phone)}}" autocomplete="false" placeholder="Teléfono">
+                    </div>
+                </div>
+                {!!$errors->first('characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-            </div>
-            <div class="form-group">
-                <a href="/password/reset">Cambiar contraseña</a>
             </div>
             <div class="form-group mt-2">
                 <button type="button" class="btn btn-secondary" id="cancelData">Cancelar</button>

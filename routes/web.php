@@ -29,20 +29,16 @@ Route::get('/comercios/solicitud', function(){
     return view('request');
 })->name('register.request');
 
+Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
 
-// Route::get('/gracias', function(){
-//     return view('thankyou');
-// })->name('thankyou')->name('thankyou');
-
-// Route::get('/confirmado', function(){
-//     return view('confirmation');
-// })->name('confirmation')->name('confirmation');
+Route::get('/confirmado', function(){
+    return view('confirmation');
+})->name('confirmation');
 
 Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
-// Route::resource('/direcciones', 'AddressController')->names('address');
-
-// Route::resource('/pedidos', 'OrderController')->names('order');
+Route::resource('/direcciones', 'AddressController')->names('address');
+Route::resource('/pedidos', 'OrderController')->names('order');
 
 Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
 Route::get('/carrito/vaciar', 'CartController@empty')->name('cart.empty');

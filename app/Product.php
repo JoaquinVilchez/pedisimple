@@ -20,6 +20,10 @@ class Product extends Model
         return $this->belongsToMany(Order::class);
     }
 
+    // public function lineItem(){
+    //     return $this->belongsTo(LineItem::class);
+    // }
+
     public function stateStyle(){
         switch ($this->state) {
             case 'not-available':

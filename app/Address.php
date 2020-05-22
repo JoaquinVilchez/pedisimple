@@ -23,10 +23,14 @@ class Address extends Model
     }
 
     public function getAddress(){
-       if($this->floor==null || $this->department==null || $this->building_name==null){
+       if($this->floor==null || $this->department==null){
             return $this->street.' '.$this->number;
        }else{
-            return $this->street.' '.$this->number.' - '.$this->floor.$this->department.' - '.$this->building_name;
+            $address = $this->street.' '.$this->number.' - '.$this->floor.$this->department;
+            if($this->building_name!=null){
+                $address = $address.' - Edificio '.$this->building_name;
+            }
+            return $address;
        }
     }
 
@@ -37,6 +41,6 @@ class Address extends Model
      }
 
     public function getFullAddress(){
-        return $this->getAddress().' - '.$this->getCity();
+        return $this->getAddress();
      }
 }

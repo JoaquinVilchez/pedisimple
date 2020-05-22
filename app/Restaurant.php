@@ -74,4 +74,12 @@ class restaurant extends Model
        }
     }
 
+    public function getPhone(){
+        if($this->second_characteristic == null && $this->second_phone == null){
+            return $this->characteristic.'-'.$this->phone;
+        }else{
+            return $this->characteristic.'-'.$this->phone.' | '.$this->second_characteristic.'-'.$this->second_phone; 
+        }
+    }
+
 }

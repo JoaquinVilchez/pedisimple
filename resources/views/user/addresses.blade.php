@@ -3,21 +3,27 @@
 @section('info-content')
 
     <h5>Mis direcciones @if(count($addresses)>0)<small>({{count($addresses)}})</small>@endif</h5>
+        <div class="container">
             @if(count($addresses)>0)
-            <table class="table table-hover">
-                <tbody>
-                @foreach($addresses as $address)
-                <tr>
-                    <td>{{$address->getFullAddress()}}</td>
-                    <td><a href="#" data-addressid="{{$address->id}}" data-toggle="modal" data-target="#deleteAddressModal"><i class="fas fa-trash-alt"></i></a></td>
-                </tr>
-                @endforeach
-                </tbody>
-            </table>
+                <table class="table table-hover">
+                    <tbody>
+                    @foreach($addresses as $address)
+                    <tr>
+                        <td>{{$address->getFullAddress()}}</td>
+                        <td><a href="#" data-addressid="{{$address->id}}" data-toggle="modal" data-target="#deleteAddressModal"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                <a href="#" data-toggle="modal" class="btn btn-primary" data-target="#addAddressModal">Agregar dirección</a>
             @else
-                <p class="ml-3">Aún no tienes direcciones</p>
+            <div style="text-align: center">
+                <img src="{{asset('images/design/marker.svg')}}" alt="" class="img-step m-3">
+                <p>Aún no tienes direcciones</p>
+                <a href="#" data-toggle="modal" class="btn btn-primary" data-target="#addAddressModal">Agregar dirección</a>
+            </div>
             @endif
-    <a href="#" data-toggle="modal" data-target="#addAddressModal">+ Agregar dirección</a>
+        </div>    
 
 
     <!-- Modal -->
@@ -60,7 +66,6 @@
                         <div class="col">
                             <select type="text" name="cityId" class="form-control" placeholder="Zip">
                                 <option value="1" selected>Venado Tuerto</option>
-                                <option value="2">Rufino</option>
                             </select>
                         </div>
                     </div>
@@ -75,6 +80,7 @@
         </div>
     </div>
 
+@if(count($addresses)>0)
     <!-- Modal -->
     <div class="modal fade" id="deleteAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -101,6 +107,7 @@
         </div>
         </div>
     </div>
+@endif
 
 @endsection
 

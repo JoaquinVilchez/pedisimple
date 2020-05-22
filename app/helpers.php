@@ -2,17 +2,18 @@
 use App\Restaurant;
 use Carbon\Carbon;
 
-function getRestaurantData($id){
-    return Restaurant::find($id);
-}
-
-function userIsLoggedIn(){
-    if(Auth::user()){
-        return true;
-    }else{
-        return false;
+function generateCode()  {
+    $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $digits = '1234567890';
+    $randomString = '';
+    for ($i = 0; $i < 3; $i++) {
+        $randomString .= $letters[rand(0, strlen($letters) - 1)];
     }
-}   
+    for ($i = 0; $i < 3; $i++) {
+        $randomString .= $digits[rand(0, strlen($digits) - 1)];
+    }
+    return $randomString;
+}
 
 function normaliza($cadena){
     $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';

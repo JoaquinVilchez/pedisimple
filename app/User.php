@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -49,6 +51,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function fullName(){
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function getPhone(){
+        return $this->characteristic.'-'.$this->phone;
     }
 
 }
