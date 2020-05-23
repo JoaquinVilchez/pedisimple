@@ -23,6 +23,13 @@ a{
 }
 
 
+.yellow-section{
+    min-height: 100px;
+    background: rgb(251,165,74);
+    background: linear-gradient(180deg, rgba(251,165,74,1) 0%, rgba(226,161,54,1) 100%);
+}
+
+
 textarea:focus, input:focus, input[type]:focus {
     border-color: #ffa64d;
     box-shadow: 0 1px 1px #ffa64d inset, 0 0 8px #ffa64d;

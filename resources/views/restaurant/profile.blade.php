@@ -110,6 +110,7 @@
                 </h4>
 
                     @if(!Cart::isEmpty())
+                    <h6>Comercio: {{$restaurant->name}}</h6>
                     @include('carrito')
                     
                     <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
