@@ -58,6 +58,11 @@ class CheckoutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+
+    //OPTIMIZACION: SE PUEDE HACER UN ARRAY $args QUE CONTENGA LOS CAMPOS GENERALES A USAR
+    //EN CREATE Y VALIDATE Y DEPENDIENDO DE LAS CONDICIONES IR AGREGANDOLE LAS CARACTERISTICAS
+    //QUE FALTEN CON UNA FUNCION DE AGREGAR ELEMENTOS A ARRAY. ESTO ES PARA NO REPETIR TANTO CODIGO
+
     //CREAR CODIGO
         //Genera un codigo de referencia para el pedido
         do {
@@ -78,11 +83,16 @@ class CheckoutController extends Controller
 
             //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
             if (\Cart::getCondition('Delivery')) {
+
+                $delivery_price = \Cart::getCondition('Delivery')->getValue();
                 //DIRECCION
                 if($request->address_type=='data-address') {
 
+                    $request->validate([
+                        'address' => 'required'
+                    ]);
+
                     $address = Address::find($request->address);
-                    $delivery_price = \Cart::getCondition('Delivery')->getValue();
                     //Crea el pedido con la direccion registrada previamente del usuario
                     $order = Order::create([
                         'user_id' => $userID,
@@ -99,6 +109,11 @@ class CheckoutController extends Controller
 
                 }elseif($request->address_type=='new-address'){
                     
+                    $request->validate([
+                        'client_street' => 'required',
+                        'client_number' => 'required|numeric'
+                    ]);
+
                     //Si el usuario apreta checkbox para guardar direccion en su perfil
                     if($request->save=='on'){
                         $address = Address::create([
@@ -162,6 +177,17 @@ class CheckoutController extends Controller
             
             //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
             if (\Cart::getCondition('Delivery')) {
+
+                $request->validate([
+                    'client_first_name' => 'required',
+                    'client_last_name' => 'required',
+                    'client_characteristic' => 'required|numeric|min:4|max:4',
+                    'client_phone' => 'required|numeric|min:6|max:6',
+                    'client_street' => 'required',
+                    'client_number' => 'required|numeric',
+                ]);
+
+                $delivery_price = \Cart::getCondition('Delivery')->getValue();
                 $order = Order::create([
                     'restaurant_id' => $request->restaurant_id,
                     'ordered' => Carbon::now(),
@@ -181,11 +207,19 @@ class CheckoutController extends Controller
                     'code' => $code
                 ]);
             }else{
+                $request->validate([
+                    'client_first_name' => 'required',
+                    'client_last_name' => 'required',
+                    'client_characteristic' => 'required|numeric|min:4|max:4',
+                    'client_phone' => 'required|numeric|min:6|max:6'
+                ]);
+
                 $order = Order::create([
                     'restaurant_id' => $request->restaurant_id,
                     'ordered' => Carbon::now(),
                     'state' => 'pending',
                     'shipping_method' => $shipping_method,
+                    'subtotal' => \Cart::getSubtotal(),
                     'total' => \Cart::getTotal(),
                     'code' => $code
                 ]);
@@ -209,7 +243,13 @@ class CheckoutController extends Controller
         //WHATSAPP
         $restaurant = Restaurant::find($request->restaurant_id);
         $restaurant_owner = $restaurant->user;
+        
+        //MENSAJE DE WHATSAPP AL COMERCIANTE
         $restaurant_owner->notify(new OrderProcessed($order));
+        //MAIL AL COMERCIANTE
+        //=================
+
+
 
         return redirect()->route('confirmed.order', Crypt::encryptString($code));
     }

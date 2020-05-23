@@ -174,7 +174,13 @@ return [
         'start_hour_1' => 'horario de apertura',
         'end_hour_1' => 'horario de cierre',
         'start_hour_2' => 'horario de apertura',
-        'end_hour_2' => 'horario de cierre'
+        'end_hour_2' => 'horario de cierre',
+        'client_first_name' => 'nombre',
+        'client_last_name' => 'apellido',
+        'client_characteristic' => 'prefijo',
+        'client_phone' => 'teléfono',
+        'client_street' => 'calle',
+        'client_number' => 'número',
     ],
 
     'email-confirmation' => [
