@@ -30,6 +30,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+
         gtag('config', 'UA-165580235-1');
     </script>
 </head>
@@ -117,8 +118,7 @@
             </div>
             <div class="col-xl-6 col-xs-12">
                 @guest
-        <a href="{{route('register.request')}}" style="color:white"  class="nav-link float-right p-0">Sumate a {{config('app.name')}}</a>
-                {{-- <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a> --}}
+                <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
                 @endguest
             </div>
         </div>
