@@ -181,8 +181,8 @@ class CheckoutController extends Controller
                 $request->validate([
                     'client_first_name' => 'required',
                     'client_last_name' => 'required',
-                    'client_characteristic' => 'required|numeric|min:4|max:4',
-                    'client_phone' => 'required|numeric|min:6|max:6',
+                    'client_characteristic' => 'required|numeric|min:4',
+                    'client_phone' => 'required|numeric|min:6',
                     'client_street' => 'required',
                     'client_number' => 'required|numeric',
                 ]);
@@ -210,8 +210,8 @@ class CheckoutController extends Controller
                 $request->validate([
                     'client_first_name' => 'required',
                     'client_last_name' => 'required',
-                    'client_characteristic' => 'required|numeric|min:4|max:4',
-                    'client_phone' => 'required|numeric|min:6|max:6'
+                    'client_characteristic' => 'required|numeric|min:4',
+                    'client_phone' => 'required|numeric|min:6'
                 ]);
 
                 $order = Order::create([
