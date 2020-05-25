@@ -13,10 +13,20 @@ use App\Restaurant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use App\LineItem;
+use PDF;
 use App\Notifications\OrderProcessed;
 
 class CheckoutController extends Controller
 {
+
+    public function download(Order $order){
+        // dd($order);
+        $items = $order->lineitems;
+        $logo = asset('images/logo.png');
+        $pdf = PDF::loadView('pdf.receipt', array('order' => $order, 'items' => $items));
+        return $pdf->stream();
+    }
+
     /**
      * Display a listing of the resource.
      *

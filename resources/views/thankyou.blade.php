@@ -41,7 +41,7 @@
                             <small class="text-mute"><span>Subtotal</span></small>
                             <span>${{$order->subtotal}}</span>
                         </li>
-                        @if(Cart::getCondition('Delivery'))
+                        @if($order->delivery != null)
                         <li class="list-group-item d-flex justify-content-between">
                             <small class="text-mute"><span>Delivery</span></small>
                             <span>${{$order->delivery}}</span>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="row justify-content-center mb-2">
-                <a href="#" class="btn btn-sm btn-outline-danger"><i class="fas fa-receipt"></i> Descargar detalle</a>
+                <a href="{{route('checkout.download', $order)}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-receipt"></i> Descargar detalle</a>
             </div>
         </div>
 

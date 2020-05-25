@@ -52,6 +52,9 @@
         <nav class="nav d-none d-xl-block">
           <ul class="nav flex-column">
             <li class="nav-item">
+              <a class="nav-link" href="{{route('product.index')}}">Pedidos</a>
+          </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{route('product.index')}}">Productos</a>
             </li>
             <li class="nav-item">

@@ -16,6 +16,10 @@ use App\User;
 |
 */
 
+Route::get('/pdf-get', function(){
+    return view('pdf/receipt');
+});
+
 Auth::routes(['verify' => true]);
 Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
 
@@ -35,6 +39,7 @@ Route::get('/confirmado', function(){
     return view('confirmation');
 })->name('confirmation');
 
+Route::get('/checkout/descargar/{order}', 'CheckoutController@download')->name('checkout.download');
 Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 Route::resource('/direcciones', 'AddressController')->names('address');

@@ -24,9 +24,9 @@ class Order extends Model
         return $this->hasOne('App\Payment');
     }
 
-    // public function lineitems(){
-    //     return $this->hasMany(LineItem::class);
-    // }
+    public function lineitems(){
+        return $this->hasMany(LineItem::class);
+    }
 
     public function stateStyle(){
         switch ($this->state) {
