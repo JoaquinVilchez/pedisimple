@@ -2,13 +2,6 @@
 
 @section('content')
 <div class="container-fluid">
-  {{-- <div class="row">
-    <div class="col-12 px-0">
-      <div style="text-align:center" class="alert alert-warning mb-0 rounded-0 mw-100" role="alert">
-        <strong>Recuerda: </strong>La plataforma momentáneamente está abierta solo para que cargues tus datos. Te avisaremos cuando esté abierta al público.
-      </div>
-    </div>
-  </div> --}}
   <div class="row">
     <nav class="col-xl-2 bg-light sidebar ">      
       <div class="sidebar-sticky">
@@ -36,6 +29,9 @@
         <nav class="nav justify-content-center d-xl-none mb-3">
           <ul class="nav justify-content-center">
             <li class="nav-item">
+              <a class="nav-link" href="{{route('order.new')}}">Pedidos</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link btn btn-checkbox m-1" href="{{route('product.index')}}">Productos</a>
             </li>
             <li class="nav-item">
@@ -52,8 +48,19 @@
         <nav class="nav d-none d-xl-block">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="{{route('product.index')}}">Pedidos</a>
-          </li>
+              <a class="nav-link" href="{{route('order.new')}}">Pedidos</a>
+            </li>
+            <ul>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{route('order.new')}}">Nuevos
+                    <span class="badge badge-pill badge-danger ml-2">1</span>
+                  </a>
+                  
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a>
+              </li>
+            </ul>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('product.index')}}">Productos</a>
             </li>

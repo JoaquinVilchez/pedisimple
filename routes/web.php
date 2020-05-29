@@ -43,6 +43,11 @@ Route::get('/checkout/descargar/{order}', 'CheckoutController@download')->name('
 Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 Route::resource('/direcciones', 'AddressController')->names('address');
+
+Route::get('/pedidos/nuevos', 'OrderController@new')->name('order.new');
+Route::get('/pedidos/aceptados', 'OrderController@accepted')->name('order.accepted');
+Route::post('/pedidos/aceptar', 'OrderController@accept')->name('order.accept');
+Route::post('/pedidos/rechazar', 'OrderController@reject')->name('order.reject');
 Route::resource('/pedidos', 'OrderController')->names('order');
 
 Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');

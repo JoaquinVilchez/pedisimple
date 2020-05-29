@@ -28,6 +28,10 @@ class Order extends Model
         return $this->hasMany(LineItem::class);
     }
 
+    public function address(){
+        return $this->belongsTo(Address::class);
+    }
+
     public function stateStyle(){
         switch ($this->state) {
             case 'pendiente':

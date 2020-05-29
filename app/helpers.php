@@ -86,7 +86,60 @@ function isOpen($days, $weekday, $today){
             }
         }
     }
-
 }
+    
+    function getGuestAddress($order){
+        if($order->guest_floor==null || $order->guest_department==null){
+                return $order->guest_street.' '.$order->guest_number;
+        }else{
+                return $order->guest_street.' '.$order->guest_number.' - '.$order->guest_floor.$order->guest_department;
+        }
+    }
+
+    function whatsappNumberCustomer($order){
+        if($order->user_id!=null){
+            $phone = $order->user->getPhone();
+        }else{
+            $phone = $order->guest_characteristic.'-'.$order->guest_phone;
+        }
+
+        return $phone;
+    }
+
+    function whatsappMessageCustomer($order){
+        if($order->user_id!=null){
+            $first_name = $order->user->first_name;
+        }else{
+            $first_name = $order->guest_first_name;
+        }
+
+        return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Recibimos tu detalle de pedido desde '.config("app.name").'. ¿Querés confirmar el pedido?';
+    }
+
+    function gluberNumber(){
+        return '3462642680';
+    }
+
+    function gluberMessage($order){
+        if($order->user_id!=null){
+            $first_name = $order->user->first_name;
+        }else{
+            $first_name = $order->guest_first_name;
+        }
+
+        return 'Hola, soy '.Auth::user()->first_name.' de '.$order->restaurant->name.' (_'.$order->restaurant->address->getAddress().'_) Me comunico desde '.config("app.name").'. '.'Tengo que hacer una entrega a *'.getOrderAddress($order).'* con el codigo *'.$order->code.'*. ¿Hay disponibilidad?';
+    }
+
+    function getOrderAddress($order){
+        if ($order->user_id !=null) {
+            if ($order->address_id==null){
+                return getGuestAddress($order);  
+            }else{
+                return $order->address->getAddress();  
+            }
+        }else{
+            return $order->address->getAddress();  
+        }
+    }
 
 ?>

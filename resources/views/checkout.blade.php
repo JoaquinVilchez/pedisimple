@@ -143,11 +143,20 @@
                                     <p>{{Auth::user()->getPhone()}}</p>
                                 </div>
                             </div>
+
+                            <label><strong>Tipo de entrega:</strong></label>
+                            @if(\Cart::getCondition('Delivery'))
+                                <p>Delivery</p>
+                            @else
+                                <p>Retiro en local</p>
+                            @endif
+
                             @if(\Cart::getCondition('Delivery'))
                                 <label><strong>Dirección de entrega:</strong></label>
                                 <input type="hidden" id="address_type" value="data-address" name="address_type">
                                 <div id="address">
                                     <div class="row align-items-end">
+                                        @if(count(Auth::user()->addresses)!=0)
                                         <div class="col-8">
                                             <select class="form-control" id="exampleFormControlSelect1" name="address">
                                             @foreach (Auth::user()->addresses as $address)
@@ -159,6 +168,12 @@
                                             <label></label>
                                             <a onclick="Address()" class="btn btn-outline-primary">Nueva dirección</a>
                                         </div>
+                                        @else
+                                            <div class="col-4">
+                                                <label></label>
+                                                <a onclick="Address()" class="btn btn-outline-primary">Nueva dirección</a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div id="new-address" hidden>
@@ -189,7 +204,7 @@
                                     </div>
                                     <div class="d-inline mb-0">
                                         <label class="mt-2">
-                                        <span><input type="checkbox" name="save" value="{{old('save')}}"> Guardar dirección para una próxima vez</span>
+                                        <span><input type="checkbox" name="save"> Guardar dirección para una próxima vez</span>
                                         </label>
                                     </div>
                                 </div>

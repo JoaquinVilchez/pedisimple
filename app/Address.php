@@ -10,6 +10,10 @@ class Address extends Model
 {
     protected $guarded = [];
     
+    public function order(){
+        return $this->hasMany(Order::class);
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }

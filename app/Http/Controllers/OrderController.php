@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Order;
 use App\User;
+use Redirect;
 
 class OrderController extends Controller
 {
@@ -16,9 +17,67 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $user = User::findOrFail(Auth::user()->id);
-        $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'desc')->orderBy('state', 'asc')->get();                
-        return view('user.orders')->with('orders', $orders);
+        //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+
+    public function new(){
+        $orders = Auth::user()->restaurant->orders->where('state', 'pending')->sortDesc();
+        return view('restaurant.orders.new')->with('orders', $orders);
+    }
+
+    /** 
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+
+    public function accepted(){
+        $orders = Auth::user()->restaurant->orders->where('state', 'accepted')->sortDesc();
+        return view('restaurant.orders.accepted')->with('orders', $orders);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function accept(Request $request)
+    {
+        // dd($request->all());
+        $order = Order::find($request->acceptorderid);
+        $order->update([
+            'state' => 'accepted'
+        ]);
+        
+        // Searching the internet I thought I could do it this way, but I found no result.
+        $newUrl='https://wa.me/'.str_replace('-', '', whatsappNumberCustomer($order)).'?text='.urlencode(whatsappMessageCustomer($order));
+        session()->flash('newurl', $newUrl);
+        //===============================================================================
+
+        return back()->with('success_message', 'Pedido aceptado.');
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reject(Request $request)
+    {
+        $order = Order::find($request->deleteorderid);
+        $order->update([
+            'state' => 'rejected'
+        ]);
+
+        return back()->with('success_message', 'Pedido rechazado.');
     }
 
     /**

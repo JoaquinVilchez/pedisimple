@@ -113,6 +113,7 @@ class CheckoutController extends Controller
                         'shipping_method' => $shipping_method,
                         'delivery' => $delivery_price,
                         'subtotal' => \Cart::getSubtotal(),
+                        'client_aditional_notes' => $request->client_aditional_notes,
                         'total' => \Cart::getTotal(),
                         'code' => $code
                     ]);
@@ -146,6 +147,7 @@ class CheckoutController extends Controller
                             'delivery' => $delivery_price,
                             'subtotal' => \Cart::getSubtotal(),
                             'total' => \Cart::getTotal(),
+                            'client_aditional_notes' => $request->client_aditional_notes,
                             'code' => $code
                         ]);
 
@@ -164,6 +166,7 @@ class CheckoutController extends Controller
                             'guest_number' => $request->client_number,
                             'guest_floor' => $request->client_floor,
                             'guest_department' => $request->client_department,
+                            'client_aditional_notes' => $request->client_aditional_notes,
                             'code' => $code
                         ]);
                     }
@@ -178,6 +181,7 @@ class CheckoutController extends Controller
                     'shipping_method' => $shipping_method,
                     'subtotal' => \Cart::getSubtotal(),
                     'total' => \Cart::getTotal(),
+                    'client_aditional_notes' => $request->client_aditional_notes,
                     'code' => $code
                 ]);
             }
@@ -206,6 +210,7 @@ class CheckoutController extends Controller
                     'delivery' => $delivery_price,
                     'subtotal' => \Cart::getSubtotal(),
                     'total' => \Cart::getTotal(),
+                    'client_aditional_notes' => $request->client_aditional_notes,
                     'guest_first_name' => $request->client_first_name,
                     'guest_last_name' => $request->client_last_name,
                     'guest_street' => $request->client_street,
@@ -231,6 +236,11 @@ class CheckoutController extends Controller
                     'shipping_method' => $shipping_method,
                     'subtotal' => \Cart::getSubtotal(),
                     'total' => \Cart::getTotal(),
+                    'client_aditional_notes' => $request->client_aditional_notes,
+                    'guest_first_name' => $request->client_first_name,
+                    'guest_last_name' => $request->client_last_name,
+                    'guest_characteristic' => $request->client_characteristic,
+                    'guest_phone' => $request->client_phone,
                     'code' => $code
                 ]);
             }
@@ -255,11 +265,9 @@ class CheckoutController extends Controller
         $restaurant_owner = $restaurant->user;
         
         //MENSAJE DE WHATSAPP AL COMERCIANTE
-        $restaurant_owner->notify(new OrderProcessed($order));
+        // $restaurant_owner->notify(new OrderProcessed($order));
         //MAIL AL COMERCIANTE
         //=================
-
-
 
         return redirect()->route('confirmed.order', Crypt::encryptString($code));
     }
