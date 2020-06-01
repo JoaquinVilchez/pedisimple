@@ -6,19 +6,20 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Order;
 
 class NewOrder extends Notification
 {
     use Queueable;
-
+    protected $order;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Order $order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -29,7 +30,7 @@ class NewOrder extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -41,9 +42,16 @@ class NewOrder extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line('Te llegó un nuevo pedido desde la plataforma.')
+                    ->action('Ver nuevos pedidos', url('/pedidos/nuevos'))
+                    ->line('Código de referencia del pedido: '.$this->order->code);
+    }
+
+    public function toDatabase($notifiable){
+        return [
+            'order_id' => $this->order->id,
+            'order_total' => $this->order->total
+        ];
     }
 
     /**

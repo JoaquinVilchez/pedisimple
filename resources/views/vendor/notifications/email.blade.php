@@ -58,4 +58,12 @@
 ) <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
 @endslot
 @endisset
+
+{{-- Footer --}}
+@slot('footer')
+    @component('mail::footer')
+        © {{ date('Y') }} {{ $companyName }}. Todos los derechos reservados.
+    @endcomponent
+@endslot
+
 @endcomponent

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\LineItem;
 use PDF;
 use App\Notifications\OrderProcessed;
+use App\Notifications\NewOrder;
 
 class CheckoutController extends Controller
 {
@@ -73,21 +74,23 @@ class CheckoutController extends Controller
     //EN CREATE Y VALIDATE Y DEPENDIENDO DE LAS CONDICIONES IR AGREGANDOLE LAS CARACTERISTICAS
     //QUE FALTEN CON UNA FUNCION DE AGREGAR ELEMENTOS A ARRAY. ESTO ES PARA NO REPETIR TANTO CODIGO
 
-    //CREAR CODIGO
+    $restaurant = Restaurant::find($request->restaurant_id);
+    if(restaurantIsOpen($restaurant)){
+        //CREAR CODIGO
         //Genera un codigo de referencia para el pedido
         do {
             $code = generateCode();
             $oderCode=Order::where('code', $code)->first();
         }while ($oderCode!=null);
 
-    //CHECKEA METODO DE ENVIO
+        //CHECKEA METODO DE ENVIO
         if(\Cart::getCondition('Delivery')){
             $shipping_method = 'delivery';
         }else{
             $shipping_method = 'pickup';
         }
 
-    //CREAR PEDIDO
+        //CREAR PEDIDO
         if($request->auth_user=='true'){
             $userID = Auth::user()->id;
 
@@ -261,15 +264,19 @@ class CheckoutController extends Controller
         \Cart::clear();
 
         //WHATSAPP
-        $restaurant = Restaurant::find($request->restaurant_id);
         $restaurant_owner = $restaurant->user;
         
         //MENSAJE DE WHATSAPP AL COMERCIANTE
         // $restaurant_owner->notify(new OrderProcessed($order));
         //MAIL AL COMERCIANTE
         //=================
+        $restaurant_owner->notify(new NewOrder($order));
 
         return redirect()->route('confirmed.order', Crypt::encryptString($code));
+    }else{
+        return back()->with('error_message', 'Este comercio está cerrado, intenta hacer tu pedido más tarde');
+    }
+    
     }
 
     /**

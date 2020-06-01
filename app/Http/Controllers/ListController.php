@@ -68,14 +68,14 @@ class ListController extends Controller
 
         if(Auth::check() and Auth::user()->type == 'administrator'){
             return view('list')->with([
-                'categories'=>$filtered_categories,
+                'categories'=>$filtered_categories->sortBy('name'),
                 'restaurants'=>$active_restaurants->sortBy('name'),
                 'pending_restaurants'=>$pending_restaurants->sortBy('name'),
                 'filters'=>$filters
             ]);
         }else{
             return view('list')->with([
-                'categories'=>$filtered_categories,
+                'categories'=>$filtered_categories->sortBy('name'),
                 'restaurants'=>$active_restaurants->sortBy('name'),
                 'filters'=>$filters
             ]);

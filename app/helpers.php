@@ -1,6 +1,7 @@
 <?php
 use App\Restaurant;
 use Carbon\Carbon;
+use App\OpeningDateTime;
 
 function generateCode()  {
     $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -55,6 +56,31 @@ function getDayName($day){
             break;
     }  
 }
+
+function restaurantIsOpen(Restaurant $restaurant){
+    $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
+    if(count($days)>0){
+        $schedule = array(1,2,3,4,5,6,0);
+        foreach ($days as $day) {               
+                $replace_day = (array($day['weekday']-1=>$day));
+                $schedule = array_replace_recursive($schedule, $replace_day);
+        }  
+        
+        $today = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
+        $weekday = $today->dayOfWeek;       
+        $state = isOpen($days, $weekday, $today);
+        if($state==null){
+            $state=false;
+        }
+
+    }elseif($days==null){
+        $schedule = null;
+        $state=false;
+    }
+
+    return $state;
+}
+
 
 function isOpen($days, $weekday, $today){
     foreach ($days as $day) {

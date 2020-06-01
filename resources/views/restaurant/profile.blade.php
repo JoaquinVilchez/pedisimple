@@ -24,13 +24,11 @@
                         <div class="ml-3">
                             <div class="d-flex align-items-center">
                                 <h3 class="txt-bold d-inline">{{$restaurant->name}}</h3>
-                                @if($days!=null)
-                                    @if($state=='Abierto')
-                                        <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> @if($state==true) Abierto @endif</span>
+                                    @if(restaurantIsOpen($restaurant))
+                                        <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
                                     @else
-                                        <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> @if($state==false) Cerrado @endif</span>
+                                        <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> Cerrado</span>
                                     @endif
-                                @endif
                             </div>
                             <div>
                                 <p class="mb-0 mr-2 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>

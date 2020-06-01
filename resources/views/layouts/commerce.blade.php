@@ -53,7 +53,9 @@
             <ul>
               <li class="nav-item">
                   <a class="nav-link" href="{{route('order.new')}}">Nuevos
-                    <span class="badge badge-pill badge-danger ml-2">1</span>
+                    @if((Auth::user()->unreadNotifications()->count())>0)
+                    <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}}</span>
+                    @endif
                   </a>
                   
               </li>

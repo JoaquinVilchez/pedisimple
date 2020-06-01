@@ -85,12 +85,12 @@ class RestaurantController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+    */
     public function openingTime()
     {
         $restaurant = Auth::user()->restaurant;
         $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
-        $schedule = [1,2,3,4,5,6,7];
+        $schedule = [1,2,3,4,5,6,0];
 
             if (count($days)>0) {
                 foreach ($days as $day) {  
@@ -322,27 +322,28 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
         $categories = Category::where('restaurant_id', $restaurant->id)->where('state', 'available')->get();
+        
         $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
 
         if(count($days)>0){
-            $schedule = array(1,2,3,4,5,6,7);
-            foreach ($days as $day) {  
-                    // dd($day);                 
+            $schedule = array(1,2,3,4,5,6,0);
+            foreach ($days as $day) {            
                     $replace_day = (array($day['weekday']-1=>$day));
                     $schedule = array_replace_recursive($schedule, $replace_day);
             }  
             
-            $today = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
-            $weekday = $today->dayOfWeek;       
+            // $today = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
+            $today = Carbon::now();
+            $weekday = $today->dayOfWeek;
+
+            dd($today,$weekday);
             $state = isOpen($days, $weekday, $today);
-            if($state==null){
-                $state=false;
-            }
 
         }elseif($days==null){
             $schedule = null;
-            $state=false;
         }
+
+        dd($schedule);
 
         return view('restaurant.profile')->with([
             'restaurant' =>  $restaurant,

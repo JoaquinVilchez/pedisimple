@@ -27,6 +27,7 @@ class OrderController extends Controller
     */
 
     public function new(){
+        Auth::user()->unreadNotifications->markAsRead();
         $orders = Auth::user()->restaurant->orders->where('state', 'pending')->sortDesc();
         return view('restaurant.orders.new')->with('orders', $orders);
     }
