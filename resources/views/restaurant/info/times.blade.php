@@ -81,11 +81,11 @@
             </form>
             @endif
         @endforeach
-            <div class="mt-2">
-                @include('messages')
-            </div>
             @if($errors->any())
             <div class="alert alert-danger mt-2" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 {!!$errors->first('start_hour_1', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}    
                 {!!$errors->first('end_hour_1', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}  
                 {!!$errors->first('start_hour_2', '<p><i class="fas fa-exclamation-circle"></i> :message</p>') !!}    

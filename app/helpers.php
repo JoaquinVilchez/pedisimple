@@ -25,14 +25,31 @@ function normaliza($cadena){
     return utf8_encode($cadena);
 }
 
+function getSchedule(Restaurant $restaurant){
+    $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
+    $schedule = [0,1,2,3,4,5,6];
+
+    if (count($days)>0) {
+        foreach ($days as $day) {    
+                $replace_day = (array($day['weekday']=>$day));
+                $schedule = array_replace_recursive($schedule, $replace_day);
+        }  
+    }
+
+    return $schedule;
+}
+
 function getDayName($day){
-    // $day = DB::table('opening_date_times')->where('restaurant_id', $id);
+    
     if(is_array($day)){
         $day=$day['weekday'];
     }else{
         $day=$day;
     }
     switch ($day) {
+        case 0:
+            return "Domingo";
+            break;
         case 1:
             return "Lunes";
             break;
@@ -50,10 +67,7 @@ function getDayName($day){
             break;
         case 6:
             return "Sábado";
-            break;
-        case 7:
-            return "Domingo";
-            break;
+            break;        
     }  
 }
 
@@ -81,6 +95,9 @@ function restaurantIsOpen(Restaurant $restaurant){
     return $state;
 }
 
+// function haveOpeningDateTimes($schedule){
+
+// }
 
 function isOpen($days, $weekday, $today){
     foreach ($days as $day) {
