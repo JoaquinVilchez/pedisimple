@@ -24,7 +24,7 @@
                         <div class="ml-3">
                             <div class="d-flex align-items-center">
                                 <h3 class="txt-bold d-inline">{{$restaurant->name}}</h3>
-                                    @if(restaurantIsOpen($restaurant))
+                                    @if($restaurant->isOpen())
                                         <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
                                     @else
                                         <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> Cerrado</span>
@@ -234,13 +234,13 @@
                                 </div>
                             </div>
 
-                            @if($days!=null)
+                            @if($restaurant->getSchedule()!=null)
                             <div class="row">
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios</h6>
                                     <table class="table table-striped responsive" style="font-size: 15px">
                                         <tbody>
-                                            @foreach($days as $day)
+                                            @foreach($restaurant->getSchedule() as $day)
                                             @if(is_array($day))
                                                 <tr>
                                                     <td>{{getDayName($day)}}</td>

@@ -96,6 +96,7 @@
                 </div>
             </div>
         </nav>
+        
 
         <main role="main" class="flex-shrink-0">
             @yield('content')

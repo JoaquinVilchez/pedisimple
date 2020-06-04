@@ -62,7 +62,7 @@
 {{-- Footer --}}
 @slot('footer')
     @component('mail::footer')
-        © {{ date('Y') }} {{ $companyName }}. Todos los derechos reservados.
+        © {{ date('Y') }} {{ env('APP_NAME') }}. Todos los derechos reservados.
     @endcomponent
 @endslot
 

@@ -133,7 +133,7 @@
                             @if($order->shipping_method=='delivery')
                                 <div class="d-inline mr-2">
                                     <a target=”_blank” href="
-                                    https://wa.me/549{{str_replace('-', '', gluberNumber())}}?text=
+                                    https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text=
                                     {{urlencode(gluberMessage($order))}}" 
                                     class="btn btn-sm btn-warning"><i class="fas fa-motorcycle"></i> Pedir un Gluber</a>
                                 </div>

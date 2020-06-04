@@ -75,7 +75,7 @@ class CheckoutController extends Controller
     //QUE FALTEN CON UNA FUNCION DE AGREGAR ELEMENTOS A ARRAY. ESTO ES PARA NO REPETIR TANTO CODIGO
 
     $restaurant = Restaurant::find($request->restaurant_id);
-    if(restaurantIsOpen($restaurant)){
+    if($restaurant->isOpen()){
         //CREAR CODIGO
         //Genera un codigo de referencia para el pedido
         do {

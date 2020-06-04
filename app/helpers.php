@@ -25,20 +25,6 @@ function normaliza($cadena){
     return utf8_encode($cadena);
 }
 
-function getSchedule(Restaurant $restaurant){
-    $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
-    $schedule = [0,1,2,3,4,5,6];
-
-    if (count($days)>0) {
-        foreach ($days as $day) {    
-                $replace_day = (array($day['weekday']=>$day));
-                $schedule = array_replace_recursive($schedule, $replace_day);
-        }  
-    }
-
-    return $schedule;
-}
-
 function getDayName($day){
     
     if(is_array($day)){
@@ -70,119 +56,59 @@ function getDayName($day){
             break;        
     }  
 }
-
-function restaurantIsOpen(Restaurant $restaurant){
-    $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
-    if(count($days)>0){
-        $schedule = array(1,2,3,4,5,6,0);
-        foreach ($days as $day) {               
-                $replace_day = (array($day['weekday']-1=>$day));
-                $schedule = array_replace_recursive($schedule, $replace_day);
-        }  
-        
-        $today = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
-        $weekday = $today->dayOfWeek;       
-        $state = isOpen($days, $weekday, $today);
-        if($state==null){
-            $state=false;
-        }
-
-    }elseif($days==null){
-        $schedule = null;
-        $state=false;
-    }
-
-    return $state;
-}
-
-// function haveOpeningDateTimes($schedule){
-
-// }
-
-function isOpen($days, $weekday, $today){
-    foreach ($days as $day) {
-        if($day['weekday']==$weekday){
-            if($day['start_hour_1']!=null){
-                $start1 = Carbon::createFromTimeString($day['start_hour_1']);
-                $end1 = Carbon::createFromTimeString($day['end_hour_1']);
-            }else{
-                $start1=null;
-                $end1=null;
-            }
-
-            if($day['start_hour_2']!=null){
-                $start2 = Carbon::createFromTimeString($day['start_hour_2']);
-                $end2 = Carbon::createFromTimeString($day['end_hour_2'])->addDay();
-            }else{
-                $start2=null;
-                $end2=null;
-            }
-
-            if($day['state']=='open'){  
-                if($today->between($start1, $end1) || $today->between($start2, $end2)){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                return false;
-            }
-        }
-    }
-}
     
-    function getGuestAddress($order){
-        if($order->guest_floor==null || $order->guest_department==null){
-                return $order->guest_street.' '.$order->guest_number;
-        }else{
-                return $order->guest_street.' '.$order->guest_number.' - '.$order->guest_floor.$order->guest_department;
-        }
+function getGuestAddress($order){
+    if($order->guest_floor==null || $order->guest_department==null){
+            return $order->guest_street.' '.$order->guest_number;
+    }else{
+            return $order->guest_street.' '.$order->guest_number.' - '.$order->guest_floor.$order->guest_department;
+    }
+}
+
+function whatsappNumberCustomer($order){
+    if($order->user_id!=null){
+        $phone = $order->user->getPhone();
+    }else{
+        $phone = $order->guest_characteristic.'-'.$order->guest_phone;
     }
 
-    function whatsappNumberCustomer($order){
-        if($order->user_id!=null){
-            $phone = $order->user->getPhone();
-        }else{
-            $phone = $order->guest_characteristic.'-'.$order->guest_phone;
-        }
+    return $phone;
+}
 
-        return $phone;
+function whatsappMessageCustomer($order){
+    if($order->user_id!=null){
+        $first_name = $order->user->first_name;
+    }else{
+        $first_name = $order->guest_first_name;
     }
 
-    function whatsappMessageCustomer($order){
-        if($order->user_id!=null){
-            $first_name = $order->user->first_name;
-        }else{
-            $first_name = $order->guest_first_name;
-        }
+    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Recibimos tu detalle de pedido desde '.config("app.name").'. ¿Querés confirmar el pedido?';
+}
 
-        return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Recibimos tu detalle de pedido desde '.config("app.name").'. ¿Querés confirmar el pedido?';
+function gluberNumber(){
+    return '3462642680';
+}
+
+function gluberMessage($order){
+    if($order->user_id!=null){
+        $first_name = $order->user->first_name;
+    }else{
+        $first_name = $order->guest_first_name;
     }
 
-    function gluberNumber(){
-        return '3462642680';
-    }
+    return 'Hola, soy '.Auth::user()->first_name.' de '.$order->restaurant->name.' (_'.$order->restaurant->address->getAddress().'_) Me comunico desde '.config("app.name").'. '.'Tengo que hacer una entrega a *'.getOrderAddress($order).'* con el codigo *'.$order->code.'*. ¿Hay disponibilidad?';
+}
 
-    function gluberMessage($order){
-        if($order->user_id!=null){
-            $first_name = $order->user->first_name;
-        }else{
-            $first_name = $order->guest_first_name;
-        }
-
-        return 'Hola, soy '.Auth::user()->first_name.' de '.$order->restaurant->name.' (_'.$order->restaurant->address->getAddress().'_) Me comunico desde '.config("app.name").'. '.'Tengo que hacer una entrega a *'.getOrderAddress($order).'* con el codigo *'.$order->code.'*. ¿Hay disponibilidad?';
-    }
-
-    function getOrderAddress($order){
-        if ($order->user_id !=null) {
-            if ($order->address_id==null){
-                return getGuestAddress($order);  
-            }else{
-                return $order->address->getAddress();  
-            }
+function getOrderAddress($order){
+    if ($order->user_id !=null) {
+        if ($order->address_id==null){
+            return getGuestAddress($order);  
         }else{
             return $order->address->getAddress();  
         }
+    }else{
+        return $order->address->getAddress();  
     }
+}
 
 ?>

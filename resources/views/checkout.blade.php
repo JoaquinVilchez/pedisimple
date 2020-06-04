@@ -8,7 +8,6 @@
 </section>
 
 <div class="container">
-    @include('messages')
     <div class="row mb-5">
         <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -38,7 +37,8 @@
 
 
         <div class="col-md-8 order-md-1">
-
+        
+        @include('messages')
         
         @if(!Auth::check())
             <form class="needs-validation" action="{{route('checkout.store')}}" method="POST" novalidate>

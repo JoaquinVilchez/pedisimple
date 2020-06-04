@@ -89,7 +89,7 @@ class RestaurantController extends Controller
     public function openingTime()
     {
         $restaurant = Auth::user()->restaurant;        
-        $schedule = getSchedule($restaurant);
+        $schedule = $restaurant->getSchedule();
 
         return view('restaurant.info.times')->with([
             'restaurant' => $restaurant,
@@ -313,35 +313,11 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
         $categories = Category::where('restaurant_id', $restaurant->id)->where('state', 'available')->get();
-        
-        $schedule = getSchedule($restaurant);
-
-        // $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
-
-        // if(count($days)>0){
-        //     $schedule = array(1,2,3,4,5,6,0);
-        //     foreach ($days as $day) {            
-        //             $replace_day = (array($day['weekday']-1=>$day));
-        //             $schedule = array_replace_recursive($schedule, $replace_day);
-        //     }  
-            
-            // $today = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
-            $today = Carbon::now();
-            $weekday = $today->dayOfWeek;
-
-            $state = restaurantIsOpen($restaurant);
-
-        // }elseif($days==null){
-        //     $schedule = null;
-        // }
-
-        // dd($schedule);
+        $store_order = array(1,2,3,4,5,6,0);
 
         return view('restaurant.profile')->with([
             'restaurant' =>  $restaurant,
-            'categories' => $categories,
-            'days' => $schedule,
-            'state' => $state
+            'categories' => $categories
         ]);
     }
 

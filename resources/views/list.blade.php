@@ -118,20 +118,7 @@
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
-                        <div class="d-flex">
-                          <div class="d-inline">
-                            <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
-                          </div>
-                          @if (restaurantIsOpen($restaurant))
-                            <div class="d-inline ml-2">
-                              <span class="badge badge-success">Abierto</span>
-                            </div>
-                          @else
-                            <div class="d-inline ml-2">
-                              <span class="badge badge-danger"><small>Cerrado</small></span>
-                            </div>                    
-                          @endif
-                        </div>
+                        <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
                         <div class="ml-2">
                           <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                           <p class="my-1 ml-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
@@ -142,7 +129,11 @@
                   </div>
                   <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">
                     <div class="row my-2">
-                      <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
+                      @if($restaurant->isOpen())
+                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
+                      @else
+                        <a href="#" class="btn btn-primary btn-sm float-right" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal">Ver Productos</a>
+                      @endif
                     </div>
 
                   </div>   
@@ -163,6 +154,30 @@
   </div>
 </section>
 
+<!-- Modal -->
+<div class="modal fade" id="closedRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Comercio cerrado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body text-center">
+          <img src="{{asset('images/design/close.svg')}}" class="img-step mb-4">
+          <h5>En este momento el comercio se encuentra cerrado</h5>  
+          <p>¿Queres ingresar al perfil de todas formas?</p>
+          <input type="hidden" id="restaurantid" name="restaurant_id" value="">
+          <input type="hidden" name="state" value="active">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" onclick="continueToRestaurant()">Ir al comercio</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="activeRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -203,6 +218,19 @@
 
   modal.find('.modal-body #restaurantid').val(restaurantid)
   })
+
+  var restaurantSlug = null
+
+  $('#closedRestaurantModal').on('show.bs.modal', function(event){
+  var button = $(event.relatedTarget)
+
+  restaurantSlug = button.data('restaurantslug')
+  var modal = $(this) 
+  })
+
+function continueToRestaurant(){
+  window.location = "/comercio/"+restaurantSlug
+}
 
 </script>
 @endsection

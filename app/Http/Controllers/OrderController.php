@@ -51,7 +51,6 @@ class OrderController extends Controller
      */
     public function accept(Request $request)
     {
-        // dd($request->all());
         $order = Order::find($request->acceptorderid);
         $order->update([
             'state' => 'accepted'

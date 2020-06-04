@@ -41,7 +41,7 @@ class CartController extends Controller
         $product = Product::find($request->id);
         $restaurant = $product->restaurant;
 
-        if(restaurantIsOpen($restaurant)){
+        if($restaurant->isOpen()){
             if(\Cart::isEmpty()){
                 \Cart::add(array(
                     'id' => $request->id,
