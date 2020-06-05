@@ -97,6 +97,11 @@
             </div>
         </nav>
         
+        @if(!\Cart::isEmpty() and Request::path()!="checkout" and Request::path()!="login" and Request::path()!="register")
+            <div class="alert alert-warning mb-0 text-center" role="alert">
+                Tienes un pedido pendiente. <a href="{{route('checkout.index')}}" class="alert-link">Finalizar pedido</a> 
+            </div>
+        @endif
 
         <main role="main" class="flex-shrink-0">
             @yield('content')
