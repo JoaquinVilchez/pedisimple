@@ -62,6 +62,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('order.closed')}}">Cerrados</a>
+              </li>
             </ul>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('product.index')}}">Productos</a>
@@ -85,7 +88,7 @@
       </div>
     </nav>
 
-    <main role="main" class="col-auto ml-sm-auto col-xl-10 px-4" onload="">
+    <main role="main" class="col-auto ml-sm-auto col-xl-10 px-4">
       @yield('main')
     </main>
   </div>

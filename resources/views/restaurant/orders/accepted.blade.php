@@ -54,9 +54,7 @@
                             <td>{{$order->user->fullName()}}</td>
                             <td>
                                 <a target=”_blank” href="
-                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text=
-                                {{urlencode(whatsappMessageCustomer($order))}}
-                                ">
+                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">
                                 
                                 {{$order->user->getPhone()}}
                                 </a>
@@ -74,9 +72,7 @@
                             <td>{{$order->guest_first_name.' '.$order->guest_last_name}}</td>
                             <td>
                                 <a target=”_blank” href="
-                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text=
-                                {{urlencode(whatsappMessageCustomer($order))}}
-                                ">
+                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">
                                 {{$order->guest_characteristic.'-'.$order->guest_phone}}
                                 </a>
                             </td>
@@ -140,9 +136,11 @@
                             @endif
                             <div class="d-inline mr-2">
                                 <a target=”_blank” href="
-                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text=
-                                {{urlencode(whatsappMessageCustomer($order))}}" 
+                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
                                 class="btn btn-sm btn-success"><i class="fab fa-whatsapp"></i> Hablar con el cliente</a>
+                            </div>
+                            <div class="d-inline mr-2">
+                                <a data-orderid="{{$order->id}}" data-toggle="modal" data-target="#closeOrderModal" href="#" class="btn btn-sm btn-danger">Cerrar pedido</a>
                             </div>
                         </div>
                     </div>
@@ -153,24 +151,24 @@
     @endif
 
     <!-- Modal -->
-    <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="closeOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">Rechazar pedido</h5>
+            <h5 class="modal-title" id="exampleModalCenterTitle">Cerrar pedido</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <form action="{{route('order.reject')}}" method="POST">
+            <form action="{{route('order.close')}}" method="POST">
                 @csrf
             <div class="modal-body">
-                <h5>¿Estás seguro de rechazar este pedido?</h5>  
+                <h5>¿Estás seguro de cerrar este pedido?</h5>  
                 <input type="hidden" id="orderid" name="orderid" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <button type="submit" class="btn btn-danger">Cerrar</button>
             </form>
             </div>
         </div>
@@ -181,7 +179,7 @@
 @section('js-scripts')
 <script>
 
-$('#deleteOrderModal').on('show.bs.modal', function(event){
+$('#closeOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)
     
     var orderid = button.data('orderid')

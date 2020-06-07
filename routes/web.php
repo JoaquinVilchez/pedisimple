@@ -46,8 +46,10 @@ Route::resource('/direcciones', 'AddressController')->names('address');
 
 Route::get('/pedidos/nuevos', 'OrderController@new')->name('order.new');
 Route::get('/pedidos/aceptados', 'OrderController@accepted')->name('order.accepted');
+Route::get('/pedidos/cerrados', 'OrderController@closed')->name('order.closed');
 Route::post('/pedidos/aceptar', 'OrderController@accept')->name('order.accept');
 Route::post('/pedidos/rechazar', 'OrderController@reject')->name('order.reject');
+Route::post('/pedidos/cerrar', 'OrderController@close')->name('order.close');
 Route::resource('/pedidos', 'OrderController')->names('order');
 
 Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');

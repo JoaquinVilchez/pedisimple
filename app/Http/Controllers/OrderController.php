@@ -43,6 +43,17 @@ class OrderController extends Controller
         return view('restaurant.orders.accepted')->with('orders', $orders);
     }
 
+    /** 
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+
+    public function closed(){
+        $orders = Auth::user()->restaurant->orders->where('state', 'closed')->sortDesc();
+        return view('restaurant.orders.closed')->with('orders', $orders);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -78,6 +89,22 @@ class OrderController extends Controller
         ]);
 
         return back()->with('success_message', 'Pedido rechazado.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function close(Request $request)
+    {
+        $order = Order::find($request->orderid);
+        $order->update([
+            'state' => 'closed'
+        ]);
+
+        return back()->with('success_message', 'Pedido cerrado.');
     }
 
     /**

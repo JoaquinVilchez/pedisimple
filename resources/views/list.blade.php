@@ -210,7 +210,7 @@
 @section('js-scripts')
 <script>
 
-  $('#activeRestaurantModal').on('show.bs.modal', function(event){
+  $('#activeRestaurcommerantModal').on('show.bs.modal', function(event){
   var button = $(event.relatedTarget)
 
   var restaurantid = button.data('restaurantid')
