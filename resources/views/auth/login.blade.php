@@ -14,7 +14,6 @@
             </div>
             <hr>
             <div class="container mt-4">
-                <p class="my-2 txt-bold mt-4 mb-4" style="text-align: center">Ingreso comerciantes</p>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 

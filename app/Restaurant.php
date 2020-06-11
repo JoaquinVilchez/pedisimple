@@ -86,7 +86,7 @@ class restaurant extends Model
     function getSchedule(){
         $days = OpeningDateTime::where('restaurant_id', $this->id)->get()->toArray();
         if(count($days)>0){
-            $schedule = array(1,2,3,4,5,6,0);
+            $schedule = array(0,1,2,3,4,5,6);
             foreach ($days as $day) {               
                     $replace_day = (array($day['weekday']=>$day));
                     $schedule = array_replace_recursive($schedule, $replace_day);

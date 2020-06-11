@@ -97,8 +97,10 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function openingTimeUpdate(Request $request){
-        
+    public function openingTimeUpdate(Request $request){        
+
+        dd($request);
+
         if ($request->start_hour_1 == null and $request->end_hour_1 == null and $request->start_hour_2 == null and $request->end_hour_2 == null) {
             $rule1 = 'required';
             $rule2 = 'required';
@@ -139,7 +141,6 @@ class RestaurantController extends Controller
 
         if ($request->id) {
             $day = OpeningDateTime::where('restaurant_id', $restaurant->id)->where('id', $request->id)->first();
-            
             $day->update([
                 'state' => $state,
                 'start_hour_1' => $request->start_hour_1,
