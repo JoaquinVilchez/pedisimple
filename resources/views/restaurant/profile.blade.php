@@ -49,7 +49,7 @@
                             @if($restaurant->shipping_method != 'pickup')
                                 <div class="vl"></div>
                                 <div class="d-inline">
-                                    <span class="d-block">${{$restaurant->shipping_price}}</span>
+                                    <span class="d-block">${{$restaurant->shipping_price}} <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Importante: El precio del delivery puede variar en distancias grandes en referencia al local"></i></span>
                                     <small class="d-block txt-muted">Costo de envío</small>
                                 </div>
                                 @if($restaurant->shipping_time)
