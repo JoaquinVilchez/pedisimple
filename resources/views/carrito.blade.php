@@ -64,7 +64,7 @@
         <strong>${{number_format(Cart::getCondition('Delivery')->getValue())}}</strong>
     </li>
     <li class="list-group-item text-center" style="background-color: #f7f7f7">
-        <small><strong><p class="mb-0" style="color:red; font-family: 'Roboto', sans-serif;">Importante: El precio del delivery puede variar en distancias grandes en referencia al local.</p></strong></small> 
+        <small><strong><p class="mb-0" style="color:red; font-family: 'Roboto', sans-serif;">Importante: El precio del delivery puede variar en base a la distancia.</p></strong></small> 
     </li>
     @endif
     <li class="list-group-item d-flex justify-content-between">
