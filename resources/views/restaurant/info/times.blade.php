@@ -9,9 +9,7 @@
             @method('PUT')
             <button type="submit" class="float-left btn mr-1 btn-primary">Actualizar</button>
         </div>
-    </div>
-    {{-- @include('messages') --}}
-    
+    </div>    
         @if($errors->any())
             @foreach ($errors->all() as $error)
                 <div class="alert alert-danger mt-2" role="alert">
@@ -50,12 +48,10 @@
                                 name="start_hour_1_{{$day}}" 
                             @endif
                             >
-                            {{-- value="{{old($day['start_hour_1'])}}"  --}}
                     </td>
                     <td width="5%">a</td>
                     <td width="10%">
                         <input type="time" class="form-control" placeholder="Cierra" 
-                            {{-- value="{{old($day['end_hour_1'])}}"  --}}
                             @if(is_array($day)) 
                                 value="{{old('end_hour_1_'.$day['weekday'], $day['end_hour_1'])}}" 
                                 name="end_hour_1_{{$day['weekday']}}" 
@@ -68,26 +64,18 @@
                     <td width="5%">|</td>
                     <td width="10%">
                         <input type="time" class="form-control" placeholder="Abre" 
-                        @if(is_array($day)) 
-                            value="{{old('start_hour_2_'.$day['weekday'], $day['start_hour_2'])}}" 
-                            name="start_hour_2_{{$day['weekday']}}" 
-                        @else 
-                            value="{{old('start_hour_2_'.$day, $day['start_hour_2'])}}" 
-                            name="start_hour_2_{{$day}}" 
-                        @endif
-                            {{-- value="{{old($day['start_hour_2'])}}" 
                             @if(is_array($day)) 
+                                value="{{old('start_hour_2_'.$day['weekday'], $day['start_hour_2'])}}" 
                                 name="start_hour_2_{{$day['weekday']}}" 
                             @else 
+                                value="{{old('start_hour_2_'.$day, $day['start_hour_2'])}}" 
                                 name="start_hour_2_{{$day}}" 
-                            @endif --}}
-                        >
+                            @endif
+                            >
                     </td>
                     <td width="5%">a</td>
                     <td width="10%">
-                        <input type="time" class="form-control" placeholder="Cierra" 
-                            {{-- value="{{old($day['end_hour_2'])}}" --}}
-                            
+                        <input type="time" class="form-control" placeholder="Cierra"                             
                             @if(is_array($day)) 
                                 value="{{old('end_hour_2_'.$day['weekday'], $day['end_hour_2'])}}" 
                                 name="end_hour_2_{{$day['weekday']}}" 
@@ -95,12 +83,6 @@
                                 value="{{old('end_hour_2_'.$day, $day['end_hour_2'])}}" 
                                 name="end_hour_2_{{$day}}" 
                             @endif
-
-                            {{-- @if(is_array($day)) 
-                                name="end_hour_2_{{$day['weekday']}}" 
-                            @else 
-                                name="end_hour_2_{{$day}}"
-                            @endif --}}
                             >
                     </td>
                 </tr>
