@@ -91,6 +91,10 @@ class RestaurantController extends Controller
         $restaurant = Auth::user()->restaurant;        
         $schedule = $restaurant->getSchedule();
 
+        if ($schedule==null) {
+            $schedule=[0,1,2,3,4,5,6];
+        }
+
         return view('restaurant.info.times')->with([
             'restaurant' => $restaurant,
             'schedule' => $schedule
@@ -99,71 +103,93 @@ class RestaurantController extends Controller
 
     public function openingTimeUpdate(Request $request){        
 
-        dd($request);
+        // dd($request);
+        $args=[];
 
-        if ($request->start_hour_1 == null and $request->end_hour_1 == null and $request->start_hour_2 == null and $request->end_hour_2 == null) {
-            $rule1 = 'required';
-            $rule2 = 'required';
-        }else{
-            if($request->start_hour_1 != null or $request->end_hour_1 != null){
-                $rule1 = 'required';
-                if($request->start_hour_2 != null or $request->end_hour_2 != null){
-                    $rule2 = 'required';
-                }else{
-                    $rule2 = 'nullable';
+        for ($i=0; $i < 7; $i++) {
+
+            $state='state_'.$i;
+            $start_hour_1 = 'start_hour_1_'.$i;
+            $end_hour_1 = 'end_hour_1_'.$i;    
+            $start_hour_2 = 'start_hour_2_'.$i;
+            $end_hour_2 = 'end_hour_2_'.$i;   
+
+
+            if($request->$start_hour_1 == null and $request->$end_hour_1 == null and $request->$start_hour_2 == null and $request->$end_hour_2 == null) {
+                $rule1 = 'nullable';
+                $rule2 = 'nullable';
+            }else{
+                if($request->$start_hour_1 != null or $request->$end_hour_1 != null){
+                    $rule1 = 'required';
+                    if($request->$start_hour_2 != null or $request->$end_hour_2 != null){
+                        $rule2 = 'required';
+                    }else{
+                        $rule2 = 'nullable';
+                    }
+                }
+        
+                if($request->$start_hour_2 != null or $request->$end_hour_2 != null){
+                    $rule1 = 'required';
+                    if($request->$start_hour_1 != null or $request->$end_hour_1 != null){
+                        $rule2 = 'required';
+                    }else{
+                        $rule2 = 'nullable';
+                    }
                 }
             }
-    
-            if($request->start_hour_2 != null or $request->end_hour_2 != null){
-                $rule1 = 'required';
-                if($request->start_hour_1 != null or $request->end_hour_1 != null){
-                    $rule2 = 'required';
-                }else{
-                    $rule2 = 'nullable';
-                }
-            }
+            
+            $request->validate([
+                'start_hour_1_'.$i => $rule1,
+                'end_hour_1_'.$i => $rule1,
+                'start_hour_2_'.$i => $rule2,
+                'end_hour_2_'.$i => $rule2,
+            ]);
         }
-
-        $request->validate([
-            'start_hour_1'=> $rule1,
-            'end_hour_1'=> $rule1,
-            'start_hour_2' => $rule2,
-            'end_hour_2' => $rule2,
-        ]);
         
         $restaurant = Auth::user()->restaurant;
         
-        if($request->state == 'on'){
-            $state='open';
-        }else{
-            $state='closed';
+        for ($i=0; $i < 7; $i++) {
+
+            $day = OpeningDateTime::where('restaurant_id', $restaurant->id)->where('weekday', $i)->first();
+
+            $state='state_'.$i;
+            $start_hour_1 = 'start_hour_1_'.$i;
+            $end_hour_1 = 'end_hour_1_'.$i;    
+            $start_hour_2 = 'start_hour_2_'.$i;
+            $end_hour_2 = 'end_hour_2_'.$i;           
+
+            if($request->$state == 'on'){
+                $state='open';
+            }else{
+                $state='closed';
+            }
+
+            if($day!=null){
+                $day->update([
+                    'state' => $state,
+                    'start_hour_1' => $request->$start_hour_1,
+                    'end_hour_1' => $request->$end_hour_1,
+                    'start_hour_2' => $request->$start_hour_2,
+                    'end_hour_2' => $request->$end_hour_2,
+                ]);
+            }else{
+                if($request->$start_hour_1 != null || $request->$end_hour_1 != null || $request->$start_hour_2 != null || $request->$end_hour_2 != null){
+                    OpeningDateTime::create([
+                        'restaurant_id' => $restaurant->id,
+                        'weekday' => $i,
+                        'state' => $state,
+                        'start_hour_1' => $request->$start_hour_1,
+                        'end_hour_1' => $request->$end_hour_1,
+                        'start_hour_2' => $request->$start_hour_2,
+                        'end_hour_2' => $request->$end_hour_2,
+                    ]);
+                }
+
+            }
         }
 
-        if ($request->id) {
-            $day = OpeningDateTime::where('restaurant_id', $restaurant->id)->where('id', $request->id)->first();
-            $day->update([
-                'state' => $state,
-                'start_hour_1' => $request->start_hour_1,
-                'end_hour_1' => $request->end_hour_1,
-                'start_hour_2' => $request->start_hour_2,
-                'end_hour_2' => $request->end_hour_2,
-            ]);
-
-            return redirect()->back()->with('success_message', 'Horario modificado con éxito');
-
-        }else{
-            OpeningDateTime::create([
-                'restaurant_id' => $restaurant->id,
-                'weekday' => $request->weekday,
-                'state' => $state,
-                'start_hour_1' => $request->start_hour_1,
-                'end_hour_1' => $request->end_hour_1,
-                'start_hour_2' => $request->start_hour_2,
-                'end_hour_2' => $request->end_hour_2,
-            ]);
-
-            return redirect()->back()->with('success_message', 'Horario agregado con éxito');
-        }
+        return redirect()->back()->with('success_message', 'Horarios modificados con éxito');
+        
     }
 
     /**
