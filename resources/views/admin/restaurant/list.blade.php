@@ -34,12 +34,17 @@
           <form action="{{route('restaurant.admin.updateStatus')}}" id="stateSelect{{$restaurant->id}}" method="post">
               @csrf
               <input type="text" value="{{$restaurant->id}}" name="restaurant_id" hidden>
-              <td><select name="state" onchange="updateStatus({{$restaurant->id}})">
-                <option value="active" @if($restaurant->state === 'active') selected @endif>Activo</option>  
-                <option value="pending" @if($restaurant->state === 'pending') selected @endif>Pendiente</option>  
-                <option value="cancelled" @if($restaurant->state === 'cancelled') selected @endif>Cancelado</option>  
-              </select>
-              <span class="{{$restaurant->stateStyle()}}">{{$restaurant->translateState()}}</span></td>
+              @if($restaurant->state === 'without-times')
+                <td>Sin horarios</td>
+              @else
+                <td><select name="state" onchange="updateStatus({{$restaurant->id}})">
+                  <option value="active" @if($restaurant->state === 'active') selected @endif>Activo</option>  
+                  <option value="pending" @if($restaurant->state === 'pending') selected @endif>Pendiente</option>  
+                  <option value="cancelled" @if($restaurant->state === 'cancelled') selected @endif>Cancelado</option>  
+                  <option value="without-times" @if($restaurant->state === 'without-times') selected @endif>Sin horarios</option> 
+                </select>
+                <span class="{{$restaurant->stateStyle()}}">{{$restaurant->translateState()}}</span></td>
+              @endif
             </form>       
               <td>{{$restaurant->created_at->calendar()}}</td>
             <td><a data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#resendInvitationModal" href="#">Eliminar</a></td>

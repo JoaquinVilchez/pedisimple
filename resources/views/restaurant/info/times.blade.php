@@ -9,7 +9,14 @@
             @method('PUT')
             <button type="submit" class="float-left btn mr-1 btn-primary">Actualizar</button>
         </div>
-    </div>    
+    </div>
+    
+        @if($restaurant->getSchedule()==null)
+            <div class="alert alert-secondary mt-2" role="alert">
+                <p><i class="fas fa-exclamation-circle"></i> Establecer los horarios de aperura es un <strong>requisito obligatorio</strong> para activar el servicio.</p>
+            </div>
+        @endif
+
         @if($errors->any())
             @foreach ($errors->all() as $error)
                 <div class="alert alert-danger mt-2" role="alert">

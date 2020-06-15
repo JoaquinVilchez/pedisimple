@@ -22,6 +22,8 @@
             </div>
           @elseif(Auth::user()->restaurant->state=='cancelled')
             <div class="alert alert-danger m-2" role="alert">Tu comercio fue cancelado</div>
+          @elseif(Auth::user()->restaurant->state=='without-times')
+          <div class="alert alert-danger m-2" role="alert">Tu comercio fue inhabilitado temporalmente. <a href="{{route('restaurant.times')}}" class="alert-link">Establece los horarios de apertura</a> y se activará automáticamente.</div>
           @endif
           <hr>
         </div>

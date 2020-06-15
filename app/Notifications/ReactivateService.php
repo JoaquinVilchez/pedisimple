@@ -41,10 +41,9 @@ class ReactivateService extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Tu comercio fue inhabilitado temporalmente.')
-                    ->line('Debido a la nueva actualización de la plataforma, ahora es obligatorio establecer los horarios de apertura para poder recibir pedidos sólo cuando tu comercio está abierto.')
-                    ->line('Te pedimos por favor que actualices la información de los horarios de apertura para poder volver a activar el servicio.')
-                    ->action('Establecer horarios', url('/comercio/horarios'));
+            ->subject('El servicio fue habilitado nuevamente.')
+            ->line('Gracias por establecer los horarios de apertura. Ahora podras utilizar el servicio normalmente.')
+            ->line('Te pedimos por favor que actualices la información de los horarios de apertura cada vez que sea necesario.');
     }
 
     /**

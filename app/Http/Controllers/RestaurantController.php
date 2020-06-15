@@ -23,6 +23,7 @@ use App\Mail\UpdateStatusMail;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Notifications\StatusUpdate;
+use App\Notifications\ReactivateService;
 
 class RestaurantController extends Controller
 {
@@ -32,17 +33,18 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function check(){
-        $restaurants = Restaurant::all();
+
+        $restaurant = Restaurant::all();
         foreach($restaurants as $restaurant){
-            if($restaurant->getSchedule() == null){
-                // $restaurant->update([
-                //     'state' => 'without-times'
-                // ]);
-                
+            if($restaurant->getSchedule() == null && $restaurant->state=='active'){                
+                $restaurant->update([
+                    'state' => 'without-times'
+                ]);
                 $restaurant->user->notify(new StatusUpdate());
             }
-            
         }
+
+        return redirect()->back();
     }
     /**
      * Display a listing of the resource.
@@ -63,19 +65,29 @@ class RestaurantController extends Controller
     public function updateStatus(Request $request)
     {    
         $restaurant = Restaurant::findOrFail($request->restaurant_id);
-        $restaurant->update(['state' => $request->state]);
-
-        $data = [
-            'name' => $restaurant->name,
-            'slug' => $restaurant->slug,
-            'user_name' => $restaurant->user->first_name,
-        ];
 
         if($request->state == 'active'){
-            Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
+            if($restaurant->getSchedule()==null){
+                return redirect()->back()->with('error_message', 'Al comercio le falta configurar sus horarios');
+            }else{
+                $restaurant->update(['state' => $request->state]);
+    
+                $data = [
+                    'name' => $restaurant->name,
+                    'slug' => $restaurant->slug,
+                    'user_name' => $restaurant->user->first_name,
+                ];
+        
+                if($request->state == 'active'){
+                    Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
+                }
+        
+                return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
+            }
+        }else{
+            $restaurant->update(['state' => $request->state]);
+            return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
         }
-
-        return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
     }
 
     /**
@@ -206,6 +218,9 @@ class RestaurantController extends Controller
 
         if($restaurant->state='without-times'){
             $restaurant->user->notify(new ReactivateService());
+            $restaurant->update([
+                'state'=>'active'
+            ]);
         }
 
         return redirect()->back()->with('success_message', 'Horarios modificados con éxito');
