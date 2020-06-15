@@ -22,9 +22,28 @@ use App\Mail\newCommerceAdmin;
 use App\Mail\UpdateStatusMail;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use App\Notifications\StatusUpdate;
 
 class RestaurantController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function check(){
+        $restaurants = Restaurant::all();
+        foreach($restaurants as $restaurant){
+            if($restaurant->getSchedule() == null){
+                // $restaurant->update([
+                //     'state' => 'without-times'
+                // ]);
+                
+                $restaurant->user->notify(new StatusUpdate());
+            }
+            
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -102,9 +121,6 @@ class RestaurantController extends Controller
     }
 
     public function openingTimeUpdate(Request $request){        
-
-        // dd($request);
-        $args=[];
 
         for ($i=0; $i < 7; $i++) {
 
@@ -186,6 +202,10 @@ class RestaurantController extends Controller
                 }
 
             }
+        }
+
+        if($restaurant->state='without-times'){
+            $restaurant->user->notify(new ReactivateService());
         }
 
         return redirect()->back()->with('success_message', 'Horarios modificados con éxito');

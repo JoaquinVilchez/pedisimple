@@ -6,20 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Order;
 
-class NewOrder extends Notification implements ShouldQueue
+class StatusUpdate extends Notification implements ShouldQueue
 {
     use Queueable;
-    protected $order;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct()
     {
-        $this->order = $order;
+        //
     }
 
     /**
@@ -30,7 +29,7 @@ class NewOrder extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['mail'];
     }
 
     /**
@@ -42,17 +41,10 @@ class NewOrder extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Te llegó un nuevo pedido desde '.env('APP_NAME'))
-                    ->line('Te llegó un nuevo pedido desde la plataforma.')
-                    ->action('Ver nuevos pedidos', url('/pedidos/nuevos'))
-                    ->line('Código de referencia del pedido: '.$this->order->code);
-    }
-
-    public function toDatabase($notifiable){
-        return [
-            'order_id' => $this->order->id,
-            'order_total' => $this->order->total
-        ];
+                    ->subject('Tu comercio fue inhabilitado temporalmente.')
+                    ->line('Debido a la nueva actualización de la plataforma, ahora es obligatorio establecer los horarios de apertura para poder recibir pedidos sólo cuando tu comercio está abierto.')
+                    ->line('Te pedimos por favor que actualices la información de los horarios de apertura para poder volver a activar el servicio.')
+                    ->action('Establecer horarios', url('/comercio/horarios'));
     }
 
     /**

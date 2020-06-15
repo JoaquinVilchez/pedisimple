@@ -61,6 +61,8 @@ Route::resource('/datos', 'UserController')->names('user')->middleware(['auth', 
 Route::post('/administracion/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth','verified', 'Admin']);
 Route::resource('/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth','verified', 'Admin']);
 
+Route::get('/comercios/check', 'RestaurantController@check')->name('restaurant.check');
+
 Route::resource('/comercios', 'ListController')->names('list');
 
 Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
