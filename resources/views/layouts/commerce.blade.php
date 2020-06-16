@@ -54,18 +54,27 @@
             </li>
             <ul>
               <li class="nav-item">
-                  <a class="nav-link" href="{{route('order.new')}}">Nuevos
+                <div class="d-flex justify-content-between align-items-center">
+                  <span><a class="nav-link" href="{{route('order.new')}}">Nuevos</a></span>
                     @if((Auth::user()->unreadNotifications()->count())>0)
-                    <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}}</span>
+                      <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
+                    @else
+                      <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
                     @endif
-                  </a>
+                </div>
                   
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span><a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a></span>
+                  <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->acceptedOrders()}}</small></span>
+                </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{route('order.closed')}}">Cerrados</a>
+                <div class="d-flex justify-content-between align-items-center">
+                  <a class="nav-link" href="{{route('order.closed')}}">Cerrados</a>
+                  <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->closedOrders()}}</small></span>
+                </div>
               </li>
             </ul>
             <li class="nav-item">

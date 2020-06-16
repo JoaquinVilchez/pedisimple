@@ -137,4 +137,22 @@ class restaurant extends Model
         }
     }
 
+    public function newOrders(){
+        $newOrders = Order::where('restaurant_id', $this->id)->where('state', 'pending')->get();
+
+        return count($newOrders);
+    }
+
+    public function acceptedOrders(){
+        $acceptedOrders = Order::where('restaurant_id', $this->id)->where('state', 'accepted')->get();
+
+        return count($acceptedOrders);
+    }
+
+    public function closedOrders(){
+        $closedOrders = Order::where('restaurant_id', $this->id)->where('state', 'closed')->get();
+
+        return count($closedOrders);
+    }
+
 }

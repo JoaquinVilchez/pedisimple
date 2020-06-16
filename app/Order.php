@@ -51,4 +51,5 @@ class Order extends Model
                 break;
         }
     }
+
 }
