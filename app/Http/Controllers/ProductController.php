@@ -169,8 +169,21 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = $restaurant->products()->orderBy('category_id', 'asc')->get();
+        $products = $restaurant->products()->where('temporary',false)->orderBy('category_id', 'asc')->get();
         return view('restaurant.products.list')->with('products', $products);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function temporaries()
+    {
+        $user = Auth::user();
+        $restaurant = $user->restaurant;
+        $products = $restaurant->products()->where('temporary',true)->orderBy('created_at','asc')->get();
+        return view('restaurant.products.temporaries')->with('products', $products);
     }
 
     /**
@@ -190,16 +203,29 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
+
+        if($request->temporary=='on'){
+            $categoryRule='nullable';
+            $startDateRule='required|date_format:d/m/Y|before:end_date';
+            $endDateRule='required|date_format:d/m/Y|after:start_date';
+        }else{
+            $categoryRule='required';
+            $startDateRule='nullable';
+            $endDateRule='nullable';
+        }
+
         request()->validate([
             'name' => 'required',
             'price' => 'required',
-            'category_id' => 'required'
+            'category_id' => $categoryRule,
+            'start_date'=>$startDateRule,
+            'end_date'=>$endDateRule
         ]);
 
         $restaurant_id = Auth::user()->restaurant->id;
 
+        //DATOS DE IMAGEN
         if($request->hasFile('image')){
 
             $file = $request->file('image');
@@ -210,26 +236,41 @@ class ProductController extends Controller
             
             $image->save('images/uploads/products/'.$path);               
 
-            Product::create([
-                'name' => $request->name,
-                'details' => $request->details,
-                'price' => $request->price,
-                'state' => $request->state,
-                'category_id' => $request->category_id,
-                'restaurant_id' => $restaurant_id,
-                'image' => $path
-            ]);
+        }else{
+            $path = 'no_image.png';
+        }
+
+        //DATOS DE FECHA TEMPORAL
+        if($request->temporary=='on'){
+            $temporary=true;
+            $startDate=Carbon::createFromFormat('d/m/Y', $request->start_date);
+            $endDate=Carbon::createFromFormat('d/m/Y', $request->end_date);
 
         }else{
-            Product::create([
-                'name' => $request->name,
-                'details' => $request->details,
-                'price' => $request->price,
-                'state' => $request->state,
-                'category_id' => $request->category_id,
-                'restaurant_id' => $restaurant_id
-            ]);
+            $temporary=false;
+            $startDate=null;
+            $endDate=null;
         }
+
+        //DATOS DE CATEGORIA
+        if ($request->category_id==null) {
+            $category=null;
+        }else{
+            $category=$request->category_id;
+        }
+
+        Product::create([
+            'name' => $request->name,
+            'details' => $request->details,
+            'price' => $request->price,
+            'state' => $request->state,
+            'category_id' => $category,
+            'restaurant_id' => $restaurant_id,
+            'image' => $path,
+            'temporary' => $temporary,
+            'start_date' => $startDate,
+            'end_date'=>$endDate
+        ]);
 
 
         return redirect()->route('product.index')->with('success_message', 'Producto agregado con éxito');
@@ -273,16 +314,29 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $product = Product::findOrFail($id);
         $this->authorize('pass', $product);
 
-        $data=request()->validate([
-            'name'=>'required',
-            'details'=>'nullable',
-            'price'=>'required',
-            'state' => 'required',
-            'category_id' => 'required',
-            'restaurant_id' => 'nullable',
+        if($request->temporary=='on'){
+            $temporaryRule = 'required';
+            $categoryRule='nullable';
+            $startDateRule='required|date_format:d/m/Y|before:end_date';
+            $endDateRule='required|date_format:d/m/Y|after:start_date';
+        }else{
+            $temporaryRule = 'nullable';
+            $categoryRule='required';
+            $startDateRule='nullable';
+            $endDateRule='nullable';
+        }
+
+        request()->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'category_id' => $categoryRule,
+            'temporary' => $temporaryRule,
+            'start_date'=>$startDateRule,
+            'end_date'=>$endDateRule
         ]);
 
         if($request->hasFile('image')){
@@ -311,7 +365,40 @@ class ProductController extends Controller
             $product->update(['image'=>'no_image.png']); 
         }
 
-        $product->update($data);
+        //DATOS DE FECHA TEMPORAL
+        if($request->temporary==true){
+            $temporary=true;
+            $startTemporaryDate=Carbon::createFromFormat('d/m/Y', $request->start_date);
+            $endTemporaryDate=Carbon::createFromFormat('d/m/Y', $request->end_date);
+
+            // dd($request->start_date, $request->end_date, $startTemporaryDate, $endTemporaryDate);
+
+        }else{
+            $temporary=false;
+            $startTemporaryDate=null;
+            $endTemporaryDate=null;
+        }
+
+        //DATOS DE CATEGORIA
+        if ($request->category_id==null) {
+            $category=null;
+        }else{
+            $category=$request->category_id;
+        }
+
+        // dd($request->start_date, $request->end_date, $startTemporaryDate, $endTemporaryDate);
+        
+        $product->update([
+            'name' => $request->name,
+            'details' => $request->details,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+            'state' => $request->state,
+            'temporary' => $temporary,
+            'start_date'=> $startTemporaryDate,
+            'end_date'=>$endTemporaryDate
+        ]);
+
         return redirect(route('product.index'))->with('success_message', 'Producto editado con éxito');
     }
 

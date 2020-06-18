@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Product extends Model
 {
@@ -42,4 +43,51 @@ class Product extends Model
        }
     }
 
+    public function getTemporaryDate(){
+        $now = Carbon::now();
+        $start_date = Carbon::parse($this->start_date);
+        $end_date = Carbon::parse($this->end_date);
+
+        if($now>$end_date){
+            return 'Finalizado.';
+        }elseif($now<$start_date){
+            if($now->diffInDays($start_date, false)>1){
+                return 'Programado - Comienza en: '.$now->diffInDays($start_date, false).' días.';
+            }else{
+                return 'Programado - Comienza mañana.';
+            }
+        }elseif($now>=$start_date){
+            if($now->diffInDays($end_date, false)>1){
+                return 'Activo - Termina en: '.$now->diffInDays($end_date, false).' días.';
+            }else{
+                return 'Activo - Termina mañana.';
+            }
+        }
+    }
+
+    public function isTemporaryActive(){
+        $now = Carbon::now();
+        $start_date = Carbon::parse($this->start_date);
+        $end_date = Carbon::parse($this->end_date);
+
+        if($now>=$start_date and $now<$end_date){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getRemainingDays(){
+        $now = Carbon::now();
+        $start_date = Carbon::parse($this->start_date);
+        $end_date = Carbon::parse($this->end_date);
+
+        if($now>=$start_date){
+            if($now->diffInDays($end_date, false)>1){
+                return 'Termina en: '.$now->diffInDays($end_date, false).' días.';
+            }else{
+                return 'Termina mañana.';
+            }
+        }
+    }
 }

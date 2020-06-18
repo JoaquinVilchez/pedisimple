@@ -60,6 +60,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{route('product.index')}}">Productos</a>
             </li>
+            <ul>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{route('product.index')}}">Menú</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('product.temporaries')}}">Temporales</a>
+              </li>
+            </ul>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('category.index')}}">Categorías</a>
             </li>

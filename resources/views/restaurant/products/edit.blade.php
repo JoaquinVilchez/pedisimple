@@ -12,6 +12,11 @@
   </div>
 </div>
 <div class="container container-fluid">
+  @if($product->temporary)
+    <div class="alert alert-primary" role="alert">
+      Este producto es temporal.
+    </div>
+  @endif
   <div class="row">
       <div class="col-xl-6 col-12 my-2">
         <div class="card">
@@ -39,7 +44,7 @@
               <div class="col-6">
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="category_id" value="{{old('category_id', $product->category_id)}}" @if($product->category_id==$category->id) checked @endif>
+                    <input class="form-check-input" type="radio" name="category_id" value="{{old('category_id', $category->id)}}" @if($product->category_id==$category->id) checked @endif>
                     {{$category->name}} 
                   </label>
                 </div>
@@ -82,6 +87,49 @@
                   <input type="hidden" id="img_action" name="action" value="">
                 </div>
               </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-6 col-12 pl-0">
+        <div class="card my-2">
+          <h5 class="card-header">Producto temporal <small>(Opcional)</small></h5>
+          <small class="txt-muted px-3 pt-3">
+            <i class="fas fa-info-circle"></i>
+            El producto sólo se mostrará en una fecha determinada y luego desaparecerá.
+          </small>
+          <hr>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="input-group">
+                <label>
+                <input type="checkbox" name="temporary" @if(old('temporary', $product->temporary)) checked @endif">
+                  Establecer producto como temporal
+                </label>
+              </div>
+            </div>
+            <label>Período</label>
+              <div class="form-group">
+                <div class="row">
+                  <div class="input-group col-6">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Inicio</span>
+                      </div>
+                      <input type="text" class="form-control datepicker" name="start_date" value="{{old('start_date', date('d/m/Y', strtotime($product->start_date)))}}" autocomplete="off">
+                      <small>Comienza a las 00:00hs de este día</small>
+                  </div>
+                  <div class="input-group col-6">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="">Fin</span>
+                    </div>
+                    <input type="text" class="form-control datepicker" name="end_date" value="{{old('end_date', date('d/m/Y', strtotime($product->end_date)))}}" autocomplete="off">
+                    <small>Termina a las 00:00hs de este día</small>
+                  </div>
+                </div>
+              </div>             
+              {!!$errors->first('start_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+              <br>
+              {!!$errors->first('end_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
           </div>
         </div>
       </div>

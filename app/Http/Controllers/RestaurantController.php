@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Restaurant;
 use App\Category;   
+use App\Product;
 use App\City;
 use App\RestaurantCategory;
 use App\Address;
@@ -322,7 +323,15 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
         $categories = Category::where('restaurant_id', $restaurant->id)->where('state', 'available')->get();
+        $products = Product::where('state', 'available')->where('temporary', true)->get();
         $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
+
+        $temporary_products = $products->filter(function ($products) {
+            if($products->isTemporaryActive()){
+                return $products;
+            }
+        });
+
 
         if(count($days)>0){
             $schedule = array(1,2,3,4,5,6,7);
@@ -348,7 +357,8 @@ class RestaurantController extends Controller
             'restaurant' =>  $restaurant,
             'categories' => $categories,
             'days' => $schedule,
-            'state' => $state
+            'state' => $state,
+            'temporary_products' => $temporary_products
         ]);
     }
 

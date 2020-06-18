@@ -11,12 +11,6 @@
     </div>
   </div>
 </section>
-
-<div class="alert alert-warning m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center" style="text-decoration: none">
-  <a target=”_blank” href="https://www.argentina.gob.ar/salud/coronavirus-COVID-19">
-    <strong><i class="fas fa-virus"></i> COVID-19</strong> | Conocé información y recomendaciones del Ministerio de Salud.
-  </a>
-</div>
   <!-- Page Content -->
 <div class="container mt-4">
     {{-- mobile --}}
@@ -67,6 +61,7 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
+
           @include('messages')
           
           @if (count($filters)>0)

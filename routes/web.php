@@ -58,6 +58,7 @@ Route::resource('/comercios', 'ListController')->names('list');
 Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
 Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
 
+
 Route::post('/comercios/solicitud', 'RestaurantController@request')->name('restaurant.request');
 Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('restaurant.times')->middleware(['verified', 'hasRestaurant']);
@@ -73,6 +74,7 @@ Route::get('/producto/export-excel', 'ProductController@exportExcel')->name('pro
 Route::post('/producto/import-excel', 'ProductController@importExcel')->name('product.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
 
+Route::get('/productos/temporales', 'ProductController@temporaries')->name('product.temporaries')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos', 'ProductController@index')->name('product.index')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/create', 'ProductController@create')->name('product.create')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos', 'ProductController@store')->name('product.store')->middleware(['auth','verified', 'hasRestaurant']);
