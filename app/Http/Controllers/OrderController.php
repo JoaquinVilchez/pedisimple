@@ -68,7 +68,7 @@ class OrderController extends Controller
         ]);
         
         // Searching the internet I thought I could do it this way, but I found no result.
-        $newUrl='https://wa.me/'.str_replace('-', '', whatsappNumberCustomer($order)).'?text='.urlencode(whatsappMessageCustomer($order));
+        $newUrl='https://wa.me/'.whatsappNumberCustomer($order).'?text='.urlencode(whatsappMessageCustomer($order));
         session()->flash('newurl', $newUrl);
         //===============================================================================
 

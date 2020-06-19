@@ -136,7 +136,7 @@
                             @endif
                             <div class="d-inline mr-2">
                                 <a target=”_blank” href="
-                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
+                                https://wa.me/{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
                                 class="btn btn-sm btn-success"><i class="fab fa-whatsapp"></i> Hablar con el cliente</a>
                             </div>
                             <div class="d-inline mr-2">

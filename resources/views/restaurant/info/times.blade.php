@@ -43,7 +43,7 @@
                 <tr class="mb-4">
                     <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" @if(is_array($day)) name="state_{{$day['weekday']}}" @else name="state_{{$day}}" @endif @if($day['state']=='open') checked @endif></td>
                     <td width="10%">
-                        {{getDayName($day)}}
+                        <strong>{{getDayName($day)}}</strong>
                     </td>
                     <td width="10%">
                         <input type="time" class="form-control" placeholder="Abre" 

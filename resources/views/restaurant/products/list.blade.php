@@ -50,11 +50,25 @@
       <tbody>
           @foreach($products as $product)
           <tr>
-            {{-- <td><input type="checkbox"></td> --}}
-            <td><img src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:100px" alt=""></td>
+            <td>
+              <div class="d-flex">
+                @if($product->temporary!=null)
+                  <div class="d-inline">
+                      <i class="far fa-clock mr-2"></i>
+                  </div>
+                @endif
+                  <div class="d-inline">
+                    <img src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
+                  </div>
+              </div>
+            </td>
             <td>{{$product->name}}</td>
             <td>{{$product->details}}</td>
-            <td>{{$product->category->name}}</td>
+            @if($product->temporary==null)
+              <td>{{$product->category->name}}</td>  
+            @else
+              <td>Sin categoria</td>
+            @endif
             <td>${{$product->price}}</td>
             <td><span class="{{$product->stateStyle()}}">{{$product->translateState()}}</span></td>
             <td style="text-align:center" width="10%">

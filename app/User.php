@@ -59,7 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function getPhone(){
-        return $this->characteristic.'-'.$this->phone;
+        return $this->characteristic.$this->phone;
     }
 
 }

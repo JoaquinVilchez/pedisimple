@@ -47,7 +47,7 @@
                             @if($restaurant->shipping_method != 'pickup')
                                 <div class="vl"></div>
                                 <div class="d-inline">
-                                    <span class="d-block">${{$restaurant->shipping_price}}</span>
+                                    <span class="d-block">${{$restaurant->shipping_price}} <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Importante: El precio del delivery puede variar en base a la distancia."></i></span>
                                     <small class="d-block txt-muted">Costo de envío</small>
                                 </div>
                                 @if($restaurant->shipping_time)
@@ -76,11 +76,6 @@
             @endif
         </div>
     @endif
-    <div class="alert alert-warning m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center" style="text-decoration: none">
-        <a target=”_blank” href="https://www.argentina.gob.ar/salud/coronavirus-COVID-19">
-          <strong><i class="fas fa-virus"></i> COVID-19</strong> | Conocé información y recomendaciones del Ministerio de Salud.
-        </a>
-    </div>
 
     <!-- Page Content -->
     <div class="container mt-3">
@@ -130,77 +125,157 @@
 
             <div class="col-lg-8 tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                
+                    {{-- TEMPORALES --}}
+                    @if(count($temporary_products)!=0)
+                        <h3>Temporales</h3>
+                        <div class="row mb-4">
+                            @foreach($temporary_products as $temporary_product)
+                            <div class="col-lg-6 px-1" >
+                                @if ($temporary_product->image == 'no_image.png')
+                                    <div class="card p-2 m-1" style="min-height:95%" onclick="alerta();">
+                                        <div class="row">
+                                            <div class="col-10 pr-0 pl-4">
+                                                <h6 class="mb-0"><strong>{{ucfirst($temporary_product->name)}}</strong></h6>
+                                                @if($temporary_product->details)
+                                                <div class="ml-2 mt-1">
+                                                    <small>{{ucfirst($temporary_product->details)}}</small><br>
+                                                </div>
+                                                @endif
+                                                <div class="ml-2 mt-1">
+                                                    <span>${{$temporary_product->price}}</span>
+                                                </div>
+                                                <small><span class="badge badge-danger" style="font-weight: 400"><i class="far fa-clock"></i> {{$temporary_product->getRemainingDays()}}</span></small>
+                                            </div>  
+                                            
+                                            <div class="col-2 d-flex align-items-center">
+                                                <span class="float-right mr-2" style="font-size:20px">
+                                                    <a style="color:#ffa64d" href="#" 
+                                                    data-productid="{{$temporary_product->id}}" 
+                                                    data-productname="{{$temporary_product->name}}" 
+                                                    data-productprice="{{$temporary_product->price}}"       
+                                                    data-productimage="{{$temporary_product->image}}"  
+                                                    data-productdescription="{{$temporary_product->details}}"  
+                                                    data-toggle="modal" data-target="#addItemModal">
+                                                    <i class="fas fa-plus-circle"></i></a>
+                                                </span>
+                                            </div>        
+                                        </div>                                
+                                    </div>
+                                @else
+                                    <div class="card p-2 m-1" style="min-height:95%">
+                                        <div class="row">
+                                            <div class="col-4 pr-0">
+                                                <div class="d-flex align-items-center">
+                                                    <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$temporary_product->image)}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-6 pt-1 px-0">
+                                                <h6 class="mb-0"><strong>{{ucfirst($temporary_product->name)}}</strong></h6>
+                                                    @if($temporary_product->details)
+                                                    <div class="mt-1">
+                                                        <small>{{ucfirst($temporary_product->details)}}</small><br>
+                                                    </div>
+                                                    @endif
+                                                    <div class="mt-1">
+                                                        <span>${{$temporary_product->price}}</span>
+                                                    </div>
+                                                    <small><span class="badge badge-danger" style="font-weight: 400"><i class="far fa-clock"></i> {{$temporary_product->getRemainingDays()}}</span></small>
+                                            </div>  
+                                            <div class="col-2 d-flex align-items-center">
+                                                <span class="float-right mr-2" style="font-size:20px">
+                                                    <a style="color:#ffa64d" href="#" 
+                                                    data-productid="{{$temporary_product->id}}" 
+                                                    data-productname="{{$temporary_product->name}}" 
+                                                    data-productprice="{{$temporary_product->price}}"  
+                                                    data-productimage="{{asset('images/uploads/products/'.$temporary_product->image)}}"                                                
+                                                    data-productdescription="{{$temporary_product->details}}"  
+                                                    data-toggle="modal" data-target="#addItemModal">
+                                                    <i class="fas fa-plus-circle"></i></a>
+                                                </span>
+                                            </div>        
+                                        </div>                                
+                                    </div>
+                                @endif
+                            </div>
+                            @endforeach                   
+                        </div>
+                    @endif
+                    {{-- TEMPORALES --}}
+                
                 @foreach($categories as $category)
                 @if(count($category->getProducts())>0)
                 <div class="categoria mb-4">
-                    <h3>{{$category->name}}</h3>
-                    <p>{{$category->description}}</p>   
+                    <h3>{{ucfirst($category->name)}}</h3>
+                    <p>{{ucfirst($category->description)}}</p>   
                     <div class="row">
                         @foreach($category->getProducts() as $product)
-                        <div class="col-lg-6 px-1">
-                            @if ($product->image == 'no_image.png')
-                                <div class="card p-2 m-1" style="min-height:95%">
-                                    <div class="row">
-                                        <div class="col-10 pr-0 pl-4">
-                                            <h6 class="mb-0"><strong>{{$product->name}}</strong></h6>
-                                            @if($product->details)
-                                            <div class="ml-2 mt-1">
-                                                <small>{{$product->details}}</small><br>
-                                            </div>
-                                            @endif
-                                            <div class="ml-2 mt-1">
-                                                <span>${{$product->price}}</span>
-                                            </div>
-                                        </div>  
-                                        <div class="col-2 d-flex align-items-center">
-                                            <span class="float-right mr-2" style="font-size:20px">
-                                                <a style="color:#ffa64d" href="#" 
-                                                data-productid="{{$product->id}}" 
-                                                data-productname="{{$product->name}}" 
-                                                data-productprice="{{$product->price}}"       
-                                                data-productimage="{{$product->image}}"  
-                                                data-productdescription="{{$product->details}}"  
-                                                data-toggle="modal" data-target="#addItemModal">
-                                                <i class="fas fa-plus-circle"></i></a>
-                                            </span>
-                                        </div>        
-                                    </div>                                
-                                </div>
-                            @else
-                                <div class="card p-2 m-1" style="min-height:95%">
-                                    <div class="row">
-                                        <div class="col-4 pr-0">
-                                            <div class="d-flex align-items-center">
-                                                <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-6 pt-1 px-0">
-                                            <h6 class="mb-0"><strong>{{$product->name}}</strong></h6>
+                        @if ($product->temporary==false)
+                            <div class="col-lg-6 px-1">
+                                @if ($product->image == 'no_image.png')
+                                    <div class="card p-2 m-1" style="min-height:95%">
+                                        <div class="row">
+                                            <div class="col-10 pr-0 pl-4">
+                                                <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
                                                 @if($product->details)
-                                                <div class="mt-1">
-                                                    <small>{{$product->details}}</small><br>
+                                                <div class="ml-2 mt-1">
+                                                    <small>{{ucfirst($product->details)}}</small><br>
                                                 </div>
                                                 @endif
-                                                <div class="mt-1">
+                                                <div class="ml-2 mt-1">
                                                     <span>${{$product->price}}</span>
                                                 </div>
-                                        </div>  
-                                        <div class="col-2 d-flex align-items-center">
-                                            <span class="float-right mr-2" style="font-size:20px">
-                                                <a style="color:#ffa64d" href="#" 
-                                                data-productid="{{$product->id}}" 
-                                                data-productname="{{$product->name}}" 
-                                                data-productprice="{{$product->price}}"  
-                                                data-productimage="{{asset('images/uploads/products/'.$product->image)}}"                                                
-                                                data-productdescription="{{$product->details}}"  
-                                                data-toggle="modal" data-target="#addItemModal">
-                                                <i class="fas fa-plus-circle"></i></a>
-                                            </span>
-                                        </div>        
-                                    </div>                                
-                                </div>
-                            @endif
-                        </div>
+                                            </div>  
+                                            <div class="col-2 d-flex align-items-center">
+                                                <span class="float-right mr-2" style="font-size:20px">
+                                                    <a style="color:#ffa64d" href="#" 
+                                                    data-productid="{{$product->id}}" 
+                                                    data-productname="{{$product->name}}" 
+                                                    data-productprice="{{$product->price}}"       
+                                                    data-productimage="{{$product->image}}"  
+                                                    data-productdescription="{{$product->details}}"  
+                                                    data-toggle="modal" data-target="#addItemModal">
+                                                    <i class="fas fa-plus-circle"></i></a>
+                                                </span>
+                                            </div>        
+                                        </div>                                
+                                    </div>
+                                @else
+                                    <div class="card p-2 m-1" style="min-height:95%">
+                                        <div class="row">
+                                            <div class="col-4 pr-0">
+                                                <div class="d-flex align-items-center">
+                                                    <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="col-6 pt-1 px-0">
+                                                <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
+                                                    @if($product->details)
+                                                    <div class="mt-1">
+                                                        <small>{{ucfirst($product->details)}}</small><br>
+                                                    </div>
+                                                    @endif
+                                                    <div class="mt-1">
+                                                        <span>${{$product->price}}</span>
+                                                    </div>
+                                            </div>  
+                                            <div class="col-2 d-flex align-items-center">
+                                                <span class="float-right mr-2" style="font-size:20px">
+                                                    <a style="color:#ffa64d" href="#" 
+                                                    data-productid="{{$product->id}}" 
+                                                    data-productname="{{$product->name}}" 
+                                                    data-productprice="{{$product->price}}"  
+                                                    data-productimage="{{asset('images/uploads/products/'.$product->image)}}"                                                
+                                                    data-productdescription="{{$product->details}}"  
+                                                    data-toggle="modal" data-target="#addItemModal">
+                                                    <i class="fas fa-plus-circle"></i></a>
+                                                </span>
+                                            </div>        
+                                        </div>                                
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                         @endforeach                   
                     </div>
                 </div>
@@ -215,7 +290,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Descripción</h6>
-                                    <p>{{$restaurant->description}}</p>
+                                    <p>{{ucfirst($restaurant->description)}}</p>
                                 </div>
                             </div>
                             <hr>
@@ -223,7 +298,7 @@
                             <div class="row">
                                 <div class="col-xl-6 col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Dirección</h6>
-                                    <p><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> {{($restaurant->address->getFullAddress())}}</p>
                                 </div>
                                 <div class="col-xl-6 col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Teléfono</h6>
@@ -493,5 +568,6 @@
                 button.removeAttribute("hidden","");    
             }
         }
+
     </script>
 @endsection

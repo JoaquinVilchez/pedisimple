@@ -67,9 +67,9 @@ function getGuestAddress($order){
 
 function whatsappNumberCustomer($order){
     if($order->user_id!=null){
-        $phone = $order->user->getPhone();
+        $phone = '549'.$order->user->getPhone();
     }else{
-        $phone = $order->guest_characteristic.'-'.$order->guest_phone;
+        $phone = '549'.$order->guest_characteristic.'-'.$order->guest_phone;
     }
 
     return $phone;
@@ -83,10 +83,6 @@ function whatsappMessageCustomer($order){
     }
 
     return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Recibimos tu detalle de pedido desde '.config("app.name").'. ¿Querés confirmar el pedido?';
-}
-
-function gluberNumber(){
-    return '3462642680';
 }
 
 function gluberMessage($order){

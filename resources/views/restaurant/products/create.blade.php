@@ -18,7 +18,7 @@
     <a class="btn btn-sm btn-secondary my-2" href="{{route('category.create')}}">Crear categorías</a></p>
 @else
   <div class="row">
-      <div class="col-xl-6 col-12 my-2">
+      <div class="col-xl-6 col-12 my-2 pl-0">
         <div class="card">
           <h5 class="card-header">Detalles del producto</h5>
           <div class="card-body">
@@ -36,9 +36,13 @@
         </div>
       </div>
 
-      <div class="col-xl-6 col-12 my-2">
+      <div class="col-xl-6 col-12 my-2 pl-0">
         <div class="card">
           <h5 class="card-header">Categoría</h5>
+          <small class="txt-muted px-3 pt-3">
+            <i class="fas fa-info-circle"></i>
+            Si el producto es temporal, no es obligatorio indicar una categoría.
+          </small>
           <div class="card-body">
             @foreach($categories as $category)
             <div class="row">
@@ -55,10 +59,11 @@
             {!!$errors->first('category_id', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
           </div>
         </div>
-      </div>
+
+      </div>    
     
-      <div class="col-xl-6 col-12 my-2">
-        <div class="card">
+      <div class="col-xl-6 col-12 pl-0">
+        <div class="card my-2">
           <h5 class="card-header">Otros</h5>
           <div class="card-body">
             <label>Precio</label>
@@ -66,7 +71,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
               </div>
-              <input type="number" name="price" class="form-control" value="{{old('price')}}">
+              <input type="number" name="price" class="form-control" min="0" value="{{old('price')}}">
               {!!$errors->first('price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
@@ -90,7 +95,50 @@
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="col-xl-6 col-12 pl-0">
+        <div class="card my-2">
+          <h5 class="card-header">Producto temporal <small>(Opcional)</small></h5>
+          <small class="txt-muted px-3 pt-3">
+            <i class="fas fa-info-circle"></i>
+            El producto sólo se mostrará en una fecha determinada y luego desaparecerá.
+          </small>
+          <hr>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="input-group">
+                <label>
+                <input type="checkbox" name="temporary" @if(old('temporary')) checked @endif">
+                  Establecer producto como temporal
+                </label>
+              </div>
+            </div>
+            <label>Período</label>
+              <div class="form-group">
+                <div class="row">
+                  <div class="input-group col-6">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Inicio</span>
+                      </div>
+                      <input type="text" class="form-control datepicker" name="start_date" value="{{old('start_date')}}" autocomplete="off">
+                      <small>Comienza a las 00:00hs de este día</small>
+                  </div>
+                  <div class="input-group col-6">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="">Fin</span>
+                    </div>
+                    <input type="text" class="form-control datepicker" name="end_date" value="{{old('end_date')}}" autocomplete="off">
+                    <small>Termina a las 00:00hs de este día</small>
+                  </div>
+                </div>
+              </div>             
+              {!!$errors->first('start_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+              <br>
+              {!!$errors->first('end_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+          </div>
+        </div>
+      </div>
+  </div>
 {{-- btn-mobile --}}
 <div class="d-block d-sm-none">
 <div class="row my-3">
