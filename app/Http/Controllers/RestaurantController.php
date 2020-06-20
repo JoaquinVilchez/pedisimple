@@ -323,7 +323,7 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::where('slug', $slug)->firstOrFail();
         $categories = Category::where('restaurant_id', $restaurant->id)->where('state', 'available')->get();
-        $products = Product::where('state', 'available')->where('temporary', true)->get();
+        $products = Product::where('state', 'available')->where('restaurant_id', $restaurant->id)->where('temporary', true)->get();
         $days = OpeningDateTime::where('restaurant_id', $restaurant->id)->get()->toArray();
 
         $temporary_products = $products->filter(function ($products) {
