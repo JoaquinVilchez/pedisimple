@@ -33,7 +33,7 @@
         @foreach($categories as $category)
         <tr>
           {{-- <td><input type="checkbox"></td> --}}
-          <td>{{$category->name}}</td>
+        <td>{{$category->name}} <small class="txt-muted ml-4"> ({{count($category->products)}} productos)</small></td>
           <td>{{$category->description}}</td>
           <td><span class="{{$category->stateStyle()}}">{{$category->translateState()}}</span></td>
           <td style="text-align:center" width="10%">

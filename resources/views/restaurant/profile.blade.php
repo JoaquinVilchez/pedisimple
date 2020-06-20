@@ -7,6 +7,15 @@
       height: 30px;
       margin: 0px 20px
     }
+
+    .back-to-top {
+        cursor: pointer;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+    }
+
 </style>
 @endsection
 
@@ -103,8 +112,9 @@
                 </h4>
 
                     @if(!Cart::isEmpty())
-                    @include('carrito')
-                    
+                   
+                        @include('carrito')
+                   
                     <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
                         ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" href="#">No</a>
                     </div>
@@ -125,7 +135,26 @@
 
             <div class="col-lg-8 tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                
+
+                    <div class="container   ">
+                        <div class="row my-3">
+                            <div class="d-flex align-items-center">
+                                <h6>Ir a categoria:</h6>
+                                <form action="#" id="goToCategory" class="form-group ml-3">
+                                    <select class="form-control" onchange="goToCategory()">
+                                        @foreach($categories as $category)
+                                            @if(count($category->products)>0)
+                                                <option value="{{normaliza($category->name)}}">{{ucfirst($category->name)}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
                     {{-- TEMPORALES --}}
                     @if(count($temporary_products)!=0)
                         <h3>Temporales</h3>
@@ -205,8 +234,8 @@
                 
                 @foreach($categories as $category)
                 @if(count($category->getProducts())>0)
-                <div class="categoria mb-4">
-                    <h3>{{ucfirst($category->name)}}</h3>
+                <div class="categoria mb-4" id="{{normaliza($category->name)}}">
+                <h3>{{ucfirst($category->name)}}</h3>
                     <p>{{ucfirst($category->description)}}</p>   
                     <div class="row">
                         @foreach($category->getProducts() as $product)
@@ -479,10 +508,32 @@
             </div>
         </div>
     </div>
+    <a id="back-to-top" href="#" class="btn btn-primary btn-sm back-to-top" role="button" title="Click para ir arriba" data-toggle="tooltip" data-placement="left"><i class="fas fa-arrow-circle-up"></i> Ir arriba</a>
 @endsection
 
 @section('js-scripts')
     <script>
+        $(document).ready(function(){
+            $(window).scroll(function () {
+                    if ($(this).scrollTop() > 50) {
+                        $('#back-to-top').fadeIn();
+                    } else {
+                        $('#back-to-top').fadeOut();
+                    }
+                });
+                // scroll body to 0px on click
+                $('#back-to-top').click(function () {
+                    $('#back-to-top').tooltip('hide');
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 800);
+                    return false;
+                });
+                
+                $('#back-to-top').tooltip('show');
+
+        });
+        
          $('#activeRestaurantModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget)
 
@@ -569,5 +620,9 @@
             }
         }
 
+        function goToCategory(){
+            var select = $('#goToCategory').val($("option:selected").val());
+            window.location.href = "#"+select.val();
+        }
     </script>
 @endsection
