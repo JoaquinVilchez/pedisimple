@@ -121,14 +121,14 @@
                         <span class="input-group-text" id="">Inicio</span>
                       </div>
                       <input type="text" class="form-control datepicker" name="start_date" value="{{old('start_date')}}" autocomplete="off">
-                      <small>Comienza a las 00:00hs de este día</small>
+                      <small>Comienza a las 00:00hs de este día (Este día está incluido)</small>
                   </div>
                   <div class="input-group col-6">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="">Fin</span>
                     </div>
                     <input type="text" class="form-control datepicker" name="end_date" value="{{old('end_date')}}" autocomplete="off">
-                    <small>Termina a las 00:00hs de este día</small>
+                    <small>Termina a las 00:00hs de este día (Este día no está incluido)</small>
                   </div>
                 </div>
               </div>             

@@ -182,7 +182,7 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = $restaurant->products()->where('temporary',true)->orderBy('created_at','asc')->get();
+        $products = $restaurant->products()->where('temporary',true)->orderBy('created_at','desc')->get();
         return view('restaurant.products.temporaries')->with('products', $products);
     }
 
