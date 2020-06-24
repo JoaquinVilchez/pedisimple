@@ -14,6 +14,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProductsImport;
 use App\Exports\ProductsExport;
 use Carbon\Carbon;
+use Mail;
+use App\Mail\NewTemporaryProduct;
 
 class ProductController extends Controller
 {
@@ -259,7 +261,7 @@ class ProductController extends Controller
             $category=$request->category_id;
         }
 
-        Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'details' => $request->details,
             'price' => $request->price,
@@ -271,6 +273,10 @@ class ProductController extends Controller
             'start_date' => $startDate,
             'end_date'=>$endDate
         ]);
+
+        if($request->temporary=='on'){
+            Mail::to("contacto@pedisimple.com")->send(new NewTemporaryProduct(Auth::user()->restaurant, $product));
+        }
 
 
         return redirect()->route('product.index')->with('success_message', 'Producto agregado con éxito');
