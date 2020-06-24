@@ -64,7 +64,7 @@ class Product extends Model
             if($now->diffInDays($end_date, false)>1){
                 return 'Activo - Termina en: '.$now->diffInDays($end_date, false).' días.';
             }else{
-                return 'Activo - Termina mañana.';
+                return 'Activo - Termina hoy.';
             }
         }
     }
@@ -90,7 +90,7 @@ class Product extends Model
             if($now->diffInDays($end_date, false)>1){
                 return 'Termina en: '.$now->diffInDays($end_date, false).' días.';
             }else{
-                return 'Termina mañana.';
+                return 'Termina hoy.';
             }
         }
     }
