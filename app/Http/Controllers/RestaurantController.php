@@ -217,7 +217,8 @@ class RestaurantController extends Controller
             }
         }
 
-        if($restaurant->state='without-times'){
+
+        if($restaurant->state=='without-times'){
             $restaurant->user->notify(new ReactivateService());
             $restaurant->update([
                 'state'=>'active'

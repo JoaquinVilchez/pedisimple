@@ -21,10 +21,9 @@ class CheckoutController extends Controller
 {
 
     public function download(Order $order){
-        // dd($order);
         $items = $order->lineitems;
         $logo = asset('images/logo.png');
-        $pdf = PDF::loadView('pdf.receipt', array('order' => $order, 'items' => $items));
+        $pdf = PDF::loadView('pdf.receipt', array('order' => $order, 'items' => $items, 'logo' => $logo));
         return $pdf->stream();
     }
 

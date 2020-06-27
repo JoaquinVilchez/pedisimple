@@ -11,6 +11,7 @@
     <title>{{config('app.name')}} - Detalle de pedido</title>
   </head>
   <body>
+    <img src="{{$logo}}" alt="">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
