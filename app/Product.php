@@ -21,9 +21,9 @@ class Product extends Model
         return $this->belongsToMany(Order::class);
     }
 
-    // public function lineItem(){
-    //     return $this->belongsTo(LineItem::class);
-    // }
+    public function lineItem(){
+        return $this->hasMany(LineItem::class);
+    }
 
     public function stateStyle(){
         switch ($this->state) {

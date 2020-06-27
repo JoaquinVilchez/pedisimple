@@ -80,7 +80,7 @@ class ProductController extends Controller
 
                         }else{
                             $product_id = decrypt($item[$i]['token_no_borrar']);
-                            $product = Product::where('restaurant_id', $restaurant->id)->where('id', $product_id)->first();
+                            $product = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('id', $product_id)->first();
                             if($product !== null){
                                 $product->update([
                                     'name' => $item[$i]['nombre'],
@@ -97,11 +97,15 @@ class ProductController extends Controller
         }elseif($request->method == "replace"){
 
             $errors = 0;
-            $products = Product::where('restaurant_id', $restaurant->id)->get();
+            $products = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('temporary', false)->get();
 
             if($products!=null){
                 foreach ($products as $product) {
-                    $product->delete();
+                    if($product->lineItem->count()>0){
+                        $product->update(['state' => 'removed']);
+                    }else{
+                        $product->delete();
+                    }
                 }
             }
             
@@ -171,7 +175,8 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = $restaurant->products()->where('temporary',false)->orderBy('category_id', 'asc')->get();
+        $products = $restaurant->products()->where('temporary',false)->where('state', '!=', 'removed')->orderBy('category_id', 'asc')->get();
+
         return view('restaurant.products.list')->with('products', $products);
     }
 
@@ -184,7 +189,7 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = $restaurant->products()->where('temporary',true)->orderBy('created_at','desc')->get();
+        $products = $restaurant->products()->where('temporary',true)->where('state', '!=', 'removed')->orderBy('created_at','desc')->get();
         return view('restaurant.products.temporaries')->with('products', $products);
     }
 
@@ -418,18 +423,24 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->productid);
         $this->authorize('pass', $product);
-                
-        $old_image = $product->image;
-
-        if($old_image != 'no_image.png'){
-            $path_old_image = 'images/uploads/products/'.$old_image;
-                if(file_exists($path_old_image)){
-                    unlink($path_old_image);
-                }
-        }   
-
-        $product->delete();
-        return redirect(route('product.index'))->with('success_message', 'Producto eliminado con éxito');
+           
+        if($product->lineItem->count()>0){
+            $product->update([
+                'state' => 'removed'
+            ]);     
+        }else{
+            $old_image = $product->image;
+    
+            if($old_image != 'no_image.png'){
+                $path_old_image = 'images/uploads/products/'.$old_image;
+                    if(file_exists($path_old_image)){
+                        unlink($path_old_image);
+                    }
+            }   
+    
+            $product->delete();
+        }
+        return redirect()->back()->with('success_message', 'Producto eliminado con éxito');
     }
 
     public function destroyAll()
@@ -438,16 +449,22 @@ class ProductController extends Controller
         foreach($products as $product){
             $this->authorize('pass', $product);
 
-            $old_image = $product->image;
+            if($product->lineItem->count()>0){
+                $product->update([
+                    'state' => 'removed'
+                ]);     
+            }else{
+                $old_image = $product->image;
 
-            if($old_image != 'no_image.png'){
-                $path_old_image = 'images/uploads/products/'.$old_image;
-                    if(file_exists($path_old_image)){
-                        unlink($path_old_image);
-                    }
-            }   
-            
-            $product->delete();
+                if($old_image != 'no_image.png'){
+                    $path_old_image = 'images/uploads/products/'.$old_image;
+                        if(file_exists($path_old_image)){
+                            unlink($path_old_image);
+                        }
+                }   
+                
+                $product->delete();
+            }          
         }
         return redirect(route('product.index'))->with('success_message', 'Productos eliminados con éxito');
     }
