@@ -35,13 +35,12 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          {{-- <th></th> --}}
+          <th></th>
           <th>Foto</th>
           <th>Nombre</th>
           <th>Descripción</th>
           <th>Categoría</th>
           <th>Precio</th>
-          <th>Estado</th>
           <th>Producto no disponible</th>
           <th>Última actualización</th>
           <th></th>
@@ -50,6 +49,7 @@
       <tbody>
           @foreach($products as $product)
           <tr>
+            <td><small><i @if($product->state=='available') style="color:#28a745" @else style="color:#dc3545" @endif class="fas fa-circle"  data-toggle="tooltip" data-placement="bottom" @if($product->state=='available') title="Disponible" @else title="No disponible"@endif></i></small></td>
             <td>
               <div class="d-flex">
                 @if($product->temporary!=null)
@@ -62,7 +62,12 @@
                   </div>
               </div>
             </td>
-            <td>{{$product->name}}</td>
+            <td>
+              {{$product->name}} <br>
+                @if(count($product->getVariants)>0)
+            <small><a href="#" data-toggle="modal" data-target="#variantsModal" onclick="showVariants({{$product->id}})">Ver variantes</a></small>
+                @endif
+            </td>
             <td>{{$product->details}}</td>
             @if($product->temporary==null)
               <td>{{$product->category->name}}</td>  
@@ -70,7 +75,7 @@
               <td>Sin categoria</td>
             @endif
             <td>${{$product->price}}</td>
-            <td><span class="{{$product->stateStyle()}}">{{$product->translateState()}}</span></td>
+            {{-- <td><span class="{{$product->stateStyle()}}">{{$product->translateState()}}</span></td> --}}
             <td style="text-align:center" width="10%">
               <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
                 @csrf
@@ -183,7 +188,7 @@
               <hr>
               <label class="btn btn-outline-primary mw-100" style="width: 466px">
                 <input class="mr-1" type="radio" value="replace" id="method_2" name="method"><strong>Reemplazar productos</strong>
-                <p class="m-0"><small>Todos los artículos serán eliminados y reemplazados.</small></p>
+                <p class="m-0"><small>Todos los artículos serán eliminados y reemplazados. La imágen asignada a cada producto también será eliminada.</small></p>
               </label>
           </div>
           <hr>
@@ -227,22 +232,30 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="variantsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Variantes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="product-modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('js-scripts')
 <script>
-
-// $( document ).ready(function() {
-//     var method_1 = document.getElementById('method_1');
-//     var method_2 = document.getElementById('method_2');
-
-//     if(method_1.checked){ 
-//       console.log('El metodo 1 esta seleccionado');
-//     }else if(method_2.checked){
-//       console.log('El metodo 2 esta seleccionado');
-//     }
-
-// });
 
 $('#deleteProductModal').on('show.bs.modal', function(event){
 var button = $(event.relatedTarget)
@@ -253,12 +266,26 @@ var modal = $(this)
 modal.find('.modal-body #productid').val(productid)
 })
 
+////////////////////////////////////////
+
 function notAvailable($id){
   var form = document.getElementById('not_available_checkbox_'+$id)
   form.submit();
 }
 
-
+function showVariants(productid){
+    $.ajax({
+      url : '{{ route("variant.getVariants") }}',
+      type: 'POST',
+      headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      data:{productid:productid},
+      success:function(data){
+          $('#product-modal-body').html(data)
+      },
+    });
+}
 
 </script>
 @endsection

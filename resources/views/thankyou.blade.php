@@ -31,8 +31,10 @@
                     @foreach($items as $item)
                         <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
-                            <h6 class="my-0">{{$item->product->name}}</h6>
-                            <small class="text-muted">x{{$item->quantity}}</small>
+                            <h6 class="my-0">{{$item->product->name}} <small class="text-muted">x{{$item->quantity}}</small></h6>
+                            @if(isset($item->variants))
+                                <small><a style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}">Ver variantes</a></small>
+                            @endif
                         </div>
                         <span class="text-muted">${{$item->product->price}}</span>
                         </li>

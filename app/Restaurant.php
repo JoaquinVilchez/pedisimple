@@ -33,6 +33,10 @@ class restaurant extends Model
         return $this->belongsToMany(RestaurantCategory::class, 'relation_restaurant_category', 'restaurant_id', 'category_restaurant_id');
     }
 
+    public function variants(){
+        return $this->hasMany(Variant::class);
+    }
+
     public function shippingMethod(){
         switch ($this->shipping_method) {
             case 'pickup':

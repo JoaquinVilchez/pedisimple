@@ -106,7 +106,14 @@
                     <div class="col-8">
                         <div class="d-inline">
                             @foreach($order->lineitems as $item)
-                                <span class="btn btn-sm btn-checkbox">{{$item->product->name.'  x'.$item->quantity}}</span>
+                                <span class="btn btn-sm btn-checkbox my-1">{{$item->product->name}} <small>(x{{$item->quantity}})</small>
+                                @if ($item->variants!=null)
+                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}"></i>
+                                @endif
+                                @if ($item->aditional_notes!=null)
+                                    <i class="fas fa-sticky-note" data-toggle="tooltip" data-placement="bottom" title="Nota: {{$item->aditional_notes}}"></i>
+                                @endif
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -136,7 +143,7 @@
                             @endif
                             <div class="d-inline mr-2">
                                 <a target=”_blank” href="
-                                https://wa.me/{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
+                                https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
                                 class="btn btn-sm btn-success"><i class="fab fa-whatsapp"></i> Hablar con el cliente</a>
                             </div>
                             <div class="d-inline mr-2">

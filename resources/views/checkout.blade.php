@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="jumbotron" style="background: url('https://images.pexels.com/photos/2733918/pexels-photo-2733918.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 40% / cover transparent;">
+<section class="jumbotron" style="background: url('https://images.pexels.com/photos/4020143/pexels-photo-4020143.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 65% / cover transparent;">
     <div class="container text-white text-center">
        <h1>Checkout</h1>
     </div>
@@ -55,12 +55,12 @@
                         <div class="col-md-12 mb-3">
                             <div class="form-group mb-1">
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-lg-6 col-12">
                                         <label>Nombre</label>
                                         <input type="text" name="client_first_name" value="{{old('client_first_name')}}" class="form-control">
                                         {!!$errors->first('client_first_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                     </div>
-                                    <div class="col">
+                                    <div class="col-lg-6 col-12">
                                         <label>Apellido</label>
                                         <input type="text" name="client_last_name" value="{{old('client_last_name')}}" class="form-control">
                                         {!!$errors->first('client_last_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
@@ -70,22 +70,22 @@
                             @if(\Cart::getCondition('Delivery'))
                                 <div class="form-group mb-1">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-8">
                                             <label>Calle</label>
                                             <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control">
                                             {!!$errors->first('client_street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2 col-4">
                                             <label>Número</label>
                                             <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control">
                                             {!!$errors->first('client_number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2 col-6">
                                             <label>Piso</label>
                                             <input type="text" name="client_floor" class="form-control" value="{{old('client_floor')}}" placeholder="Opcional">
                                             {!!$errors->first('client_floor', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2 col-6">
                                             <label>Depto</label>
                                             <input type="text" name="client_department" class="form-control" value="{{old('client_department')}}" placeholder="Opcional">
                                             {!!$errors->first('client_department', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}

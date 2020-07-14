@@ -57,11 +57,10 @@
                             <td>{{$order->user->fullName()}}</td>
                             <td>
                                 <a target=”_blank” href="
-                                https://wa.me/549{{$order->user->characteristic.$order->user->phone}}?text=
+                                https://wa.me/549{{str_replace('-','',whatsappNumberCustomer($order))}}?text=
                                 {{urlencode(whatsappMessageCustomer($order))}}
                                 ">
-                                
-                                {{$order->user->getPhone()}}
+                                {{whatsappNumberCustomer($order)}}
                                 </a>
                             </td>
                             @if($order->shipping_method=='delivery')
@@ -77,10 +76,10 @@
                             <td>{{$order->guest_first_name.' '.$order->guest_last_name}}</td>
                             <td>
                                 <a target=”_blank” href="
-                                https://wa.me/549{{$order->guest_characteristic.$order->guest_phone}}?text=
+                                https://wa.me/549{{str_replace('-','',whatsappNumberCustomer($order))}}?text=
                                 {{urlencode(whatsappMessageCustomer($order))}}
                                 ">
-                                {{$order->guest_characteristic.'-'.$order->guest_phone}}
+                                {{whatsappNumberCustomer($order)}}
                                 </a>
                             </td>
                             @if($order->shipping_method=='delivery')
@@ -109,7 +108,14 @@
                     <div class="col-8">
                         <div class="d-inline">
                             @foreach($order->lineitems as $item)
-                                <span class="btn btn-sm btn-checkbox my-1">{{$item->product->name.'  x'.$item->quantity}}</span>
+                                <span class="btn btn-sm btn-checkbox my-1">{{$item->product->name}} <small>(x{{$item->quantity}})</small>
+                                @if ($item->variants!=null)
+                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}"></i>
+                                @endif
+                                @if ($item->aditional_notes!=null)
+                                    <i class="fas fa-sticky-note" data-toggle="tooltip" data-placement="bottom" title="Nota: {{$item->aditional_notes}}"></i>
+                                @endif
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -133,13 +139,6 @@
                                 <a href="#" class="btn btn-secondary" data-deleteorderid="{{$order->id}}" data-toggle="modal" data-target="#deleteOrderModal">Rechazar</a>
                                 <a href="#" class="btn btn-primary" data-acceptorderid="{{$order->id}}" data-toggle="modal" data-target="#acceptOrderModal">Aceptar</a>
                             </div>
-                            {{-- <div class="d-inline">
-                                <form action="{{route('order.accept')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" value="{{$order->id}}" name="orderid">
-                                    <button type="submit" class="btn btn-primary">Aceptar</button>
-                                </form>
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -169,7 +168,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="submit" target=”_blank” href="
-                    https://wa.me/{{str_replace('-', '', whatsappNumberCustomer($order))}}?text=
+                    https://wa.me/549{{str_replace('-','',whatsappNumberCustomer($order))}}?text=
                     {{urlencode(whatsappMessageCustomer($order))}}" 
                     class="btn btn-success"><i class="fab fa-whatsapp"></i> Confirmar
                 </button>

@@ -136,15 +136,17 @@
             <div class="col-lg-8 tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                    <div class="container   ">
+                    <div class="container">
                         <div class="row my-3">
                             <div class="d-flex align-items-center">
                                 <h6>Ir a categoria:</h6>
-                                <form action="#" id="goToCategory" class="form-group ml-3">
+                                <form id="goToCategory" class="form-group ml-3">
                                     <select class="form-control" onchange="goToCategory()">
                                         @foreach($categories as $category)
                                             @if(count($category->products)>0)
-                                                <option value="{{normaliza($category->name)}}">{{ucfirst($category->name)}}</option>
+                                                <option value="{{normaliza($category->name)}}">
+                                                    {{ucfirst($category->name)}}
+                                                </option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -180,11 +182,10 @@
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
                                                     <a style="color:#ffa64d" href="#" 
-                                                    data-productid="{{$temporary_product->id}}" 
                                                     data-productname="{{$temporary_product->name}}" 
-                                                    data-productprice="{{$temporary_product->price}}"       
-                                                    data-productimage="{{$temporary_product->image}}"  
-                                                    data-productdescription="{{$temporary_product->details}}"  
+                                                    data-productprice="{{$temporary_product->price}}" 
+                                                    data-toggle="modal" data-target="#addItemModal"
+                                                    onclick="showData({{$temporary_product->id}})"
                                                     data-toggle="modal" data-target="#addItemModal">
                                                     <i class="fas fa-plus-circle"></i></a>
                                                 </span>
@@ -214,11 +215,10 @@
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
                                                     <a style="color:#ffa64d" href="#" 
-                                                    data-productid="{{$temporary_product->id}}" 
                                                     data-productname="{{$temporary_product->name}}" 
-                                                    data-productprice="{{$temporary_product->price}}"  
-                                                    data-productimage="{{asset('images/uploads/products/'.$temporary_product->image)}}"                                                
-                                                    data-productdescription="{{$temporary_product->details}}"  
+                                                    data-productprice="{{$temporary_product->price}}" 
+                                                    data-toggle="modal" data-target="#addItemModal"
+                                                    onclick="showData({{$temporary_product->id}})"
                                                     data-toggle="modal" data-target="#addItemModal">
                                                     <i class="fas fa-plus-circle"></i></a>
                                                 </span>
@@ -241,43 +241,17 @@
                         @foreach($category->getProducts() as $product)
                         @if ($product->temporary==false)
                             <div class="col-lg-6 px-1">
-                                @if ($product->image == 'no_image.png')
-                                    <div class="card p-2 m-1" style="min-height:95%">
-                                        <div class="row">
-                                            <div class="col-10 pr-0 pl-4">
-                                                <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
-                                                @if($product->details)
-                                                <div class="ml-2 mt-1">
-                                                    <small>{{ucfirst($product->details)}}</small><br>
-                                                </div>
-                                                @endif
-                                                <div class="ml-2 mt-1">
-                                                    <span>${{$product->price}}</span>
-                                                </div>
-                                            </div>  
-                                            <div class="col-2 d-flex align-items-center">
-                                                <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffa64d" href="#" 
-                                                    data-productid="{{$product->id}}" 
-                                                    data-productname="{{$product->name}}" 
-                                                    data-productprice="{{$product->price}}"       
-                                                    data-productimage="{{$product->image}}"  
-                                                    data-productdescription="{{$product->details}}"  
-                                                    data-toggle="modal" data-target="#addItemModal">
-                                                    <i class="fas fa-plus-circle"></i></a>
-                                                </span>
-                                            </div>        
-                                        </div>                                
-                                    </div>
-                                @else
+                                
                                     <div class="card p-2 m-1" style="min-height:95%">
                                         <div class="row">
                                             <div class="col-4 pr-0">
-                                                <div class="d-flex align-items-center">
-                                                    <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
-                                                </div>
+                                                @if ($product->image != 'no_image.png')
+                                                    <div class="d-flex align-items-center">
+                                                        <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
+                                                    </div>
+                                                @endif
                                             </div>
-                                            <div class="col-6 pt-1 px-0">
+                                            <div @if ($product->image == 'no_image.png') class="col-10 pr-0 pl-4" @else class="col-6 pt-1 px-0" @endif>
                                                 <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
                                                     @if($product->details)
                                                     <div class="mt-1">
@@ -290,19 +264,16 @@
                                             </div>  
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffa64d" href="#" 
-                                                    data-productid="{{$product->id}}" 
+                                                    <a style="color:#ffa64d" href="#"
                                                     data-productname="{{$product->name}}" 
-                                                    data-productprice="{{$product->price}}"  
-                                                    data-productimage="{{asset('images/uploads/products/'.$product->image)}}"                                                
-                                                    data-productdescription="{{$product->details}}"  
-                                                    data-toggle="modal" data-target="#addItemModal">
+                                                    data-productprice="{{$product->price}}" 
+                                                    data-toggle="modal" data-target="#addItemModal"
+                                                    onclick="showData({{$product->id}})"
                                                     <i class="fas fa-plus-circle"></i></a>
                                                 </span>
                                             </div>        
                                         </div>                                
                                     </div>
-                                @endif
                             </div>
                         @endif
                         @endforeach                   
@@ -342,7 +313,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios</h6>
-                                    <table class="table table-striped responsive" style="font-size: 15px">
+                                    <table class="table table-striped table-responsive" style="font-size: 15px">
                                         <tbody>
                                             @foreach($restaurant->getSchedule() as $day)
                                             @if(is_array($day))
@@ -420,65 +391,12 @@
             </div>
             <form action="{{route('cart.store')}}" method="post">
                     @csrf
-                <div class="modal-body">
-                    <input type="hidden" id="productid" name="id">
-                    <input type="hidden" id="productname" name="name">
-                    <input type="hidden" id="productprice" name="price">
-                    <div id="modalImage" class="img-fluid img-modal"></div>
-                    <div class="px-2">
-                        <p class="text-mute" id="modalDescription"></p>
-                        <div class="form-group">
-                            <h5 id="modalPrice"></h5>
-                        </div>
-                        <div class="form-group">
-                            <label>Cantidad</label>
-                            <select name="quantity" id="productquantity">
-                                @for ($i = 1; $i < 10; $i++)
-                                    <option value="{{$i}}">{{$i}}</option>
-                                @endfor
-                            </select>
-                        </div>
-                    </div>
-                    {{-- <div class="form-group">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Notas adicionales"></textarea>
-                    </div> --}}
+                <div id="modal-product" class="modal-body">                    
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary float-right mr-2">Agregar a mi pedido</button>
+                    <button type="submit" class="btn btn-primary float-right mr-2" id="AddToCartButton">Agregar a mi pedido</button>
             </form>
             </div>  
-        </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="restaurantInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="text-align:center">
-            <div class="modal-header">
-            <div class="modal-title"></div>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-            <img src="{{asset('images/design/conversation.svg')}}" alt="" class="mb-3" style="width: 100px">
-            <h4 class="txt-bold">¡Listo!</h4>           
-            <p>Te dejamos los datos del comercio para que puedas comunicarte con ellos y coordinar el pedido.</p>
-            <small class="text-muted">Próximamente se podrá pedir online</small>       
-            <hr>
-                <h5 class="txt-bold" id="restaurantName"></h5>
-                <hr>
-                <h5><i class="fas fa-map-marker-alt"></i> Dirección</h5>
-                <h6 class="modal-title" id="restaurantAddress"></h6>
-                <hr>
-                <h5><i class="fas fa-phone"></i> Teléfono</h5>
-                <h6 class="modal-title" id="restaurantPhone"></h6>                  
-            </div>
-            <div class="modal-footer justify-content-center">
-            <a class="btn btn-primary btn-lg btn-block" href="{{route('cart.empty')}}">Vaciar carrito</a>
-                <hr>        
-            </div>
         </div>
         </div>
     </div>
@@ -508,7 +426,7 @@
             </div>
         </div>
     </div>
-    <a id="back-to-top" href="#" class="btn btn-primary btn-sm back-to-top" role="button" title="Click para ir arriba" data-toggle="tooltip" data-placement="left"><i class="fas fa-arrow-circle-up"></i> Ir arriba</a>
+    <a id="back-to-top" href="#" class="btn btn-primary btn-sm back-to-top" role="button"><i class="fas fa-arrow-circle-up"></i> Ir arriba</a>
 @endsection
 
 @section('js-scripts')
@@ -529,10 +447,22 @@
                     }, 800);
                     return false;
                 });
-                
-                $('#back-to-top').tooltip('show');
 
         });
+
+        function showData(productid){
+            $.ajax({
+                url : '{{ route("product.showData") }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data:{productid:productid},
+                success:function(data){
+                    $('#modal-product').html(data)
+                },
+            });
+        }
         
          $('#activeRestaurantModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget)
@@ -545,64 +475,18 @@
         
         $('#addItemModal').on('show.bs.modal', function(event){
         var button = $(event.relatedTarget)
-
-        var productid = ""
         var productname = ""
-        var productprice = ""
-        var productdescription = ""
-        var productimage = ""
-        
-        var productid = button.data('productid')
         var productname = button.data('productname')
+
+        var productprice = ""
         var productprice = button.data('productprice')
-        var productdescription = button.data('productdescription')
-        var productimage = button.data('productimage')
 
         var modal = $(this)
 
         //data
-        modal.find('.modal-body #productid').val(productid)
         modal.find('.modal-body #productname').val(productname)
-        modal.find('.modal-body #productprice').val(productprice)
-
-        //modal
-        if (productimage=='no_image.png') {
-            document.getElementById("modalImage").innerHTML=""
-        }else{
-            document.getElementById("modalImage").innerHTML='<img width="50%" src="'+productimage+'">'
-        }
-
-        document.getElementById("modalPrice").innerHTML="Precio: (<strong>$"+productprice+"</strong>)"
-
-        document.getElementById("modalTitle").innerHTML=productname
-        
-        if(!productdescription==""){
-            document.getElementById("modalDescription").innerHTML="<p class='mb-0 mt-2 txt-bold'>Descripción del producto:</p>"+productdescription
-        }else{
-            document.getElementById("modalDescription").innerHTML=""
-        }
-
-        });
-
-        // ==============================================================
-
-        $('#restaurantInfo').on('show.bs.modal', function(event){
-        var button = $(event.relatedTarget)
-
-        var restaurantname = button.data('name')
-        var restaurantimage = button.data('image')
-        var restaurantaddress = button.data('address')
-        var restaurantphone = button.data('phone')
-
-        var modal = $(this)
-
-
-        //modal
-        document.getElementById("restaurantName").innerHTML="Datos de "+restaurantname
-        document.getElementById("restaurantAddress").innerHTML=restaurantaddress
-        document.getElementById("restaurantPhone").innerHTML=restaurantphone
-
-        });
+        document.getElementById("modalTitle").innerHTML=productname+' - ($'+productprice+')'
+        });       
 
         // =================================================================
 
@@ -611,10 +495,9 @@
             button = document.getElementById("btnConfirmEmptyCart");
 
             if ($('#confirmEmptyCart').is(':hidden')) {
-                console.log("Esta oculto");
                 alert.removeAttribute("hidden","");
                 button.setAttribute("hidden","");
-            } else {
+            }else{
                 alert.setAttribute("hidden","");
                 button.removeAttribute("hidden","");    
             }

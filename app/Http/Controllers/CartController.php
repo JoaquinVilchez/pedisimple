@@ -39,17 +39,39 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $product = Product::find($request->id);
+        if($product->variants==true){
+            $variantsRule='required|array|min:'.$product->minimum_variants.'|max:'.$product->maximum_variants;
+        }else{
+            $variantsRule='nullable';
+        }
+
+        request()->validate([   
+            'variants'=>$variantsRule
+        ]);
+        
         $restaurant = $product->restaurant;
 
         if($restaurant->isOpen()){
             if(\Cart::isEmpty()){
-                \Cart::add(array(
-                    'id' => $request->id,
-                    'name' => $product->name,
-                    'price' => $product->price,
-                    'quantity' => $request->quantity,
-                    'associatedModel' => $product
-                ));
+                if (count($product->getVariants)>0) {
+                    \Cart::add(array(
+                        'id' => generateCode(),
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'quantity' => $request->quantity,
+                        'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes],
+                        'associatedModel' => $product
+                    ));
+                }else{
+                    \Cart::add(array(
+                        'id' => $request->id,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'attributes' => ['aditional_notes' => $request->aditional_notes],
+                        'quantity' => $request->quantity,
+                        'associatedModel' => $product
+                    ));
+                }
 
                 if($restaurant->shipping_method == 'delivery'){
 
@@ -69,16 +91,27 @@ class CartController extends Controller
                 return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
             }else{
                 $firstItem = \Cart::getContent()->first();
-                $product = Product::find($request->id);
                 
-                if($product->restaurant->id == $firstItem->model->restaurant->id){
-                    \Cart::add(array(
-                        'id' => $request->id,
-                        'name' => $product->name,
-                        'price' => $product->price,
-                        'quantity' => $request->quantity,
-                        'associatedModel' => $product
-                    ));
+                if($product->restaurant->id == $firstItem->associatedModel->restaurant->id){
+                    if (count($product->getVariants)>0) {
+                        \Cart::add(array(
+                            'id' => generateCode(),
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'quantity' => $request->quantity,
+                            'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes],
+                            'associatedModel' => $product
+                        ));
+                    }else{
+                        \Cart::add(array(
+                            'id' => $request->id,
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'quantity' => $request->quantity,
+                            'attributes' => ['aditional_notes' => $request->aditional_notes],
+                            'associatedModel' => $product
+                        ));
+                    }
 
                     if($restaurant->shipping_method == 'delivery'){
                     
@@ -145,7 +178,7 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function deliveryTax(Request $request)
     {
         $restaurant = Restaurant::findOrFail($request->restaurant_id);

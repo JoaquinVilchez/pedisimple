@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Variant;
+use DB;
 
 class Product extends Model
 {
@@ -23,6 +25,21 @@ class Product extends Model
 
     public function lineItem(){
         return $this->hasMany(LineItem::class);
+    }
+
+    public function getVariants(){
+        return $this->belongsToMany('App\Variant', 'products_variants');
+    }
+
+    public function variantsArray(){
+        $variants = $this->getVariants;
+
+        $array_variants=[];
+        foreach ($variants as $variant) {
+            array_push($array_variants, $variant->name);
+        }
+
+        return $array_variants;
     }
 
     public function stateStyle(){

@@ -209,6 +209,9 @@ return [
         'end_hour_1_6' => 'hora de cierre de Sábado',
         'start_hour_2_6' => 'hora de apertura de Sábado',
         'end_hour_2_6' => 'hora de cierre de Sábado',
+        'minimum' => 'mínimo',
+        'maximum' => 'máximo',
+        'variants' => 'variantes',
         
     ],
 

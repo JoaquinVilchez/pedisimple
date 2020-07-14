@@ -31,6 +31,68 @@
                 <label >Detalles</label>
               <textarea class="form-control" name="details" rows="3" value="{{old('details', $product->details)}}">{{$product->details}}</textarea>
               </div>
+
+                @if($variants->count()>0)
+                  <label>Variantes</label>
+                    <div class="card">
+                      <div class="card-header">
+                        <small><p style="background-color:red; color: white">Hacer disabled todos los campos hasta que se seleccione este checkbox</p></small>
+                          <label class="form-check-label ml-3">
+                            <input class="form-check-input" type="checkbox" id="has_variants" name="has_variants" @if($product->variants==true) checked @endif>
+                            Este producto tiene variantes
+                          </label>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="row my-2">
+                          <div class="input-group mb-3 col-xl-6">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">Mínimo</span>
+                            </div>
+                            <input type="number" id="minimum" name="minimum" class="form-control" min="0" value="{{old('minimum', $product->minimum_variants)}}">
+                            {!!$errors->first('minimum', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                          </div>
+      
+                          <div class="input-group mb-3 col-xl-6">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">Máximo</span>
+                            </div>
+                            <input type="number" id="maximum" name="maximum" class="form-control" min="0" value="{{old('maximum', $product->maximum_variants)}}">
+                            {!!$errors->first('maximum', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                          </div>
+                        </div>
+                          <div class="variants-details">
+                            <small>
+                              <a href="">
+                                <label>
+                                  <td><input type="checkbox" id="select_all" /> Seleccionar todas</td>
+                                </label>
+                              </a>
+                            </span>
+                            </small><br>
+                            @foreach ($variants as $variant)
+                            <span class="btn-checkbox m-1 p-1 rounded">
+                              <label>
+                                <input name="variants[]" type="checkbox" value="{{$variant->id}}" 
+                                  @foreach($product->getVariants as $product_variant)
+                                    @if($product_variant->id==$variant->id) checked @endif
+                                  @endforeach                                   
+                                >
+                                {{$variant->name}}
+                              </label>
+                            </span>
+                            @endforeach
+                          </div>
+                          {!!$errors->first('variants', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                        </div>
+                    </div>
+              @else
+                <label>Variantes</label>
+                <small class="txt-muted px-3 pt-3">
+                  <i class="fas fa-info-circle"></i>
+                  Una variante sirve para.
+                </small>
+              @endif
           </div>
         </div>
       </div>
@@ -175,6 +237,11 @@
       document.getElementById("upload_image").value = "";
       document.getElementById("img_action").value = "delete";
   }
+
+  $('#select_all').change(function() {
+    var checkboxes = $(this).closest('.variants-details').find(':checkbox');
+    checkboxes.prop('checked', $(this).is(':checked'));
+  });
 </script>
 @endsection
 

@@ -15,7 +15,7 @@
             <div class="alert alert-secondary mt-2" role="alert">
                 <p><i class="fas fa-exclamation-circle"></i> Establecer los horarios de aperura es un <strong>requisito obligatorio</strong> para activar el servicio.</p>
             </div>
-        @endif
+        @endif    
 
         @if($errors->any())
             @foreach ($errors->all() as $error)
@@ -27,6 +27,10 @@
                 </div>
             @endforeach
         @endif
+
+        <div class="mt-2">
+            @include('messages')
+        </div>
     
     <table class="table mt-3" style="text-align: center">
         <td>Abierto/Cerrado</td>

@@ -133,6 +133,7 @@ textarea:focus, input:focus, input[type]:focus {
     background-color: #e4e4e4;
     border: 0px;
     color: #3f3a34;
+    cursor: default;
 }
 
 .btn-checkbox input[type="checkbox"] input[type="radio"], .btn-primary:focus, .btn-primary:active{

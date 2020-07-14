@@ -126,7 +126,7 @@
 <footer class="footer">
     <div class="container">
         <div class="row d-flex justify-content-between">
-            <div class="col-xl-6 col-xs-12">
+            <div class="col-xl-12 col-xs-12">
                 <p class="d-inline">Seguinos</p> 
                 <div class="icons d-inline ml-3">
                     <a style="color:white" target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
@@ -134,11 +134,6 @@
                     <a style="color:white" target=”_blank” href="http://twitter.com/pedisimple"><i class="fab fa-twitter mr-1"></i></a>
                     <a style="color:white" target=”_blank” href="mailto:contacto@pedisimple.com"><i class="far fa-envelope mr-1"></i></a>
                 </div>
-            </div>
-            <div class="col-xl-6 col-xs-12">
-                @guest
-                <a style="color:white" class="nav-link float-right p-0" href="{{ route('login') }}">{{ __('Ingreso comerciantes') }}</a>
-                @endguest
             </div>
         </div>
     </div>

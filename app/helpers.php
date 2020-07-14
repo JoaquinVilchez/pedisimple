@@ -2,6 +2,7 @@
 use App\Restaurant;
 use Carbon\Carbon;
 use App\OpeningDateTime;
+use App\Product;
 
 function generateCode()  {
     $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -10,6 +11,15 @@ function generateCode()  {
     for ($i = 0; $i < 3; $i++) {
         $randomString .= $letters[rand(0, strlen($letters) - 1)];
     }
+    for ($i = 0; $i < 3; $i++) {
+        $randomString .= $digits[rand(0, strlen($digits) - 1)];
+    }
+    return $randomString;
+}
+
+function generateNumberCode()  {
+    $digits = '1234567890';
+    $randomString = '';
     for ($i = 0; $i < 3; $i++) {
         $randomString .= $digits[rand(0, strlen($digits) - 1)];
     }
@@ -67,9 +77,9 @@ function getGuestAddress($order){
 
 function whatsappNumberCustomer($order){
     if($order->user_id!=null){
-        $phone = '549'.$order->user->getPhone();
+        $phone = $order->user->getPhone();
     }else{
-        $phone = '549'.$order->guest_characteristic.'-'.$order->guest_phone;
+        $phone = $order->guest_characteristic.'-'.$order->guest_phone;
     }
 
     return $phone;
@@ -103,7 +113,7 @@ function getOrderAddress($order){
             return $order->address->getAddress();  
         }
     }else{
-        return $order->address->getAddress();  
+        return getGuestAddress($order);  
     }
 }
 

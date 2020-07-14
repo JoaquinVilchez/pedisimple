@@ -1,5 +1,5 @@
     <ul class="list-group mb-3">
-        @foreach (Cart::getContent() as $item)
+        @foreach (Cart::getContent() as $item)        
     <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div class="col-2">
             <form action="{{route('cart.destroy', $item->id)}}" method="post">
@@ -12,11 +12,16 @@
             <form id="itemUpdate{{$item->id}}" action="{{route('cart.update', $item->id)}}" method="post">
                 @csrf
                 @method('PUT')
+                @if($item->attributes->variants)
+                    <input type="hidden" name="type" value="rowid">
+                @else
+                    <input type="hidden" name="type" value="productid">
+                @endif
                 <input type="hidden" name="id" value="{{$item->id}}">
                 <input type="hidden" name="name" value="{{$item->name}}">
                 <input type="hidden" name="quantity" value="{{$item->quantity}}">
                 <input type="hidden" name="price" value="{{$item->price}}">
-                <select class="float-left" name="quantity" onchange="updateQuantity({{$item->id}})" id="cartQuantity">
+                <select class="float-left" name="quantity" onchange="updateQuantity('{{$item->id}}')" id="cartQuantity">
                     @for ($i = 1; $i < 10; $i++)
                         <option @if($i==$item->quantity) selected @endif value="{{$i}}">{{$i}}</option>
                     @endfor
@@ -24,7 +29,10 @@
             </form>
         </div>
         <div class="col-6">   
-            <h6 class="my-0">{{ucfirst($item->name)}}</h6>    
+            <h6 class="my-0">{{ucfirst($item->name)}}</h6>
+            @if($item->attributes->variants)
+                <small><a href="#" data-toggle="modal" data-target="#variantsItemModal" class="ml-2" onclick="showItemVariants({{json_encode($item->attributes->variants)}}, '{{$item->associatedModel->name}}', {{json_encode($item->attributes->aditional_notes)}})">Ver variantes</a></small>
+            @endif
         </div>
         <div class="col">
             <span class="text-muted">{{'$'.$item->price}}</span>
@@ -75,6 +83,25 @@
     </li>
     </ul>
 
+<!-- Modal -->
+<div class="modal fade" id="variantsItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Variantes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="product-modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 @section('js-scripts-carrito')
 
     <script>
@@ -88,8 +115,18 @@
             form.submit();
         }
         
+        function showItemVariants(variants, product, aditional_notes){
+            $.ajax({
+                url : '{{ route("variant.showItemVariants") }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data:{variants:variants,product:product,aditional_notes:aditional_notes},
+                success:function(data){
+                    $('#product-modal-body').html(data)
+                },
+            });
+        }
     </script>
-
-
-
 @endsection

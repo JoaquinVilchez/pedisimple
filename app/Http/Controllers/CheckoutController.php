@@ -38,7 +38,7 @@ class CheckoutController extends Controller
             return view('checkout');
         }else{
             foreach(\Cart::getContent() as $item) { 
-                $itemId = $item->id;
+                $itemId = $item->associatedModel->id;
                 if($itemId!=null){
                     break;
                 }
@@ -68,6 +68,8 @@ class CheckoutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+
+    $items = \Cart::getContent();
 
     //OPTIMIZACION: SE PUEDE HACER UN ARRAY $args QUE CONTENGA LOS CAMPOS GENERALES A USAR
     //EN CREATE Y VALIDATE Y DEPENDIENDO DE LAS CONDICIONES IR AGREGANDOLE LAS CARACTERISTICAS
@@ -259,8 +261,10 @@ class CheckoutController extends Controller
         foreach ($items as $item) {
             LineItem::create([
                 'order_id' => $order->id,
-                'product_id' => $item->id,
-                'quantity' => $item->quantity
+                'product_id' => $item->associatedModel->id,
+                'quantity' => $item->quantity,
+                'variants' => $item->attributes->variants,
+                'aditional_notes' => $item->attributes->aditional_notes
             ]);
         }
 

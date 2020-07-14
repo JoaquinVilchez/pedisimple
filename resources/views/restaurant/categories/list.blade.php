@@ -20,10 +20,9 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          {{-- <th></th> --}}
+          <th></th>
           <th>Nombre</th>
           <th>Descripción</th>
-          <th>Estado</th>
           <th>Categoría no disponible</th>
           <th>Ultima actualización</th>
           <th></th>
@@ -32,10 +31,9 @@
       <tbody>
         @foreach($categories as $category)
         <tr>
-          {{-- <td><input type="checkbox"></td> --}}
+        <td><small><i @if($category->state=='available') style="color:#28a745" @else style="color:#dc3545" @endif class="fas fa-circle"  data-toggle="tooltip" data-placement="bottom" @if($category->state=='available') title="Disponible" @else title="No disponible"@endif></i></small></td>
         <td>{{$category->name}} <small class="txt-muted ml-4"> ({{count($category->products)}} productos)</small></td>
           <td>{{$category->description}}</td>
-          <td><span class="{{$category->stateStyle()}}">{{$category->translateState()}}</span></td>
           <td style="text-align:center" width="10%">
             <form id="{{'not_available_checkbox_'.$category->id}}" action="{{route('category.available', $category)}}" method="POST">
               @csrf
@@ -48,8 +46,10 @@
             </form>
           </td>
           <td>{{$category->updated_at->calendar()}}</td>
-          <td><a href="{{route('category.edit', $category)}}">Editar</a></td>
-          <td><a href="#" data-categoryid="{{$category->id}}" data-toggle="modal" data-target="#deleteCategoryModal">Eliminar</a></td>
+          <td>
+            <a href="{{route('category.edit', $category)}}">Editar</a>
+            <a href="#" data-categoryid="{{$category->id}}" data-toggle="modal" data-target="#deleteCategoryModal">Eliminar</a>
+          </td>
         </tr>
         @endforeach
       </tbody>

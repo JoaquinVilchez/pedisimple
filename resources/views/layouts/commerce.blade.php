@@ -55,65 +55,82 @@
 
         <nav class="nav d-none d-xl-block">
           <ul class="nav flex-column">
+            
             <li class="nav-item">
-              <a class="nav-link" href="{{route('order.new')}}">Pedidos</a>
+              <a class="nav-link" data-toggle="collapse" href="#orderCollapse" role="button" aria-expanded="false" aria-controls="orderCollapse">
+                Pedidos <i class="fas fa-chevron-down"></i>
+              </a>
             </li>
-            <ul>
-              <li class="nav-item">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span><a class="nav-link" href="{{route('order.new')}}">Nuevos</a></span>
-                    @if((Auth::user()->unreadNotifications()->count())>0)
-                      <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
-                    @else
-                      <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
-                    @endif
-                </div>
-                  
-              </li>
-              <li class="nav-item">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span><a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a></span>
-                  <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->acceptedOrders()}}</small></span>
-                </div>
-              </li>
-              <li class="nav-item">
-                <div class="d-flex justify-content-between align-items-center">
-                  <a class="nav-link" href="{{route('order.closed')}}">Cerrados</a>
-                  <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->closedOrders()}}</small></span>
-                </div>
-              </li>
-            </ul>
+            <div class="collapse" id="orderCollapse">
+              <ul>
+                <li class="nav-item">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span><a class="nav-link" href="{{route('order.new')}}">Nuevos</a></span>
+                      @if((Auth::user()->unreadNotifications()->count())>0)
+                        <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
+                      @else
+                        <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
+                      @endif
+                  </div>
+                    
+                </li>
+                <li class="nav-item">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span><a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a></span>
+                    <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->acceptedOrders()}}</small></span>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <a class="nav-link" href="{{route('order.closed')}}">Cerrados</a>
+                    <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->closedOrders()}}</small></span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
             <li class="nav-item">
-                <a class="nav-link" href="{{route('product.index')}}">Productos</a>
+                <a class="nav-link" data-toggle="collapse" href="#productCollapse" role="button" aria-expanded="false" aria-controls="productCollapse">
+                  Productos <i class="fas fa-chevron-down"></i>
+                </a> 
             </li>
-            <ul>
-              <li class="nav-item">
-                  <a class="nav-link" href="{{route('product.index')}}">Menú</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{route('product.temporaries')}}">Temporales</a>
-              </li>
-            </ul>
+            <div class="collapse" id="productCollapse">
+              <ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('product.index')}}">Menú</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{route('variant.index')}}">Variantes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{route('product.temporaries')}}">Temporales</a>
+                </li>
+              </ul>
+            </div>
+
             <li class="nav-item">
                 <a class="nav-link" href="{{route('category.index')}}">Categorías</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link">Configuración</a>
-            </li>
-            <ul>
-              <li class="nav-item">
-                  <a class="nav-link" href="{{route('restaurant.info')}}">Información del comercio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{route('restaurant.times')}}">Horarios</a>
-              </li>
-            </ul>
+
+            <a class="nav-link" data-toggle="collapse" href="#configCollapse" role="button" aria-expanded="false" aria-controls="configCollapse">
+              Configuración <i class="fas fa-chevron-down"></i>
+            </a>
+            <div class="collapse" id="configCollapse">
+              <ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('restaurant.info')}}">Información del comercio</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{route('restaurant.times')}}">Horarios</a>
+                </li>
+              </ul>
+            </div>
           </ul>
         </nav>
       </div>
     </nav>
 
-    <main role="main" class="col-auto ml-sm-auto col-xl-10 px-4">
+    <main role="main" class="col-auto ml-sm-auto col-xl-10">
       @yield('main')
     </main>
   </div>
