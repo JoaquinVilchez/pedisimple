@@ -44,6 +44,7 @@ Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 Route::resource('/direcciones', 'AddressController')->names('address');
 
+Route::post('/pedidos/closed-details', 'OrderController@getClosedDetails')->name('order.closedDetails');
 Route::get('/pedidos/nuevos', 'OrderController@new')->name('order.new');
 Route::get('/pedidos/aceptados', 'OrderController@accepted')->name('order.accepted');
 Route::get('/pedidos/cerrados', 'OrderController@closed')->name('order.closed');
@@ -68,7 +69,6 @@ Route::resource('/comercios', 'ListController')->names('list');
 Route::get('/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
 Route::post('/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
 
-
 Route::post('/comercios/solicitud', 'RestaurantController@request')->name('restaurant.request');
 Route::get('/comercio/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/horarios', 'RestaurantController@openingTime')->name('restaurant.times')->middleware(['verified', 'hasRestaurant']);
@@ -77,7 +77,6 @@ Route::resource('/comercio', 'RestaurantController')->names('restaurant')->middl
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
 Route::post('/comercio', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
 Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible']);
-
 
 //PRODUCTOS
 Route::get('/producto/export-excel', 'ProductController@exportExcel')->name('product.export.excel')->middleware(['auth','verified', 'hasRestaurant']);

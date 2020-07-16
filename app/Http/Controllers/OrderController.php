@@ -6,10 +6,38 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Order;
 use App\User;
+use App\LineItem;
 use Redirect;
 
 class OrderController extends Controller
 {
+
+    public function getClosedDetails(Request $request){
+        $order = Order::find($request->id);
+        $items = LineItem::where('order_id', $order->id)->get();
+
+        if($order->user_id!=null){
+            $user = User::find($order->user_id)->toArray();
+        }else{
+            $user=[
+                'first_name' => $order->guest_first_name,
+                'last_name' => $order->guest_last_name,
+                'number' => $order->guest_number,
+                'floor' => $order->guest_floor,
+                'department' => $order->guest_department,
+                'characteristic' => $order->guest_characteristic,
+                'phone' => $order->guest_phone,
+                'image' => 'user.png'
+            ];
+        }
+        
+        return view('detailClosedOrderModal')->with([
+            'order' => $order,
+            'items' => $items,
+            'user' => $user
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
