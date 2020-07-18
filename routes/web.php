@@ -76,7 +76,7 @@ Route::put('/comercio/horarios', 'RestaurantController@openingTimeUpdate')->name
 Route::resource('/comercio', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
 Route::post('/comercio', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
-Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible']);
+Route::get('/comercio/{comercio}', 'RestaurantController@show')->name('restaurant.show');
 
 //PRODUCTOS
 Route::get('/producto/export-excel', 'ProductController@exportExcel')->name('product.export.excel')->middleware(['auth','verified', 'hasRestaurant']);
@@ -85,7 +85,7 @@ Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.av
 
 Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants');
 Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('variant.showItemVariants');
-Route::resource('/productos/variantes', 'VariantController')->names('variant')->middleware(['auth','verified', 'hasRestaurant']);
+Route::resource('/variantes', 'VariantController')->names('variant')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/variante/eliminar', 'VariantController@destroy')->name('variant.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
 Route::post('/productos/showData', 'ProductController@showData')->name('product.showData');

@@ -5,8 +5,7 @@
 <section class="jumbotron rounded-0 text-center p-0 mb-0 home-image">
   <div class="element_home">
     <div class="container d-flex align-items-center justify-content-center text-white" style="height:300px;">
-      {{-- <div class="m-auto"> --}}
-        <div class="">
+        <div>
           <h1 class="h1-responsive"><strong>Pedir lo que buscás, ahora es más simple</strong></h1>
           <p>Consultá los productos de los comercios de Venado Tuerto y facilitá tu pedido</p>
           {{-- <form action="{{route('list.index')}}" class="form-inline justify-content-center">
@@ -23,23 +22,6 @@
     </div>
   </div>
 </section>
-{{-- <div class="text-center px-0 pb-0 mb-0 rounded-0 d-flex align-items-center home-image">
-  <div class="element">
-      <div class="container text-white"">
-          <h1 class="h1-responsive"><strong>Pedir lo que buscás, ahora es más simple</strong></h1>
-          <p>Consultá los productos de los comercios de Venado Tuerto y facilitá tu pedido</p>
-          <form action="{{route('list.index')}}" class="form-inline justify-content-center">
-            <select class="form-control">
-              <option value="1">Pizzas</option>
-              <option value="1">Empanadas</option>
-            </select>
-            <input type="text" placeholder="Buscar comercio" class="form-control">
-            <input type="submit" value="Buscar" class="btn btn-primary mx-2">
-          </form>
-        <a href="{{route('list.index')}}" class="btn btn-primary mt-2 text-white" style="box-shadow: 0px 2px 10px #3d3d3d;"><strong> Ver todos los comercios</strong></a> 
-      </div>
-  </div>
-</div> --}}
 
 <section class="text-center">
     <div class="container col-xl-8 my-3">
@@ -71,7 +53,6 @@
           </div>
         </div>
       </div>
-      {{-- <hr class="mb-0"> --}}
     </div>
 </section>
 

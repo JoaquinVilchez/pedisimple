@@ -77,7 +77,7 @@ class Product extends Model
                 return 'Programado - Comienza mañana.';
             }
         }elseif($now>=$start_date){
-            if($now->diffInDays($end_date, false)>1){
+            if($now->diffInDays($end_date, false)>=1){
                 return 'Activo - Termina en: '.$now->diffInDays($end_date, false).' días.';
             }else{
                 return 'Activo - Termina hoy.';
@@ -103,7 +103,9 @@ class Product extends Model
         $end_date = Carbon::parse($this->end_date);
 
         if($now>=$start_date){
-            if($now->diffInDays($end_date, false)>1){
+            if($now->diffInDays($end_date, false)==1){
+                return 'Termina mañana';
+            }elseif($now->diffInDays($end_date, false)>1){
                 return 'Termina en: '.$now->diffInDays($end_date, false).' días.';
             }else{
                 return 'Termina hoy.';

@@ -49,5 +49,6 @@ class Visible
                 return redirect()->route('list.index');
             }
         }
+
     }
 }
