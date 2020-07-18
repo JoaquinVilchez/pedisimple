@@ -30,10 +30,11 @@
             @endforeach
             </tbody>
         </table>
+        {{$orders->links()}}
     @else
         <div style="text-align:center" class="m-auto">
             <img src="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
-            <p>No tienes pedidos aceptados.<br>
+            <p>No tienes pedidos cerrados.<br>
         </div>  
     @endif
 

@@ -36,7 +36,7 @@ class VariantController extends Controller
     */
     public function index()
     {
-        $variants = Variant::where('restaurant_id', Auth::user()->restaurant->id)->get();
+        $variants = Variant::where('restaurant_id', Auth::user()->restaurant->id)->paginate(15);
 
         return view('restaurant.variants.list')->with('variants', $variants);
     }

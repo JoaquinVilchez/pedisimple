@@ -41,7 +41,7 @@
           <th>Descripción</th>
           <th>Categoría</th>
           <th>Precio</th>
-          <th>Producto no disponible</th>
+          <th>No disponible</th>
           <th>Última actualización</th>
           <th></th>
         </tr>
@@ -75,7 +75,6 @@
               <td>Sin categoria</td>
             @endif
             <td>${{$product->price}}</td>
-            {{-- <td><span class="{{$product->stateStyle()}}">{{$product->translateState()}}</span></td> --}}
             <td style="text-align:center" width="10%">
               <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
                 @csrf
@@ -97,6 +96,7 @@
         @endif
       </tbody>
     </table>
+    {{$products->links()}}
   </div>
 
 @if(count($products)!=0)

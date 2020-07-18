@@ -92,7 +92,7 @@ function whatsappMessageCustomer($order){
         $first_name = $order->guest_first_name;
     }
 
-    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Recibimos tu detalle de pedido desde '.config("app.name").'. ¿Querés confirmar el pedido?';
+    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Confirmamos un pedido que hiciste desde '.config("app.name").'.';
 }
 
 function gluberMessage($order){

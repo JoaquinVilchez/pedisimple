@@ -45,7 +45,7 @@
               >
             </form>
           </td>
-          <td>{{$category->updated_at->calendar()}}</td>
+          <td>{{ucfirst($category->updated_at->calendar())}}</td>
           <td>
             <a href="{{route('category.edit', $category)}}">Editar</a>
             <a href="#" data-categoryid="{{$category->id}}" data-toggle="modal" data-target="#deleteCategoryModal">Eliminar</a>

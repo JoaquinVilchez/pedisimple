@@ -49,6 +49,7 @@
       </tbody>
   @endif
     </table>
+    {{$variants->links()}}
   </div>
 
 @if(count($variants)!=0)

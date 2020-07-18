@@ -185,7 +185,7 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = Product::where('restaurant_id', $restaurant->id)->where('temporary',false)->where('state', '!=', 'removed')->orderBy('category_id', 'asc')->get();
+        $products = Product::where('restaurant_id', $restaurant->id)->where('temporary',false)->where('state', '!=', 'removed')->orderBy('category_id', 'asc')->paginate(15);
 
         return view('restaurant.products.list')->with('products', $products);
     }

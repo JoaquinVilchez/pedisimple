@@ -56,7 +56,7 @@ class OrderController extends Controller
 
     public function new(){
         Auth::user()->unreadNotifications->markAsRead();
-        $orders = Auth::user()->restaurant->orders->where('state', 'pending')->sortDesc();
+        $orders = Order::where('restaurant_id', Auth::user()->restaurant->id)->where('state', 'pending')->orderBy('id','desc')->paginate(10);
         return view('restaurant.orders.new')->with('orders', $orders);
     }
 
@@ -67,7 +67,7 @@ class OrderController extends Controller
     */
 
     public function accepted(){
-        $orders = Auth::user()->restaurant->orders->where('state', 'accepted')->sortDesc();
+        $orders = Order::where('restaurant_id', Auth::user()->restaurant->id)->where('state', 'accepted')->orderBy('id','desc')->paginate(10);
         return view('restaurant.orders.accepted')->with('orders', $orders);
     }
 
@@ -78,13 +78,15 @@ class OrderController extends Controller
     */
 
     public function closed(){
-        $orders = Auth::user()->restaurant->orders->where('state', 'closed')->sortDesc();
+        $orders = Order::where('restaurant_id', Auth::user()->restaurant->id)->where('state', 'closed')->orderBy('id','desc')->paginate(15);
+        
+        // Auth::user()->restaurant->orders->where('state', 'closed')->sortDesc();
         return view('restaurant.orders.closed')->with('orders', $orders);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     *0
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
