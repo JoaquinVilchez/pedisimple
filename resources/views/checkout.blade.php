@@ -98,12 +98,12 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <label>Prefijo</label>
-                                        <input type="text" maxlength="4" name="client_characteristic" value="{{old('client_characteristic')}}" class="form-control">
+                                        <input type="text" name="client_characteristic" value="{{old('client_characteristic')}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
                                         {!!$errors->first('client_characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                     </div>
                                     <div class="col-8">
                                         <label>Teléfono</label>
-                                        <input type="text" maxlength="6" name="client_phone" value="{{old('client_phone')}}" class="form-control">
+                                        <input type="text" name="client_phone" value="{{old('client_phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)">
                                         {!!$errors->first('client_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                     </div>
                                 </div>
