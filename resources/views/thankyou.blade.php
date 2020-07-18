@@ -36,7 +36,7 @@
                                 <small><a style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}">Ver variantes</a></small>
                             @endif
                         </div>
-                        <span class="text-muted">${{$item->product->price}}</span>
+                        <span class="text-muted">${{$item->quantity*$item->price}}</span>
                         </li>
                     @endforeach
                         <li class="list-group-item d-flex justify-content-between">

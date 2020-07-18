@@ -262,6 +262,7 @@ class CheckoutController extends Controller
             LineItem::create([
                 'order_id' => $order->id,
                 'product_id' => $item->associatedModel->id,
+                'price' => $item->price,
                 'quantity' => $item->quantity,
                 'variants' => $item->attributes->variants,
                 'aditional_notes' => $item->attributes->aditional_notes

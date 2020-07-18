@@ -30,7 +30,6 @@ class Product extends Model
     public function getVariants(){
         return $this->belongsToMany('App\Variant', 'products_variants');
     }
-
     public function variantsArray(){
         $variants = $this->getVariants;
 
@@ -111,4 +110,5 @@ class Product extends Model
             }
         }
     }
+
 }

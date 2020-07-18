@@ -76,7 +76,7 @@
                             @endif
                         </td>
                         <td>x{{$item->quantity}}</td>
-                        <td>${{$item->product->price*$item->quantity}}</td>
+                        <td>${{$item->price*$item->quantity}}</td>
                         </tr>
                     @endforeach
                 </tbody>
