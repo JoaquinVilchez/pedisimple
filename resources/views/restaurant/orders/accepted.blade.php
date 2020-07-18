@@ -138,7 +138,7 @@
                                     <a target=”_blank” href="
                                     https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text=
                                     {{urlencode(gluberMessage($order))}}" 
-                                    class="btn btn-sm btn-warning"><i class="fas fa-motorcycle"></i> Pedir un Gluber</a>
+                                    class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional."><i class="fas fa-motorcycle"></i> Pedir un Gluber</a>
                                 </div>
                             @endif
                             <div class="d-inline mr-2">

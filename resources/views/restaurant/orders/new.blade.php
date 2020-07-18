@@ -196,7 +196,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <button type="submit" target=”_blank” href="
+                    https://wa.me/549{{str_replace('-','',whatsappNumberCustomer($order))}}?text=
+                    {{urlencode(whatsappRejectOrderMessage($order))}}" 
+                    class="btn btn-danger"><i class="fab fa-whatsapp"></i> Eliminar
+                </button>
+                {{-- <button type="submit" class="btn btn-danger">Eliminar</button> --}}
             </form>
             </div>
         </div>
@@ -208,11 +213,6 @@
 
 @section('js-scripts')
 <script>
-
-function sendWhatsApp(url){
-    console.log('Hola desde consola');
-    alert('Hola');
-}
 
 $('#deleteOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)

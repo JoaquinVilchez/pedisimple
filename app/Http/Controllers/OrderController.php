@@ -119,6 +119,9 @@ class OrderController extends Controller
             'state' => 'rejected'
         ]);
 
+        $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappRejectOrderMessage($order));
+        session()->flash('newurl', $newUrl);
+
         return back()->with('success_message', 'Pedido rechazado.');
     }
 

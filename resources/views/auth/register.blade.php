@@ -105,13 +105,25 @@
                                     <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
                                     <div class="col-md-2 col-12 pr-1">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo">
+                                            <input type="text" class="form-control @error('phone') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
+                                            <small class="form-text text-muted ml-2">Ej: 3462</small>
                                         </div>
                                     </div> 
+                                    @error('characteristic')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
                                     <div class="col-md-4 col-12 pl-1">
                                         <div class="form-group">
-                                            <input id="phone" type="text" class="form-control" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono">
+                                            <input id="phone" type="text" class="form-control @error('characteristic') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
+                                            <small class="form-text text-muted ml-2">Ej: 654321</small>
                                         </div>
+                                        @error('phone')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

@@ -113,7 +113,7 @@
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
-                        <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></h5>
+                        <h5 style="font-size: 2.5vh"><a @if($restaurant->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
                         <div class="ml-2">
                           <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                           <p class="my-1 ml-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
