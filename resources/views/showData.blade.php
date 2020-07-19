@@ -8,18 +8,22 @@
 </div>
 <div class="container">
     @if ($product->details)
-        {{-- <h6>Descripción del producto:</h6> --}}
+        <h6>Descripción del producto:</h6>
         <p class="text-mute">{{$product->details}}</p>
         <hr>
     @endif
-    <div class="form-group">
-        <label>Cantidad</label>
-        <select name="quantity">
-            @for ($i = 1; $i < 10; $i++)
-                <option value="{{$i}}">{{$i}}</option>
-            @endfor
-        </select>
-    </div>
+    @if(!$product->variants)
+        <div class="form-group">
+            <label>Cantidad</label>
+            <select name="quantity">
+                @for ($i = 1; $i < 10; $i++)
+                    <option value="{{$i}}">{{$i}}</option>
+                @endfor
+            </select>
+        </div>
+    @else
+        <input name="quantity" value="1" hidden>
+    @endif
     @if($product->variants)
         <hr>
         <input type="hidden" id="max_variants" value="{{$product->maximum_variants}}">

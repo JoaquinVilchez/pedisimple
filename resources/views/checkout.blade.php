@@ -48,80 +48,91 @@
                 @endif
                 <input type="text" name="auth_user" value="false" class="form-control" hidden>
                     <h4>Datos personales</h4>
-                    <div class="container">
-                        <a href="{{route('login')}}" style="color:blue">¿Tienes una cuenta? Ingresa</a>
-                    </div>
                     <div class="row mt-3">
                         <div class="col-md-12 mb-3">
-                            <div class="form-group mb-1">
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <label>Nombre</label>
-                                        <input type="text" name="client_first_name" value="{{old('client_first_name')}}" class="form-control">
-                                        {!!$errors->first('client_first_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <label>Apellido</label>
-                                        <input type="text" name="client_last_name" value="{{old('client_last_name')}}" class="form-control">
-                                        {!!$errors->first('client_last_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                    </div>
-                                </div>
-                            </div>
-                            @if(\Cart::getCondition('Delivery'))
+                            <p>
+                                <a class="btn btn-sm btn-primary" href="{{route('register')}}">
+                                    Crear una cuenta
+                                </a>
+                                <a class="btn btn-sm btn-primary" href="{{route('login')}}">
+                                    Ingresar a mi cuenta
+                                </a>
+                                <a class="btn btn-sm btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Continuar como invitado
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                            
+                                <h5>Continuar como invitado</h5>
                                 <div class="form-group mb-1">
                                     <div class="row">
-                                        <div class="col-lg-6 col-8">
-                                            <label>Calle</label>
-                                            <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control">
-                                            {!!$errors->first('client_street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                        <div class="col-lg-6 col-12">
+                                            <label>Nombre</label>
+                                            <input type="text" name="client_first_name" value="{{old('client_first_name')}}" class="form-control">
+                                            {!!$errors->first('client_first_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                         </div>
-                                        <div class="col-lg-2 col-4">
-                                            <label>Número</label>
-                                            <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control">
-                                            {!!$errors->first('client_number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                        </div>
-                                        <div class="col-lg-2 col-6">
-                                            <label>Piso</label>
-                                            <input type="text" name="client_floor" class="form-control" value="{{old('client_floor')}}" placeholder="Opcional">
-                                            {!!$errors->first('client_floor', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                        </div>
-                                        <div class="col-lg-2 col-6">
-                                            <label>Depto</label>
-                                            <input type="text" name="client_department" class="form-control" value="{{old('client_department')}}" placeholder="Opcional">
-                                            {!!$errors->first('client_department', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                        <div class="col-lg-6 col-12">
+                                            <label>Apellido</label>
+                                            <input type="text" name="client_last_name" value="{{old('client_last_name')}}" class="form-control">
+                                            {!!$errors->first('client_last_name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                            
-                            <div class="form-group mb-2">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label>Prefijo</label>
-                                        <input type="text" name="client_characteristic" value="{{old('client_characteristic')}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
-                                        {!!$errors->first('client_characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                @if(\Cart::getCondition('Delivery'))
+                                    <div class="form-group mb-1">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-8">
+                                                <label>Calle</label>
+                                                <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control">
+                                                {!!$errors->first('client_street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                            </div>
+                                            <div class="col-lg-2 col-4">
+                                                <label>Número</label>
+                                                <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control">
+                                                {!!$errors->first('client_number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                            </div>
+                                            <div class="col-lg-2 col-6">
+                                                <label>Piso</label>
+                                                <input type="text" name="client_floor" class="form-control" value="{{old('client_floor')}}" placeholder="Opcional">
+                                                {!!$errors->first('client_floor', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                            </div>
+                                            <div class="col-lg-2 col-6">
+                                                <label>Depto</label>
+                                                <input type="text" name="client_department" class="form-control" value="{{old('client_department')}}" placeholder="Opcional">
+                                                {!!$errors->first('client_department', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-8">
-                                        <label>Teléfono</label>
-                                        <input type="text" name="client_phone" value="{{old('client_phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)">
-                                        {!!$errors->first('client_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                @endif
+                                
+                                <div class="form-group mb-2">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Prefijo</label>
+                                            <input type="text" name="client_characteristic" value="{{old('client_characteristic')}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
+                                            {!!$errors->first('client_characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                        </div>
+                                        <div class="col-8">
+                                            <label>Teléfono</label>
+                                            <input type="text" name="client_phone" value="{{old('client_phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)">
+                                            {!!$errors->first('client_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <div class="row">
-                                    <div class="col">
-                                        <label>Notas adicionales <small>(Opcional)</small> </label>
-                                        <textarea class="form-control" rows="3" name="client_aditional_notes" value="{{old('client_aditional_notes')}}" placeholder="Ejemplo: '¡La pizza sin aceitunas, por favor!'">{{old('client_aditional_notes')}}</textarea>
+                                <div class="form-group mb-3">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label>Notas adicionales <small>(Opcional)</small> </label>
+                                            <textarea class="form-control" rows="3" name="client_aditional_notes" value="{{old('client_aditional_notes')}}" placeholder="Ejemplo: '¡La pizza sin aceitunas, por favor!'">{{old('client_aditional_notes')}}</textarea>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>¡Importante!</strong>
+                                    <p>Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
+                                </div>
+                                <button class="subscribe btn btn-primary btn-block" type="submit" @if(Cart::isEmpty())disabled @endif> Enviar detalle de pedido </button>
                             </div>
-                            <div class="alert alert-warning" role="alert">
-                                <strong>¡Importante!</strong>
-                                <p>Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
-                            </div>
-                            <button class="subscribe btn btn-primary btn-block" type="submit" @if(Cart::isEmpty())disabled @endif> Enviar detalle de pedido </button>
-                            
                         </div>
                     </div>
                 </form>

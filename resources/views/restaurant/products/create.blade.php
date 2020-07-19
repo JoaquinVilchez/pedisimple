@@ -34,15 +34,17 @@
             </div>
 
             @if($variants->count()>0)
-                <label>Variantes</label>
-                  <div class="card">
-                    <div class="card-header">
-                        <label class="form-check-label ml-3">
-                          <input class="form-check-input" type="checkbox" id="has_variants" name="has_variants">
-                          Este producto tiene variantes
-                        </label>
-                    </div>
-
+              <label>Variantes</label>
+              <div id="accordion">
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                      <label class="form-check-label ml-3">
+                        <input class="form-check-input" type="checkbox" id="has_variants" name="has_variants" data-toggle="collapse" data-target="#variantsCollapse" aria-expanded="true" aria-controls="variantsCollapse">
+                        Este producto tiene variantes <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Por ejemplo: Gustos de helado, gustos de pizza, etc."></i>
+                      </label>
+                  </div>
+              
+                  <div id="variantsCollapse" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                       <div class="row my-2">
                         <div class="input-group mb-3 col-xl-6">
@@ -61,38 +63,32 @@
                           {!!$errors->first('maximum', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
                       </div>
-                        <div class="variants-details">
-                          <small>
-                            <a href="">
-                              <label>
-                                <td><input type="checkbox" id="select_all" /> Seleccionar todas</td>
-                              </label>
-                            </a>
-                          </span>
-                          </small><br>
-                          @foreach ($variants as $variant)
-                          <span class="btn-checkbox m-1 p-1 rounded">
+                      <div class="variants-details">
+                        <small>
+                          <a href="">
                             <label>
-                              <input name="variants[]" type="checkbox" value="{{$variant->id}}">
-                                {{$variant->name}}
+                              <td><input type="checkbox" id="select_all" /> Seleccionar todas</td>
                             </label>
-                          </span>
-                          @endforeach
-                        </div>
+                          </a>
+                        </small><br>
+                        @foreach ($variants as $variant)
+                        <span class="btn-checkbox m-1 p-1 rounded">
+                          <label>
+                            <input name="variants[]" type="checkbox" value="{{$variant->id}}">
+                            {{$variant->name}}
+                          </label>
+                        </span>
+                        @endforeach
+                      </div>
                         {!!$errors->first('variants', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                      </div>
-                      <div class="container mt-2">
-                        <small><a href="#" data-toggle="modal" data-target="#addVariant">+ Crear variante</a></small>
-                      </div>
                     </div>
-            @else
-              <label>Variantes</label>
-              <small class="txt-muted px-3 pt-3">
-                <i class="fas fa-info-circle"></i>
-                Una variante sirve para.
-              </small>
+                    <div class="container">
+                      <small><a href="#" class="btn btn-sm btn-block btn-outline-success mb-2" data-toggle="modal" data-target="#addVariant">+ Crear variante</a></small>
+                    </div>
+                  </div>
+                </div>
+              </div>
             @endif
-
           </div>
         </div>
       </div>
@@ -158,7 +154,46 @@
       </div>
 
       <div class="col-xl-6 col-12 pl-0">
-        <div class="card my-2">
+      
+        <div class="accordion my-2" id="temporalAccordion">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <label class="form-check-label ml-3">
+                <input class="form-check-input" type="checkbox" name="temporary" @if(old('temporary')) checked @endif" data-toggle="collapse" data-target="#temporalCollapse" aria-expanded="true" aria-controls="temporalCollapse">
+                  Este producto Es temporal <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="El producto sólo se mostrará en una fecha determinada y luego desaparecerá."></i>
+              </label>
+            </div>
+        
+            <div id="temporalCollapse" class="collapse" aria-labelledby="headingOne" data-parent="#temporalAccordion">
+              <div class="card-body">
+                <label>Período</label>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="input-group col-6">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="">Inicio</span>
+                          </div>
+                          <input type="text" class="form-control datepicker" name="start_date" value="{{old('start_date')}}" autocomplete="off">
+                          <small>Comienza a las 00:00hs de este día (Este día está incluido)</small>
+                      </div>
+                      <div class="input-group col-6">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="">Fin</span>
+                        </div>
+                        <input type="text" class="form-control datepicker" name="end_date" value="{{old('end_date')}}" autocomplete="off">
+                        <small>Termina a las 00:00hs de este día (Este día no está incluido)</small>
+                      </div>
+                    </div>
+                  </div>             
+                  {!!$errors->first('start_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                  <br>
+                  {!!$errors->first('end_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+              </div>
+            </div>
+          </div>          
+        </div>
+        
+        {{-- <div class="card my-2">
           <h5 class="card-header">Producto temporal <small>(Opcional)</small></h5>
           <small class="txt-muted px-3 pt-3">
             <i class="fas fa-info-circle"></i>
@@ -169,7 +204,6 @@
             <div class="form-group">
               <div class="input-group">
                 <label>
-                  <small><p style="background-color:red; color: white">Hacer disabled todos los campos hasta que se seleccione este checkbox</p></small>
                 <input type="checkbox" name="temporary" @if(old('temporary')) checked @endif">
                   Establecer producto como temporal
                 </label>
@@ -198,7 +232,7 @@
               <br>
               {!!$errors->first('end_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
           </div>
-        </div>
+        </div> --}}
       </div>
   </div>
 {{-- btn-mobile --}}

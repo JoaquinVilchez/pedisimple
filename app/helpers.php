@@ -102,7 +102,7 @@ function whatsappRejectOrderMessage($order){
         $first_name = $order->guest_first_name;
     }
 
-    return '¡Hola '.$first_name.'! Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
+    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
 }
 
 function gluberMessage($order){
