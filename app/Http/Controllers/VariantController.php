@@ -10,6 +10,20 @@ use App\Product;
 
 class VariantController extends Controller
 {
+    public function ajaxCreate(Request $request){
+        request()->validate([
+            'name' => 'required'
+            ]);
+                                    
+        $variant = Variant::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'state' => 'available',
+            'restaurant_id' => Auth::user()->restaurant->id
+        ]);
+        return view('variantAjaxCreate')->with('variant', $variant);
+    }
+
     public function showItemVariants(Request $request){
         $product = $request->product;
         $variants = Variant::find($request->variants);
