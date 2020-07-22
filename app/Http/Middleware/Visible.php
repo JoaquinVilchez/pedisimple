@@ -19,7 +19,7 @@ class Visible
      */
     public function handle($request, Closure $next)
     {
-        $slug = rawurldecode(substr($request->getRequestUri(), 10));
+        $slug = rawurldecode(substr($request->getRequestUri(), 1));
         $restaurant = Restaurant::where('slug', $slug)->first();
 
         if(Auth::check()){

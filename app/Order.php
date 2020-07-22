@@ -37,17 +37,34 @@ class Order extends Model
 
     public function stateStyle(){
         switch ($this->state) {
-            case 'pendiente':
-                return 'badge badge-danger';
+            case 'pending':
+                return 'badge badge-dark';
                 break;
-            case 'confirmado':
+            case 'accepted':
                 return 'badge badge-warning';
                 break;
-            case 'entregado':
+            case 'closed':
                 return 'badge badge-success';
                 break;
-            case 'cancelado':
-                return 'badge badge-secondary';
+            case 'rejected':
+                return 'badge badge-danger';
+                break;
+        }
+    }
+
+    public function stateLang(){
+        switch ($this->state) {
+            case 'pending':
+                return 'Pendiente';
+                break;
+            case 'accepted':
+                return 'Aceptado';
+                break;
+            case 'closed':
+                return 'Finalizado';
+                break;
+            case 'rejected':
+                return 'Rechazado';
                 break;
         }
     }

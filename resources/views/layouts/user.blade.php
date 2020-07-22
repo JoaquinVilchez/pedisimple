@@ -27,7 +27,7 @@
                 <a href="{{route('product.index')}}" class="list-group-item py-1">Mi comercio</a>
                 @endrole
                 <a href="{{route('address.index')}}" class="list-group-item py-1">Mis direcciones</a>
-                {{-- <a href="{{route('order.index')}}" class="list-group-item py-1">Mis pedidos</a> --}}
+                <a href="{{route('order.index')}}" class="list-group-item py-1">Mis pedidos</a>
                 <a href="{{route('user.index')}}" class="list-group-item py-1">Mis datos</a>
             </div>
 

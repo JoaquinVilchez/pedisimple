@@ -1,46 +1,65 @@
 <div class="container">
     <div class="row">
         <div class="col-2">
-            <div class="d-flex float-right">
-                <div class="align-items-center">
-                    <img src="{{asset('images/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+            @if(isset($restaurant))
+                <div class="d-flex float-right">
+                    <div class="align-items-center">
+                        <img src="{{asset('images/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                    </div>
                 </div>
-            </div>
+            @else
+                <div class="d-flex float-right">
+                    <div class="align-items-center">
+                        <img src="{{asset('images/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="col-10">
             <div class="float-left">
-            <div class="row">
-                <div class="d-flex">
-                    <div class="d-block">
-                        <h5 class="order-customer-name">{{$user['first_name'].' '.$user['last_name']}}</h5>
-                        <p class="order-customer-phone">{{$user['characteristic'].'-'.$user['phone']}}</p>
+                @if(isset($restaurant))
+                <div class="row">
+                    <div class="d-flex">
+                        <div class="d-block">
+                            <h5 class="order-customer-name">{{$user['first_name'].' '.$user['last_name']}}</h5>
+                            <p class="order-customer-phone">{{$user['characteristic'].'-'.$user['phone']}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-2" style="font-size: 13px">
-                <div class="d-flex">
-                    <div class="d-inline">
-                        <h6 class="txt-muted order-title">Codigo de referencia</h6>
-                        <p class="order-text">{{$order->code}}</p>
-                    </div>
-                    <div class="d-inline ml-5">
-                        <h6 class="txt-muted order-title">Fecha</h6>
-                        <p class="order-text">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->locale('es')->calendar())}}</p>
-                    </div>
-                    <div class="d-inline ml-5">
-                        <h6 class="txt-muted order-title">Metodo de envio</h6>
-                        @if ($order->shipping_method=='delivery')
-                            <p class="order-text">Delivery</p>
-                        @else
-                            <p class="order-text">Retiro en local</p>                         
-                        @endif
-                    </div>
-                    <div class="d-inline ml-5">
-                        <h6 class="txt-muted order-title">Total</h6>
-                        <p class="order-text">${{$order->total}}</p>
+                @else
+                <div class="row">
+                    <div class="d-flex">
+                        <div class="d-block">
+                            <h5 class="order-customer-name">{{$order->restaurant->name}}</h5>
+                            <p class="order-customer-phone"><span class="{{$order->stateStyle()}}">{{$order->stateLang()}}</span></p>
+                        </div>
                     </div>
                 </div>
-            </div>
+                @endif
+                <div class="row mt-2" style="font-size: 13px">
+                    <div class="d-flex">
+                        <div class="d-inline">
+                            <h6 class="txt-muted order-title">Codigo de referencia</h6>
+                            <p class="order-text">{{$order->code}}</p>
+                        </div>
+                        <div class="d-inline ml-5">
+                            <h6 class="txt-muted order-title">Fecha</h6>
+                            <p class="order-text">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->locale('es')->calendar())}}</p>
+                        </div>
+                        <div class="d-inline ml-5">
+                            <h6 class="txt-muted order-title">Metodo de envio</h6>
+                            @if ($order->shipping_method=='delivery')
+                                <p class="order-text">Delivery</p>
+                            @else
+                                <p class="order-text">Retiro en local</p>                         
+                            @endif
+                        </div>
+                        <div class="d-inline ml-5">
+                            <h6 class="txt-muted order-title">Total</h6>
+                            <p class="order-text">${{$order->total}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
