@@ -105,32 +105,34 @@
         <div class="row justify-content-center">
 
             <div class="col-md-4 order-md-2 mb-4">
-                @include('messages')
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Tu pedido</span>
-                    <span class="badge badge-secondary badge-pill">{{Cart::getTotalQuantity()}}</span>
-                </h4>
-
-                    @if(!Cart::isEmpty())
-                   
-                        @include('carrito')
-                   
-                    <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
-                        ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" href="#">No</a>
-                    </div>
-                    <div class="float-right">
-                        <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
-                        <a href="{{route('checkout.index')}}" class="btn btn-primary">Continuar</a>
-                    </div>
-                    @else
-                    <div class="list-group mb-3" style="text-align: center">
-                        <div style="text-align: center" class="my-4">
-                            <img src="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
-                            <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
+                <div class="sticky-top py-3">
+                    @include('messages')
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Tu pedido</span>
+                        <span class="badge badge-secondary badge-pill">{{Cart::getTotalQuantity()}}</span>
+                    </h4>
+    
+                        @if(!Cart::isEmpty())
+                       
+                            @include('carrito')
+                       
+                        <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
+                            ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" href="#">No</a>
                         </div>
-                        <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
-                    </div>
-                    @endif
+                        <div class="float-right">
+                            <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
+                            <a href="{{route('checkout.index')}}" class="btn btn-primary">Continuar</a>
+                        </div>
+                        @else
+                        <div class="list-group mb-3" style="text-align: center">
+                            <div style="text-align: center" class="my-4">
+                                <img src="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
+                                <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
+                            </div>
+                            <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
+                        </div>
+                        @endif
+                </div>
             </div>
 
             <div class="col-lg-8 tab-content" id="pills-tabContent">

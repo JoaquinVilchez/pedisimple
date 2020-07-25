@@ -35,6 +35,38 @@ class Order extends Model
         return $this->belongsTo(Address::class);
     }
 
+    public function getFullName(){
+        if($this->user_id!=null){
+            return $this->user->fullName();
+        }else{
+            return $this->guest_first_name.' '.$this->guest_last_name;
+        }
+    }
+
+    public function getFullAddress(){
+        if($this->address!=null){
+            return $this->address->getAddress();
+        }else{
+            if($this->guest_floor==null || $this->guest_department==null){
+                return $this->guest_street.' '.$this->guest_number;
+           }else{
+                $address = $this->guest_street.' '.$this->guest_number.' - '.$this->guest_floor.$this->guest_department;
+                if($this->guest_building_name!=null){
+                    $address = $address.' - Edificio '.$this->guest_building_name;
+                }
+                return $address;
+           }
+        }
+    }
+
+    public function getPhone(){
+        if($this->user_id!=null){
+            return $this->user->getPhone();
+        }else{
+            return $this->guest_characteristic.'-'.$this->guest_phone;
+        }
+    }
+
     public function stateStyle(){
         switch ($this->state) {
             case 'pending':
@@ -65,6 +97,17 @@ class Order extends Model
                 break;
             case 'rejected':
                 return 'Rechazado';
+                break;
+        }
+    }
+
+    public function getShippingMethod(){
+        switch ($this->shipping_method) {
+            case 'delivery':
+                return 'Delivery';
+                break;
+            case 'pickup':
+                return 'Retiro en local';
                 break;
         }
     }

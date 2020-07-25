@@ -60,7 +60,6 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{asset('images/logo.png')}}" width="150px" alt="">
-                    {{-- {{ config('app.name', 'Laravel') }} --}}
                 </a>
                 @if(Auth::user())
                 <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

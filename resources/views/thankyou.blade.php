@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="row justify-content-center mb-2">
-                <a href="{{route('checkout.download', $order)}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-receipt"></i> Descargar detalle</a>
+                <a target="_blank" href="{{route('checkout.download', $order)}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-receipt"></i> Descargar detalle</a>
             </div>
         </div>
 
