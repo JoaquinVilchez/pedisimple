@@ -73,7 +73,7 @@ class CartController extends Controller
                     ));
                 }
 
-                if($restaurant->shipping_method == 'delivery'){
+                if($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup'){
 
                     $condition = new \Darryldecode\Cart\CartCondition(array(
                         'name' => 'Delivery',
@@ -113,7 +113,7 @@ class CartController extends Controller
                         ));
                     }
 
-                    if($restaurant->shipping_method == 'delivery'){
+                    if($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup'){
                     
                         $condition = new \Darryldecode\Cart\CartCondition(array(
                             'name' => 'Delivery',

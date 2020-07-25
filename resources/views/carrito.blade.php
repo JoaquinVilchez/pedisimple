@@ -46,12 +46,12 @@
             @csrf
             <input type="text" name="restaurant_id" hidden value="{{$restaurant->id}}">
             <div class="custom-control custom-radio custom-control-inline">
+                <input onchange="updateTax('{{$restaurant->shipping_method}}')" type="radio" id="customRadioInline2" name="shipping_method" class="custom-control-input" value="delivery" @if(Cart::getCondition('Delivery')) checked @endif>
+                <label class="custom-control-label" for="customRadioInline2">Delivery</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
                 <input onchange="updateTax('{{$restaurant->shipping_method}}')" type="radio" id="customRadioInline1" name="shipping_method" class="custom-control-input" value="pickup" @if(!Cart::getCondition('Delivery')) checked @endif>
                 <label class="custom-control-label" for="customRadioInline1">Retiro en local</label>
-                </div>
-                <div onchange="updateTax('{{$restaurant->shipping_method}}')" class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="customRadioInline2" name="shipping_method" class="custom-control-input" value="delivery" @if(Cart::getCondition('Delivery')) checked @endif>
-                <label class="custom-control-label" for="customRadioInline2">Delivery</label>
             </div>
         </form>        
         </li>
