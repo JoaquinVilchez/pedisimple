@@ -22,7 +22,7 @@
                 <input type="hidden" name="quantity" value="{{$item->quantity}}">
                 <input type="hidden" name="price" value="{{$item->price}}">
                 <select class="float-left" name="quantity" onchange="updateQuantity('{{$item->id}}')" id="cartQuantity">
-                    @for ($i = 1; $i < 10; $i++)
+                    @for ($i = 1; $i < $item->quantity+10; $i++)
                         <option @if($i==$item->quantity) selected @endif value="{{$i}}">{{$i}}</option>
                     @endfor
                 </select>
