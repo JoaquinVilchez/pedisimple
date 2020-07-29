@@ -11,15 +11,9 @@ use Redirect;
 
 class OrderController extends Controller
 {
-
     public function getClosedDetails(Request $request){
         $order = Order::find($request->id);
         $items = LineItem::where('order_id', $order->id)->get();
-        // if(Auth::user()->restaurant != null){
-        //     $restaurant = true;
-        // }else{
-        //     $restaurant = false;
-        // }
         $restaurant = Auth::user()->restaurant;
         if($order->user_id!=null){
             $user = User::find($order->user_id)->toArray();

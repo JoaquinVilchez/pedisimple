@@ -130,7 +130,7 @@
       </div>
     </nav>
 
-    <main role="main" class="col-auto ml-sm-auto col-xl-10">
+    <main role="main" class="col-auto ml-sm-auto col-xl-10 col-12">
       @yield('main')
     </main>
   </div>

@@ -67,6 +67,17 @@ class Order extends Model
         }
     }
 
+    public function getShippingMethod(){
+        switch ($this->shipping_method) {
+            case 'delivery':
+                return 'Delivery';
+                break;
+            case 'pickup':
+                return 'Retiro en local';
+                break;
+        }
+    }
+
     public function stateStyle(){
         switch ($this->state) {
             case 'pending':
@@ -97,17 +108,6 @@ class Order extends Model
                 break;
             case 'rejected':
                 return 'Rechazado';
-                break;
-        }
-    }
-
-    public function getShippingMethod(){
-        switch ($this->shipping_method) {
-            case 'delivery':
-                return 'Delivery';
-                break;
-            case 'pickup':
-                return 'Retiro en local';
                 break;
         }
     }

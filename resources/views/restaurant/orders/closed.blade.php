@@ -10,12 +10,14 @@
 
     @include('messages')
     @if($orders->count()>0)
-        <table class="table table-sm">
+    <div class="table-responsive">
+        <table class="table table-sm ">
             <thead>
             <tr>
                 <th>Código</th>
-                <th>Fecha</th>
+                <th>Solicitante</th>
                 <th>Total</th>
+                <th>Fecha</th>
                 <th></th>
             </tr>
             </thead>
@@ -23,14 +25,16 @@
             @foreach ($orders as $order)
                 <tr>
                     <td>{{$order->code}}</td>
-                    <td>{{ucfirst($order->created_at->calendar())}}</td>
+                    <td>{{$order->getFullName()}}</td>
                     <td>${{$order->total}}</td>
+                    <td>{{ucfirst($order->created_at->calendar())}}</td>
                     <td><a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#orderDetailsModal" onclick="showClosedOrder({{$order->id}})">Detalle</a></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
         {{$orders->links()}}
+    </div>
     @else
         <div style="text-align:center" class="m-auto">
             <img src="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
