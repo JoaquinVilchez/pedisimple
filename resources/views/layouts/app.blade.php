@@ -67,7 +67,7 @@
                         <img width="150px" src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1">
                     </button>
                 @else
-                    <button style="background: transparent; border: 0px"type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <button class="d-block d-sm-block d-md-none" style="background: transparent; border: 0px"type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <i class="fas fa-bars"></i>
                     </button>
                 @endif

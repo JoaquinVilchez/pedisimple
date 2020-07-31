@@ -103,5 +103,6 @@ Route::get('/pedidos/cerrados', 'OrderController@closed')->name('order.closed');
 Route::post('/pedidos/aceptar', 'OrderController@accept')->name('order.accept');
 Route::post('/pedidos/rechazar', 'OrderController@reject')->name('order.reject');
 Route::post('/pedidos/cerrar', 'OrderController@close')->name('order.close');
+Route::post('/pedidos/cancelar', 'OrderController@cancel')->name('order.cancel');
 Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
 Route::resource('usuario/pedidos', 'OrderController')->names('order');

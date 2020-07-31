@@ -128,7 +128,32 @@ class OrderController extends Controller
             'state' => 'closed'
         ]);
 
+        $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappCancelOrderMessage($order));
+        session()->flash('newurl', $newUrl);
+
         return back()->with('success_message', 'Pedido cerrado.');
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel(Request $request)
+    {
+        $order = Order::find($request->orderid);
+        $order->update([
+            'state' => 'canceled'
+        ]);
+
+        if ($request->send == 'on') {
+            $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappCancelOrderMessage($order));
+            session()->flash('newurl', $newUrl);
+        }
+
+        return back()->with('success_message', 'Pedido cancelado.');
     }
 
     /**

@@ -4,6 +4,7 @@
 <style>
     #orderTable thead tr th{
         padding-bottom:0px;
+        padding-top: 0px;
         font-size: 13px;
     }
     #orderTable tbody tr td{
@@ -20,6 +21,9 @@
 @endsection
 
 @section('main')
+    @if (session()->has('newurl'))
+        <body onload="window.open('{{session('newurl')}}', '_blank')"></body>
+    @endif
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
         <h1 class="h2"><strong>Pedidos aceptados</strong></h1>
     </div>
@@ -140,6 +144,19 @@
                                 <th>Método de envío</th>
                                 <th>Precio</th>
                                 </tr>
+                                <div class="dropdown">
+                                    <i class="float-right py-0 mb-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </i>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 14px">
+                                      <h6 class="dropdown-header">Opciones de pedido</h6>
+                                      <hr class="m-0">
+                                      <a class="dropdown-item" href="#">Editar pedido</a>
+                                      <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
+                                      <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Glubber</a>
+                                      <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
+                                    </div>
+                                </div>
                             </thead>
                             <tbody>
                                 <tr>
@@ -199,19 +216,6 @@
                             </div>
                             <div class="col-6">
                                 <div class="float-right d-flex">
-                                    @if($order->shipping_method=='delivery')
-                                        <div class="d-inline mr-2">
-                                            <a target=”_blank” href="
-                                            https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text=
-                                            {{urlencode(gluberMessage($order))}}" 
-                                            class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional."><i class="fas fa-motorcycle"></i> Pedir un Gluber</a>
-                                        </div>
-                                    @endif
-                                    <div class="d-inline mr-2">
-                                        <a target=”_blank” href="
-                                        https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
-                                        class="btn btn-sm btn-success"><i class="fab fa-whatsapp"></i> Hablar con el cliente</a>
-                                    </div>
                                     <div class="d-inline mr-2">
                                         <a data-orderid="{{$order->id}}" data-toggle="modal" data-target="#closeOrderModal" href="#" class="btn btn-sm btn-danger">Cerrar pedido</a>
                                     </div>
@@ -250,6 +254,39 @@
         </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Cancelar pedido</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <form action="{{route('order.cancel')}}" method="POST">
+                @csrf
+            <div class="modal-body">
+                <h5>¿Estás seguro de cancelar este pedido?</h5>  
+                <div class="container">
+                    <small>
+                        <label>
+                            <input type="checkbox" name="send" checked>
+                            Informar sobre la cancelación al cliente por WhatsApp
+                        </label>
+                    </small>
+                </div>
+                <input type="hidden" id="orderid" name="orderid" value="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-danger">Cancelar pedido</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
 @endsection
 
 @section('js-scripts')
@@ -263,6 +300,16 @@ $('#closeOrderModal').on('show.bs.modal', function(event){
     
     modal.find('.modal-body #orderid').val(orderid)
 })
+
+$('#cancelOrderModal').on('show.bs.modal', function(event){
+    var button = $(event.relatedTarget)
+    
+    var orderid = button.data('orderid')
+    var modal = $(this)
+    
+    modal.find('.modal-body #orderid').val(orderid)
+})
+
 
 </script>
 @endsection

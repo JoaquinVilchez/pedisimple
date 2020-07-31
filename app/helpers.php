@@ -95,6 +95,7 @@ function whatsappMessageCustomer($order){
     return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Confirmamos un pedido que hiciste desde '.config("app.name").'.';
 }
 
+
 function whatsappRejectOrderMessage($order){
     if($order->user_id!=null){
         $first_name = $order->user->first_name;
@@ -103,6 +104,16 @@ function whatsappRejectOrderMessage($order){
     }
 
     return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
+}
+
+function whatsappCancelOrderMessage($order){
+    if($order->user_id!=null){
+        $first_name = $order->user->first_name;
+    }else{
+        $first_name = $order->guest_first_name;
+    }
+
+    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Te informamos que hemos cancelado tu pedido. ';
 }
 
 function gluberMessage($order){
