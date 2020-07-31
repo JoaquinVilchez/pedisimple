@@ -224,7 +224,7 @@
   })
 
 function continueToRestaurant(){
-  window.location = "/comercio/"+restaurantSlug
+  window.location = "/"+restaurantSlug
 }
 
 </script>

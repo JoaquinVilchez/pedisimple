@@ -44,10 +44,10 @@
             </div>
             <hr class="my-2">
             <div class="form-row">
-                <div class="form-group col-6">
+                <div class="form-group col-12 col-lg-6">
                         <label>Teléfono</label>
                         <div class="form-row">
-                            <div class="col-3">
+                            <div class="col-4">
                             <input type="text" name="characteristic" value="{{old('characteristic', $restaurant->characteristic)}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
                             <small class="form-text text-muted">Ej: 3462</small>
                             </div>
@@ -60,10 +60,10 @@
                         <br>
                         {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
-                <div class="form-group col-6">
+                <div class="form-group col-12 col-lg-6">
                     <label>Segundo teléfono</label>
                     <div class="form-row">
-                        <div class="col-3">
+                        <div class="col-4">
                         <input type="text" name="second_characteristic" value="{{old('second_characteristic', $restaurant->second_characteristic)}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)">
                         <small class="form-text text-muted">Ej: 3462</small>
                         </div>

@@ -2,7 +2,7 @@
 
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
-    <h1 class="h2"><strong>Productos</strong></h1>
+    <h1 class="h2"><strong>Menú</strong></h1>
     <div class="btn-toolbar mb-2 mb-md-0 mr-3">
     <div class="btn-group d-none d-xl-block" role="group" >
       <button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -96,8 +96,8 @@
         @endif
       </tbody>
     </table>
-    {{$products->links()}}
   </div>
+  {{$products->links()}}
 
 @if(count($products)!=0)
 <!-- Modal -->

@@ -49,8 +49,8 @@
       </tbody>
   @endif
     </table>
-    {{$variants->links()}}
   </div>
+  {{$variants->links()}}
 
 @if(count($variants)!=0)
 <!-- Modal -->

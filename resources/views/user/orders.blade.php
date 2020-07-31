@@ -4,6 +4,7 @@
 
     <h5>Mis pedidos</h5>
     @if(count($orders)>0)
+    <div class="table-responsive">
         <table class="table table-hover">
             <thead>
                 <th>Comercio</th>
@@ -26,6 +27,7 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
         {{$orders->links()}}
     @else
         <div style="text-align:center" class="m-auto">

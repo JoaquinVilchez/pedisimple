@@ -59,11 +59,11 @@
             <div class="form-group">
                 <label>Teléfono </label>
                 <div class="row">
-                    <div class="col-md-4 col-12 pr-1">
-                        <input type="text" class="form-control" name="characteristic" value="{{old('characteristic',$user->characteristic)}}" autocomplete="false" placeholder="Prefijo">
+                    <div class="col-md-4 col-4 pr-1">
+                        <input type="text" class="form-control" name="characteristic" value="{{old('characteristic',$user->characteristic)}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
                     </div> 
-                    <div class="col-md-8 col-12 pl-1">
-                        <input id="phone" type="text" class="form-control" name="phone" value="{{old('phone',$user->phone)}}" autocomplete="false" placeholder="Teléfono">
+                    <div class="col-md-8 col-8 pl-1">
+                        <input id="phone" type="text" class="form-control" name="phone" value="{{old('phone',$user->phone)}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
                     </div>
                 </div>
                 {!!$errors->first('characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}

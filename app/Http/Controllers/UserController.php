@@ -131,7 +131,7 @@ class UserController extends Controller
             $user->image = $path;         
         }
 
-        $user->update($request->only('first_name','last_name','email','phone'));
+        $user->update($request->only('first_name','last_name','email','characteristic','phone'));
 
         return redirect(route('user.index'))->with('success_message', 'Datos editados con éxito');
 

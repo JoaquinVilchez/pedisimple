@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <nav class="col-xl-2 bg-light sidebar ">      
+    <nav class="col-xl-2 bg-light sidebar">      
       <div class="sidebar-sticky">
         <div style="text-align:center">
           <img width="100px" src="{{asset('images/uploads/commerce/'.Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
@@ -28,44 +28,51 @@
           <hr>
         </div>
 
-        <nav class="nav justify-content-center d-xl-none mb-3">
-          <ul class="nav justify-content-center">
-            <li class="nav-item">
-              <a class="nav-link" href="{{route('order.new')}}">Pedidos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn btn-checkbox m-1" href="{{route('product.index')}}">Productos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn btn-checkbox m-1" href="{{route('category.index')}}">Categorías</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link">Configuración</a>
-            </li>
-            <ul class="nav justify-content-center">
-              <li class="nav-item">
-                  <a class="nav-link btn btn-checkbox m-1" href="{{route('restaurant.info')}}">Información del comercio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link btn btn-checkbox m-1" href="{{route('restaurant.times')}}">Horarios</a>
-              </li>
-            </ul>
-          </ul>
-        </nav>
-
         <nav class="nav d-none d-xl-block">
           <ul class="nav flex-column">
-            
             <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#orderCollapse" role="button" aria-expanded="false" aria-controls="orderCollapse">
-                Pedidos <i class="fas fa-chevron-down"></i>
-              </a>
+              <a class="nav-link" data-toggle="collapse" href="#productosCollapse" role="button" aria-expanded="false" aria-controls="productosCollapse">
+                <div class="d-flex justify-content-between">
+                <span>Productos</span>
+                <i class="fas fa-chevron-down"></i>
+                </div>
+                </a>
             </li>
-            <div class="collapse" id="orderCollapse">
-              <ul>
+            <div class="collapse nav-pills" id="productosCollapse">
+              <ul class="list-unstyled ml-3">
+                <li class="nav-item">
+                    <a class="nav-link" id="menu" href="{{route('product.index')}}">Menú</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="categorias" href="{{route('category.index')}}">Categorías</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="variantes" href="{{route('variant.index')}}">Variantes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="temporales" href="{{route('product.temporaries')}}">Temporales</a>
+                </li>
+              </ul>
+            </div>
+
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#pedidosCollapse" role="button" aria-expanded="false" aria-controls="pedidosCollapse">
+                <div class="d-flex justify-content-between">
+                <span>
+                  @if((Auth::user()->unreadNotifications()->count())>0)
+                    <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->count()}} </span>
+                  @endif
+                  Pedidos
+                </span>
+                <i class="fas fa-chevron-down"></i>
+                </div>
+                </a>
+            </li>
+            <div class="collapse nav-pills" id="pedidosCollapse">
+              <ul class="list-unstyled ml-3">
                 <li class="nav-item">
                   <div class="d-flex justify-content-between align-items-center">
-                    <span><a class="nav-link" href="{{route('order.new')}}">Nuevos</a></span>
+                    <span><a class="nav-link" id="nuevos" href="{{route('order.new')}}">Nuevos</a></span>
                       @if((Auth::user()->unreadNotifications()->count())>0)
                         <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
                       @else
@@ -76,13 +83,13 @@
                 </li>
                 <li class="nav-item">
                   <div class="d-flex justify-content-between align-items-center">
-                    <span><a class="nav-link" href="{{route('order.accepted')}}">Aceptados</a></span>
+                    <span><a class="nav-link" id="aceptados" href="{{route('order.accepted')}}">Aceptados</a></span>
                     <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->acceptedOrders()}}</small></span>
                   </div>
                 </li>
                 <li class="nav-item">
                   <div class="d-flex justify-content-between align-items-center">
-                    <a class="nav-link" href="{{route('order.closed')}}">Cerrados</a>
+                    <a class="nav-link" id="cerrados" href="{{route('order.closed')}}">Cerrados</a>
                     <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->closedOrders()}}</small></span>
                   </div>
                 </li>
@@ -90,38 +97,110 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#productCollapse" role="button" aria-expanded="false" aria-controls="productCollapse">
-                  Productos <i class="fas fa-chevron-down"></i>
-                </a> 
+              <a class="nav-link" data-toggle="collapse" href="#configuracionCollapse" role="button" aria-expanded="false" aria-controls="configuracionCollapse">
+                <div class="d-flex justify-content-between">
+                <span>Configuración</span>
+                <i class="fas fa-chevron-down"></i>
+                </div>
+              </a>
             </li>
-            <div class="collapse" id="productCollapse">
-              <ul>
+            <div class="collapse nav-pills" id="configuracionCollapse">
+              <ul class="list-unstyled ml-3"> 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('product.index')}}">Menú</a>
+                    <a class="nav-link" id="informacion" href="{{route('restaurant.info')}}">Información</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{route('variant.index')}}">Variantes</a>
+                  <a class="nav-link" id="horarios" href="{{route('restaurant.times')}}">Horarios</a>
+                </li>
+              </ul>
+            </div>
+          </ul>
+        </nav>
+      </div>
+      <div style="text-align: center" class="d-xl-none">
+        <a class="nav-link" data-toggle="collapse" href="#mobileMenu" role="button" aria-expanded="false" aria-controls="mobileMenu">
+          <i class="fas fa-bars"></i> Menu
+        </a>
+      </div>
+
+      <div class="collapse d-xl-none" id="mobileMenu" style="text-align: center">
+        <nav class="nav d-block d-xl-none">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#productosCollapse" role="button" aria-expanded="false" aria-controls="productosCollapse">
+                <span>Productos</span>
+                <i class="fas fa-chevron-down"></i>
+                </a>
+            </li>
+            <div class="collapse nav-pills" id="productosCollapse">
+              <ul class="list-unstyled ml-3">
+                <li class="nav-item">
+                    <a class="nav-link" id="menu" href="{{route('product.index')}}">Menú</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{route('product.temporaries')}}">Temporales</a>
+                  <a class="nav-link" id="categorias" href="{{route('category.index')}}">Categorías</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="variantes" href="{{route('variant.index')}}">Variantes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="temporales" href="{{route('product.temporaries')}}">Temporales</a>
                 </li>
               </ul>
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{route('category.index')}}">Categorías</a>
+              <a class="nav-link" data-toggle="collapse" href="#pedidosCollapse" role="button" aria-expanded="false" aria-controls="pedidosCollapse">
+                <span>
+                  @if((Auth::user()->unreadNotifications()->count())>0)
+                    <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->count()}} </span>
+                  @endif
+                  Pedidos
+                </span>
+                <i class="fas fa-chevron-down"></i>
+                </a>
             </li>
-
-            <a class="nav-link" data-toggle="collapse" href="#configCollapse" role="button" aria-expanded="false" aria-controls="configCollapse">
-              Configuración <i class="fas fa-chevron-down"></i>
-            </a>
-            <div class="collapse" id="configCollapse">
-              <ul>
+            <div class="collapse nav-pills m-auto" id="pedidosCollapse">
+              <ul class="list-unstyled">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('restaurant.info')}}">Información del comercio</a>
+                  <div class="d-flex align-items-center">
+                    <span><a class="nav-link" id="nuevos" href="{{route('order.new')}}">Nuevos</a></span>
+                      @if((Auth::user()->unreadNotifications()->count())>0)
+                        <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
+                      @else
+                        <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
+                      @endif
+                  </div>
+                    
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{route('restaurant.times')}}">Horarios</a>
+                  <div class="d-flex align-items-center">
+                    <span><a class="nav-link" id="aceptados" href="{{route('order.accepted')}}">Aceptados</a></span>
+                    <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->acceptedOrders()}}</small></span>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <div class="d-flex align-items-center">
+                    <a class="nav-link" id="cerrados" href="{{route('order.closed')}}">Cerrados</a>
+                    <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->closedOrders()}}</small></span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#configuracionCollapse" role="button" aria-expanded="false" aria-controls="configuracionCollapse">
+                <span>Configuración</span>
+                <i class="fas fa-chevron-down"></i>
+              </a>
+            </li>
+            <div class="collapse nav-pills" id="configuracionCollapse">
+              <ul class="list-unstyled ml-3"> 
+                <li class="nav-item">
+                    <a class="nav-link" id="informacion" href="{{route('restaurant.info')}}">Información</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="horarios" href="{{route('restaurant.times')}}">Horarios</a>
                 </li>
               </ul>
             </div>
@@ -135,4 +214,20 @@
     </main>
   </div>
 </div>
+
+  <script>
+    var url = window.location.pathname;  
+    const parts = url.split('/');
+    var activeCategory = parts[1];
+    var activePage = parts[2];
+    
+    
+    document.getElementById(activeCategory+'Collapse').classList.add("show")
+    document.getElementById(activePage).classList.add("active")
+
+  </script>
 @endsection
+
+
+
+
