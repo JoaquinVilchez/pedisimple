@@ -48,7 +48,7 @@
                           <hr class="m-0">
                           <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                           <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
-                          <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Glubber</a>
+                          <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_ replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Glubber</a>
                           <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Order;
 
-class NewOrder extends Notification implements ShouldQueue
+class NewOrder extends Notification
 {
     use Queueable;
     protected $order;
