@@ -209,13 +209,12 @@ class CheckoutController extends Controller
                     'client_number' => 'required|numeric',
                 ]);
 
-                $delivery_price = \Cart::getCondition('Delivery')->getValue();
                 $order = Order::create([
                     'restaurant_id' => $request->restaurant_id,
                     'ordered' => Carbon::now(),
                     'state' => 'pending',
                     'shipping_method' => $shipping_method,
-                    'delivery' => $delivery_price,
+                    'delivery' => $restaurant->delivery,
                     'subtotal' => \Cart::getSubtotal(),
                     'total' => \Cart::getTotal(),
                     'client_aditional_notes' => $request->client_aditional_notes,
@@ -242,6 +241,7 @@ class CheckoutController extends Controller
                     'ordered' => Carbon::now(),
                     'state' => 'pending',
                     'shipping_method' => $shipping_method,
+                    'delivery' => $restaurant->delivery,
                     'subtotal' => \Cart::getSubtotal(),
                     'total' => \Cart::getTotal(),
                     'client_aditional_notes' => $request->client_aditional_notes,

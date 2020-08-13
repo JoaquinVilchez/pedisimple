@@ -38,21 +38,33 @@
         @foreach($orders as $order)
         {{-- MOBILE --}}
         <div class="col-12">
-            <div class="order-mobile d-xl-none" width="100%">
+            <div class="order-mobile d-lg-none d-xl-none" width="100%">
                 <div class="card mb-2">
-                    <div class="card-header" style="border-bottom:10px solid #ffa64d; border-radius: 5px;padding-bottom:0px;font-size:15px" id="headingOne">
+                    <div class="dropdown">
+                        <i class="float-right py-0 mb-0 mr-1 fas fa-ellipsis-h" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 16px">
+                          <h6 class="dropdown-header">Opciones de pedido</h6>
+                          <hr class="m-0">
+                          <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
+                          <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
+                          <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Glubber</a>
+                          <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
+                        </div>
+                    </div>
+                    <div class="card-header" style="border-bottom:10px solid #ffa64d; border-radius: 5px;padding-bottom:0px;font-size:15px; background-color: white;" id="headingOne">
                         <div class="details">
                             <div class="row">
                                 <div class="col-6">
-                                    <p class="text-muted mobile-title">Solicitante</p>  
+                                    <p class="text-muted mobile-title mb-1">Solicitante</p>  
                                     <p class="mobile-description"><strong>{{$order->getFullName()}}</strong></p>
-                                    <p class="text-muted mobile-title">Código</p>  
+                                    <p class="text-muted mobile-title mb-1">Código</p>  
                                     <p class="mobile-description"><strong>{{$order->code}}</strong></p>
                                 </div>
                                 <div class="col-6" style="text-align: right">
-                                    <p class="text-muted mobile-title">Metodo de envío</p>
+                                    <p class="text-muted mobile-title mb-1">Metodo de envío</p>
                                     <p class="mobile-description">{{$order->getShippingMethod()}}</p>
-                                    <p class="text-muted mobile-title">Total</p>
+                                    <p class="text-muted mobile-title mb-1">Total</p>
                                     <p class="mobile-description">${{$order->total}}</p>
                                 </div>
                             </div>
@@ -108,18 +120,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    @if($order->shipping_method=='delivery')
-                                            <a target=”_blank” href="
-                                            https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text=
-                                            {{urlencode(gluberMessage($order))}}" 
-                                            class="btn btn-sm btn-warning btn-block" data-toggle="tooltip" data-placement="bottom" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional."><i class="fas fa-motorcycle"></i>
-                                            Pedir un Gluber</a>
-                                    @endif
-                                        <a target=”_blank” href="
-                                        https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}" 
-                                        class="btn btn-sm btn-block btn-success"><i class="fab fa-whatsapp"></i> Hablar con el cliente</a>
-                                        <a data-orderid="{{$order->id}}" data-toggle="modal" data-target="#closeOrderModal" href="#" class="btn btn-sm btn-block btn-danger">Cerrar pedido</a>
+                                <div class="row">   
+                                    <a data-orderid="{{$order->id}}" data-toggle="modal" data-target="#closeOrderModal" href="#" class="btn btn-sm btn-block btn-danger">Cerrar pedido</a>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +132,7 @@
         {{-- FIN MOBILE --}}
         {{-- DESKTOP --}}
         <div class="col-12">
-            <div class="order d-none d-xl-block" width="100%" style="font-size:15px" id="orderHeader" style="font-size:15px">
+            <div class="order d-none d-lg-block d-xl-block" width="100%" style="font-size:15px" id="orderHeader" style="font-size:15px">
                 <div class="card mb-4" id="orderHeader" style="font-size:15px">
                     <div class="border-bottom px-2">
                         <table class="table table-borderless" id="orderTable">
@@ -142,7 +144,7 @@
                                 <th>Contacto <i class="fab fa-whatsapp ml-1"></i></th>
                                 <th>Dirección de entrega</th>
                                 <th>Método de envío</th>
-                                <th>Precio</th>
+                                <th>Total</th>
                                 </tr>
                                 <div class="dropdown">
                                     <i class="float-right py-0 mb-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -151,7 +153,7 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 14px">
                                       <h6 class="dropdown-header">Opciones de pedido</h6>
                                       <hr class="m-0">
-                                      <a class="dropdown-item" href="#">Editar pedido</a>
+                                      <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Glubber</a>
                                       <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
@@ -287,6 +289,15 @@
         </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editOrderModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="editOrderModalContent">
+                
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js-scripts')
@@ -309,6 +320,20 @@ $('#cancelOrderModal').on('show.bs.modal', function(event){
     
     modal.find('.modal-body #orderid').val(orderid)
 })
+
+function editOrder(orderid){
+    $.ajax({
+      url : '{{ route("order.editOrder") }}',
+      type: 'POST',
+      headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      data:{orderid:orderid},
+      success:function(data){
+          $('#editOrderModalContent').html(data)
+      },
+    });
+}
 
 
 </script>

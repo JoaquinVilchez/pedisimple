@@ -79,7 +79,7 @@ function whatsappNumberCustomer($order){
     if($order->user_id!=null){
         $phone = $order->user->getPhone();
     }else{
-        $phone = $order->guest_characteristic.'-'.$order->guest_phone;
+        $phone = $order->guest_characteristic.$order->guest_phone;
     }
 
     return $phone;
@@ -136,6 +136,11 @@ function getOrderAddress($order){
     }else{
         return getGuestAddress($order);  
     }
+}
+
+function getVariantsName($data){
+    return $data;
+    // implode(', ', $item->showVariants())
 }
 
 ?>

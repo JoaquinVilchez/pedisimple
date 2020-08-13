@@ -212,7 +212,9 @@ return [
         'minimum' => 'mínimo',
         'maximum' => 'máximo',
         'variants' => 'variantes',
-        
+        'order.items' => 'productos pedidos',
+        'order.street' => 'calle',
+        'order.number' => 'numero'        
     ],
 
     'email-confirmation' => [

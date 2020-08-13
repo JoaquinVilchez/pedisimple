@@ -43,7 +43,7 @@
                             <small class="text-mute"><span>Subtotal</span></small>
                             <span>${{$order->subtotal}}</span>
                         </li>
-                        @if($order->delivery != null)
+                        @if($order->shipping_method=='delivery')
                         <li class="list-group-item d-flex justify-content-between">
                             <small class="text-mute"><span>Delivery</span></small>
                             <span>${{$order->delivery}}</span>

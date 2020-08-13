@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Order;
 use App\User;
 use App\LineItem;
@@ -128,9 +129,6 @@ class OrderController extends Controller
             'state' => 'closed'
         ]);
 
-        $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappCancelOrderMessage($order));
-        session()->flash('newurl', $newUrl);
-
         return back()->with('success_message', 'Pedido cerrado.');
     }
 
@@ -154,6 +152,91 @@ class OrderController extends Controller
         }
 
         return back()->with('success_message', 'Pedido cancelado.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateOrder(Request $request)
+    {
+
+        // dd($request->all());
+        $order = Order::find($request->order['id']);
+        if($request->order['shipping_method']=='delivery'){
+            if($order->address_id==null){
+                if($order->guest_street==null && $order->guest_number==null){
+                    $request->validate([
+                        'order.items' => 'required|array|min:1',
+                        'order.street' => 'required',
+                        'order.number' => 'required',
+                        'order.floor' => 'nullable',
+                        'order.department' => 'nullable'
+                    ]);
+                }else{
+                    $request->validate([
+                        'order.items' => 'required|array|min:1'
+                    ]);
+                }
+            }else{
+                $request->validate([
+                    'order.items' => 'required|array|min:1'
+                ]);
+            }
+        }else{
+            $request->validate([
+                'order.items' => 'required|array|min:1'
+            ]);
+        }
+
+        $request = $request->order;
+
+        $order->update([
+            'shipping_method'=>$request['shipping_method'],
+            'subtotal'=>$request['subtotal'],
+            'total'=>$request['total']
+        ]);
+
+        if($request['shipping_method']=='delivery'){
+            if($request['street']!=null && $request['number'] !=null){
+                $order->update([
+                    'guest_street' => $request['street'],
+                    'guest_number' => $request['number'],
+                    'guest_floor' => $request['floor'],
+                    'guest_department' => $request['department'],
+                ]);
+            }
+        }
+
+        foreach($order->lineItems as $original_item){
+            $original_item->delete();
+        }
+
+        foreach ($request['items'] as $new_item) {
+            LineItem::create([
+                'order_id'=>$order->id,
+                'product_id'=>$new_item['product_id'],
+                'price'=>$new_item['price'],
+                'quantity'=>$new_item['quantity'],
+                'variants'=>$new_item['variants'],
+                'aditional_notes'=>$new_item['aditional_notes']
+            ]);
+        }   
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editOrder(Request $request)
+    {
+        $order = Order::find($request->orderid);        
+        return view('editOrder')->with('order', $order);
     }
 
     /**
@@ -200,28 +283,28 @@ class OrderController extends Controller
         return view('user.order')->with('order', $order);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, $id)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.

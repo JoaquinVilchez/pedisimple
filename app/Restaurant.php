@@ -37,6 +37,10 @@ class restaurant extends Model
         return $this->hasMany(Variant::class);
     }
 
+    public function availableProducts(){
+        return Product::where('restaurant_id', $this->id)->where('state', 'available')->where('temporary', false)->get();
+    }
+
     public function shippingMethod(){
         switch ($this->shipping_method) {
             case 'pickup':

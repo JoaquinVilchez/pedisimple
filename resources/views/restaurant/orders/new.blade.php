@@ -54,19 +54,19 @@
         <div class="col-12">
             <div class="order-mobile d-xl-none" width="100%" style="font-size:15px;">
                 <div class="card mb-2">
-                    <div class="card-header" style="border-bottom:10px solid #ffa64d; border-radius: 5px;padding-bottom:0px" id="headingOne">
+                    <div class="card-header" style="border-bottom:10px solid #ffa64d; border-radius: 5px;padding-bottom:0px;font-size:15px; background-color: white;" id="headingOne">
                         <div class="details">
                             <div class="row">
                                 <div class="col-6">
-                                    <p class="text-muted mobile-title">Solicitante</p>  
+                                    <p class="text-muted mobile-title mb-1">Solicitante</p>  
                                     <p class="mobile-description"><strong>{{$order->getFullName()}}</strong></p>
-                                    <p class="text-muted mobile-title">Código</p>  
+                                    <p class="text-muted mobile-title mb-1">Código</p>  
                                     <p class="mobile-description"><strong>{{$order->code}}</strong></p>
                                 </div>
                                 <div class="col-6" style="text-align: right">
-                                    <p class="text-muted mobile-title">Metodo de envío</p>
+                                    <p class="text-muted mobile-title mb-1">Metodo de envío</p>
                                     <p class="mobile-description">{{$order->getShippingMethod()}}</p>
-                                    <p class="text-muted mobile-title">Total</p>
+                                    <p class="text-muted mobile-title mb-1">Total</p>
                                     <p class="mobile-description">${{$order->total}}</p>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                                 <th>Contacto<i class="fab fa-whatsapp ml-1"></i></th>
                                 <th>Dirección de entrega</th>
                                 <th>Método de envío</th>
-                                <th>Precio</th>
+                                <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -240,7 +240,7 @@
                 @csrf
             <div class="modal-body">
                 <h5>¿Estás seguro de aceptar este pedido?</h5>
-                <p>Al aceptar el pedido te redireccionaremos a whatsapp para poder comunicarte con el cliente</p>  
+                <p>Al aceptar el pedido te redireccionaremos a WhatsApp para poder comunicarte con el cliente</p>  
                 <input type="hidden" id="acceptorderid" name="acceptorderid" value="">
             </div>
             <div class="modal-footer">

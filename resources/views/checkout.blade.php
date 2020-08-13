@@ -237,74 +237,30 @@
                 </form>
             @endif
             </div>
-            {{-- <div class="mb-4">
-                <h4 class="mb-3">Selecciona un metodo de pago</h4>
-                <ul class="nav bg-light nav-pills rounded nav-fill mb-3" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="pill" href="#nav-tab-delivery">
-                        <i class="fas fa-motorcycle"></i> Pago al delivery</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#nav-tab-card">
-                        <i class="fa fa-credit-card"></i> Pago online</a></li>
-                </ul>
-                
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="nav-tab-delivery">
-                        <div class="form-group">
-                            <label for="cardNumber">Ingresa el con cuanto vas a pagar:</label>
-                            <div class="input-group col-lg-3">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroupPrepend2">$</span>
-                                </div>
-                                <input type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" required>
-                              </div>
-                            <small class="ml-3">Opcional</small>                            
-                        </div>
-                    </div> <!-- tab-pane.// -->
-
-                        <div class="tab-pane fade" id="nav-tab-card">
-                            <p class="alert alert-success">Some text success or error</p>
-                                <div class="form-group">
-                                    <label for="username">Full name (on the card)</label>
-                                    <input type="text" class="form-control" name="username" placeholder="" required="">
-                                </div> <!-- form-group.// -->
-                            
-                                <div class="form-group">
-                                    <label for="cardNumber">Card number</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="cardNumber" placeholder="">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text text-muted">
-                                                <i class="fab fa-cc-visa"></i>   <i class="fab fa-cc-amex"></i>   
-                                                <i class="fab fa-cc-mastercard"></i> 
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div> <!-- form-group.// -->
-                            
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                        <div class="form-group">
-                                            <label><span class="hidden-xs">Expiration</span> </label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" placeholder="MM" name="">
-                                                <input type="number" class="form-control" placeholder="YY" name="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card">CVV <i class="fa fa-question-circle"></i></label>
-                                            <input type="number" class="form-control" required="">
-                                        </div> <!-- form-group.// -->
-                                    </div>
-                                </div> <!-- row.// -->
-                        </div> <!-- tab-pane.// -->
-                </div> <!-- tab-content .// -->
-            </div> --}}
+            
         </div>
     </div>
 </div>
+
+ <!-- Modal -->
+ <div class="modal fade" id="variantsItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Variantes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body" id="product-modal-body">
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    </div>
+</div>
+
 @endsection
 
 @section('js-scripts')

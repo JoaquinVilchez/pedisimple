@@ -20,7 +20,7 @@
           <nav class="navbar navbar-dark">
             <button class="navbar-toggler" style="color: brown" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
               <span style="color: brown"><i class="fas fa-sliders-h"></i></span>
-              Filtros
+              Filtros 
             </button>
           </nav>
           <div class="pos-f-t justify-content-center ">
