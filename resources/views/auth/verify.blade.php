@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center" style="text-align: center">
         <div class="col-md-8">
-        <img src="{{asset('images/design/email.svg')}}" alt="" class="img-default my-3">
+        <img data-original="{{asset('images/design/email.svg')}}" alt="" class="img-default my-3">
                     <h4 class="txt-bold">Confirma tu correo electrónico</h4>
             
                     @if (session('resent'))

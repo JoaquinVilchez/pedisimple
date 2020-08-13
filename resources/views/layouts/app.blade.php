@@ -34,6 +34,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>  
     <script src="{{asset('js/bootstrap-select.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-es_ES.min.js"></script>
+    <script src="{{asset('js/jquery-lazyload/jquery.lazyload.js')}}"></script>
 
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/e739f5c7c6.js" crossorigin="anonymous"></script>
@@ -182,12 +183,18 @@
 </footer>
 
 <script>
+
+    $(document).ready(function(){
+        $('img').lazyload({
+            threshold: 200,
+            effect: 'fadeIn'
+        });
+    });
+
     $(function () {
         $('body').tooltip({selector: '[data-toggle="tooltip"]'});
     })
-</script>
 
-<script>
      $('.datepicker').datepicker({
         format: "dd/mm/yyyy",
         clearBtn: true,
@@ -197,7 +204,6 @@
     });
 
     function onlyNumberKey(evt) { 
-            
             // Only ASCII charactar in that range allowed 
             var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
             if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 

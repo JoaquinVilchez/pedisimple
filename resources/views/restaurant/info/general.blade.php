@@ -41,7 +41,7 @@
           </tr>
           <tr>
             <td>Foto</td>
-            <td> <img src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></td>
+            <td> <img data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></td>
           </tr>
           <tr>
             <td>Comidas</td>

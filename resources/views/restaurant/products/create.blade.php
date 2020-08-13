@@ -140,7 +140,7 @@
             </div>
             <label>Imágen</label>
               <div class="form-group">
-                <div id="image_container" hidden><img id="view_image" src="{{asset('images/uploads/products/no_image.png')}}" class="img-thumbnail" width="150px"></div>
+                <div id="image_container" hidden><img id="view_image" data-original="{{asset('images/uploads/products/no_image.png')}}" class="img-thumbnail" width="150px"></div>
                 <div id="delete_image" hidden><a href="#" onclick="removeImage();">Eliminar</a></div>
               </div>
               <div class="input-group mb-3">

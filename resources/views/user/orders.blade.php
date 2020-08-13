@@ -31,7 +31,7 @@
         {{$orders->links()}}
     @else
         <div style="text-align:center" class="m-auto">
-            <img src="{{asset('images/design/basket.svg')}}" alt="" class="img-default my-2">
+            <img data-original="{{asset('images/design/basket.svg')}}" alt="" class="img-default my-2">
             <p>Aún no tienes pedidos.<br>
             <a href="{{route('list.index')}}" class="btn btn-sm btn-primary mt-2">Hacer un pedido</a>
         </div>  

@@ -7,7 +7,6 @@
       height: 30px;
       margin: 0px 20px
     }
-
     .back-to-top {
         cursor: pointer;
         position: fixed;
@@ -15,7 +14,6 @@
         right: 20px;
         display: none;
     }
-
 </style>
 @endsection
 
@@ -26,7 +24,7 @@
                 <div class="row pb-2">
                     <div class="col-xl-2 col-lg-2 col-md-2 d-none d-md-block d-lg-block d-xl-block">
                         <div class="d-flex align-items-center justify-content-center">
-                            <img class="border" width="120px" src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
+                            <img class="border" width="120px" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                         </div>
                     </div>
                     <div class="col-xl-10 col-lg-10 col-md-10 pl-0">
@@ -126,7 +124,7 @@
                         @else
                         <div class="list-group mb-3" style="text-align: center">
                             <div style="text-align: center" class="my-4">
-                                <img src="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
+                                <img data-original="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
                                 <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
                             </div>
                             <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
@@ -199,7 +197,7 @@
                                         <div class="row">
                                             <div class="col-4 pr-0">
                                                 <div class="d-flex align-items-center">
-                                                    <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$temporary_product->image)}}" alt="">
+                                                    <img class="d-block border m-1 img-card" data-original="{{asset('images/uploads/products/'.$temporary_product->image)}}" alt="">
                                                 </div>
                                             </div>
                                             <div class="col-6 pt-1 px-0">
@@ -249,7 +247,7 @@
                                             <div class="col-4 pr-0">
                                                 @if ($product->image != 'no_image.png')
                                                     <div class="d-flex align-items-center">
-                                                        <img class="d-block border m-1 img-card" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
+                                                        <img class="d-block border m-1 img-card" data-original="{{asset('images/uploads/products/'.$product->image)}}" alt="">
                                                     </div>
                                                 @endif
                                             </div>
@@ -368,10 +366,10 @@
                                 <iframe
                                 width="100%"
                                 frameborder="0" style="border:0"
-                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
+                                data-original="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
                         &q={{$restaurant->address->street}}+{{$restaurant->address->number}},{{$restaurant->address->city->name}}+{{$restaurant->address->city->province->country}}" allowfullscreen>
                                 </iframe>
-                                    {{-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe> --}}
+                                    {{-- <iframe data-original="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe> --}}
                                 </div>                    
                                 <!--Google Maps-->
                         </div>

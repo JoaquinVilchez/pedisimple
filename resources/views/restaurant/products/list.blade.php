@@ -25,7 +25,7 @@
   
   @if(count($products)==0)
     <div style="text-align:center" class="m-auto">
-      <img src="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
+      <img data-original="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
       <p>Todavía no tienes productos.<br>
       <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
       {{-- <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2 d-inline">Importar planilla</a></p> --}}
@@ -58,7 +58,7 @@
                   </div>
                 @endif
                   <div class="d-inline">
-                    <img src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
+                    <img data-original="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
                   </div>
               </div>
             </td>

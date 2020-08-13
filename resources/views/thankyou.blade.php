@@ -10,7 +10,7 @@
 <div class="container mt-3">
     <div class="row justify-content-center">
         <div class="col-6 text-center">
-            <img src="{{asset('images/design/customer.svg')}}" width="100px" class="my-4">
+            <img data-original="{{asset('images/design/customer.svg')}}" width="100px" class="my-4">
             <h3>Tu pedido fue enviado al comercio</h3>
             <p>Le hemos enviado una notificación al comercio con el detalle de tu pedido. Si ellos no se comunican a la brevedad contigo, comunicate vos para poder <strong>confirmar el pedido </strong>.</p>
             <hr>

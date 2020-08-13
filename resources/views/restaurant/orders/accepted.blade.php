@@ -31,7 +31,7 @@
     @include('messages')
     @if(count($orders)==0)
     <div style="text-align:center" class="m-auto">
-        <img src="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
+        <img data-original="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
         <p>No tienes pedidos aceptados.<br>
     </div>  
     @else

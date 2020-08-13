@@ -5,7 +5,7 @@
     <form action="{{route('restaurant.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="align-items-center pt-3 pb-2 border-bottom" style="text-align:center">
-            <img src="{{asset('images/design/shop.svg')}}" class="img-default my-3">
+            <img data-original="{{asset('images/design/shop.svg')}}" class="img-default my-3">
             <h4 class="txt-bold">Configura tu comercio</h4>
             <p>Completa los datos de tu comercio por única vez.</p>
         </div>
@@ -126,10 +126,10 @@
                             <label>Foto</label>
                             <div class="row mt-2 ml-1">
                                     <div id="image_container" hidden>
-                                        <img id="view_image" src="" class="img-thumbnail" width="150px">
+                                        <img id="view_image" data-original="" class="img-thumbnail" width="150px">
                                         <div id="delete_image"><a href="#foto" onclick="removeImage();">Eliminar</a></div>
                                     </div>
-                                    {{-- <img src="" class="img-thumbnail" width="150px"> --}}
+                                    {{-- <img data-original="" class="img-thumbnail" width="150px"> --}}
                             </div>
                             <div class="row mt-2 ml-1">
                                 <label for="exampleFormControlFile1">Buscar imágen</label>

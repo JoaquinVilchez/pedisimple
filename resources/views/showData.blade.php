@@ -1,8 +1,13 @@
-
 <input type="hidden" value="{{$product->id}}" name="id">
 <div id="modalImage" class="img-fluid img-modal mb-2">
     @if($product->image != 'no_image.png') 
-        <img src="{{asset('images/uploads/products/'.$product->image)}}" alt="">                                                
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="{{asset('images/uploads/products/'.$product->image)}}" alt="">
+                </div>
+            </div>
+        </div>                                              
         <hr>
     @endif
 </div>

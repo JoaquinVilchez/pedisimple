@@ -17,7 +17,7 @@
   </div>
   @if(count($variants)==0)
     <div style="text-align:center" class="m-auto">
-      <img src="{{asset('images/design/variants.svg')}}" alt="" class="img-default my-2">
+      <img data-original="{{asset('images/design/variants.svg')}}" alt="" class="img-default my-2">
       <p>Todavía no tienes variantes.<br>
       <a href="{{route('variant.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
     </div>
@@ -67,7 +67,7 @@
           @csrf
       <div class="modal-body">
         <div style="text-align:center">
-          <img src="{{asset('images/design/alarm.svg')}}" width="70px" class="my-2" alt="">
+          <img data-original="{{asset('images/design/alarm.svg')}}" width="70px" class="my-2" alt="">
           <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">Atención!</h5>
           <p>Al eliminar esta variante, dejará de estar relacionada a los productos que se les había asignado previamente.</p>
           <input type="hidden" id="variantid" name="variantid" value="">

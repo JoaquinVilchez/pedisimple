@@ -6,7 +6,7 @@
     <nav class="col-xl-2 bg-light sidebar">      
       <div class="sidebar-sticky">
         <div style="text-align:center">
-          <img width="100px" src="{{asset('images/uploads/commerce/'.Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
+          <img width="100px" data-original="{{asset('images/uploads/commerce/'.Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
           <h6>{{Auth::user()->restaurant->name}}</h6>
           @if(Auth::user()->restaurant->state=='active')
             @if(count(Auth::user()->restaurant->products)==0)
@@ -16,7 +16,7 @@
             @endif
           @elseif(Auth::user()->restaurant->state=='pending')
             <div class="alert alert-warning p-0" role="alert">
-                <img src="{{asset('images/design/padlock.svg')}}" alt="" width="50px" class="d-block mx-auto my-2">  
+                <img data-original="{{asset('images/design/padlock.svg')}}" alt="" width="50px" class="d-block mx-auto my-2">  
                 <p class="d-block m-0">Tu comercio está pendiente de aprobación</p>
                 <a class="btn btn-sm btn-danger my-2" href="{{route('restaurant.show', Auth::user()->restaurant->slug)}}" target=”_blank” >Vista previa del perfil</a>
             </div>

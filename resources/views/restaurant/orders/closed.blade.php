@@ -37,7 +37,7 @@
     </div>
     @else
         <div style="text-align:center" class="m-auto">
-            <img src="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
+            <img data-original="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
             <p>No tienes pedidos cerrados.<br>
         </div>  
     @endif

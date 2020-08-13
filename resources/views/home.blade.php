@@ -29,7 +29,7 @@
       <hr class="mb-0">
       <div class="row d-flex justify-content-center my-3">
         <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
-          <img src="{{asset('images/design/store.svg')}}" class="img-step" alt="">
+          <img data-original="{{asset('images/design/store.svg')}}" class="img-step" alt="">
           <div class="col-xl-12">
             <div class="my-2"><small>1</small></div>
             <h6 class="txt-bold">Elegí un comercio</h6>
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
-          <img src="{{asset('images/design/basket.svg')}}" class="img-step" alt="">
+          <img data-original="{{asset('images/design/basket.svg')}}" class="img-step" alt="">
           <div class="col-xl-12">
             <div class="my-2"><small>2</small></div>
             <h6 class="txt-bold">Armá tu pedido</h6>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
-          <img src="{{asset('images/design/conversation.svg')}}" class="img-step" alt="">
+          <img data-original="{{asset('images/design/conversation.svg')}}" class="img-step" alt="">
           <div class="col-xl-12">
             <div class="my-2"><small>3</small></div>
             <h6 class="txt-bold">Coordiná con el local</h6>
@@ -59,7 +59,7 @@
 <section class="text-center">
   <hr>
   <div class="container col-xl-8 my-3">
-  <img src="{{asset('images/design/merchant.svg')}}" width="60px" class="my-2">
+  <img data-original="{{asset('images/design/merchant.svg')}}" width="60px" class="my-2">
     <h4 class="txt-bold">¿Comerciante?</h4>
     <p>Sumate a Pedí Simple y obtené beneficios</p>
     <a class="btn btn-sm btn-primary" href="{{route('register.request')}}">Más información</a>

@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="image my-4" style="text-align:center">
-                <img src="{{asset('images/logo.png')}}" class="mt-1" width="300px">
+                <img data-original="{{asset('images/logo.png')}}" class="mt-1" width="300px">
                 <div class="icons d-block ml-3">
                     <a target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
                     <a target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>

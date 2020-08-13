@@ -27,7 +27,7 @@
             @else
                 <div class="list-group mb-3" style="text-align: center">
                     <div style="text-align: center" class="my-4">
-                        <img src="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
+                        <img data-original="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
                         <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
                     </div>
                     <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>

@@ -11,7 +11,7 @@
 @include('messages')
 @if(count($categories)==0)
   <div style="text-align:center" class="m-auto">
-    <img src="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
+    <img data-original="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
     <p>Todavia no tienes categorías.<br>
     <a href="{{route('category.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
   </div>  
