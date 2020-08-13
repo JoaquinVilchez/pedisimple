@@ -111,11 +111,11 @@
                 <tbody>
                     <tr>
                     <td>Aceptado el:</td>
-                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->locale('es')->calendar())}}</td>
+                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->accepted)->locale('es')->calendar())}}</td>
                     </tr>
                     <tr>
                     <td>Cerrado el:</td>
-                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->updated_at)->locale('es')->calendar())}}</td>
+                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->closed)->locale('es')->calendar())}}</td>
                     </tr>
                 </tbody>
             </table>

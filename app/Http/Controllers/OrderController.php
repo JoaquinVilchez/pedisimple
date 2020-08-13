@@ -9,6 +9,7 @@ use App\Order;
 use App\User;
 use App\LineItem;
 use Redirect;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -85,7 +86,8 @@ class OrderController extends Controller
     {
         $order = Order::find($request->acceptorderid);
         $order->update([
-            'state' => 'accepted'
+            'state' => 'accepted',
+            'accepted' => Carbon::now()
         ]);
         
         // Searching the internet I thought I could do it this way, but I found no result.
@@ -126,7 +128,8 @@ class OrderController extends Controller
     {
         $order = Order::find($request->orderid);
         $order->update([
-            'state' => 'closed'
+            'state' => 'closed',
+            'closed' => Carbon::now()
         ]);
 
         return back()->with('success_message', 'Pedido cerrado.');
@@ -165,7 +168,9 @@ class OrderController extends Controller
 
         // dd($request->all());
         $order = Order::find($request->order['id']);
-        if($request->order['shipping_method']=='delivery'){
+        $restaurant = $order->restaurant;
+
+         if($request->order['shipping_method']=='delivery'){
             if($order->address_id==null){
                 if($order->guest_street==null && $order->guest_number==null){
                     $request->validate([
@@ -195,6 +200,7 @@ class OrderController extends Controller
 
         $order->update([
             'shipping_method'=>$request['shipping_method'],
+            'delivery'=>$restaurant->shipping_price,
             'subtotal'=>$request['subtotal'],
             'total'=>$request['total']
         ]);

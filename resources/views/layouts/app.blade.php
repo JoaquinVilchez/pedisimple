@@ -44,7 +44,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'UA-165580235-1');
     </script>
 
@@ -98,7 +97,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <div>
                                         @if(Auth::user()->restaurant || Auth::user()->type=='merchant')
-                                        <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio <small><i class="fas fa-circle" style="color: #d60000"></i></small></a>
+                                        <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio @if(Auth::user()->unreadNotifications()->count()>0)<small><i class="fas fa-circle" style="color: #d60000"></i></small>@endif</a>
                                         @endif
 
                                         @if(Auth::user()->type=='administrator')
