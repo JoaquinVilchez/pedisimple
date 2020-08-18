@@ -1,4 +1,4 @@
-    <ul class="list-group mb-3">
+    <ul class="list-group">
         @foreach (Cart::getContent() as $item)        
     <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div class="col-2">
@@ -41,7 +41,7 @@
         @endforeach
     @if(isset($restaurant))
         @if($restaurant->shipping_method=='delivery-pickup')
-        <li class="list-group-item d-flex justify-content-between">
+        <li class="list-group-item d-flex justify-content-between" style="border-top:2px solid #ffa64d">
         <form action="{{route('cart.deliveryTax')}}" method="POST" id="taxForm-{{$restaurant->shipping_method}}">
             @csrf
             <input type="text" name="restaurant_id" hidden value="{{$restaurant->id}}">
@@ -73,9 +73,9 @@
         <span>Delivery </span>
         <strong>${{number_format(Cart::getCondition('Delivery')->getValue())}}</strong>
     </li>
-    <li class="list-group-item text-center" style="background-color: #f7f7f7">
-        <small><strong><p class="mb-0" style="color:red; font-family: 'Roboto', sans-serif;">Importante: El precio del delivery puede variar en base a la distancia.</p></strong></small> 
-    </li>
+    <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
+        <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar en base a la distancia.
+    </div>
     @endif
     <li class="list-group-item d-flex justify-content-between">
         <span>Total </span>

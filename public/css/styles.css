@@ -22,13 +22,6 @@ a{
     color: #3f3a34;
 }
 
-
-textarea:focus, input:focus, input[type]:focus {
-    border-color: #ffa64d;
-    box-shadow: 0 1px 1px #ffa64d inset, 0 0 8px #ffa64d;
-    outline: 0 none;
-}
-
 .active_button{
     color:white;
     height:15px;
@@ -67,25 +60,6 @@ textarea:focus, input:focus, input[type]:focus {
     text-shadow: 0px 5px 8px rgba(0,0,0,0.6);
 }
 
-.btn-primary{
-    background-color: #ffa64d;
-    border: 0px;
-    color: #3f3a34;
-}
-
-.btn-primary:hover{
-    background-color: #faad60;
-}
-
-
-.btn .btn-primary .disabled{
-    background-color: #ffc284;
-}
-
-.btn .btn-primary .active {
-    background-color: #e7913b;
-}
-
 .btn-secondary{
     border: 0px;
 }
@@ -101,17 +75,12 @@ textarea:focus, input:focus, input[type]:focus {
     color: #3f3a34;color: #3f3a34;
 }
 
-.btn-outline-primary:{
-    background-color: red;
-}
-
 .btn-outline-primary input[type="radio"]{
     box-shadow: 0 0 0 0px;
 }
 
 .btn-outline-primary:active:focus{
     box-shadow: none;
-    background-color: red;
 }
 
 .btn-outline-image{
@@ -227,5 +196,3 @@ textarea:focus, input:focus, input[type]:focus {
     font-weight: 800;
     padding: 2px 10px;
 }
-
-

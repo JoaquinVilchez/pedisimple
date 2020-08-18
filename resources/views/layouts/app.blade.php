@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-select.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-variations.css')}}">
 
     @yield('css-scripts')
 
@@ -90,7 +91,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown d-none d-md-block d-lg-block d-xl-block">
-                                <img width="150px" src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->count()>0) style="border: 3px solid #d60000" @endif>
+                                <img width="150px" data-original="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->count()>0) style="border: 3px solid #d60000" @endif>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{Auth::user()->first_name}} <span class="caret"></span>
                                 </a>
@@ -158,6 +159,11 @@
         @if(!\Cart::isEmpty() and Request::path()!="checkout" and Request::path()!="login" and Request::path()!="register" and Request::path()!="email/verify")
             <div class="alert alert-warning mb-0 text-center" role="alert" style="font-size:0.9rem">
                 Tienes un pedido pendiente. <a href="{{route('checkout.index')}}" class="alert-link">Finalizar pedido</a> 
+                <div class="float-right">
+                    <a href="#" id="trash-empty-cart"><i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Vaciar carrito."></i></a>
+                    <a href="#" id="no-confirm-empty-cart" style="background-color: #d60000; color: white; padding: 2px 5px; border-radius:2px">Cancelar</a>
+                    <a href="#" id="yes-confirm-empty-cart" style="background-color: #00c738; color: white; padding: 2px 5px; border-radius:2px">Confirmar</a>
+                </div>
             </div>
         @endif
 
@@ -185,6 +191,26 @@
 <script>
 
     $(document).ready(function(){
+        $('#trash-empty-cart').show();
+        $('#yes-confirm-empty-cart').hide();
+        $('#no-confirm-empty-cart').hide();
+
+        $('#trash-empty-cart').on('click', function(){
+            $('#trash-empty-cart').hide();
+            $('#yes-confirm-empty-cart').fadeIn(500);
+            $('#no-confirm-empty-cart').fadeIn(500);
+        });
+
+        $('#no-confirm-empty-cart').on('click', function(){
+            $('#trash-empty-cart').show();
+            $('#yes-confirm-empty-cart').hide();
+            $('#no-confirm-empty-cart').hide();
+        });
+
+        $('#yes-confirm-empty-cart').on('click', function(){
+            window.location.href = "/carrito/vaciar";
+        });
+
         $('img').lazyload({
             threshold: 200,
             effect: 'fadeIn'

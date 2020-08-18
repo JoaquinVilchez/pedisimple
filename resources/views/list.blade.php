@@ -23,7 +23,7 @@
               Filtros 
             </button>
           </nav>
-          <div class="pos-f-t justify-content-center ">
+          <div class="d-flex justify-content-center ">
             <div class="collapse" id="navbarToggleExternalContent">
               <div class="col-12">
                 @if (count($filters)>0)
@@ -74,7 +74,7 @@
           @endif
           @if(Auth::check() and Auth::user()->type == 'administrator')
             @foreach($pending_restaurants as $pending_restaurant)
-              <div class="card pt-2 mb-3" style="border: 1px solid rgb(226, 0, 0)">
+              <div class="card pt-2 mb-3" style="border: 1px solid rgb(226, 0, 0); min-height:50px">
                 <div class="row px-2">
                   <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('images/uploads/commerce/'.$pending_restaurant->image)}}" alt="">
@@ -113,23 +113,28 @@
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
-                        <h5 style="font-size: 2.5vh"><a @if($restaurant->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
-                        <div class="ml-2">
-                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
-                          <p class="my-1 ml-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
+                        <h5 class="mb-1" style="font-size: 2.5vh"><a @if($restaurant->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
+                        <div class="ml-1" style="font-size: .9em">
+                          @if($restaurant->isOpen())
+                            <span style="color: #369a00"><small><i class="far fa-clock"></i> Abierto</small></span>
+                          @else
+                            <small style="color: #bf0000" class="my-0"><i class="far fa-clock"></i> Cerrado</small>
+                          @endif
+                          <p class="my-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
+                          <p class="my-0 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
                           @if ($restaurant->second_phone)
-                            <span> | </span><p class="mb-0 ml-1 d-inline" style="font-size: 2vh"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
+                            <span> | </span><p class="mb-0 ml-1 d-inline"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
                           @endif
                         </div>
                   </div>
-                  <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">
-                    <div class="row my-2">
+                  <div class="col-xl-3 d-flex justify-content-center align-items-center">
+                    {{-- <div class="row my-2"> --}}
                       @if($restaurant->isOpen())
-                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
+                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-block btn-sm float-right mt-2">Ver Productos</a>
                       @else
-                        <a href="#" class="btn btn-primary btn-sm float-right" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal">Ver Productos</a>
+                        <a href="#" class="btn btn-primary btn-block btn-sm float-right mt-2" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal">Ver Productos</a>
                       @endif
-                    </div>
+                    {{-- </div> --}}
 
                   </div>   
                 </div>

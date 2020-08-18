@@ -92,6 +92,9 @@ class Order extends Model
             case 'rejected':
                 return 'badge badge-danger';
                 break;
+            case 'cancelled':
+                return 'badge badge-dark';
+                break;
         }
     }
 
@@ -108,6 +111,9 @@ class Order extends Model
                 break;
             case 'rejected':
                 return 'Rechazado';
+                break;
+            case 'cancelled':
+                return 'Cancelado';
                 break;
         }
     }

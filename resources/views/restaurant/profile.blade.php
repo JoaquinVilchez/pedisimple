@@ -103,32 +103,40 @@
         <div class="row justify-content-center">
 
             <div class="col-md-4 order-md-2 mb-4">
-                <div class="sticky-top py-3">
+                <div class="sticky-top pb-3 pt-1">
                     @include('messages')
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Tu pedido</span>
-                        <span class="badge badge-secondary badge-pill">{{Cart::getTotalQuantity()}}</span>
-                    </h4>
-    
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="align-items-center">
+                                    <h5 class="d-inline">Tu pedido</h5>
+                                    <small><a class="d-inline" style="cursor: pointer" onclick="confirmAlert()" id="btnConfirmEmptyCart"><span><i class="fas fa-trash-alt"></i></span></a></small>
+                                </div>
+                                <div>
+                                    <span class="badge badge-secondary badge-pill d-inline">{{Cart::getTotalQuantity()}}</span>
+                                </div>
+                            </div>
+                            <div class="alert alert-primary mt-2" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
+                                ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" style="cursor: pointer" class="alert-link">No</a>
+                            </div>
+                        </div>
                         @if(!Cart::isEmpty())
                        
                             @include('carrito')
                        
-                        <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
-                            ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" href="#">No</a>
-                        </div>
-                        <div class="float-right">
-                            <button onclick="confirmAlert()" class="btn btn-secondary" id="btnConfirmEmptyCart">Vaciar carrito</button>
-                            <a href="{{route('checkout.index')}}" class="btn btn-primary">Continuar</a>
-                        </div>
-                        @else
-                        <div class="list-group mb-3" style="text-align: center">
-                            <div style="text-align: center" class="my-4">
-                                <img data-original="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
-                                <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
+                            <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
+                                ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" style="cursor: pointer" class="alert-link">No</a>
                             </div>
-                            <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
-                        </div>
+                            <div class="my-3">
+                                <a href="{{route('checkout.index')}}" class="btn btn-primary btn-block">Finalizar pedido</a>
+                            </div>
+                            @else
+                            <div class="list-group mb-3" style="text-align: center">
+                                <div style="text-align: center" class="my-4">
+                                    <img src="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
+                                    <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
+                                </div>
+                                <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
+                            </div>
                         @endif
                 </div>
             </div>
@@ -313,46 +321,48 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios</h6>
-                                    <table class="table table-striped table-responsive" style="font-size: 15px">
-                                        <tbody>
-                                            @foreach($restaurant->getSchedule() as $day)
-                                            @if(is_array($day))
-                                                <tr>
-                                                    <td>{{getDayName($day)}}</td>
-                                                    @if($day['start_hour_1'] == null or $day['end_hour_1'] == null)
+                                    <div class=" table-responsive">
+                                        <table class="table table-striped" style="font-size: 15px">
+                                            <tbody>
+                                                @foreach($restaurant->getSchedule() as $day)
+                                                @if(is_array($day))
+                                                    <tr>
+                                                        <td>{{getDayName($day)}}</td>
+                                                        @if($day['start_hour_1'] == null or $day['end_hour_1'] == null)
+                                                            <td>Cerrado</td>
+                                                            <td></td>
+                                                            <td>Cerrado</td>
+                                                        @else
+                                                            <td>{{substr($day['start_hour_1'], 0, -3)}}hs</td>
+                                                                <td>a</td>
+                                                            <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
+                                                        @endif
+                                                        
+                                                        @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
+                                                            <td>Cerrado</td>
+                                                            <td></td>
+                                                            <td>Cerrado</td>
+                                                        @else
+                                                            <td>{{substr($day['start_hour_2'], 0, -3)}}hs</td>
+                                                                <td>a</td>
+                                                            <td>{{substr($day['end_hour_2'], 0, -3)}}hs</td>
+                                                        @endif
+                                                    </tr>
+                                                @else
+                                                    <tr>
+                                                        <td>{{getDayName($day)}}</td>
                                                         <td>Cerrado</td>
                                                         <td></td>
                                                         <td>Cerrado</td>
-                                                    @else
-                                                        <td>{{substr($day['start_hour_1'], 0, -3)}}hs</td>
-                                                            <td>a</td>
-                                                        <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
-                                                    @endif
-                                                    
-                                                    @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
                                                         <td>Cerrado</td>
                                                         <td></td>
                                                         <td>Cerrado</td>
-                                                    @else
-                                                        <td>{{substr($day['start_hour_2'], 0, -3)}}hs</td>
-                                                            <td>a</td>
-                                                        <td>{{substr($day['end_hour_2'], 0, -3)}}hs</td>
-                                                    @endif
-                                                </tr>
-                                            @else
-                                                <tr>
-                                                    <td>{{getDayName($day)}}</td>
-                                                    <td>Cerrado</td>
-                                                    <td></td>
-                                                    <td>Cerrado</td>
-                                                    <td>Cerrado</td>
-                                                    <td></td>
-                                                    <td>Cerrado</td>
-                                                </tr>
-                                            @endif
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                    </tr>
+                                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             @endif
@@ -366,7 +376,7 @@
                                 <iframe
                                 width="100%"
                                 frameborder="0" style="border:0"
-                                data-original="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
+                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
                         &q={{$restaurant->address->street}}+{{$restaurant->address->number}},{{$restaurant->address->city->name}}+{{$restaurant->address->city->province->country}}" allowfullscreen>
                                 </iframe>
                                     {{-- <iframe data-original="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe> --}}

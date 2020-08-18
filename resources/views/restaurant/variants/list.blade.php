@@ -23,7 +23,7 @@
     </div>
   @else
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -41,8 +41,8 @@
             <td><span class="{{$variant->stateStyle()}}">{{$variant->translateState()}}</span></td>
             <td>{{ucfirst($variant->updated_at->calendar())}}</td>
             <td>
-              <a href="{{route('variant.edit', $variant->id)}}">Editar</a>
-              <a href="#" data-variantid="{{$variant->id}}" data-toggle="modal" data-target="#deleteVariantModal">Eliminar</a>
+              <a href="{{route('variant.edit', $variant->id)}}"><i class="far fa-edit"></i></a>
+              <a href="#" data-variantid="{{$variant->id}}" data-toggle="modal" data-target="#deleteVariantModal"><i class="far fa-trash-alt"></i></a>
             </td>
           </tr>
           @endforeach

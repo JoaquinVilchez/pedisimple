@@ -146,7 +146,7 @@ class OrderController extends Controller
     {
         $order = Order::find($request->orderid);
         $order->update([
-            'state' => 'canceled'
+            'state' => 'cancelled'
         ]);
 
         if ($request->send == 'on') {

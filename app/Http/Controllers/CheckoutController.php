@@ -298,6 +298,7 @@ class CheckoutController extends Controller
         $code = Crypt::decryptString($code);
         $order = Order::where('code', $code)->first();
         $items = LineItem::where('order_id', $order->id)->get();
+        $restaurant = $order->restaurant;
 
         // dd($code,$order,$items);
 
@@ -305,6 +306,7 @@ class CheckoutController extends Controller
             'items' => $items,
             'order' => $order,
             'code' => $code,
+            'restaurant' => $restaurant,
         ]); 
     }
 

@@ -24,7 +24,7 @@
     </div>
   @else
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-hover">
       <thead>
         <tr>
           {{-- <th></th> --}}
@@ -62,8 +62,7 @@
             <td><small>{{$product->getTemporaryDate()}}</small></td>  
             <td>{{ucfirst($product->updated_at->calendar())}}</td>
             <td>
-              <a href="{{route('product.edit', $product)}}">Editar</a>
-              <a href="#" data-productid="{{$product->id}}" data-toggle="modal" data-target="#deleteProductModal">Eliminar</a>
+              <a href="{{route('product.edit', $product)}}"><i class="far fa-edit"></i></a>
             </td>
           </tr>
           @endforeach

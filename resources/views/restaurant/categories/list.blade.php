@@ -17,7 +17,7 @@
   </div>  
 @else
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th></th>
@@ -47,8 +47,8 @@
           </td>
           <td>{{ucfirst($category->updated_at->calendar())}}</td>
           <td>
-            <a href="{{route('category.edit', $category)}}">Editar</a>
-            <a href="#" data-categoryid="{{$category->id}}" data-toggle="modal" data-target="#deleteCategoryModal">Eliminar</a>
+            <a href="{{route('category.edit', $category)}}"><i class="far fa-edit"></i></a>
+            <a href="#" data-categoryid="{{$category->id}}" data-toggle="modal" data-target="#deleteCategoryModal"><i class="far fa-trash-alt"></i></a>
           </td>
         </tr>
         @endforeach

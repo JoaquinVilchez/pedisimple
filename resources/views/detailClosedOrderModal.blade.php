@@ -110,11 +110,11 @@
             <table class="table table-borderless table-sm" style="font-size: 13px">
                 <tbody>
                     <tr>
-                    <td>Aceptado el:</td>
+                    <td>Aceptado:</td>
                     <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->accepted)->locale('es')->calendar())}}</td>
                     </tr>
                     <tr>
-                    <td>Cerrado el:</td>
+                    <td>Cerrado:</td>
                     <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->closed)->locale('es')->calendar())}}</td>
                     </tr>
                 </tbody>
@@ -163,13 +163,13 @@
                 @if(isset($restaurant))
                     <div class="d-flex float-right">
                         <div class="align-items-center">
-                            <img data-original="{{asset('images/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                            <img src="{{asset('images/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
                         </div>
                     </div>
                 @else
                     <div class="d-flex float-right">
                         <div class="align-items-center">
-                            <img data-original="{{asset('images/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                            <img src="{{asset('images/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
                         </div>
                     </div>
                 @endif
@@ -267,11 +267,11 @@
             <table class="table table-borderless table-sm" style="font-size: 13px">
                 <tbody>
                     <tr>
-                    <td>Aceptado el:</td>
+                    <td>Aceptado:</td>
                     <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->locale('es')->calendar())}}</td>
                     </tr>
                     <tr>
-                    <td>Cerrado el:</td>
+                    <td>Cerrado:</td>
                     <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->updated_at)->locale('es')->calendar())}}</td>
                     </tr>
                 </tbody>
