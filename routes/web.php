@@ -40,6 +40,7 @@ Route::get('/comercios/check', 'RestaurantController@check')->name('restaurant.c
 Route::get('/checkout/descargar/{order}', 'CheckoutController@download')->name('checkout.download');
 Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
+Route::post('/checkout-login', 'UserController@checkoutLogin')->name('user.checkoutlogin');
 Route::resource('usuario/direcciones', 'AddressController')->names('address');
 Route::resource('usuario/datos', 'UserController')->names('user')->middleware(['auth', 'verified']);
 

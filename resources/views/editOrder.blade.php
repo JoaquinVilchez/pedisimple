@@ -327,21 +327,19 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 data:{order:order},
-                success:function(data) { 
-                    // $('#data').html(data);
+                success:function(data) {
                     alert = '<div class="alert alert-success mt-2" role="alert">El pedido se ha editado con éxito.</div>';
                     $('#data').html(alert);
                     window.location.href = "{{ route('order.accepted')}}";              
                 },
                 error: function(data) {
                     $.each(data.responseJSON.errors, function(key,value) {
-                        $('#data').append('<div class="message-error alert alert-danger">'+value+'</div');
+                        $('#data').append('<div class="message-error alert alert-danger">'+value+'</div>');
                     });
 
                     setTimeout(function() {
                         $(".message-error").remove();
                     }, 5000);
-                    // $('#data').html(data);
                 }
             })
         });

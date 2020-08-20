@@ -196,3 +196,16 @@ a{
     font-weight: 800;
     padding: 2px 10px;
 }
+
+.checkbox-variants{
+    background-color: #e4e4e4;
+    border: 0px;
+    font-size: .8em;
+    color: #3f3a34;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+.checkbox-variants input[type="checkbox"] input[type="radio"], .btn-primary:focus, .btn-primary:active{
+    box-shadow: 0 0 0 0px;
+}

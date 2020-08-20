@@ -29,7 +29,7 @@
                             <h6 class="txt-bold">Nuevos clientes</h6>
                             <div>
                                 <small><p class="my-2">Obtené tu cuenta de manera gratuita para poder obtener más beneficios.</p></small>
-                                <a href="#" class="btn btn-primary btn-sm my-0">Registrarme</a>
+                                <a href="{{ route('register') }}" class="btn btn-primary btn-sm my-0">Registrarme</a>
                                 <hr>
                             </div>
                             <div>
@@ -41,17 +41,18 @@
                         <div class="col-6">
                             <h6 class="txt-bold">Ya tengo una cuenta</h6>
                             <div>
-                                <form>
+                                <form id="checkout-login-form">
                                     <div class="form-group">
                                     <small><label for="inputEmail" class="mb-0">Correo electrónico</label></small>
                                     <input type="email" class="form-control form-control-sm my-0" id="inputEmail" aria-describedby="emailHelp">
                                     <small><label for="inputPassword" class="mb-0">Contraseña</label></small>
                                     <input type="password" class="form-control form-control-sm my-0" id="inputPassword">
-                                    <small class="float-right my-2"><a href="#">¿Olvidaste la contraseña?</a></small>
+                                    <small class="float-right my-2"><a href="{{ route('password.request') }}">¿Olvidaste la contraseña?</a></small>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-block btn-sm my-0">Iniciar sesión</button>
+                                    <button type="button" id="btn-submit-form" class="btn btn-primary btn-block btn-sm my-0">Iniciar sesión</button>
                                 </form>
                             </div>
+                            <div id="data" class="my-3"></div>
                         </div>
                     </div>
                 </div>
@@ -69,7 +70,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="align-items-center">
                         <h5 class="d-inline">Tu pedido</h5>
+                        @if(!Cart::isEmpty())
                         <small><a style="cursor: pointer" class="d-inline" onclick="confirmAlert()" id="btnConfirmEmptyCart"><span><i class="fas fa-trash-alt"></i></span></a></small>
+                        @endif
                     </div>
                     <div>
                         <span class="badge badge-secondary badge-pill d-inline">{{Cart::getTotalQuantity()}}</span>
@@ -118,7 +121,7 @@
                                 <div class="col-md-12">                                                            
                                     <div class="mb-2">
                                         <h5 class="d-inline">Continuar como invitado</h5> 
-                                        <small class="d-inline ml-2" style="font-size: 12px">¿Tienes una cuenta? <a href="#">Inicia sesión</a></small>
+                                        <small class="d-inline ml-2" style="font-size: 12px">¿Tienes una cuenta? <a href="#" id="has_account">Inicia sesión</a></small>
                                     </div>
                                         <div class="form-group mb-1">
                                             <div class="row">
@@ -257,22 +260,22 @@
                                             <div class="row align-items-end">
                                                 <div class="col-xl-6 col-sm-12">
                                                     <label>Calle</label>
-                                                    <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control">
+                                                    <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control" autocomplete="off">
                                                     {!!$errors->first('client_street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                                 </div>
                                                 <div class="col-xl-2 col-sm-4">
                                                     <label>Número</label>
-                                                <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control">
+                                                <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control" autocomplete="off">
                                                 {!!$errors->first('client_number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                                 </div>
                                                 <div class="col-xl-2 col-sm-4 col-6">
                                                     <label>Piso</label>
-                                                    <input type="text" name="client_floor" value="{{old('client_floor')}}" class="form-control" placeholder="Opcional">
+                                                    <input type="text" name="client_floor" value="{{old('client_floor')}}" class="form-control" placeholder="Opcional" autocomplete="off">
                                                     {!!$errors->first('client_floor', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                                 </div>
                                                 <div class="col-xl-2 col-sm-4 col-6">
                                                     <label>Depto</label>
-                                                    <input type="text" name="client_department" value="{{old('client_department')}}" class="form-control" placeholder="Opcional">
+                                                    <input type="text" name="client_department" value="{{old('client_department')}}" class="form-control" placeholder="Opcional" autocomplete="off">
                                                     {!!$errors->first('client_department', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                                 </div>
                                             </div>
@@ -331,8 +334,10 @@
 @section('js-scripts')
 <script>    
     $(document).ready(function(){
+
+        var errors = '{{$errors}}';
         var AuthUser = "{{{ (Auth::user()) ? true : false }}}";
-        if(AuthUser==1){
+        if(AuthUser==1 || errors.length>2){
             $('#step-1').hide();
             $('#step-2').show();
         }else{
@@ -344,6 +349,33 @@
             $('#step-1').hide();
             $('#step-2').fadeIn(500);
         })
+
+        $('#has_account').on('click', function(){
+            $('#step-2').fadeOut(500);
+            $('#step-1').fadeIn(500);
+        })
+    });
+
+    $('#btn-submit-form').click(function(){
+        var email = $('#inputEmail').val();
+        var password = $('#inputPassword').val();
+        $.ajax({
+                url: '{{route("user.checkoutlogin")}}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: {email:email, password:password},
+                success: function(data) {
+                    $('#data').html('<div class="alert alert-success px-4 py-1"><small>'+data+'</small></div>');
+                    location.reload();
+                },
+                error: function(data) {
+                    let error = data.responseJSON.errors;
+                    $('#data').html('<div class="alert alert-danger px-4 py-1"><small>'+error+'</small></div>');
+                }
+            });
+
     });
 
     function confirmAlert(){

@@ -109,7 +109,9 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="align-items-center">
                                     <h5 class="d-inline">Tu pedido</h5>
-                                    <small><a class="d-inline" style="cursor: pointer" onclick="confirmAlert()" id="btnConfirmEmptyCart"><span><i class="fas fa-trash-alt"></i></span></a></small>
+                                    @if(!Cart::isEmpty())
+                                        <small><a class="d-inline" style="cursor: pointer" onclick="confirmAlert()" id="btnConfirmEmptyCart"><span><i class="fas fa-trash-alt"></i></span></a></small>
+                                    @endif
                                 </div>
                                 <div>
                                     <span class="badge badge-secondary badge-pill d-inline">{{Cart::getTotalQuantity()}}</span>
@@ -392,21 +394,8 @@
     <!-- Modal -->
     <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle"></h5><br>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <form action="{{route('cart.store')}}" method="post">
-                        @csrf
-                    <div id="modal-product" class="modal-body">                    
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary float-right mr-2" id="AddToCartButton" onsubmit="addItemToCart()">Agregar a mi pedido</button>
-                </form>
-                </div>  
+            <div class="modal-content" id="modal-product">
+                
             </div>
         </div>
     </div>
@@ -503,21 +492,6 @@
 
             modal.find('.modal-body #restaurantid').val(restaurantid)
         })
-        
-        $('#addItemModal').on('show.bs.modal', function(event){
-        var button = $(event.relatedTarget)
-        var productname = ""
-        var productname = button.data('productname')
-
-        var productprice = ""
-        var productprice = button.data('productprice')
-
-        var modal = $(this)
-
-        //data
-        modal.find('.modal-body #productname').val(productname)
-        document.getElementById("modalTitle").innerHTML=productname+' - ($'+productprice+')'
-        });       
 
         // =================================================================
 

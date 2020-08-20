@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function checkoutLogin(Request $request){
+        
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password ], false)) {
+            return response()->json('Bienvenido', 200);
+        }else{
+            return response()->json( ['errors' => 'Los datos ingresados no son correctos.'], 422);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
