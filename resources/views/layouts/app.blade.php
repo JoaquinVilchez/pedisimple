@@ -191,12 +191,19 @@
 <script>
 
     $(document).ready(function(){
-        $('.spinnerButton').closest('form').on('submit', function(e){
+        $('.spinnerSubmitButton').closest('form').on('submit', function(e){
             e.preventDefault();
             $('.loadingIcon').removeClass('d-none');
-            $('.spinnerButton').attr('disabled', true);
+            $('.spinnerSubmitButton').attr('disabled', true);
             $('.btn-txt').text("Espere por favor...");
             this.submit();
+        });
+
+        $('.spinnerClickButton').on('click', function(e){
+            e.preventDefault();
+            $('.loadingIcon').removeClass('d-none');
+            $('.spinnerClickButton').attr('disabled', true);
+            $('.btn-txt').text("Espere por favor...");
         });
 
         $('#trash-empty-cart').show();

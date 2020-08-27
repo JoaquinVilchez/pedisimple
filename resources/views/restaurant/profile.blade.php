@@ -86,7 +86,6 @@
 
     <!-- Page Content -->
     <div class="container mt-3">
-        
         <div class="row">
             <div class="col-lg-8">
                 <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
@@ -94,7 +93,7 @@
                     <a class="nav-link active" id="pills-home-tab" style=".active{background-color:red}" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Productos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Información</a>
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Información</a>
                     </li>
                 </ul>
             </div>
@@ -106,12 +105,10 @@
 
             <div class="col-lg-8 tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-
                     <div class="container">
                         <div class="row my-3">
                             <div class="d-flex align-items-center">
                                 <h6>Ir a categoria:</h6>
-                                {{-- <form id="goToCategory" class="form-group ml-3"> --}}
                                     <div class="form-group">
                                         <select class="form-control ml-3" id="goToCategorySelect">
                                             @foreach($categories as $category)
@@ -123,7 +120,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                {{-- </form> --}}
                             </div>
                         </div>
                     </div>
@@ -137,7 +133,7 @@
                             @foreach($temporary_products as $temporary_product)
                             <div class="col-lg-6 px-1" >
                                 @if ($temporary_product->image == 'no_image.png')
-                                    <div class="card p-2 m-1" style="min-height:95%" onclick="alerta();">
+                                    <div class="card p-2 m-1 product-card" onclick="showData({{$temporary_product->id}})" style="min-height:95%" onclick="alerta();">
                                         <div class="row">
                                             <div class="col-10 pr-0 pl-4">
                                                 <h6 class="mb-0"><strong>{{ucfirst($temporary_product->name)}}</strong></h6>
@@ -166,7 +162,7 @@
                                         </div>                                
                                     </div>
                                 @else
-                                    <div class="card p-2 m-1" style="min-height:95%">
+                                    <div class="card p-2 m-1 product-card" onclick="showData({{$temporary_product->id}})" style="min-height:95%">
                                         <div class="row">
                                             <div class="col-4 pr-0">
                                                 <div class="d-flex align-items-center">
@@ -215,7 +211,7 @@
                         @if ($product->temporary==false)
                             <div class="col-lg-6 px-1">
                                 
-                                    <div class="card p-2 m-1" style="min-height:95%">
+                                    <div class="card p-2 m-1 product-card" onclick="showData({{$product->id}})" style="min-height:95%">
                                         <div class="row">
                                             <div class="col-4 pr-0">
                                                 @if ($product->image != 'no_image.png')
@@ -431,9 +427,13 @@
                     return false;
                 });
 
-            $('#goToCategorySelect').on('change', function(){
-                var select = $('#goToCategorySelect').val($("option:selected").val());      
-                window.location.href = "#"+select.val();
+            $('select#goToCategorySelect').on('change',function(){
+                var valor = $(this).val();
+                window.location.href = "#"+valor;
+            });
+
+            $('.product-card').on('click',function(){
+                $('#addItemModal').modal('show');
             });
         });
 
@@ -484,11 +484,11 @@
                 success:function(data){
                     $('#cart-content').html(data);
                     cartFormat();
+                    $('#finishOrder').show();
                     $('#addItemModal').modal('hide');
                     $('#trash-empty-cart').show();
                     $('#yes-confirm-empty-cart').hide();
                     $('#no-confirm-empty-cart').hide();
-                    $('#finishOrder').show();
                 },
                 error:function(data){
                     $('#addItemModal').modal('hide');

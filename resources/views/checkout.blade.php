@@ -49,7 +49,10 @@
                                     <input type="password" class="form-control form-control-sm my-0" id="inputPassword">
                                     <small class="float-right my-2"><a href="{{ route('password.request') }}">¿Olvidaste la contraseña?</a></small>
                                     </div>
-                                    <button type="button" id="btn-submit-form" class="btn btn-primary btn-block btn-sm my-0">Iniciar sesión</button>
+                                    <button class="spinnerClickButton btn btn-primary btn-block btn-sm my-0" id="btn-submit-form" type="button">
+                                        <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                        <span class="btn-txt">Iniciar sesión</span>
+                                    </button>
                                 </form>
                             </div>
                             <div id="data" class="my-3"></div>
@@ -67,11 +70,11 @@
         <div class="row">
 
             <div class="col-md-4 order-md-2">
-                @include('carrito')
+                    @include('carrito')
             </div>
 
             <div class="col-md-8 order-md-1">
-                    @include('messages')                    
+                    {{-- @include('messages')                     --}}
                     @if(!Auth::check())
                         <form class="needs-validation" action="{{route('checkout.store')}}" method="POST" novalidate autocomplete="off">
                             @csrf
@@ -162,7 +165,10 @@
                                             <strong>¡Importante!</strong>
                                             <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
                                         </div>
-                                        <button class="subscribe btn btn-primary btn-block" type="submit" @if(Cart::isEmpty()) disabled @endif> Finalizar pedido </button>
+                                        <button class="spinnerSubmitButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
+                                            <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                            <span class="btn-txt">Finalizar pedido</span>
+                                        </button>
                                 </div>
                             </div>
                         </form>
@@ -262,7 +268,7 @@
                                         <strong>¡Importante!</strong>
                                         <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
                                     </div>
-                                    <button class="spinnerButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
+                                    <button class="spinnerSubmitButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
                                         <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
                                         <span class="btn-txt">Finalizar pedido</span>
                                     </button>
@@ -299,7 +305,6 @@
 @section('js-scripts')
 <script>    
     $(document).ready(function(){
-
         var errors = '{{$errors}}';
         var AuthUser = "{{{ (Auth::user()) ? true : false }}}";
         if(AuthUser==1 || errors.length>2){
@@ -338,6 +343,9 @@
                 error: function(data) {
                     let error = data.responseJSON.errors;
                     $('#data').html('<div class="alert alert-danger px-4 py-1"><small>'+error+'</small></div>');
+                    $('.loadingIcon').addClass('d-none');
+                    $('.spinnerClickButton').attr('disabled', false);
+                    $('.btn-txt').text("Iniciar sesión");
                 }
             });
 

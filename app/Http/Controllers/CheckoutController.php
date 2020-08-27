@@ -35,7 +35,7 @@ class CheckoutController extends Controller
     public function index()
     {
         if (\Cart::isEmpty()) {
-            return view('checkout');
+            return abort(404);
         }else{
             foreach(\Cart::getContent() as $item) { 
                 $itemId = $item->associatedModel->id;
@@ -299,8 +299,6 @@ class CheckoutController extends Controller
         $order = Order::where('code', $code)->first();
         $items = LineItem::where('order_id', $order->id)->get();
         $restaurant = $order->restaurant;
-
-        // dd($code,$order,$items);
 
         return view('thankyou')->with([
             'items' => $items,

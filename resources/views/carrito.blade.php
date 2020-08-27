@@ -167,6 +167,7 @@
                         $('#cart-empty').fadeIn(200);
                         $('#cart-total-quantity').html(data['items']);
                         $('#checkout-finish-order').prop('disable', false);
+                        $('#finishOrder').hide();
                     }else{
                         $('#item-'+id).fadeOut(100, function() { $(this).remove(); });
                         $('#cart-subtotal').fadeOut(100);

@@ -221,3 +221,9 @@ a {
 .btn-primary:active {
     box-shadow: 0 0 0 0px;
 }
+
+.product-card:hover {
+    background-color: rgb(245, 245, 245);
+    transition: 0.4s;
+    cursor: pointer;
+}

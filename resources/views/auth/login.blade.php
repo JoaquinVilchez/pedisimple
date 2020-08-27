@@ -59,7 +59,7 @@
 
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <button type="submit" class="spinnerButton btn btn-primary">
+                            <button type="submit" class="spinnerSubmitButton btn btn-primary">
                                 <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
                                 <span class="btn-txt">{{ __('Login') }}</span>
                             </button>

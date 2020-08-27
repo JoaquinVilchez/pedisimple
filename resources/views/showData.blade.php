@@ -62,13 +62,20 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" onclick="addItem({{$product->id}})" class="spinnerButton btn btn-primary float-right mr-2" id="AddToCartButton" >
+        <button type="button" onclick="addItem({{$product->id}})" class="spinnerClickButton btn btn-primary float-right mr-2" id="AddToCartButton" >
             <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
             <span class="btn-txt">Agregar a mi pedido</span>
         </button>
     </div>
 
 <script>
+    $('.spinnerClickButton').on('click', function(e){
+        e.preventDefault();
+        $('.loadingIcon').removeClass('d-none');
+        $('.spinnerClickButton').attr('disabled', true);
+        $('.btn-txt').text("Espere por favor...");
+    });
+
     limit = $('#max_variants').val();
     $('#errormessage').hide();
 
@@ -78,11 +85,5 @@
             this.checked = false;
             $('#errormessage').show();
         }
-    });
-
-    $('.spinnerButton').on('click', function(e){
-        $('.loadingIcon').removeClass('d-none');
-        $('.spinnerButton').attr('disabled', true);
-        $('.btn-txt').text("Espere por favor...");
     });
 </script>

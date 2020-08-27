@@ -67,7 +67,7 @@
                                 <h5 class="txt-bold mb-0">{{$restaurant->name}}</h5>
                                 <div class="mt-1">
                                     <small><p class="ml-1 my-0"><i class="fab fa-whatsapp"></i><a target=”_blank” href="https://wa.me/549{{str_replace('-','',$restaurant->getPhone())}}"> {{$restaurant->getPhone()}}</a></p></small>
-                                    <small><p class="ml-1 my-0"> @if($order->shipping_method=='pickup') <i class="fas fa-store"></i> @else <i class="fas fa-motorcycle"></i> @endif {{ucwords($order->shipping_method)}}</p></small>
+                                    <small><p class="ml-1 my-0"> @if($order->shipping_method=='pickup') <i class="fas fa-store"></i> @else <i class="fas fa-motorcycle"></i> @endif {{ucwords($order->getShippingMethod())}}</p></small>
                                 </div>
                             </div>            
                         </div>
