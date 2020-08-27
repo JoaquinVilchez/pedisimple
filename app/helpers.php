@@ -4,6 +4,13 @@ use Carbon\Carbon;
 use App\OpeningDateTime;
 use App\Product;
 
+function cartRestaurant(){
+    $firstItem = \Cart::getContent()->first();
+    $restaurant = $firstItem->associatedModel->restaurant->id;
+
+    return $restaurant;
+}
+
 function generateCode()  {
     $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $digits = '1234567890';

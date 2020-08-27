@@ -157,13 +157,13 @@
                 <br>{!!$errors->first('food_categories', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 </div>
             </div>
-            
-            <div id="alert_info" class="alert alert-danger" role="alert" hidden>
-                Espere mientras guardamos sus datos...
-            </div>
 
             <div class="form-group">
-                <button  onclick="show()" type="submit" id="btn_submit" class="btn btn-primary btn-block">Guardar</button>
+                <button class="spinnerButton btn btn-primary btn-block" id="btn_submit" type="submit">
+                    <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                    <span class="btn-txt">Guardar datos</span>
+                </button>
+                {{-- <button onclick="show()" type="submit" id="btn_submit" class="btn btn-primary btn-block">Guardar</button> --}}
             </div>
         </div>
         </form>

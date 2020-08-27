@@ -157,12 +157,12 @@
         </nav>
         
         @if(!\Cart::isEmpty() and Request::path()!="checkout" and Request::path()!="login" and Request::path()!="register" and Request::path()!="email/verify")
-            <div class="alert alert-warning mb-0 text-center" role="alert" style="font-size:0.9rem">
+            <div class="alert alert-warning mb-0 text-center" role="alert" id="finishOrder" style="font-size:0.8rem">
                 Tienes un pedido pendiente. <a href="{{route('checkout.index')}}" class="alert-link">Finalizar pedido</a> 
                 <div class="float-right">
                     <a href="#" id="trash-empty-cart"><i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Vaciar carrito."></i></a>
                     <a href="#" id="no-confirm-empty-cart" style="background-color: #d60000; color: white; padding: 2px 5px; border-radius:2px">Cancelar</a>
-                    <a href="#" id="yes-confirm-empty-cart" style="background-color: #00c738; color: white; padding: 2px 5px; border-radius:2px">Confirmar</a>
+                    <a href="#" id="yes-confirm-empty-cart" onclick="emptyCart({{cartRestaurant()}})" style="background-color: #00c738; color: white; padding: 2px 5px; border-radius:2px">Confirmar</a>
                 </div>
             </div>
         @endif
@@ -191,6 +191,14 @@
 <script>
 
     $(document).ready(function(){
+        $('.spinnerButton').closest('form').on('submit', function(e){
+            e.preventDefault();
+            $('.loadingIcon').removeClass('d-none');
+            $('.spinnerButton').attr('disabled', true);
+            $('.btn-txt').text("Espere por favor...");
+            this.submit();
+        });
+
         $('#trash-empty-cart').show();
         $('#yes-confirm-empty-cart').hide();
         $('#no-confirm-empty-cart').hide();
@@ -207,15 +215,28 @@
             $('#no-confirm-empty-cart').hide();
         });
 
-        $('#yes-confirm-empty-cart').on('click', function(){
-            window.location.href = "/carrito/vaciar";
-        });
-
         $('img').lazyload({
             threshold: 200,
             effect: 'fadeIn'
         });
     });
+
+    function emptyCart(restaurant){
+        $.ajax({
+            url : '/carrito/vaciar',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            data:{restaurant:restaurant},
+            success:function(data){
+                $('#trash-empty-cart').show();
+                $('#yes-confirm-empty-cart').hide();
+                $('#no-confirm-empty-cart').hide();
+                $('#finishOrder').hide();
+            }
+        });
+    }
 
     $(function () {
         $('body').tooltip({selector: '[data-toggle="tooltip"]'});

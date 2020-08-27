@@ -12,7 +12,7 @@
 
 <div id="step-1">
     <div class="d-flex justify-content-center">
-        <div class="col-10">
+        <div class="col-md-10">
             <div class="d-flex justify-content-center">
                 <div class="row">
                     <h6 style="text-align: center" class="text-muted my-4">¡Ya casi!<br>
@@ -23,22 +23,22 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <div class="col-8">
+                <div class="col-md-8">
                     <div class="row">
-                        <div class="col-6 border-right">
+                        <div class="col-md-6 border-right">
                             <h6 class="txt-bold">Nuevos clientes</h6>
                             <div>
                                 <small><p class="my-2">Obtené tu cuenta de manera gratuita para poder obtener más beneficios.</p></small>
-                                <a href="{{ route('register') }}" class="btn btn-primary btn-sm my-0">Registrarme</a>
+                                <a href="{{ route('register') }}" class="btn btn-primary btn-sm my-0 btn-xs-block">Registrarme</a>
                                 <hr>
                             </div>
-                            <div>
+                            <div class="mb-3">
                                 <small><p class="my-2">Completá tu pedido como invitado.</p></small>
-                                <a href="#" id="guest_button" class="btn btn-primary btn-sm my-0">Continuar como invitado</a>
+                                <a href="#" id="guest_button" class="btn btn-primary btn-sm my-0 btn-xs-block">Continuar como invitado</a>
                             </div>
                         </div>
                         
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <h6 class="txt-bold">Ya tengo una cuenta</h6>
                             <div>
                                 <form id="checkout-login-form">
@@ -65,48 +65,10 @@
 <div id="step-2">
     <div class="container my-4">
         <div class="row">
-            {{-- CART --}}
+
             <div class="col-md-4 order-md-2">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="align-items-center">
-                        <h5 class="d-inline">Tu pedido</h5>
-                        @if(!Cart::isEmpty())
-                        <small><a style="cursor: pointer" class="d-inline" onclick="confirmAlert()" id="btnConfirmEmptyCart"><span><i class="fas fa-trash-alt"></i></span></a></small>
-                        @endif
-                    </div>
-                    <div>
-                        <span class="badge badge-secondary badge-pill d-inline">{{Cart::getTotalQuantity()}}</span>
-                    </div>
-                </div>
-                <div class="alert alert-primary mt-2" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
-                    ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" class="alert-link" style="cursor: pointer">No</a>
-                </div>
-                @if(!Cart::isEmpty())
-                    <div class="restaurant-info d-flex align-items-center my-3">
-                        <div class="d-inline">
-                            <img width="50px" class="border rounded" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
-                        </div>
-                        <div class="d-inline ml-3">
-                            <h6 class="txt-bold m-0">{{$restaurant->name}}</h6>
-                            <small><p class="m-0"><a target="_blank" href="https://wa.me/549{{str_replace('-','',$restaurant->getPhone())}}"><i class="fab fa-whatsapp"></i> {{$restaurant->getPhone()}}</p></a></small>
-                        </div>  
-                    </div>
-                    @include('carrito')
-                    <div>
-                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-link"><i class="fas fa-angle-left"></i> Seguir comprando</a>
-                    </div>
-                    <hr class="d-block d-md-none">
-                @else
-                    <div class="list-group mb-3" style="text-align: center">
-                        <div style="text-align: center" class="my-4">
-                            <img data-original="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
-                            <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
-                        </div>
-                        <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
-                    </div>
-                @endif
+                @include('carrito')
             </div>
-            {{-- CART --}}
 
             <div class="col-md-8 order-md-1">
                     @include('messages')                    
@@ -181,7 +143,7 @@
                                                     <div class="input-group">                                     
                                                         <div class="input-group-prepend">
                                                           <span class="input-group-text">15</span>
-                                                        </div>
+                                                        </div>  
                                                         <input type="text" name="client_phone" value="{{old('client_phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)" autocomplete="off">
                                                     </div>
                                                     {!!$errors->first('client_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
@@ -291,8 +253,8 @@
                                     @endif
                                 </div>
                                 <div class="form-group col-12 mb-3">
-                                        <label><strong>Notas adicionales</strong><small> (Opcional)</small></label>
-                                <textarea class="form-control" rows="3" name="client_aditional_notes" value="{{old('client_aditional_notes')}}" placeholder="Ejemplo: '¡La pizza sin aceitunas, por favor!'">{{old('client_aditional_notes')}}</textarea>
+                                    <label><strong>Notas adicionales</strong><small> (Opcional)</small></label>
+                                    <textarea class="form-control" rows="3" name="client_aditional_notes" value="{{old('client_aditional_notes')}}" placeholder="Ejemplo: '¡La pizza sin aceitunas, por favor!'">{{old('client_aditional_notes')}}</textarea>
                                 </div>
 
                                 <div class="form-group col-12 mb-3">
@@ -300,7 +262,10 @@
                                         <strong>¡Importante!</strong>
                                         <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
                                     </div>
-                                    <button class="subscribe btn btn-primary btn-block" type="submit" @if(Cart::isEmpty())disabled @endif> Enviar detalle de pedido </button>
+                                    <button class="spinnerButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
+                                        <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                        <span class="btn-txt">Finalizar pedido</span>
+                                    </button>
                                 </div>
                         </form>
                     @endif
@@ -315,15 +280,15 @@
     <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Variantes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+            <h5 class="modal-title" id="exampleModalLabel">Variantes</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         <div class="modal-body" id="product-modal-body">
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
     </div>
     </div>
@@ -377,19 +342,6 @@
             });
 
     });
-
-    function confirmAlert(){
-            alert = document.getElementById("confirmEmptyCart");
-            button = document.getElementById("btnConfirmEmptyCart");
-
-            if ($('#confirmEmptyCart').is(':hidden')) {
-                alert.removeAttribute("hidden","");
-                button.setAttribute("hidden","");
-            } else {
-                alert.setAttribute("hidden","");
-                button.removeAttribute("hidden","");    
-            }
-        }
 
     function address(){
         address = document.getElementById("address");

@@ -10,7 +10,7 @@
 
     @include('messages')
     @if($orders->count()>0)
-    <div class="table-responsive">
+    <div class="table-responsive table-hover">
         <table class="table table-sm ">
             <thead>
             <tr>
@@ -53,7 +53,9 @@
           </button>
         </div>
         <div class="modal-body" id="detail-closed-order-modal">
-            
+            <div class="d-flex justify-content-center">
+                <img src="{{asset('images/design/loading.svg')}}" alt="">
+            </div>
         </div>
       </div>
     </div>

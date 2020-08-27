@@ -33,7 +33,7 @@
           <div class="col-xl-12">
             <div class="my-2"><small>1</small></div>
             <h6 class="txt-bold">Elegí un comercio</h6>
-              <small>Compará los distintos locales disponibles en nuestra plataforma.</small>
+              <small>Mira las opciones de los distintos comercios disponibles.</small>
           </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
@@ -41,15 +41,15 @@
           <div class="col-xl-12">
             <div class="my-2"><small>2</small></div>
             <h6 class="txt-bold">Armá tu pedido</h6>
-            <small class="col-md-6">Cargá los productos al carrito y conocé el costo total.</small>
+            <small class="col-md-6">Cargá los productos que desees al carrito.</small>
           </div>
         </div>
         <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
           <img src="{{asset('images/design/conversation.svg')}}" class="img-step" alt="">
           <div class="col-xl-12">
             <div class="my-2"><small>3</small></div>
-            <h6 class="txt-bold">Coordiná con el local</h6>
-            <small class="col-md-6">Llamá al comercio y hacé tu pedido.</small>
+            <h6 class="txt-bold">Finalizá tu pedido</h6>
+            <small class="col-md-6">Envía tu pedido al comercio 100% online.</small>
           </div>
         </div>
       </div>

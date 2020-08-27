@@ -160,6 +160,7 @@ return [
         'password' => 'contraseña',
         'restaurant_id' => 'comercio',
         'street' => 'dirección',
+        'address' => 'dirección',
         'number' => 'número',
         'city_id' => 'ciudad',
         'phone' => 'teléfono',

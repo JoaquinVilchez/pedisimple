@@ -165,8 +165,6 @@ class OrderController extends Controller
      */
     public function updateOrder(Request $request)
     {
-
-        // dd($request->all());
         $order = Order::find($request->order['id']);
         $restaurant = $order->restaurant;
 

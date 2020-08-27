@@ -103,7 +103,7 @@
                             <div class="form-group col-md-12">
                                 <div class="row">
                                     <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
-                                    <div class="col-md-2 col-12 pr-1">
+                                    <div class="col-md-2 col-12">
                                         <div class="form-group">
                                             <input type="text" class="form-control @error('phone') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
                                             <small class="form-text text-muted ml-2">Ej: 3462</small>
@@ -114,7 +114,7 @@
                                             {{ $message }}
                                         </span>
                                     @enderror
-                                    <div class="col-md-4 col-12 pl-1">
+                                    <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <input id="phone" type="text" class="form-control @error('characteristic') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
                                             <small class="form-text text-muted ml-2">Ej: 654321</small>
@@ -131,8 +131,9 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary btn-block">
-                                        {{ __('Registrarme') }}
+                                    <button type="submit" class="spinnerButton btn btn-primary btn-block">
+                                        <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                        <span class="btn-txt">{{ __('Registrarme') }}</span>
                                     </button>
                                 </div>
                             </div>

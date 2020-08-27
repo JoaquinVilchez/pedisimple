@@ -25,7 +25,7 @@
         <body onload="window.open('{{session('newurl')}}', '_blank')"></body>
     @endif
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
-        <h1 class="h2"><strong>Pedidos aceptados</strong></h1>
+        <h1 class="h2"><strong>Pedidos aceptados</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>
     </div>
 
     @include('messages')
@@ -108,7 +108,7 @@
                                                     </a>
                                                 </td>
                                             </li>
-                                            <li class="list-group-item"><strong>Fecha: </strong>{{ucfirst($order->created_at->calendar())}} </li>
+                                            <li class="list-group-item"><strong>Fecha: </strong>{{ucfirst($order->created_at->diffForHumans())}} </li>
                                         </ul>
                                         <div class="row mt-2">
                                             <p class="txt-bold">Información adicional del cliente:</p><br>
@@ -163,7 +163,7 @@
                             <tbody>
                                 <tr>
                                 <td>{{$order->code}}</td>
-                                <td>{{ucfirst($order->created_at->calendar())}}</td>
+                                <td>{{ucfirst($order->created_at->diffForHumans())}}</td>
                                 <td>{{$order->getfullName()}}</td>
                                 <td>
                                     <a target=”_blank” href="

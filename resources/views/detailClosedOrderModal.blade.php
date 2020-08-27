@@ -55,7 +55,7 @@
                 <div class="d-flex justify-content-between mt-5">
                     <div class="d-inline mr-4" style="font-size: .8em">
                         <h6 class="txt-muted order-title">Fecha</h6>
-                        <p class="order-text">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->locale('es')->calendar())}}</p>
+                        <p class="order-text">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->calendar())}}</p>
                     </div>
                     <div class="d-inline mr-4" style="font-size: .8em">
                         <h6 class="txt-muted order-title">Metodo de envio</h6>
@@ -111,11 +111,11 @@
                 <tbody>
                     <tr>
                     <td>Aceptado:</td>
-                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->accepted)->locale('es')->calendar())}}</td>
+                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->accepted)->calendar())}}</td>
                     </tr>
                     <tr>
                     <td>Cerrado:</td>
-                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->closed)->locale('es')->calendar())}}</td>
+                    <td style="text-align: right">{{ucfirst(\Carbon\Carbon::parse($order->closed)->calendar())}}</td>
                     </tr>
                 </tbody>
             </table>

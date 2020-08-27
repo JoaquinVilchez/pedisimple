@@ -98,49 +98,10 @@
                     </li>
                 </ul>
             </div>
-        </div>
         
-        <div class="row justify-content-center">
-
             <div class="col-md-4 order-md-2 mb-4">
-                <div class="sticky-top pb-3 pt-1">
-                    @include('messages')
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="align-items-center">
-                                    <h5 class="d-inline">Tu pedido</h5>
-                                    @if(!Cart::isEmpty())
-                                        <small><a class="d-inline" style="cursor: pointer" onclick="confirmAlert()" id="btnConfirmEmptyCart"><span><i class="fas fa-trash-alt"></i></span></a></small>
-                                    @endif
-                                </div>
-                                <div>
-                                    <span class="badge badge-secondary badge-pill d-inline">{{Cart::getTotalQuantity()}}</span>
-                                </div>
-                            </div>
-                            <div class="alert alert-primary mt-2" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
-                                ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" style="cursor: pointer" class="alert-link">No</a>
-                            </div>
-                        </div>
-                        @if(!Cart::isEmpty())
-                       
-                            @include('carrito')
-                       
-                            <div class="alert alert-primary" style="font-size:15px" role="alert" id="confirmEmptyCart" hidden>
-                                ¿Estás seguro de vaciar el carrito? <a href="{{route('cart.empty')}}" class="alert-link">Si</a> | <a onclick="confirmAlert()" style="cursor: pointer" class="alert-link">No</a>
-                            </div>
-                            <div class="my-3">
-                                <a href="{{route('checkout.index')}}" class="btn btn-primary btn-block">Finalizar pedido</a>
-                            </div>
-                            @else
-                            <div class="list-group mb-3" style="text-align: center">
-                                <div style="text-align: center" class="my-4">
-                                    <img src="{{asset('images/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
-                                    <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
-                                </div>
-                                <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
-                            </div>
-                        @endif
-                </div>
+                @include('messages')
+                @include('carrito')
             </div>
 
             <div class="col-lg-8 tab-content" id="pills-tabContent">
@@ -150,17 +111,19 @@
                         <div class="row my-3">
                             <div class="d-flex align-items-center">
                                 <h6>Ir a categoria:</h6>
-                                <form id="goToCategory" class="form-group ml-3">
-                                    <select class="form-control" onchange="goToCategory()">
-                                        @foreach($categories as $category)
-                                            @if(count($category->products)>0)
-                                                <option value="{{normaliza($category->name)}}">
-                                                    {{ucfirst($category->name)}}
-                                                </option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </form>
+                                {{-- <form id="goToCategory" class="form-group ml-3"> --}}
+                                    <div class="form-group">
+                                        <select class="form-control ml-3" id="goToCategorySelect">
+                                            @foreach($categories as $category)
+                                                @if(count($category->products)>0)
+                                                    <option value="{{normaliza($category->name)}}">
+                                                        {{ucfirst($category->name)}}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                {{-- </form> --}}
                             </div>
                         </div>
                     </div>
@@ -395,7 +358,7 @@
     <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content" id="modal-product">
-                
+            <img src="{{asset('images/design/loading.svg')}}" alt="Espere por favor...">
             </div>
         </div>
     </div>
@@ -450,7 +413,8 @@
 
 @section('js-scripts')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function(){            
+
             $(window).scroll(function () {
                     if ($(this).scrollTop() > 50) {
                         $('#back-to-top').fadeIn();
@@ -467,6 +431,10 @@
                     return false;
                 });
 
+            $('#goToCategorySelect').on('change', function(){
+                var select = $('#goToCategorySelect').val($("option:selected").val());      
+                window.location.href = "#"+select.val();
+            });
         });
 
         function showData(productid){
@@ -493,24 +461,46 @@
             modal.find('.modal-body #restaurantid').val(restaurantid)
         })
 
+        function addItem(id){
+            var quantity = $('#product-quantity').val();
+            var variants = [];
+            $.each($("input[name='variants[]']:checked"), function(){
+                variants.push($(this).val());
+            });            
+            var aditional_notes = $('#product-aditional_notes').val();
+
+            $.ajax({
+                url : '/carrito',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data:{
+                    id:id,
+                    quantity:quantity,
+                    variants:variants,
+                    aditional_notes:aditional_notes
+                },
+                success:function(data){
+                    $('#cart-content').html(data);
+                    cartFormat();
+                    $('#addItemModal').modal('hide');
+                    $('#trash-empty-cart').show();
+                    $('#yes-confirm-empty-cart').hide();
+                    $('#no-confirm-empty-cart').hide();
+                    $('#finishOrder').show();
+                },
+                error:function(data){
+                    $('#addItemModal').modal('hide');
+                    $.each(data.responseJSON, function(key,value) {
+                        $('#cart-data').append('<div class="message-error alert alert-danger alert-dismissible fade show" role="alert">'+value+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    });
+                    setTimeout(function() {
+                        $(".message-error").fadeOut(200);
+                    }, 4000);
+                }
+            });
+        }
         // =================================================================
-
-        function confirmAlert(){
-            alert = document.getElementById("confirmEmptyCart");
-            button = document.getElementById("btnConfirmEmptyCart");
-
-            if ($('#confirmEmptyCart').is(':hidden')) {
-                alert.removeAttribute("hidden","");
-                button.setAttribute("hidden","");
-            }else{
-                alert.setAttribute("hidden","");
-                button.removeAttribute("hidden","");    
-            }
-        }
-
-        function goToCategory(){
-            var select = $('#goToCategory').val($("option:selected").val());
-            window.location.href = "#"+select.val();
-        }
     </script>
 @endsection

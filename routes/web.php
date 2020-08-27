@@ -45,7 +45,8 @@ Route::resource('usuario/direcciones', 'AddressController')->names('address');
 Route::resource('usuario/datos', 'UserController')->names('user')->middleware(['auth', 'verified']);
 
 Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
-Route::get('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
+Route::post('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
+Route::post('/carrito/remove', 'CartController@remove')->name('cart.remove');
 Route::resource('/carrito', 'CartController')->names('cart');
 
 Route::post('/usuario/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth','verified', 'Admin']);
