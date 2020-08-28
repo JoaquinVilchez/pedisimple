@@ -90,9 +90,10 @@ Route::get('/productos/categoria/export-excel', 'CategoryController@exportExcel'
 Route::post('/productos/categoria/import-excel', 'CategoryController@importExcel')->name('category.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/categoria/{id}', 'CategoryController@isAvailable')->name('category.available')->middleware(['auth','verified', 'hasRestaurant']);
 
+Route::post('/productos/categorias/reorder', 'CategoryController@reorder')->name('category.reorder');
 Route::get('/productos/categorias', 'CategoryController@index')->name('category.index')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/categorias/create', 'CategoryController@create')->name('category.create')->middleware(['auth','verified', 'hasRestaurant']);
-Route::post('/productos/categorias', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/productos/categorias/store', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/categorias/{categoria}', 'CategoryController@edit')->name('category.edit')->middleware(['auth','verified', 'hasRestaurant']);
 Route::put('/productos/categorias/{categoria}', 'CategoryController@update')->name('category.update')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/categorias/borrar', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);

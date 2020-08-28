@@ -387,7 +387,7 @@ class RestaurantController extends Controller
 
         return view('restaurant.profile')->with([
             'restaurant' =>  $restaurant,
-            'categories' => $categories,
+            'categories' => $categories->sortBy('position'),
             'temporary_products' => $temporary_products
         ]);
     }
