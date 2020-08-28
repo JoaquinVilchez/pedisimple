@@ -68,7 +68,7 @@ Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')-
 Route::post('/productos/showData', 'ProductController@showData')->name('product.showData');
 Route::get('/productos/export-excel', 'ProductController@exportExcel')->name('product.export.excel')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/import-excel', 'ProductController@importExcel')->name('product.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
-Route::post('/productos/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
 
 Route::post('/variant/ajaxcreate', 'VariantController@ajaxCreate')->name('variant.ajaxcreate');
 Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants');
@@ -93,7 +93,7 @@ Route::post('/productos/categoria/{id}', 'CategoryController@isAvailable')->name
 Route::post('/productos/categorias/reorder', 'CategoryController@reorder')->name('category.reorder');
 Route::get('/productos/categorias', 'CategoryController@index')->name('category.index')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/categorias/create', 'CategoryController@create')->name('category.create')->middleware(['auth','verified', 'hasRestaurant']);
-Route::post('/productos/categorias/store', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/productos/categorias', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/categorias/{categoria}', 'CategoryController@edit')->name('category.edit')->middleware(['auth','verified', 'hasRestaurant']);
 Route::put('/productos/categorias/{categoria}', 'CategoryController@update')->name('category.update')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/categorias/borrar', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
