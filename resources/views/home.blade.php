@@ -7,7 +7,7 @@
     <div class="container d-flex align-items-center justify-content-center text-white" style="height:300px;">
         <div>
           <h1 class="h1-responsive"><strong>Pedir lo que buscás, ahora es más simple</strong></h1>
-          <p>Consultá los productos de los comercios de Venado Tuerto y facilitá tu pedido</p>
+          <p>Consultá los productos de los comercios de Venado Tuerto y hace tu pedido 100% online</p>
           {{-- <form action="{{route('list.index')}}" class="form-inline justify-content-center">
             <select class="form-control">
               <option value="1">Pizzas</option>

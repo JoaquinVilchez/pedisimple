@@ -229,7 +229,7 @@ class ProductController extends Controller
         if($request->has_variants=='on'){
             $variantsRule = 'required|array|min:1';
             $minimumRule = 'required|numeric|min:1';
-            $maximumRule = 'required|numeric|gt:minimum';
+            $maximumRule = 'required|numeric|gte:minimum';
         }else{
             $variantsRule = 'nullable';
             $minimumRule = 'nullable';
