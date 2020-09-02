@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Product;
+use App\Restaurant;
 use App\RestaurantCategory;
 use App\Category;
 use App\Variant;
@@ -17,9 +18,51 @@ use App\Exports\ProductsExport;
 use Carbon\Carbon;
 use Mail;
 use App\Mail\NewTemporaryProduct;
+use App\Notifications\UpdatePricesReminder;
 
 class ProductController extends Controller
 {
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function editPrices()
+    {
+        $products = Product::where('restaurant_id', Auth::user()->restaurant->id)->where('temporary', false)->where('state', '!=', 'removed')->get();
+        $restaurant = Auth::user()->restaurant;
+
+        foreach(Auth::user()->unreadNotifications->where('type', 'App\Notifications\UpdatePricesReminder') as $notification){
+            $notification->markAsRead();
+        }
+
+        return view('restaurant.products.updateprices')->with(['products' => $products, 'restaurant' => $restaurant]);
+    }   
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePrices(Request $request)
+    {
+        for ($i=0; $i < count($request->product); $i++) { 
+            $product = Product::find($request->product[$i]);
+            $product->update([
+                'price' => $request->price[$i]
+            ]);
+        }
+        $restaurant = Restaurant::find(Auth::user()->restaurant->id);
+        $restaurant->update([
+            'shipping_price' => $request->delivery
+        ]);
+
+        return redirect('/productos/menu')->with('success_message', 'Precios actualizados con éxito');
+    }   
+
+
     public function showData(Request $request){
         $product = Product::find($request->productid);
         $variants = $product->getVariants;

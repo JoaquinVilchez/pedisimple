@@ -16,8 +16,8 @@
 
     <title>
         @if(Auth::check())
-            @if(Auth::user()->unreadNotifications()->count()>0)
-                ({{Auth::user()->unreadNotifications()->count()}})
+            @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0)
+                ({{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}})
             @endif 
         @endif    
         {{config('app.name') }}</title>
@@ -93,7 +93,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown d-none d-md-block d-lg-block d-xl-block">
-                                <img width="150px" data-original="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->count()>0) style="border: 3px solid #d60000" @endif>
+                                <img width="150px" data-original="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{Auth::user()->first_name}} <span class="caret"></span>
                                 </a>
@@ -101,7 +101,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <div>
                                         @if(Auth::user()->restaurant || Auth::user()->type=='merchant')
-                                        <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio @if(Auth::user()->unreadNotifications()->count()>0)<small><i class="fas fa-circle" style="color: #d60000"></i></small>@endif</a>
+                                        <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0)<small><i class="fas fa-circle" style="color: #d60000"></i></small>@endif</a>
                                         @endif
 
                                         @if(Auth::user()->type=='administrator')

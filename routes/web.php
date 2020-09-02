@@ -76,6 +76,8 @@ Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('va
 Route::resource('/productos/variantes', 'VariantController')->names('variant')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/variante/eliminar', 'VariantController@destroy')->name('variant.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
+Route::get('/productos/actualizarprecios', 'ProductController@editprices')->name('product.editprices')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/productos/actualizarprecios', 'ProductController@updateprices')->name('product.updateprices')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/temporales', 'ProductController@temporaries')->name('product.temporaries')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/menu', 'ProductController@index')->name('product.index')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/create', 'ProductController@create')->name('product.create')->middleware(['auth','verified', 'hasRestaurant']);

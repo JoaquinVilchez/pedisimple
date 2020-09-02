@@ -150,7 +150,7 @@
                                             
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffa64d" href="#" 
+                                                    <a style="color:#ffc500" href="#" 
                                                     data-productname="{{$temporary_product->name}}" 
                                                     data-productprice="{{$temporary_product->price}}" 
                                                     data-toggle="modal" data-target="#addItemModal"
@@ -183,7 +183,7 @@
                                             </div>  
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffa64d" href="#" 
+                                                    <a style="color:#ffc500" href="#" 
                                                     data-productname="{{$temporary_product->name}}" 
                                                     data-productprice="{{$temporary_product->price}}" 
                                                     data-toggle="modal" data-target="#addItemModal"
@@ -233,7 +233,7 @@
                                             </div>  
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffa64d" href="#"
+                                                    <a style="color:#ffc500" href="#"
                                                     data-productname="{{$product->name}}" 
                                                     data-productprice="{{$product->price}}" 
                                                     data-toggle="modal" data-target="#addItemModal"
@@ -441,6 +441,7 @@
             $.ajax({
                 url : '{{ route("product.showData") }}',
                 type: 'POST',
+                async : false,
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },

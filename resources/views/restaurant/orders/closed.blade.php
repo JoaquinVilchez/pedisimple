@@ -70,6 +70,7 @@ function showClosedOrder(id){
     $.ajax({
         url : '{{ route("order.closedDetails") }}',
         type: 'POST',
+        async: false,
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },

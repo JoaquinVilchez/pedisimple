@@ -59,8 +59,8 @@
               <a class="nav-link" data-toggle="collapse" href="#pedidosCollapse" role="button" aria-expanded="false" aria-controls="pedidosCollapse">
                 <div class="d-flex justify-content-between">
                 <span>
-                  @if((Auth::user()->unreadNotifications()->count())>0)
-                    <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->count()}} </span>
+                  @if((Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count())>0)
+                    <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}} </span>
                   @endif
                   Pedidos
                 </span>
@@ -73,8 +73,8 @@
                 <li class="nav-item">
                   <div class="d-flex justify-content-between align-items-center">
                     <span><a class="nav-link" id="nuevos" href="{{route('order.new')}}">Nuevos</a></span>
-                      @if((Auth::user()->unreadNotifications()->count())>0)
-                        <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
+                      @if((Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count())>0)
+                        <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}} </span>
                       @else
                         <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
                       @endif
@@ -152,8 +152,8 @@
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#pedidosCollapse" role="button" aria-expanded="false" aria-controls="pedidosCollapse">
                 <span>
-                  @if((Auth::user()->unreadNotifications()->count())>0)
-                    <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->count()}} </span>
+                  @if((Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count())>0)
+                    <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}} </span>
                   @endif
                   Pedidos
                 </span>
@@ -165,8 +165,8 @@
                 <li class="nav-item">
                   <div class="d-flex align-items-center">
                     <span><a class="nav-link" id="nuevos" href="{{route('order.new')}}">Nuevos</a></span>
-                      @if((Auth::user()->unreadNotifications()->count())>0)
-                        <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->count()}} </span>
+                      @if((Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count())>0)
+                        <span class="badge badge-pill badge-danger ml-2">{{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}} </span>
                       @else
                         <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
                       @endif
@@ -207,7 +207,30 @@
           </ul>
         </nav>
       </div>
-    </nav>
+    </nav>    
+
+    @if(count(Auth::user()->unreadNotifications->where('type', 'App\Notifications\UpdatePricesReminder')))
+      @if(Request::path()!='productos/actualizarprecios')
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div style="text-align: center">
+                    <h5 class="modal-title txt-bold" id="exampleModalLabel">¡Actualizá tus precios!</h5>
+                    <img class="my-2" src="{{asset('images/design/price.svg')}}" alt="" width="50px">
+                    <div class="container">
+                      <p>Te ofrecemos actualizar tus precios de una forma muy sencilla y rápida, sólo te tomará unos minutos.</p>
+                        <a href="{{route('product.editprices')}}" class="btn btn-primary">Actualizar Precios</a><br>
+                      <small><a href="#" class="mt-2" data-dismiss="modal" aria-label="Close" onclick="alert('AJAX-MarkReadNotification')">No, gracias.</a></small>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
+    @endif
 
     <main role="main" class="col-auto ml-sm-auto col-xl-10 col-12">
       @yield('main')
@@ -216,6 +239,11 @@
 </div>
 
   <script>
+
+    $(window).on('load',function(){
+        $('#exampleModal').modal('show');
+    });
+
     var url = window.location.pathname;  
     const parts = url.split('/');
     var activeCategory = parts[1];

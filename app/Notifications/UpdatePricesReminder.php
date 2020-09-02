@@ -6,20 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Order;
 
-class NewOrder extends Notification
+class UpdatePricesReminder extends Notification
 {
     use Queueable;
-    protected $order;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct()
     {
-        $this->order = $order;
+        //
     }
 
     /**
@@ -42,17 +41,11 @@ class NewOrder extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject(env('APP_NAME').' - Te llegó un nuevo pedido')
-                    ->line('Te llegó un nuevo pedido desde la plataforma.')
-                    ->action('Ver nuevos pedidos', url('/pedidos/nuevos'))
-                    ->line('Código de referencia del pedido: '.$this->order->code);
-    }
-
-    public function toDatabase($notifiable){
-        return [
-            'order_id' => $this->order->id,
-            'order_total' => $this->order->total
-        ];
+            ->subject(env('APP_NAME').' - Por favor, actualiza tus precios.')
+            ->line('Es importante mantener tus precios actualizados en la plataforma para que los clientes tengan una mejor experiencia a la hora de pedir tus productos. Por eso te ofrecemos actualizar tus precios de una forma muy sencilla y rápida, sólo te tomará unos minutos.')
+            ->action('Actualizar precios', (env('APP_URL').'/productos/menu'))
+            ->line('Si tus precios estan actualizados, solo omite este correo.')
+            ->line('¡Gracias por mantener actualizada tu información!');
     }
 
     /**

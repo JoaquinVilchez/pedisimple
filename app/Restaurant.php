@@ -115,6 +115,7 @@ class restaurant extends Model
 
         for ($i=0; $i < 7; $i++) { 
             
+            if(isset($schedule[$i]['weekday'])){
                 if($schedule[$i]['weekday']==$weekday){
                     if($schedule[$i]['start_hour_1']!=null){
                         $start1 = Carbon::createFromTimeString($schedule[$i]['start_hour_1']);
@@ -142,6 +143,7 @@ class restaurant extends Model
                         return false;
                     }
                 }
+            }
         }
     }
 
