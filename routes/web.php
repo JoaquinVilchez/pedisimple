@@ -41,7 +41,7 @@ Route::get('/checkout/descargar/{order}', 'CheckoutController@download')->name('
 Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 Route::post('/checkout-login', 'UserController@checkoutLogin')->name('user.checkoutlogin');
-Route::resource('usuario/direcciones', 'AddressController')->names('address');
+Route::resource('usuario/direcciones', 'AddressController')->names('address')->middleware(['auth','verified']);
 Route::resource('usuario/datos', 'UserController')->names('user')->middleware(['auth', 'verified']);
 
 Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
@@ -71,8 +71,8 @@ Route::post('/productos/import-excel', 'ProductController@importExcel')->name('p
 Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
 
 Route::post('/variant/ajaxcreate', 'VariantController@ajaxCreate')->name('variant.ajaxcreate');
-Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants');
-Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('variant.showItemVariants');
+Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('variant.showItemVariants')->middleware(['auth','verified', 'hasRestaurant']);
 Route::resource('/productos/variantes', 'VariantController')->names('variant')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/variante/eliminar', 'VariantController@destroy')->name('variant.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
@@ -92,7 +92,7 @@ Route::get('/productos/categoria/export-excel', 'CategoryController@exportExcel'
 Route::post('/productos/categoria/import-excel', 'CategoryController@importExcel')->name('category.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/categoria/{id}', 'CategoryController@isAvailable')->name('category.available')->middleware(['auth','verified', 'hasRestaurant']);
 
-Route::post('/productos/categorias/reorder', 'CategoryController@reorder')->name('category.reorder');
+Route::post('/productos/categorias/reorder', 'CategoryController@reorder')->name('category.reorder')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/categorias', 'CategoryController@index')->name('category.index')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/productos/categorias/create', 'CategoryController@create')->name('category.create')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/categorias', 'CategoryController@store')->name('category.store')->middleware(['auth','verified', 'hasRestaurant']);
@@ -101,15 +101,15 @@ Route::put('/productos/categorias/{categoria}', 'CategoryController@update')->na
 Route::post('/productos/categorias/borrar', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
 //PEDIDOS
-Route::post('/pedidos/closed-details', 'OrderController@getClosedDetails')->name('order.closedDetails');
-Route::get('/pedidos/nuevos', 'OrderController@new')->name('order.new');
-Route::get('/pedidos/aceptados', 'OrderController@accepted')->name('order.accepted');
-Route::get('/pedidos/cerrados', 'OrderController@closed')->name('order.closed');
-Route::post('/pedidos/aceptar', 'OrderController@accept')->name('order.accept');
-Route::post('/pedidos/rechazar', 'OrderController@reject')->name('order.reject');
-Route::post('/pedidos/cerrar', 'OrderController@close')->name('order.close');
-Route::post('/pedidos/cancelar', 'OrderController@cancel')->name('order.cancel');
-Route::post('/pedidos/update', 'OrderController@updateOrder')->name('order.updateOrder');
-Route::post('/pedidos/edit', 'OrderController@editOrder')->name('order.editOrder');
-Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
-Route::resource('usuario/pedidos', 'OrderController')->names('order');
+Route::post('/pedidos/closed-details', 'OrderController@getClosedDetails')->name('order.closedDetails')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/pedidos/nuevos', 'OrderController@new')->name('order.new')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/pedidos/aceptados', 'OrderController@accepted')->name('order.accepted')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/pedidos/cerrados', 'OrderController@closed')->name('order.closed')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/aceptar', 'OrderController@accept')->name('order.accept')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/rechazar', 'OrderController@reject')->name('order.reject')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/cerrar', 'OrderController@close')->name('order.close')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/cancelar', 'OrderController@cancel')->name('order.cancel')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/update', 'OrderController@updateOrder')->name('order.updateOrder')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/edit', 'OrderController@editOrder')->name('order.editOrder')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order')->middleware(['auth','verified', 'hasRestaurant']);
+Route::resource('usuario/pedidos', 'OrderController')->names('order')->middleware(['auth', 'verified']);
