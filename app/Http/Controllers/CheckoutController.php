@@ -20,9 +20,10 @@ use App\Notifications\NewOrder;
 class CheckoutController extends Controller
 {
 
-    public function download(Order $order){
+    public function download($data){
+        $id = Crypt::decryptString($data);
+        $order = Order::find($id);
         $items = $order->lineitems;
-        // $logo = asset('images/logo.png');
         $pdf = PDF::loadView('pdf.receipt', array('order' => $order, 'items' => $items));
         return $pdf->stream('recibo.pdf');
     }

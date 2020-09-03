@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="m-3">
-                        <a target="_blank" href="{{route('checkout.download', $order)}}" class="btn btn-sm btn-outline-danger mb-3"><i class="far fa-file-alt"></i> Descargar detalle</a>
+                        <a target="_blank" href="{{route('checkout.download', Crypt::encryptString($order->id))}}" class="btn btn-sm btn-outline-danger mb-3"><i class="far fa-file-alt"></i> Descargar detalle</a>
                         @if($order->user_id==null)
                             <p style="font-size: .8em" class="mb-1"><strong>Atención:</strong> Al realizar el pedido como invitado, este detalle no se puede volver a consultar, te recomendamos guardar el código de referencia o descargar el detalle.</p>
                         @else
