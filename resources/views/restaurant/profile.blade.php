@@ -18,19 +18,19 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 10% / cover transparent;">
+    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://images.pexels.com/photos/667986/pexels-photo-667986.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 55% / cover transparent; ">
         <div class="element">
             <div class="container text-white col-lg-8 ">
                 <div class="row pb-2">
                     <div class="col-xl-2 col-lg-2 col-md-2 d-none d-md-block d-lg-block d-xl-block">
                         <div class="d-flex align-items-center justify-content-center">
-                            <img class="border" width="120px" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
+                            <img class="border rounded" width="120px" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
                         </div>
                     </div>
                     <div class="col-xl-10 col-lg-10 col-md-10 pl-0">
                         <div class="ml-3">
                             <div class="d-flex align-items-center">
-                                <h3 class="txt-bold d-inline">{{$restaurant->name}}</h3>
+                                <h3 class="txt-bold d-inline txt-shadow">{{$restaurant->name}}</h3>
                                     @if($restaurant->isOpen())
                                         <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
                                     @else
@@ -212,7 +212,7 @@
                             <div class="col-lg-6 px-1">
                                 
                                     <div class="card p-2 m-1 product-card" onclick="showData({{$product->id}})" style="min-height:95%">
-                                        <div class="row">
+                                        <div class="row" style="min-height: 100%">
                                             <div class="col-4 pr-0">
                                                 @if ($product->image != 'no_image.png')
                                                     <div class="d-flex align-items-center">

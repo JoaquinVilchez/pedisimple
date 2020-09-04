@@ -141,6 +141,7 @@
                     <div class="border-bottom px-2">
                         <table class="table table-borderless" id="orderTable">
                             <thead>
+                                {!!$order->delayAlert()!!}
                                 <tr>
                                 <th>Código</th>
                                 <th>Fecha y hora</th>
@@ -211,8 +212,16 @@
                             <div class="col-4">
                                 <div class="float-right d-flex">
                                     <div class="d-inline mr-2">
-                                        <a href="#" class="btn btn-secondary" data-deleteorderid="{{$order->id}}" data-toggle="modal" data-target="#deleteOrderModal">Rechazar</a>
-                                        <a href="#" class="btn btn-primary" data-acceptorderid="{{$order->id}}" data-toggle="modal" data-target="#acceptOrderModal">Aceptar</a>
+                                        @if($order->delayHours() >= 24)
+                                            <form action="{{route('order.cancel')}}" method="POST">
+                                                @csrf
+                                                <input type="hidden" id="orderid" name="orderid" value="{{$order->id}}">
+                                                <button type="submit" class="btn btn-danger">Cancelar pedido</button>
+                                            </form>
+                                        @else
+                                            <a href="#" class="btn btn-secondary" data-deleteorderid="{{$order->id}}" data-toggle="modal" data-target="#deleteOrderModal">Rechazar</a>
+                                            <a href="#" class="btn btn-primary" data-acceptorderid="{{$order->id}}" data-toggle="modal" data-target="#acceptOrderModal">Aceptar</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

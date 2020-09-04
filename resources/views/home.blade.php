@@ -6,7 +6,7 @@
   <div class="element_home">
     <div class="container d-flex align-items-center justify-content-center text-white" style="height:300px;">
         <div>
-          <h1 class="h1-responsive"><strong>Pedir lo que buscás, ahora es más simple</strong></h1>
+          <h1 class="txt-shadow"><strong>Pedir lo que buscás, ahora es más simple</strong></h1>
           <p>Consultá los productos de los comercios de Venado Tuerto y hace tu pedido 100% online</p>
           {{-- <form action="{{route('list.index')}}" class="form-inline justify-content-center">
             <select class="form-control">
@@ -16,7 +16,7 @@
             <input type="text" placeholder="Buscar comercio" class="form-control">
             <input type="submit" value="Buscar" class="btn btn-primary mx-2">
           </form> --}}
-          <a href="{{route('list.index')}}" class="btn btn-sm btn-primary mt-2" style="box-shadow: 0px 2px 10px #3d3d3d;"><strong> Ver todos los comercios</strong></a> 
+          <a href="{{route('list.index')}}" class="btn btn-sm btn-primary mt-2"><strong> Ver todos los comercios</strong></a> 
         </div>
       </div>
     </div>

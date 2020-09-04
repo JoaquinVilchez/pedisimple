@@ -74,7 +74,7 @@
             </div>
 
             <div class="col-md-8 order-md-1">
-                    {{-- @include('messages')                     --}}
+                    @include('messages')                    
                     @if(!Auth::check())
                         <form class="needs-validation" action="{{route('checkout.store')}}" method="POST" novalidate autocomplete="off">
                             @csrf
@@ -182,81 +182,82 @@
                             <h4 class="mb-3">Datos personales</h4>
                                 <div class="col-md-12 mb-3">
                                     <div class="row">
-                                        <div class="form-group col-6 mb-3">
+                                        <div class="form-group col-12 col-md-4 mb-3">
                                             <label><strong>Nombre del solicitante:</strong></label>
                                             <p>{{Auth::user()->fullName()}}</p>
                                         </div>
-                                        <div class="form-group col-6 mb-3">
+                                        <div class="form-group col-12 col-md-4 mb-3">
                                             <label><strong>Teléfono:</strong></label>
                                             <p>{{Auth::user()->getPhone()}}</p>
                                         </div>
+                                        <div class="form-group col-12 col-md-4 mb-3">
+                                            <label><strong>Tipo de entrega:</strong></label>
+                                            @if(\Cart::getCondition('Delivery'))
+                                                <p class="shipping_method_text">Delivery</p>
+                                            @else
+                                                <p class="shipping_method_text">Retiro en local</p>
+                                            @endif
+                                        </div>
                                     </div>
 
-                                    <label><strong>Tipo de entrega:</strong></label>
-                                    @if(\Cart::getCondition('Delivery'))
-                                        <p>Delivery</p>
-                                    @else
-                                        <p>Retiro en local</p>
-                                    @endif
-
-                                    @if(\Cart::getCondition('Delivery'))
-                                        <label><strong>Dirección de entrega:</strong></label>
-                                        <input type="hidden" id="address_type" value="data-address" name="address_type">
-                                        <div id="address">
-                                            <div class="row align-items-end">
-                                                @if(count(Auth::user()->addresses)!=0)
-                                                <div class="col-8">
-                                                    <select class="form-control" id="exampleFormControlSelect1" name="address">
-                                                    @foreach (Auth::user()->addresses as $address)
-                                                        <option value="{{$address->id}}">{{$address->getFullAddress()}}</option>
-                                                    @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label></label>
-                                                    <a onclick="address()" class="btn btn-outline-primary">Nueva dirección</a>
-                                                </div>
-                                                @else
-                                                    <div class="col-4">
-                                                        <label></label>
-                                                        <a onclick="address()" class="btn btn-outline-primary">Nueva dirección</a>
+                                    {{-- @if(\Cart::getCondition('Delivery')) --}}
+                                        <div id="checkout-delivery-info" @if(\Cart::getCondition('Delivery')) class="checkout-delivery" @else class="checkout-pickup" @endif>
+                                            <input type="hidden" id="address_type" value="data-address" name="address_type">
+                                            <label><strong>Dirección de entrega:</strong></label>
+                                            <div id="address">
+                                                <div class="row align-items-end">
+                                                    @if(count(Auth::user()->addresses)!=0)
+                                                    <div class="col-6">
+                                                        <select class="form-control" id="exampleFormControlSelect1" name="address">
+                                                        @foreach (Auth::user()->addresses as $address)
+                                                            <option value="{{$address->id}}">{{$address->getFullAddress()}}</option>
+                                                        @endforeach
+                                                        </select>
                                                     </div>
-                                                @endif
+                                                    <div class="col-6">
+                                                        <a onclick="newAddress();" class="btn btn-block btn-outline-primary">Nueva dirección</a>
+                                                    </div>
+                                                    @else
+                                                        <div class="col-6">
+                                                            <a  class="btn btn-block btn-outline-primary">Nueva dirección</a>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div id="new-address">
+                                                <div class="row align-items-end">
+                                                    <div class="col-xl-6 col-sm-12">
+                                                        <label>Calle</label>
+                                                        <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control" autocomplete="off">
+                                                        {!!$errors->first('client_street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                                    </div>
+                                                    <div class="col-xl-2 col-sm-4">
+                                                        <label>Número</label>
+                                                    <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control" autocomplete="off">
+                                                    {!!$errors->first('client_number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                                    </div>
+                                                    <div class="col-xl-2 col-sm-4 col-6">
+                                                        <label>Piso</label>
+                                                        <input type="text" name="client_floor" value="{{old('client_floor')}}" class="form-control" placeholder="Opcional" autocomplete="off">
+                                                        {!!$errors->first('client_floor', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                                    </div>
+                                                    <div class="col-xl-2 col-sm-4 col-6">
+                                                        <label>Depto</label>
+                                                        <input type="text" name="client_department" value="{{old('client_department')}}" class="form-control" placeholder="Opcional" autocomplete="off">
+                                                        {!!$errors->first('client_department', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                                                    </div>
+                                                </div>
+                                                <div class="d-inline mt-2">
+                                                    <a onclick="newAddress();" class="btn btn-secondary btn-sm text-white mr-2">Cancelar</a>
+                                                </div>
+                                                <div class="d-inline mb-0">
+                                                    <label class="mt-2">
+                                                    <span><input type="checkbox" name="save"> Guardar dirección para una próxima vez</span>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="new-address" hidden>
-                                            <div class="row align-items-end">
-                                                <div class="col-xl-6 col-sm-12">
-                                                    <label>Calle</label>
-                                                    <input type="text" name="client_street" value="{{old('client_street')}}" class="form-control" autocomplete="off">
-                                                    {!!$errors->first('client_street', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                                </div>
-                                                <div class="col-xl-2 col-sm-4">
-                                                    <label>Número</label>
-                                                <input type="text" name="client_number" value="{{old('client_number')}}" class="form-control" autocomplete="off">
-                                                {!!$errors->first('client_number', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                                </div>
-                                                <div class="col-xl-2 col-sm-4 col-6">
-                                                    <label>Piso</label>
-                                                    <input type="text" name="client_floor" value="{{old('client_floor')}}" class="form-control" placeholder="Opcional" autocomplete="off">
-                                                    {!!$errors->first('client_floor', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                                </div>
-                                                <div class="col-xl-2 col-sm-4 col-6">
-                                                    <label>Depto</label>
-                                                    <input type="text" name="client_department" value="{{old('client_department')}}" class="form-control" placeholder="Opcional" autocomplete="off">
-                                                    {!!$errors->first('client_department', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                                </div>
-                                            </div>
-                                            <div class="d-inline mt-2">
-                                                <a onclick="Address()" class="btn btn-secondary btn-sm text-white mr-2">Cancelar</a>
-                                            </div>
-                                            <div class="d-inline mb-0">
-                                                <label class="mt-2">
-                                                <span><input type="checkbox" name="save"> Guardar dirección para una próxima vez</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    @endif
+                                    {{-- @endif --}}
                                 </div>
                                 <div class="form-group col-12 mb-3">
                                     <label><strong>Notas adicionales</strong><small> (Opcional)</small></label>
@@ -324,6 +325,14 @@
             $('#step-2').fadeOut(500);
             $('#step-1').fadeIn(500);
         })
+
+        if($('#checkout-delivery-info').hasClass('checkout-pickup')){
+            $('#checkout-delivery-info').hide();
+        }else{
+            $('#checkout-delivery-info').show();
+        }
+
+        $('#new-address').hide();
     });
 
     $('#btn-submit-form').click(function(){
@@ -351,20 +360,34 @@
 
     });
 
-    function address(){
-        address = document.getElementById("address");
-        newaddress = document.getElementById("new-address");
-        addresstype = document.getElementById("address_type");
+    function newAddress(){
+        address = $("#address");
+        newaddress = $("#new-address");
+        addresstype = $("#address_type");
 
-        if ($('#new-address').is(':hidden')) {
-                newaddress.removeAttribute("hidden","");
-                address.setAttribute("hidden","");
-                addresstype.value='new-address';
-            } else {
-                newaddress.setAttribute("hidden","");
-                address.removeAttribute("hidden","");    
-                addresstype.value='data-address';
+        if($('#new-address').is(':visible')){
+            newaddress.hide();
+            address.show();    
+            addresstype.val('data-address');            
+        }else{
+            newaddress.show();
+            address.hide();
+            addresstype.val('new-address');
         }
+
+        // address = document.getElementById("address");
+        // newaddress = document.getElementById("new-address");
+        // addresstype = document.getElementById("address_type");
+
+        // if($('#new-address').is(':hidden')){
+        //     newaddress.removeAttribute("hidden","");
+        //     address.setAttribute("hidden","");
+        //     addresstype.value='new-address';
+        // }else{
+        //     newaddress.setAttribute("hidden","");
+        //     address.removeAttribute("hidden","");    
+        //     addresstype.value='data-address';
+        // }
     }
 </script>
 @endsection

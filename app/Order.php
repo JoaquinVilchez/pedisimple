@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -115,6 +116,33 @@ class Order extends Model
             case 'cancelled':
                 return 'Cancelado';
                 break;
+        }
+    }
+
+    public function delayHours(){
+        $now = Carbon::now();
+        $order = Carbon::parse($this->created_at);
+        $hours = $order->diffInHours($now);
+
+        return $hours;
+    }
+
+    public function delayAlert(){
+        $now = Carbon::now();
+        $order = Carbon::parse($this->created_at);
+        $hours = $order->diffInHours($now);
+        $minutes = $order->diffInMinutes($now);
+
+        if($hours>=24){
+            return '<span class="badge badge-danger"><i class="far fa-clock"></i> Este pedido tiene más de un día de demora</span>';
+        }else{
+            if($minutes>=10){
+                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace '.$minutes.' minutos</span>';
+            }elseif($minutes>=30){
+                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace '.$minutes.' minutos de demora</span>';
+            }elseif($minutes>=60){
+                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace mas de una hora de demora</span>';
+            }
         }
     }
 

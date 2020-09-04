@@ -173,7 +173,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" onclick="continueToRestaurant()">Ir al comercio</button>
+          <button type="button" class="btn btn-primary" onclick="continueToRestaurant()">Ir al comercio</button>
         </div>
     </div>
   </div>

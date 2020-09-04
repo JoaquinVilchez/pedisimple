@@ -71,8 +71,8 @@ Route::post('/productos/import-excel', 'ProductController@importExcel')->name('p
 Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
 
 Route::post('/variant/ajaxcreate', 'VariantController@ajaxCreate')->name('variant.ajaxcreate');
-Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants')->middleware(['auth','verified', 'hasRestaurant']);
-Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('variant.showItemVariants')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants');
+Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('variant.showItemVariants');
 Route::resource('/productos/variantes', 'VariantController')->names('variant')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/productos/variante/eliminar', 'VariantController@destroy')->name('variant.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
@@ -111,5 +111,5 @@ Route::post('/pedidos/cerrar', 'OrderController@close')->name('order.close')->mi
 Route::post('/pedidos/cancelar', 'OrderController@cancel')->name('order.cancel')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/pedidos/update', 'OrderController@updateOrder')->name('order.updateOrder')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/pedidos/edit', 'OrderController@editOrder')->name('order.editOrder')->middleware(['auth','verified', 'hasRestaurant']);
-Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order')->middleware(['auth','verified', 'hasRestaurant']);
+Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
 Route::resource('usuario/pedidos', 'OrderController')->names('order')->middleware(['auth', 'verified']);

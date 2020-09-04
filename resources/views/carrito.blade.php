@@ -166,7 +166,7 @@
                         $('#cart-not-empty').fadeOut(200);
                         $('#cart-empty').fadeIn(200);
                         $('#cart-total-quantity').html(data['items']);
-                        $('#checkout-finish-order').prop('disable', false);
+                        $('#checkout-finish-order').prop('disabled', true);
                         $('#finishOrder').hide();
                     }else{
                         $('#item-'+id).fadeOut(100, function() { $(this).remove(); });
@@ -237,6 +237,8 @@
                 success:function(data){
                     if(shipping_method=='delivery'){
                         $('#cart-delivery-info').fadeIn(200);
+                        $('#checkout-delivery-info').fadeIn(200);
+                        $('.shipping_method_text').text('Delivery');
                         $('#cart-data').html(data);
                         $('#cart-subtotal').fadeOut(100);
                         $('#cart-total').fadeOut(100);
@@ -247,6 +249,8 @@
                         }, 100);
                     }else{
                         $('#cart-delivery-info').fadeOut(300);
+                        $('#checkout-delivery-info').fadeOut(300);
+                        $('.shipping_method_text').text('Retiro en local');
                         setTimeout(function(){ 
                             $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                             $('#cart-total').html('$'+data['total']).fadeIn(200);
