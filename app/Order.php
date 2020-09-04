@@ -136,12 +136,12 @@ class Order extends Model
         if($hours>=24){
             return '<span class="badge badge-danger"><i class="far fa-clock"></i> Este pedido tiene más de un día de demora</span>';
         }else{
-            if($minutes>=10){
-                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace '.$minutes.' minutos</span>';
-            }elseif($minutes>=30){
-                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace '.$minutes.' minutos de demora</span>';
-            }elseif($minutes>=60){
-                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace mas de una hora de demora</span>';
+            if($minutes>=10 && $minutes<30){
+                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace más de 10 minutos</span>';
+            }elseif($minutes>=30 && $minutes<60){
+                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace más de 30 minutos</span>';
+            }elseif($minutes>=60 && $minutes<1440){
+                return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace más de una hora</span>';
             }
         }
     }
