@@ -135,6 +135,8 @@ class Order extends Model
 
         if($hours>=24){
             return '<span class="badge badge-danger"><i class="far fa-clock"></i> Este pedido tiene más de un día de demora</span>';
+        }elseif($hours>=12 && $hours<24){
+            return '<span class="badge badge-danger"><i class="far fa-clock"></i> Este pedido tiene más de 12 horas de demora</span>';
         }else{
             if($minutes>=10 && $minutes<30){
                 return '<span class="badge badge-warning"><i class="fas fa-exclamation-triangle"></i> Pedido realizado hace más de 10 minutos</span>';
