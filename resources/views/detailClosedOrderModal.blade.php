@@ -42,7 +42,7 @@
                             <div class="row mt-2" style="font-size: 13px">
                                 <div class="d-flex">
                                     <div class="d-block">
-                                        <h6 class="txt-muted order-title">Codigo de referencia</h6>
+                                        <h6 class="txt-muted order-title">Código de referencia</h6>
                                         <p class="order-text">{{$order->code}}</p>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="d-inline" style="font-size: .8em">
                         <h6 class="txt-muted order-title">Total</h6>
-                        <p class="order-text">${{$order->total}}</p>
+                        <p class="order-text">${{formatPrice($order->total)}}</p>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
             <div class="col-12">
             
             <div class="address border-bottom" style="font-size: 14px">
-                <h6 class="txt-muted order-title">Direccion de entrega</h6>
+                <h6 class="txt-muted order-title">Dirección de entrega</h6>
                 @if ($order->shipping_method=='delivery')
                     <p>{{$order->getFullAddress()}}</p>
                 @else
@@ -125,19 +125,19 @@
                 <tbody>
                     <tr>
                     <td>Subtotal:</td>
-                    <td style="text-align: right">${{$order->subtotal}}</td>
+                    <td style="text-align: right">${{formatPrice($order->subtotal)}}</td>
                     </tr>
                     <tr>
                     <td>Delivery:</td>
                     @if ($order->shipping_method=='delivery')
-                        <td style="text-align: right">${{$order->delivery}}</td>
+                        <td style="text-align: right">${{formatPrice($order->delivery)}}</td>
                     @else
                         <td style="text-align: right">-</td>
                     @endif
                     </tr>
                     <tr>
                     <td>Total:</td>
-                    <td style="text-align: right">${{$order->total}}</td>
+                    <td style="text-align: right">${{formatPrice($order->total)}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -215,7 +215,7 @@
                             </div>
                             <div class="d-inline ml-5">
                                 <h6 class="txt-muted order-title">Total</h6>
-                                <p class="order-text">${{$order->total}}</p>
+                                <p class="order-text">${{formatPrice($order->total)}}</p>
                             </div>
                         </div>
                     </div>
@@ -282,19 +282,19 @@
                 <tbody>
                     <tr>
                     <td>Subtotal:</td>
-                    <td style="text-align: right">${{$order->subtotal}}</td>
+                    <td style="text-align: right">${{formatPrice($order->subtotal)}}</td>
                     </tr>
                     <tr>
                     <td>Delivery:</td>
                     @if ($order->shipping_method=='delivery')
-                        <td style="text-align: right">${{$order->delivery}}</td>
+                        <td style="text-align: right">${{formatPrice($order->delivery)}}</td>
                     @else
                         <td style="text-align: right">-</td>
                     @endif
                     </tr>
                     <tr>
                     <td>Total:</td>
-                    <td style="text-align: right">${{$order->total}}</td>
+                    <td style="text-align: right">${{formatPrice($order->total)}}</td>
                     </tr>
                 </tbody>
             </table>

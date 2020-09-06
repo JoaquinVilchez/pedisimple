@@ -229,6 +229,10 @@ class OrderController extends Controller
             ]);
         }   
 
+        $order = Order::find($order->id);
+
+        $url = 'https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappUpdateOrder($order));
+        session()->flash('updatedOrder', $url);
     }
 
     /**

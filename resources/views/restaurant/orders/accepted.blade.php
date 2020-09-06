@@ -23,6 +23,8 @@
 @section('main')
     @if (session()->has('newurl'))
         <body onload="window.open('{{session('newurl')}}', '_blank')"></body>
+    @elseif(session()->has('updatedOrder'))
+        <body onload="window.open('{{session('updatedOrder')}}', '_blank')"></body>
     @endif
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
         <h1 class="h2"><strong>Pedidos aceptados</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>

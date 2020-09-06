@@ -219,7 +219,7 @@
                                                     </div>
                                                     @else
                                                         <div class="col-6">
-                                                            <a  class="btn btn-block btn-outline-primary">Nueva dirección</a>
+                                                            <a onclick="newAddress();" class="btn btn-block btn-outline-primary">Nueva dirección</a>
                                                         </div>
                                                     @endif
                                                 </div>

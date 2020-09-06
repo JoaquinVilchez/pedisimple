@@ -97,13 +97,89 @@ function whatsappNumberCustomer($order){
 }
 
 function whatsappMessageCustomer($order){
-    if($order->user_id!=null){
-        $first_name = $order->user->first_name;
-    }else{
-        $first_name = $order->guest_first_name;
-    }
+if($order->user_id!=null){
+    $first_name = $order->user->first_name;
+}else{
+    $first_name = $order->guest_first_name;
+}
 
-    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Confirmamos un pedido que hiciste desde '.config("app.name").'.';
+$list = '';
+foreach($order->lineItems as $item){
+if($item->variants==null){
+$list .= "
+_- (".$item->quantity.") ".$item->product->name." [$".formatPrice($item->price*$item->quantity)."]_";
+}else{
+$list .= "
+_- (".$item->quantity.") ".$item->product->name." (".implode(', ', $item->showVariants()).") [$".formatPrice($item->price*$item->quantity)."]_";
+}
+}
+
+if($order->shipping_method=='delivery'){
+$delivery = "
+Envío: *$".formatPrice($order->delivery)."* _(El precio puede variar en base a la distancia)_";
+}else{
+$delivery = '';
+}
+
+return 
+"¡Hola ".$first_name."! Soy ".Auth::user()->first_name." de ".$order->restaurant->name.". Confirmamos tu pedido que hiciste en *".config("app.name")."*.
+
+Código: *".$order->code."*
+Detalle del pedido: "
+.$list."
+
+Subtotal: *$".formatPrice($order->subtotal)."*".$delivery."
+
+Total: *$".formatPrice($order->total)."*
+
+Nos mantendremos en contacto contigo para coordinar la entrega del pedido.
+
+¡Muchas gracias por hacer tu pedido!
+
+________________________________
+_www.pedisimple.com_
+_Venado Tuerto, Santa Fe_"
+;
+}
+
+function whatsappUpdateOrder($order){
+if($order->user_id!=null){
+    $first_name = $order->user->first_name;
+}else{
+    $first_name = $order->guest_first_name;
+}
+
+$list = '';
+foreach($order->lineItems as $item){
+if($item->variants==null){
+$list .= "
+_- (".$item->quantity.") ".$item->product->name." [$".formatPrice($item->price*$item->quantity)."]_";
+}else{
+$list .= "
+_- (".$item->quantity.") ".$item->product->name." (".implode(', ', $item->showVariants()).") [$".formatPrice($item->price*$item->quantity)."]_";
+}
+}
+
+if($order->shipping_method=='delivery'){
+$delivery = "
+Envío: *$".formatPrice($order->delivery)."* _(El precio puede variar en base a la distancia)_";
+}else{
+$delivery = '';
+}
+
+return 
+"*Pedido modificado:* 
+
+Detalle del pedido: "
+.$list."
+
+Subtotal: *$".formatPrice($order->subtotal)."*".$delivery."
+
+Total: *$".formatPrice($order->total)."*
+________________________________
+_www.pedisimple.com_
+_Venado Tuerto, Santa Fe_"
+;
 }
 
 
