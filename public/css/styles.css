@@ -343,3 +343,11 @@ a {
 }
 
 /* BOTON DE AYUDA */
+
+.upload-image-preview {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+}

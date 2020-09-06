@@ -61,7 +61,7 @@
               <tr>
                 <td>Costo de envío</td>
                 @if ($restaurant->shipping_price != 0)
-                  <td>${{$restaurant->shipping_price}}</td>
+                  <td>${{formatPrice($restaurant->shipping_price)}}</td>
                 @else
                   <td>Sin cargo</td>
                 @endif

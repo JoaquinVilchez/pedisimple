@@ -21,7 +21,7 @@
                     </td>
                     <td><small>{{$order->ordered}}</small></td>
                     <td><span class="{{$order->stateStyle()}}">{{$order->stateLang()}}</span></td>
-                    <td>$ {{$order->total}}</td>
+                    <td>$ {{formatPrice($order->total)}}</td>
                     <td><a href="" data-toggle="modal" data-target="#orderDetailsModal" onclick="showClosedOrder({{$order->id}})">Ver pedido</a></td>
                 </tr>
                 @endforeach

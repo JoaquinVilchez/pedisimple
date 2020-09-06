@@ -74,7 +74,7 @@
             @else
               <td>Sin categoria</td>
             @endif
-            <td>${{$product->price}}</td>
+            <td>${{formatPrice($product->price)}}</td>
             <td style="text-align:center" width="10%">
               <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
                 @csrf

@@ -65,7 +65,7 @@
                                     <p class="text-muted mobile-title mb-1">Metodo de envío</p>
                                     <p class="mobile-description">{{$order->getShippingMethod()}}</p>
                                     <p class="text-muted mobile-title mb-1">Total</p>
-                                    <p class="mobile-description">${{$order->total}}</p>
+                                    <p class="mobile-description">${{formatPrice($order->total)}}</p>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                                       <hr class="m-0">
                                       <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
-                                      <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubbers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Glubber</a>
+                                      <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Gluber</a>
                                       <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
                                     </div>
                                 </div>
@@ -178,7 +178,7 @@
                                     <td> - </td>
                                 @endif
                                 <td>{{$order->getShippingMethod()}}</td>
-                                <td>${{$order->total}}</td>
+                                <td>${{formatPrice($order->total)}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -33,7 +33,7 @@
                                 @endif                        
                             </h6>
                         </div>
-                        <span class="text-muted">${{$item->quantity*$item->price}}</span>
+                        <span class="text-muted">${{formatPrice($item->quantity*$item->price)}}</span>
                         </li>
                     @endforeach
                         <li class="list-group-item d-flex justify-content-between py-1" style="border-top:2px solid #ffa64d">
@@ -43,7 +43,7 @@
                         @if($order->shipping_method=='delivery')
                         <li class="list-group-item d-flex justify-content-between py-1">
                             <small class="text-mute py-1"><span>Delivery</span></small>
-                            <small class="text-mute py-1"><span>${{$order->delivery}}</span></small>
+                            <small class="text-mute py-1"><span>${{formatPrice($order->delivery)}}</span></small>
                         </li>
                             <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
                                 <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar en base a la distancia.
@@ -51,7 +51,7 @@
                         @endif
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total </span>
-                            <strong>${{$order->total}}</strong>
+                            <strong>${{formatPrice($order->total)}}</strong>
                         </li>
                     </ul>
                 </div>

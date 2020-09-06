@@ -21,7 +21,7 @@
                             @if ($product->details)
                                 <p class="text-mute my-1" style="font-size:.9em">Descripción: {{$product->details}}</p>
                             @endif
-                                <p class="text-mute my-1" style="font-size:.9em">Precio: ${{$product->price}}</p>
+                                <p class="text-mute my-1" style="font-size:.9em">Precio unitario: ${{formatPrice($product->price)}}</p>
                             @if(!$product->variants)
                                 <div class="form-group mt-2" style="font-size:.9em">
                                     <label>Cantidad</label>

@@ -54,7 +54,7 @@
                             @if($restaurant->shipping_method != 'pickup')
                                 <div class="vl"></div>
                                 <div class="d-inline">
-                                    <span class="d-block">${{$restaurant->shipping_price}} <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Importante: El precio del delivery puede variar en base a la distancia."></i></span>
+                                    <span class="d-block">${{formatPrice($restaurant->shipping_price)}} <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Importante: El precio del delivery puede variar en base a la distancia."></i></span>
                                     <small class="d-block txt-muted">Costo de envío</small>
                                 </div>
                                 @if($restaurant->shipping_time)
@@ -143,20 +143,14 @@
                                                 </div>
                                                 @endif
                                                 <div class="ml-2 mt-1">
-                                                    <span>${{$temporary_product->price}}</span>
+                                                    <span>${{formatPrice($temporary_product->price)}}</span>
                                                 </div>
                                                 <small><span class="badge badge-danger" style="font-weight: 400"><i class="far fa-clock"></i> {{$temporary_product->getRemainingDays()}}</span></small>
                                             </div>  
                                             
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffc500" href="#" 
-                                                    data-productname="{{$temporary_product->name}}" 
-                                                    data-productprice="{{$temporary_product->price}}" 
-                                                    data-toggle="modal" data-target="#addItemModal"
-                                                    onclick="showData({{$temporary_product->id}})"
-                                                    data-toggle="modal" data-target="#addItemModal">
-                                                    <i class="fas fa-plus-circle"></i></a>
+                                                    <a style="color:#ffc500;cursor: pointer"><i class="fas fa-plus-circle"></i></a>
                                                 </span>
                                             </div>        
                                         </div>
@@ -177,19 +171,13 @@
                                                     </div>
                                                     @endif
                                                     <div class="mt-1">
-                                                        <span>${{$temporary_product->price}}</span>
+                                                        <span>${{formatPrice($temporary_product->price)}}</span>
                                                     </div>
                                                     <small><span class="badge badge-danger" style="font-weight: 400"><i class="far fa-clock"></i> {{$temporary_product->getRemainingDays()}}</span></small>
                                             </div>  
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffc500" href="#" 
-                                                    data-productname="{{$temporary_product->name}}" 
-                                                    data-productprice="{{$temporary_product->price}}" 
-                                                    data-toggle="modal" data-target="#addItemModal"
-                                                    onclick="showData({{$temporary_product->id}})"
-                                                    data-toggle="modal" data-target="#addItemModal">
-                                                    <i class="fas fa-plus-circle"></i></a>
+                                                    <a style="color:#ffc500;cursor: pointer"><i class="fas fa-plus-circle"></i></a>
                                                 </span>
                                             </div>        
                                         </div>                                
@@ -228,17 +216,12 @@
                                                     </div>
                                                     @endif
                                                     <div class="mt-1">
-                                                        <span>${{$product->price}}</span>
+                                                        <span>${{formatPrice($product->price)}}</span>
                                                     </div>
                                             </div>  
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
-                                                    <a style="color:#ffc500" href="#"
-                                                    data-productname="{{$product->name}}" 
-                                                    data-productprice="{{$product->price}}" 
-                                                    data-toggle="modal" data-target="#addItemModal"
-                                                    onclick="showData({{$product->id}})"
-                                                    <i class="fas fa-plus-circle"></i></a>
+                                                    <a style="color:#ffc500;cursor: pointer"><i class="fas fa-plus-circle"></i></a>
                                                 </span>
                                             </div>        
                                         </div>                                
@@ -492,9 +475,14 @@
                     $('#no-confirm-empty-cart').hide();
                 },
                 error:function(data){
+                    console.log(data);
                     $('#addItemModal').modal('hide');
                     $.each(data.responseJSON, function(key,value) {
-                        $('#cart-data').append('<div class="message-error alert alert-danger alert-dismissible fade show" role="alert">'+value+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        if(value.variants){
+                            $('#cart-data').html('<div class="message-error alert alert-danger alert-dismissible fade show" role="alert">'+value.variants+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        }else{
+                            $('#cart-data').html('<div class="message-error alert alert-danger alert-dismissible fade show" role="alert">'+value+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        }
                     });
                     setTimeout(function() {
                         $(".message-error").fadeOut(200);

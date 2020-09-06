@@ -124,7 +124,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">$</span>
                 </div>
-                <input type="number" name="price" class="form-control" value="{{old('price', $product->price)}}">
+                <input type="number" name="price" class="form-control" value="{{old('price', formatPrice($product->price))}}">
               </div>
             {!!$errors->first('price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
               <div class="form-group">
@@ -136,7 +136,7 @@
               </div>
             <label>Imágen</label>
               <div class="form-group">
-                <div id="image_container"><img id="view_image" data-original="{{asset('storage/uploads/products/'.$product->image)}}" class="border" style="object-fit: cover; width:150px; height:150px"></div>
+                <div id="image_container"><img id="view_image" data-original="{{asset('storage/uploads/products/'.$product->image)}}" class="upload-image-preview"></div>
                 <div id="delete_image"><a onclick="removeImage();">Eliminar</a></div>
               </div>
               <div class="input-group mb-3">

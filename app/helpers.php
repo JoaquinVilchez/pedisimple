@@ -4,6 +4,10 @@ use Carbon\Carbon;
 use App\OpeningDateTime;
 use App\Product;
 
+function formatPrice($price){
+    return number_format($price, 0, ',', '');
+}
+
 function cartRestaurant(){
     $firstItem = \Cart::getContent()->first();
     $restaurant = $firstItem->associatedModel->restaurant->id;

@@ -58,7 +58,7 @@
               @else
                 <td>Sin categoría</td>
               @endif
-            <td>${{$product->price}}</td>
+            <td>${{formatPrice($product->price)}}</td>
             <td><small>{{$product->getTemporaryDate()}}</small></td>  
             <td>{{ucfirst($product->updated_at->calendar())}}</td>
             <td>

@@ -67,7 +67,7 @@
                                     <p class="text-muted mobile-title mb-1">Metodo de envío</p>
                                     <p class="mobile-description">{{$order->getShippingMethod()}}</p>
                                     <p class="text-muted mobile-title mb-1">Total</p>
-                                    <p class="mobile-description">${{$order->total}}</p>
+                                    <p class="mobile-description">${{formatPrice($order->total)}}</p>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                                             <td> - </td>
                                         @endif                                
                                     <td>{{$order->getShippingMethod()}}</td>
-                                    <td>${{$order->total}}</td>
+                                    <td>${{formatPrice($order->total)}}</td>
                                 </tr>
                             </tbody>
                         </table>

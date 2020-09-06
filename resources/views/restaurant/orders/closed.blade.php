@@ -26,7 +26,7 @@
                 <tr>
                     <td>{{$order->code}}</td>
                     <td>{{$order->getFullName()}}</td>
-                    <td>${{$order->total}}</td>
+                    <td>${{formatPrice($order->total)}}</td>
                     <td>{{ucfirst($order->created_at->calendar())}}</td>
                     <td><a class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#orderDetailsModal" onclick="showClosedOrder({{$order->id}})">Detalle</a></td>
                 </tr>

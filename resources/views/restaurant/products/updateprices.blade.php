@@ -33,7 +33,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1">$</span>
     </div>
-    <input type="number" class="form-control" name="delivery" value="{{$restaurant->shipping_price}}">
+    <input type="number" class="form-control" name="delivery" value="{{formatPrice($restaurant->shipping_price)}}">
   </div>
   <hr>
   <h6 class="txt-bold pb-2">Productos</h6>
@@ -62,7 +62,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1">$</span>
                 </div>
-                <input type="number" class="form-control" name="price[]" value="{{$product->price}}">
+                <input type="number" class="form-control" name="price[]" value="{{formatPrice($product->price)}}">
               </div>
             </td>
           </tr>
@@ -80,27 +80,4 @@
   </div>
 </form>
 @endsection
-
-{{-- @section('js-scripts')
-<script>
-var products = [];
-
-function addProductToEdit(id){
-  var product = '';
-
-  var available = $('#available-'+id).val();
-  var price = $('#price-'+id).val();
-
-  var product = {
-    id:id,
-    available:available,
-    price:price
-  }
-
-  products.push(product);
-
-  console.log(products);
-}
-</script>
-@endsection --}}
 

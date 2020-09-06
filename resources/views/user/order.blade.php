@@ -30,7 +30,7 @@
                                 </span>
                             </td>
                             <td style="text-align: center">{{$item->quantity}}</td>
-                            <td>${{$item->product->price}}</td>
+                            <td>${{formatPrice($item->product->price)}}</td>
                             <td></td>
                         </tr>
                     @endforeach

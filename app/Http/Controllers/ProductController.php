@@ -311,7 +311,7 @@ class ProductController extends Controller
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->fill('#ffffff')->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
             
             Storage::put("public/uploads/products/".$path, $image->__toString());
 

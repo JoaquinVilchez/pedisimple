@@ -38,7 +38,7 @@
                                         <input type="hidden" name="id" value="{{$item->id}}">
                                         <input type="hidden" name="name" value="{{$item->name}}">
                                         <input type="hidden" name="quantity" value="{{$item->quantity}}">
-                                        <input type="hidden" name="price" value="{{$item->price}}">
+                                        <input type="hidden" name="price" value="{{formatPrice($item->price)}}">
                                         <select class="d-inline float-left" name="quantity" onchange="updateItemQuantity('{{$item->id}}')" id="cart-update-quantity-{{$item->id}}">
                                             @for ($i = 1; $i < $item->quantity+10; $i++)
                                                 <option @if($i==$item->quantity) selected @endif value="{{$i}}">{{$i}}</option>
@@ -54,7 +54,7 @@
                                 @endif
                             </div>
                             <div class="col">
-                                <span class="text-muted" id="cart-item-{{$item->id}}-price">{{'$'.$item->price*$item->quantity}}</span>
+                                <span class="text-muted" id="cart-item-{{$item->id}}-price">{{'$'.formatPrice($item->price*$item->quantity)}}</span>
                             </div>
                         </li>
                     @endforeach
@@ -91,7 +91,7 @@
                     <div id="cart-delivery-info">
                         <li class="list-group-item d-flex justify-content-between rounded-0">
                             <span>Delivery </span>
-                            <strong>${{$restaurant->shipping_price}}</strong>
+                            <strong>${{formatPrice($restaurant->shipping_price)}}</strong>
                         </li>
                         <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
                             <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar en base a la distancia.

@@ -133,7 +133,6 @@ class CartController extends Controller
 
                     return view('carrito')->with('restaurant', $restaurant);
 
-                    // return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
                 }else{
                     return response()->json([
                         'errors'  => 'El producto debe ser del mismo comercio.',

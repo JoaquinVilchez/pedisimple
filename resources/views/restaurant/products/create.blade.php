@@ -24,7 +24,7 @@
           <div class="card-body">
             <div class="form-group">
               <label>Nombre</label>
-            <input type="text" name="name" class="form-control" value="{{old('name')}}">
+            <input type="text" name="name" class="form-control" value="{{old('name')}}" autocomplete="off">
                 {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
@@ -51,7 +51,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text">Mínimo</span>
                           </div>
-                          <input type="number" id="minimum" name="minimum" class="form-control" min="0" value="{{old('minimum')}}">
+                          <input type="number" id="minimum" name="minimum" class="form-control" min="0" value="{{old('minimum')}}" autocomplete="off">
                           {!!$errors->first('minimum', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
     
@@ -59,7 +59,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text">Máximo</span>
                           </div>
-                          <input type="number" id="maximum" name="maximum" class="form-control" min="0" value="{{old('maximum')}}">
+                          <input type="number" id="maximum" name="maximum" class="form-control" min="0" value="{{old('maximum')}}" autocomplete="off">
                           {!!$errors->first('maximum', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                         </div>
                       </div>
@@ -123,24 +123,31 @@
         <div class="card my-2">
           <h5 class="card-header">Otros</h5>
           <div class="card-body">
-            <label>Precio</label>
-            <div class="input-group mb-3 col-xl-6 pl-0">
-              <div class="input-group-prepend">
-                <span class="input-group-text">$</span>
+              <div class="row">
+                <div class="col-6">
+                  <label>Precio</label>
+                  <div class="input-group mb-3 pl-0">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input type="number" name="price" class="form-control" min="0" value="{{old('price')}}" autocomplete="off">
+                    {!!$errors->first('price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label>Estado</label>
+                    <select class="form-control" name="state" value={{old('state')}}>
+                      <option value="available" selected>Disponible</option>
+                      <option value="not-available">No disponible</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <input type="number" name="price" class="form-control" min="0" value="{{old('price')}}">
-              {!!$errors->first('price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-            </div>
-            <div class="form-group">
-              <label>Estado</label>
-              <select class="form-control" name="state" value={{old('state')}}>
-                <option value="available" selected>Disponible</option>
-                <option value="not-available">No disponible</option>
-              </select>
-            </div>
+
             <label>Imágen</label>
               <div class="form-group">
-                <div id="image_container" hidden><img id="view_image" data-original="{{asset('storage/uploads/products/no_image.png')}}" class="img-thumbnail" width="150px"></div>
+                <div id="image_container" hidden><img id="view_image" data-original="{{asset('storage/uploads/products/no_image.png')}}" class="upload-image-preview"></div>
                 <div id="delete_image" hidden><a href="#" onclick="removeImage();">Eliminar</a></div>
               </div>
               <div class="input-group mb-3">
@@ -223,7 +230,7 @@
           @method('POST')
           <div class="form-group">
             <label for="variantName">Nombre de la variante</label>
-            <input type="text" class="form-control" id="variantName" name="variant-name">
+            <input type="text" class="form-control" id="variantName" name="variant-name" autocomplete="off">
           </div>  
           <div class="form-group">
             <label>Descripción</label>
@@ -286,17 +293,6 @@
       },
     });
   }
-
-  // var limit = {};
-  // $('#maximum').on('change', function(evt) {
-  //   limit.max = ($(this).val());
-  // }); 
-
-  // $('input.variant-checkbox').on('change', function(evt) {
-  //   if($(this).siblings(':checked').length >= limit.max) {
-  //       this.checked = false;
-  //   }
-  // });
 
 </script>
 @endsection

@@ -97,13 +97,13 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">$</span>
                         </div>
-                        <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price', $restaurant->shipping_price)}}">
+                        <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price', formatPrice($restaurant->shipping_price))}}">
                         {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                       </div>
 
                     <label>Tiempo aproximado de envío</label>
                     <div class="input-group mb-3 col-8">
-                    <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time', $restaurant->shipping_time)}}">
+                    <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time', formatPrice($restaurant->shipping_time))}}">
                         <div class="input-group-append">
                           <span class="input-group-text" id="basic-addon2">min.</span>
                         </div>

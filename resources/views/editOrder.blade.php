@@ -98,7 +98,7 @@
                                 <div class="col-12 col-sm-6 col-md-5">
                                     <select class="selectpicker" id="addItem-select" data-live-search="true" title="Seleccione un producto" style="width: 100%">
                                         @foreach ($order->restaurant->availableProducts() as $product)
-                                    <option value="{{$product->id}}" data-variants="{{$product->variants}}" data-name="{{$product->name}}" data-price="{{$product->price}}" data-maximumvariants="{{$product->maximum_variants}}">{{$product->name}}</option>                                    
+                                    <option value="{{$product->id}}" data-variants="{{$product->variants}}" data-name="{{$product->name}}" data-price="{{formatPrice($product->price)}}" data-maximumvariants="{{$product->maximum_variants}}">{{$product->name}}</option>                                    
                                         @endforeach
                                     </select>
                                 </div>
@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6 col-sm-3 col-md-2"> 
-                                <span class="form-control my-1" id="addItem-price">$0.00</span>
+                                <span class="form-control my-1" id="addItem-price">$0</span>
                                 </div>
                                 <div class="col-12 col-sm-12 col-md-2">
                                     <button type="button" class="btn btn-primary btn-block my-1" id="addItem-button">Agregar</button>
