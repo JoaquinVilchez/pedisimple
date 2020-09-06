@@ -70,7 +70,7 @@
                 
                 @if(Auth::user())
                     <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <img width="150px" src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1">
+                        <img width="150px" src="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1">
                     </button>
                 @else
                     <button class="d-block d-sm-block d-md-none" style="background: transparent; border: 0px"type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -93,7 +93,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown d-none d-md-block d-lg-block d-xl-block">
-                                <img width="150px" data-original="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
+                                <img width="150px" data-original="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{Auth::user()->first_name}} <span class="caret"></span>
                                 </a>

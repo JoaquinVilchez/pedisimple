@@ -37,7 +37,7 @@
     </div>
     @else
         <div style="text-align:center" class="m-auto">
-            <img data-original="{{asset('images/design/complete.svg')}}" alt="" class="img-default my-2">
+            <img data-original="{{asset('storage/design/complete.svg')}}" alt="" class="img-default my-2">
             <p>No tienes pedidos cerrados.<br>
         </div>  
     @endif
@@ -54,7 +54,7 @@
         </div>
         <div class="modal-body" id="detail-closed-order-modal">
             <div class="d-flex justify-content-center">
-                <img src="{{asset('images/design/loading.svg')}}" alt="">
+                <img src="{{asset('storage/design/loading.svg')}}" alt="">
             </div>
         </div>
       </div>

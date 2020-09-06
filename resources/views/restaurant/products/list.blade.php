@@ -25,7 +25,7 @@
   
   @if(count($products)==0)
     <div style="text-align:center" class="m-auto">
-      <img data-original="{{asset('images/design/new-product.svg')}}" alt="" class="img-default my-2">
+      <img data-original="{{asset('/storage/design/new-product.svg')}}" alt="" class="img-default my-2">
       <p>Todavía no tienes productos.<br>
       <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
       {{-- <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2 d-inline">Importar planilla</a></p> --}}
@@ -58,7 +58,7 @@
                   </div>
                 @endif
                   <div class="d-inline">
-                    <img data-original="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
+                    <img data-original="{{asset('/storage/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
                   </div>
               </div>
             </td>
@@ -138,7 +138,7 @@
         </button>
       </div>
       <div style="text-align:center">
-        <img src="{{asset('images/design/alarm.svg')}}" width="70px" class="my-2" alt="">
+        <img src="{{asset('storage/design/alarm.svg')}}" width="70px" class="my-2" alt="">
         <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
       </div>
       <form action="{{route('product.destroyAll')}}" method="POST">
@@ -174,7 +174,7 @@
 
         <form action="{{route('product.import.excel')}}" method="post" enctype="multipart/form-data">
           @csrf
-          <img src="{{asset('images/design/upload.svg')}}" width="70px" class="my-2" alt="">
+          <img src="{{asset('storage/design/upload.svg')}}" width="70px" class="my-2" alt="">
           <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">Importar mis productos.</h5>
           <div id="export_info" class="mb-3"><span class="badge badge-warning"><a href="{{route('product.export.excel')}}" style="color:#4280C7">Descargue su archivo de productos</a> y actualice la información.</span></div>
           <hr>
@@ -218,7 +218,7 @@
       </div>
       <div class="modal-body">
         <div style="text-align:center">
-          <img src="{{asset('images/design/download.svg')}}" width="70px" class="my-2" alt="">
+          <img src="{{asset('storage/design/download.svg')}}" width="70px" class="my-2" alt="">
           <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">Exportar mi lista de productos</h5>
           <hr>
           <p>Exporte su lista de productos para modificar o agregar los productos de manera más sencilla. Una vez modificada la hoja de Excel, podrá importar su archivo a la plataforma.</p>

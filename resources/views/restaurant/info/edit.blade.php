@@ -117,7 +117,7 @@
                 <div class="row">
                     <div class="col-xl-4">
                         <div class="form-group">
-                            <div id="image_container"><img id="view_image" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></div>
+                            <div id="image_container"><img id="view_image" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></div>
                             <div id="delete_image"><a href="#image_container" onclick="removeImage();">Eliminar</a></div>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
             document.getElementById('delete_image').setAttribute('hidden', '');
             document.getElementById("upload_image").value = "";
             document.getElementById("img_action").value = "delete";
-            document.getElementById("view_image").src = "{{ asset('images/uploads/commerce/commerce.png') }}";
+            document.getElementById("view_image").src = "{{ asset('storage/uploads/commerce/commerce.png') }}";
 
         }
 

@@ -2,8 +2,7 @@
 
 @section('content')
 
-<section class="jumbotron text-center p-5 rounded-0" style="background: url('{{asset('images/banners/food.png')}}') no-repeat scroll 0px / cover transparent;">
-    {{-- {{asset('images/banners/food.png')}} --}}
+<section class="jumbotron text-center p-5 rounded-0" style="background: url('{{asset('storage/banners/food.png')}}') no-repeat scroll 0px / cover transparent;">
     <div class="container">
       <h1 class="text-white txt-bold" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);">Mi Cuenta</h1>
     </div>
@@ -12,7 +11,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-xl-3" style="text-align:center">
-            <img src="{{asset('images/uploads/user/'.Auth::user()->image)}}" class="img-thumbnail" width="100px">
+            <img src="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-thumbnail" width="100px">
             <div class="d-flex justify-content-center mb-2">
                 <span class="mt-2"><strong>{{Auth::user()->first_name}}</strong></span>
             </div>

@@ -10,9 +10,9 @@
             <div class="row">
                 <div class="col-5 col-md-4 pr-0">
                     @if($product->image != 'no_image.png') 
-                        <img src="{{asset('images/uploads/products/'.$product->image)}}" class="img-thumbnail">
+                        <img src="{{asset('storage/uploads/products/'.$product->image)}}" class="img-thumbnail">
                     @else
-                        <img src="{{asset('images/uploads/products/no_image.png')}}" class="img-thumbnail">
+                        <img src="{{asset('storage/uploads/products/no_image.png')}}" class="img-thumbnail">
                     @endif
                 </div>
                 <div class="col-7 col-md-8">

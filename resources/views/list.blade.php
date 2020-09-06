@@ -77,7 +77,7 @@
               <div class="card pt-2 mb-3" style="border: 1px solid rgb(226, 0, 0); min-height:50px">
                 <div class="row px-2">
                   <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
-                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('images/uploads/commerce/'.$pending_restaurant->image)}}" alt="">
+                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('storage/uploads/commerce/'.$pending_restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
                         <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $pending_restaurant->slug)}}">{{$pending_restaurant->name}}</a></h5>
@@ -110,7 +110,7 @@
               <div class="card p-2 mb-3">
                 <div class="row">
                   <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
-                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
+                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
                         <h5 class="mb-1" style="font-size: 2.5vh"><a @if($restaurant->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
@@ -147,7 +147,7 @@
 <section class="text-center">
   <hr>
   <div class="container col-xl-8 my-3">
-  <img data-original="{{asset('images/design/merchant.svg')}}" width="60px" class="my-2">
+  <img data-original="{{asset('storage/design/merchant.svg')}}" width="60px" class="my-2">
     <h4 class="txt-bold">¿Comerciante?</h4>
     <p>Sumate a Pedí Simple y obtené beneficios</p>
     <a class="btn btn-sm btn-primary" href="{{route('register.request')}}">Más información</a>
@@ -165,7 +165,7 @@
         </button>
       </div>
         <div class="modal-body text-center">
-          <img src="{{asset('images/design/close.svg')}}" class="img-step mb-4">
+          <img src="{{asset('storage/design/close.svg')}}" class="img-step mb-4">
           <h5>En este momento el comercio se encuentra cerrado</h5>  
           <p>¿Queres ingresar al perfil de todas formas?</p>
           <input type="hidden" id="restaurantid" name="restaurant_id" value="">

@@ -43,13 +43,14 @@ a {
 .home-image {
     height: 300px;
     /* background-image: url("https://images.pexels.com/photos/3944308/pexels-photo-3944308.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"); */
-    background-image: url("../images/design/home.png");
+    background-image: url("../storage/design/home.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 80%;
 }
 
 .img-default {
+    color: #ffffff;
     width: 100px;
 }
 
@@ -340,4 +341,5 @@ a {
     margin-bottom: 0px;
     cursor: default;
 }
+
 /* BOTON DE AYUDA */

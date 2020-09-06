@@ -120,7 +120,7 @@ class UserController extends Controller
                     }
             }    
             
-            $image->save('images/uploads/user/'.$path);         
+            $file->store('public/uploads/user');   
 
             $user->update(['image'=>$path]);  
         }
@@ -131,20 +131,19 @@ class UserController extends Controller
 
             $file = $request->file('image');
 
-            $path = $file->hashName('');
+            $path = $file->hashName();
 
-            $image = Image::make($file)->encode('jpg', 75);
-            
-            $image->fit(250, 250, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
 
-            if(!$old_image=='public/user.png'){
-                Storage::delete($old_image);
+            if($old_image!='user.png'){
+                Storage::delete('public/uploads/user/'.$old_image);
             }
-            Storage::put($path, (string) $image->encode());
+            
+            Storage::put("public/uploads/user/".$path, $image->__toString());
 
             $user->image = $path;         
+        }elseif($request->hasFile('image')=="" && $user->image!="user.png"){
+            Storage::delete('public/uploads/user/'.$user->image);
         }
 
         $user->update($request->only('first_name','last_name','email','characteristic','phone'));

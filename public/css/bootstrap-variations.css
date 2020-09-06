@@ -136,3 +136,24 @@ input[type]:focus {
     border-color: #dee2e6;
 }
 /* FIN PAGINATION */
+
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+    content: "Buscar";
+}
+
+.custom-file-label::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: calc(1.5em + 0.75rem);
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+    color: #495057;
+    content: "Buscar";
+    background-color: #e9ecef;
+    border-left: inherit;
+    border-radius: 0 0.25rem 0.25rem 0;
+}

@@ -18,7 +18,7 @@
                 <a href="#" data-toggle="modal" class="btn btn-primary" data-target="#addAddressModal">Agregar dirección</a>
             @else
             <div style="text-align: center">
-                <img data-original="{{asset('images/design/marker.svg')}}" alt="" class="img-step m-3">
+                <img data-original="{{asset('storage/design/marker.svg')}}" alt="" class="img-step m-3">
                 <p>Aún no tienes direcciones</p>
                 <a href="#" data-toggle="modal" class="btn btn-primary" data-target="#addAddressModal">Agregar dirección</a>
             </div>

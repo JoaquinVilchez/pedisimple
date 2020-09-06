@@ -5,7 +5,7 @@
 <div class="container mt-2">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6 text-center">
-            <img src="{{asset('images/design/customer.svg')}}" width="80px" class="my-4">
+            <img src="{{asset('storage/design/customer.svg')}}" width="80px" class="my-4">
             <h4 class="txt-bold">¡Listo!</h4>
             <h4 class="txt-bold">Tu pedido fue enviado al comercio</h4>
             <p>Le hemos enviado una notificación al comercio con tu pedido.<br>El comercio se comunicará por WhatsApp contigo a la brevedad.</p>
@@ -61,7 +61,7 @@
                     <div class="row ml-3">
                         <div class="d-flex align-items-center">
                             <div class="float-right">
-                                <img src="{{asset('images/uploads/commerce/'.$restaurant->image)}}" width="80px" class="border rounded mr-2">
+                                <img src="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" width="80px" class="border rounded mr-2">
                             </div>
                             <div class="float-left">
                                 <h5 class="txt-bold mb-0">{{$restaurant->name}}</h5>

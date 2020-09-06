@@ -310,13 +310,9 @@ class RestaurantController extends Controller
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->encode('jpg', 75);
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
             
-            $image->fit(250, 250, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $image->save('images/uploads/commerce/'.$path);         
+            Storage::put("public/uploads/commerce/".$path, $image->__toString());
 
             $data['image'] = $path;
 
@@ -464,23 +460,25 @@ class RestaurantController extends Controller
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->encode('jpg', 75);
-            
-            if($old_image != 'commerce.png'){
-                $path_old_image = 'images/uploads/commerce/'.$old_image;
-                    if(file_exists($path_old_image)){
-                        unlink($path_old_image);
-                    }
-            }    
-            
-            $image->fit(250, 250, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
 
-            $image->save('images/uploads/commerce/'.$path);         
+            if($old_image!='commerce.png'){
+                Storage::delete('public/uploads/commerce/'.$old_image);
+            }
+            
+            Storage::put("public/uploads/commerce/".$path, $image->__toString());
+
+            // $image->fit(250, 250, function ($constraint) {
+            //     $constraint->aspectRatio();
+            // });
 
             $restaurant->update(['image'=>$path]);  
+
+        }elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
+            Storage::delete('public/uploads/commerce/'.$restaurant->image);
         }
+
+        
         //FIN IMAGE
 
         if($request->action==='delete'){

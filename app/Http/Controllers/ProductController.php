@@ -311,9 +311,9 @@ class ProductController extends Controller
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->encode('jpg', 75);
+            $image = Image::make($file)->fill('#ffffff')->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
             
-            $image->save('images/uploads/products/'.$path);               
+            Storage::put("public/uploads/products/".$path, $image->__toString());
 
         }else{
             $path = 'no_image.png';
@@ -467,18 +467,17 @@ class ProductController extends Controller
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->encode('jpg', 75);
-            
-            if($old_image != 'no_image.png'){
-                $path_old_image = 'images/uploads/products/'.$old_image;
-                    if(file_exists($path_old_image)){
-                        unlink($path_old_image);
-                    }
-            }    
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
 
-            $image->save('images/uploads/products/'.$path);         
+            if($old_image!='no_image.png'){
+                Storage::delete('public/uploads/products/'.$old_image);
+            }
+            
+            Storage::put("public/uploads/products/".$path, $image->__toString()); 
 
             $product->update(['image'=>$path]);  
+        }elseif($request->hasFile('image')=="" && $product->image!="no_image.png"){
+            Storage::delete('public/uploads/products/'.$product->image);
         }
 
         if($request->action==='delete'){

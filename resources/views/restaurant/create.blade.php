@@ -5,7 +5,7 @@
     <form action="{{route('restaurant.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="align-items-center pt-3 pb-2 border-bottom" style="text-align:center">
-            <img data-original="{{asset('images/design/shop.svg')}}" class="img-default my-3">
+            <img data-original="{{asset('storage/design/shop.svg')}}" class="img-default my-3">
             <h4 class="txt-bold">Configura tu comercio</h4>
             <p>Completa los datos de tu comercio por única vez.</p>
         </div>

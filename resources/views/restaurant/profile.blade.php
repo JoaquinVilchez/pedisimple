@@ -24,7 +24,7 @@
                 <div class="row pb-2">
                     <div class="col-xl-2 col-lg-2 col-md-2 d-none d-md-block d-lg-block d-xl-block">
                         <div class="d-flex align-items-center justify-content-center">
-                            <img class="border rounded" width="120px" data-original="{{asset('images/uploads/commerce/'.$restaurant->image)}}" alt="">
+                            <img class="border rounded" width="120px" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" alt="">
                         </div>
                     </div>
                     <div class="col-xl-10 col-lg-10 col-md-10 pl-0">
@@ -159,14 +159,14 @@
                                                     <i class="fas fa-plus-circle"></i></a>
                                                 </span>
                                             </div>        
-                                        </div>                                
+                                        </div>
                                     </div>
                                 @else
                                     <div class="card p-2 m-1 product-card" onclick="showData({{$temporary_product->id}})" style="min-height:95%">
                                         <div class="row">
                                             <div class="col-4 pr-0">
                                                 <div class="d-flex align-items-center">
-                                                    <img class="d-block border m-1 img-card" data-original="{{asset('images/uploads/products/'.$temporary_product->image)}}" alt="">
+                                                    <img class="d-block border m-1 img-card" data-original="{{asset('storage/uploads/products/'.$temporary_product->image)}}" alt="">
                                                 </div>
                                             </div>
                                             <div class="col-6 pt-1 px-0">
@@ -216,7 +216,7 @@
                                             <div class="col-4 pr-0">
                                                 @if ($product->image != 'no_image.png')
                                                     <div class="d-flex align-items-center">
-                                                        <img class="d-block border m-1 img-card" data-original="{{asset('images/uploads/products/'.$product->image)}}" alt="">
+                                                        <img class="d-block border m-1 img-card" data-original="{{asset('storage/uploads/products/'.$product->image)}}" alt="">
                                                     </div>
                                                 @endif
                                             </div>
@@ -354,7 +354,7 @@
     <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content" id="modal-product">
-            <img src="{{asset('images/design/loading.svg')}}" alt="Espere por favor...">
+            <img src="{{asset('storage/design/loading.svg')}}" alt="Espere por favor...">
             </div>
         </div>
     </div>
@@ -432,7 +432,7 @@
                 window.location.href = "#"+valor;
             });
 
-            $('.product-card').on('click',function(){
+            $('.product-card').click(function(){
                 $('#addItemModal').modal('show');
             });
         });

@@ -7,13 +7,13 @@
                         @if(isset($restaurant))
                             <div class="d-flex">
                                 <div class="align-items-center">
-                                    <img data-original="{{asset('images/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                                    <img data-original="{{asset('storage/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
                                 </div>
                             </div>
                         @else
                             <div class="d-flex">
                                 <div class="align-items-center">
-                                    <img data-original="{{asset('images/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                                    <img data-original="{{asset('storage/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
                                 </div>
                             </div>
                         @endif
@@ -163,13 +163,13 @@
                 @if(isset($restaurant))
                     <div class="d-flex float-right">
                         <div class="align-items-center">
-                            <img src="{{asset('images/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                            <img src="{{asset('storage/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
                         </div>
                     </div>
                 @else
                     <div class="d-flex float-right">
                         <div class="align-items-center">
-                            <img src="{{asset('images/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                            <img src="{{asset('storage/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
                         </div>
                     </div>
                 @endif
