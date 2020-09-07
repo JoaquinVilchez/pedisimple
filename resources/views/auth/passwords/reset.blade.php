@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
             <div class="col-md-8" style="text-align:center">
-                <img data-original="{{asset('images/design/password.svg')}}" class="img-default my-4">
+                <img data-original="{{asset('storage/design/password.svg')}}" class="img-default my-4">
                 <h4 class="txt-bold">{{ __('Reset Password') }}</h4>
                 <hr>
                 <div class="container mt-5">

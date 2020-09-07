@@ -351,3 +351,8 @@ a {
     border: 1px solid #dcdcdc;
     border-radius: 3px;
 }
+
+.ps_alert {
+    background-color: #bb0000;
+    color: white;
+}

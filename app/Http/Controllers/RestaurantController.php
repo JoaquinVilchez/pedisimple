@@ -122,9 +122,9 @@ class RestaurantController extends Controller
     {
         $restaurant = Auth::user()->restaurant;        
         $schedule = $restaurant->getSchedule();
-
+        
         if ($schedule==null) {
-            $schedule=[0,1,2,3,4,5,6];
+            $schedule=array(0,1,2,3,4,5,6);
         }
 
         return view('restaurant.info.times')->with([
@@ -225,7 +225,7 @@ class RestaurantController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success_message', 'Horarios modificados con éxito');
+        return redirect()->route('restaurant.info')->with('success_message', 'Horarios modificados con éxito');
         
     }
 

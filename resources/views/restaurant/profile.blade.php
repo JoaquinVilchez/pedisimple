@@ -18,7 +18,7 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://images.pexels.com/photos/667986/pexels-photo-667986.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 55% / cover transparent; ">
+    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://image.freepik.com/foto-gratis/bandeja-cafe-medialunas_23-2147758222.jpg') no-repeat scroll 0px 50% / cover transparent; ">
         <div class="element">
             <div class="container text-white col-lg-8 ">
                 <div class="row pb-2">
@@ -266,12 +266,13 @@
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios</h6>
                                     <div class=" table-responsive">
-                                        <table class="table table-striped" style="font-size: 15px">
+                                        <table class="table table-sm table-striped" style="font-size: 15px">
                                             <tbody>
                                                 @foreach($restaurant->getSchedule() as $day)
                                                 @if(is_array($day))
                                                     <tr>
-                                                        <td>{{getDayName($day)}}</td>
+                                                        <td class="txt-bold">{{getDayName($day)}}</td>
+                                                        @if($day['state']=='open')
                                                         @if($day['start_hour_1'] == null or $day['end_hour_1'] == null)
                                                             <td>Cerrado</td>
                                                             <td></td>
@@ -283,13 +284,21 @@
                                                         @endif
                                                         
                                                         @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
-                                                            <td>Cerrado</td>
                                                             <td></td>
-                                                            <td>Cerrado</td>
+                                                            <td></td>
+                                                            <td></td>
                                                         @else
                                                             <td>{{substr($day['start_hour_2'], 0, -3)}}hs</td>
                                                                 <td>a</td>
                                                             <td>{{substr($day['end_hour_2'], 0, -3)}}hs</td>
+                                                        @endif
+                                                        @else
+                                                            <td><span class="badge badge-danger">Cerrado</span></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
                                                         @endif
                                                     </tr>
                                                 @else
@@ -312,10 +321,7 @@
                             @endif
 
                                 <!--Google map-->
-                                <h6 class="card-subtitle mb-2 text-muted mt-3">Mapa</h6>
-
-                                {{-- {{dd($restaurant->address->street,$restaurant->address->number,$restaurant->address->city->name, $restaurant->address->city->province->name, $restaurant->address->city->province->country)}} --}}
-                                
+                                <h6 class="card-subtitle mb-2 text-muted mt-3">Mapa</h6>                                
                                 <div id="map-container-google-1" class="z-depth-1-half map-container" width="100%">
                                 <iframe
                                 width="100%"
@@ -323,7 +329,6 @@
                                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
                         &q={{$restaurant->address->street}}+{{$restaurant->address->number}},{{$restaurant->address->city->name}}+{{$restaurant->address->city->province->country}}" allowfullscreen>
                                 </iframe>
-                                    {{-- <iframe data-original="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3317.550740722295!2d-61.97026504901005!3d-33.74643152005511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzPCsDQ0JzQ3LjIiUyA2McKwNTgnMDUuMSJX!5e0!3m2!1ses!2sar!4v1586535324154!5m2!1ses!2sar" frameborder="0" style="border:0" allowfullscreen></iframe> --}}
                                 </div>                    
                                 <!--Google Maps-->
                         </div>

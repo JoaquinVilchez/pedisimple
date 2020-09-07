@@ -157,6 +157,7 @@
                 </div>
             </div>
         </nav>
+
         
         @if(!\Cart::isEmpty() and Request::path()!="checkout" and Request::path()!="login" and Request::path()!="register" and Request::path()!="email/verify")
             <div class="alert alert-warning mb-0 text-center" role="alert" id="finishOrder" style="font-size:0.8rem">

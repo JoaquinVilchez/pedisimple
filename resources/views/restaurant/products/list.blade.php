@@ -68,7 +68,7 @@
                   <small><a href="#" data-toggle="modal" data-target="#variantsModal" onclick="showVariants({{$product->id}})">Ver variantes</a></small>
                 @endif
             </td>
-            <td>{{$product->details}}</td>
+            <td>{{mb_strimwidth($product->details, 0, 50, "...")}}</td>
             @if($product->temporary==null)
               <td>{{$product->category->name}}</td>  
             @else
