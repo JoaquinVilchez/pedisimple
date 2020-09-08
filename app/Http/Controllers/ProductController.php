@@ -426,8 +426,8 @@ class ProductController extends Controller
         $this->authorize('pass', $product);
 
         if($request->has_variants=='on'){
-            $minimumRule = 'required|numeric|min:1';
-            $maximumRule = 'required|numeric|gt:minimum';
+            $minimumRule = 'required|numeric|min:'.$request->minimum;
+            $maximumRule = 'required|numeric|gte:'.$request->minimum;
             $variantsRule='required|array';
         }else{
             $minimumRule='nullable';

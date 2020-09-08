@@ -86,6 +86,9 @@
                         </div>
                           {!!$errors->first('variants', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                       </div>
+                      <div class="container">
+                        <small><a href="#" class="btn btn-sm btn-block btn-outline-success mb-2" data-toggle="modal" data-target="#addVariant">+ Crear variante</a></small>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -203,6 +206,38 @@
 {{-- btn-mobile --}}
 
 </form>
+
+<!-- Modal -->
+<div class="modal fade" id="addVariant" tabindex="-1" role="dialog" aria-labelledby="addVariantLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addVariantLabel">Crear variante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="variantForm" method="POST">
+          @csrf
+          @method('POST')
+          <div class="form-group">
+            <label for="variantName">Nombre de la variante</label>
+            <input type="text" class="form-control" id="variantName" name="variant-name" autocomplete="off">
+          </div>  
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea class="form-control" name="variant-description" rows="3"></textarea>
+          </div>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="createVariant();">Guardar</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('js-scripts')
@@ -235,6 +270,24 @@
     var checkboxes = $(this).closest('.variants-details').find(':checkbox');
     checkboxes.prop('checked', $(this).is(':checked'));
   });
+
+  function createVariant(){
+    let name = $("input[name=variant-name]").val();
+    let description = $("textarea[name=variant-description]").val();
+    $.ajax({
+      url : '{{ route("variant.ajaxcreate") }}',
+      type: 'POST',
+      headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      data:{name:name,description:description},
+      success:function(data){
+          $('.variants-details').append(data);
+          $('#addVariant').find("input[type=text], textarea").val("");
+          $('#addVariant').modal('hide');
+      },
+    });
+  }
 </script>
 @endsection
 

@@ -143,6 +143,7 @@ class VariantController extends Controller
     {
         $variant = Variant::findOrFail($request->variantid);
         $this->authorize('pass', $variant);
+        
         $variants = DB::table('products_variants')->where('variant_id', $request->variantid)->delete();
         $variant->delete();
 
