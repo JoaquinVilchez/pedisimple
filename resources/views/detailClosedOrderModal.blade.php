@@ -5,15 +5,23 @@
                 <div class="d-flex space-between-center">
                     <div class="col-6">
                         @if(isset($restaurant))
-                            <div class="d-flex">
-                                <div class="align-items-center">
-                                    <img data-original="{{asset('storage/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                            @if ($order->restaurant->id == $restaurant->id)
+                                <div class="d-flex">
+                                    <div class="align-items-center">
+                                        <img src="{{asset('storage/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="d-flex">
+                                    <div class="align-items-center">
+                                        <img src="{{asset('storage/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                                    </div>
+                                </div>
+                            @endif
                         @else
                             <div class="d-flex">
                                 <div class="align-items-center">
-                                    <img data-original="{{asset('storage/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                                    <img src="{{asset('storage/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
                                 </div>
                             </div>
                         @endif
@@ -21,14 +29,25 @@
                     <div class="col-6">
                         <div class="float-left">
                             @if(isset($restaurant))
-                            <div class="row">
-                                <div class="d-flex">
-                                    <div class="d-block">
-                                        <h5 class="order-customer-name">{{$user['first_name'].' '.$user['last_name']}}</h5>
-                                        <p class="order-customer-phone">{{$user['characteristic'].'-'.$user['phone']}}</p>
+                                @if ($order->restaurant->id == $restaurant->id)
+                                    <div class="row">
+                                        <div class="d-flex">
+                                            <div class="d-block">
+                                                <h5 class="order-customer-name">{{$user['first_name'].' '.$user['last_name']}}</h5>
+                                                <p class="order-customer-phone">{{$user['characteristic'].'-'.$user['phone']}}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                @else
+                                    <div class="row">
+                                        <div class="d-flex">
+                                            <div class="d-block">
+                                                <h5 class="order-customer-name">{{$order->restaurant->name}}</h5>
+                                                <p class="order-customer-phone"><span class="{{$order->stateStyle()}}">{{$order->stateLang()}}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             @else
                             <div class="row">
                                 <div class="d-flex">
@@ -58,7 +77,7 @@
                         <p class="order-text">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->calendar())}}</p>
                     </div>
                     <div class="d-inline mr-4" style="font-size: .8em">
-                        <h6 class="txt-muted order-title">Metodo de envio</h6>
+                        <h6 class="txt-muted order-title">Método de envío</h6>
                         <p>{{$order->getShippingMethod()}}</p>
                     </div>
                     <div class="d-inline" style="font-size: .8em">
@@ -161,11 +180,19 @@
         <div class="row">
             <div class="col-2">
                 @if(isset($restaurant))
-                    <div class="d-flex float-right">
-                        <div class="align-items-center">
-                            <img src="{{asset('storage/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                    @if ($order->restaurant->id == $restaurant->id)
+                        <div class="d-flex float-right">
+                            <div class="align-items-center">
+                                <img src="{{asset('storage/uploads/user/'.$user['image'])}}" alt="" class="order-customer-image">
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="d-flex float-right">
+                            <div class="align-items-center">
+                                <img src="{{asset('storage/uploads/commerce/'.$order->restaurant->image)}}" alt="" class="order-customer-image">
+                            </div>
+                        </div>
+                    @endif
                 @else
                     <div class="d-flex float-right">
                         <div class="align-items-center">
@@ -177,14 +204,25 @@
             <div class="col-10">
                 <div class="float-left">
                     @if(isset($restaurant))
-                    <div class="row">
-                        <div class="d-flex">
-                            <div class="d-block">
-                                <h5 class="order-customer-name">{{$user['first_name'].' '.$user['last_name']}}</h5>
-                                <p class="order-customer-phone">{{$user['characteristic'].'-'.$user['phone']}}</p>
+                        @if ($order->restaurant->id == $restaurant->id)
+                            <div class="row">
+                                <div class="d-flex">
+                                    <div class="d-block">
+                                        <h5 class="order-customer-name">{{$user['first_name'].' '.$user['last_name']}}</h5>
+                                        <p class="order-customer-phone">{{$user['characteristic'].'-'.$user['phone']}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        @else
+                            <div class="row">
+                                <div class="d-flex">
+                                    <div class="d-block">
+                                        <h5 class="order-customer-name">{{$order->restaurant->name}}</h5>
+                                        <p class="order-customer-phone"><span class="{{$order->stateStyle()}}">{{$order->stateLang()}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     @else
                     <div class="row">
                         <div class="d-flex">
@@ -206,7 +244,7 @@
                                 <p class="order-text">{{ucfirst(\Carbon\Carbon::parse($order->ordered)->locale('es')->calendar())}}</p>
                             </div>
                             <div class="d-inline ml-5">
-                                <h6 class="txt-muted order-title">Metodo de envio</h6>
+                                <h6 class="txt-muted order-title">Método de envío</h6>
                                 @if ($order->shipping_method=='delivery')
                                     <p class="order-text">Delivery</p>
                                 @else
@@ -227,10 +265,10 @@
             <div class="col-8 border-right">
             
             <div class="address border-bottom" style="font-size: 14px">
-                <h6 class="txt-muted order-title">Direccion de entrega</h6>
+                <h6 class="txt-muted order-title">Dirección de entrega</h6>
                 @if ($order->shipping_method=='delivery')
                     @if ($order->address_id==null)
-                        <p class="order-text">{{getGuestAddress($order)}}</p>  
+                        <p class="order-text">{{$order->getFullAddress()}}</p>  
                     @else
                         <p class="order-text">{{$order->address->getAddress()}}</p>      
                     @endif

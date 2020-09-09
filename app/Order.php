@@ -46,18 +46,23 @@ class Order extends Model
 
     public function getFullAddress(){
         if($this->address!=null){
-            return $this->address->getAddress();
+            $address = $this->address->getAddress();
         }else{
-            if($this->guest_floor==null || $this->guest_department==null){
-                return $this->guest_street.' '.$this->guest_number;
-           }else{
-                $address = $this->guest_street.' '.$this->guest_number.' - '.$this->guest_floor.$this->guest_department;
+            if($this->guest_floor==null && $this->guest_department==null){
+                $address =  $this->guest_street.' '.$this->guest_number;
+            }else{
+                if($this->guest_floor==null && $this->guest_department!=null){
+                    $address = $this->guest_street.' '.$this->guest_number.' - '.$this->guest_department;
+                }else{
+                    $address = $this->guest_street.' '.$this->guest_number.' - '.$this->guest_floor.$this->guest_department;
+                }
+
                 if($this->guest_building_name!=null){
                     $address = $address.' - Edificio '.$this->guest_building_name;
                 }
-                return $address;
-           }
+            }
         }
+        return $address;
     }
 
     public function getPhone(){

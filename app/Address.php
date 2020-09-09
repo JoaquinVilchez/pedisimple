@@ -30,7 +30,11 @@ class Address extends Model
        if($this->floor==null || $this->department==null){
             return $this->street.' '.$this->number;
        }else{
-            $address = $this->street.' '.$this->number.' - '.$this->floor.$this->department;
+           if($this->floor==null && $this->department!=null){
+                $address = $this->street.' '.$this->number.' - '.$this->department;
+           }else{
+               $address = $this->street.' '.$this->number.' - '.$this->floor.$this->department;
+           }
             if($this->building_name!=null){
                 $address = $address.' - Edificio '.$this->building_name;
             }

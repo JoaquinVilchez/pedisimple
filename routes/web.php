@@ -101,7 +101,7 @@ Route::put('/productos/categorias/{categoria}', 'CategoryController@update')->na
 Route::post('/productos/categorias/borrar', 'CategoryController@destroy')->name('category.destroy')->middleware(['auth','verified', 'hasRestaurant']);
 
 //PEDIDOS
-Route::post('/pedidos/closed-details', 'OrderController@getClosedDetails')->name('order.closedDetails')->middleware(['auth','verified', 'hasRestaurant']);
+Route::post('/pedidos/closed-details', 'OrderController@getClosedDetails')->name('order.closedDetails')->middleware(['auth','verified']);
 Route::get('/pedidos/nuevos', 'OrderController@new')->name('order.new')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/pedidos/aceptados', 'OrderController@accepted')->name('order.accepted')->middleware(['auth','verified', 'hasRestaurant']);
 Route::get('/pedidos/cerrados', 'OrderController@closed')->name('order.closed')->middleware(['auth','verified', 'hasRestaurant']);

@@ -18,7 +18,7 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://image.freepik.com/foto-gratis/bandeja-cafe-medialunas_23-2147758222.jpg') no-repeat scroll 0px 50% / cover transparent; ">
+    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://images.pexels.com/photos/3756523/pexels-photo-3756523.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 50% / cover transparent; ">
         <div class="element">
             <div class="container text-white col-lg-8 ">
                 <div class="row pb-2">

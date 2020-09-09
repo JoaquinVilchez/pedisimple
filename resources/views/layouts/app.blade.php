@@ -70,7 +70,7 @@
                 
                 @if(Auth::user())
                     <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                        <img width="150px" src="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1">
+                        <img width="150px" src="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
                     </button>
                 @else
                     <button class="d-block d-sm-block d-md-none" style="background: transparent; border: 0px"type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -132,14 +132,13 @@
 
                                 <div>
                                     @if(Auth::user()->restaurant || Auth::user()->type=='merchant')
-                                    <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio</a>
+                                    <a class="dropdown-item" href="{{route('product.index')}}">Mi comercio @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0)<small><i class="fas fa-circle" style="color: #d60000"></i></small>@endif</a>
                                     @endif
 
                                     @if(Auth::user()->type=='administrator')
                                     <a class="dropdown-item" href="{{route('restaurant.admin.list')}}">Panel de administración</a>
                                     @endif
                                     <a class="dropdown-item" href="{{route('order.index')}}">Mis pedidos</a>
-                                    {{-- <a class="dropdown-item" href="{{route('address.index')}}">Mis direcciones</a> --}}
                                     <a class="dropdown-item" href="{{route('user.index')}}">Mis datos</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
