@@ -226,8 +226,14 @@ function getOrderAddress($order){
 }
 
 function getVariantsName($data){
-    return $data;
-    // implode(', ', $item->showVariants())
+    implode(', ', $item->showVariants());
 }
 
+function gluberStatus(){
+    if(env('GLUBER_STATUS')=='YES'){
+        return true;
+    }else{
+        return false;
+    }
+}
 ?>
