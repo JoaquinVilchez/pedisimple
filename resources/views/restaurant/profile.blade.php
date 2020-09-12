@@ -86,8 +86,9 @@
 
     <!-- Page Content -->
     <div class="container mt-3">
+        
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-12">
                 <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item">
                     <a class="nav-link active" id="pills-home-tab" style=".active{background-color:red}" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Productos</a>
@@ -97,13 +98,11 @@
                     </li>
                 </ul>
             </div>
+        </div>
         
-            <div class="col-md-4 order-md-2 mb-4">
-                @include('messages')
-                @include('carrito')
-            </div>
+        <div class="row">
 
-            <div class="col-lg-8 tab-content" id="pills-tabContent">
+            <div class="col-12 col-lg-8 order-1 order-lg-0 tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="container">
                         <div class="row my-3">
@@ -335,6 +334,11 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-12 col-lg-4 order-0">
+                @include('messages')
+                @include('carrito')
+            </div>
         </div>
     </div>
 
@@ -392,7 +396,7 @@
         </div>
     </div>
     
-    <a id="back-to-top" href="#" class="btn btn-primary btn-sm back-to-top" role="button"><i class="fas fa-arrow-circle-up"></i> Ir arriba</a>
+    <a id="back-to-top" href="#" class="btn btn-primary btn-sm back-to-top d-none d-lg-block" role="button"><i class="fas fa-arrow-circle-up"></i> Ir arriba</a>
 @endsection
 
 @section('js-scripts')
@@ -400,20 +404,21 @@
         $(document).ready(function(){            
 
             $(window).scroll(function () {
-                    if ($(this).scrollTop() > 50) {
-                        $('#back-to-top').fadeIn();
-                    } else {
-                        $('#back-to-top').fadeOut();
-                    }
-                });
-                // scroll body to 0px on click
-                $('#back-to-top').click(function () {
-                    $('#back-to-top').tooltip('hide');
-                    $('body,html').animate({
-                        scrollTop: 0
-                    }, 800);
-                    return false;
-                });
+                if ($(this).scrollTop() > 50) {
+                    $('#back-to-top').fadeIn();
+                    checkOffset();
+                } else {
+                    $('#back-to-top').fadeOut();
+                }
+            });
+
+            $('#back-to-top').click(function () {
+                $('#back-to-top').tooltip('hide');
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
 
             $('select#goToCategorySelect').on('change',function(){
                 var valor = $(this).val();
@@ -424,6 +429,23 @@
                 $('#addItemModal').modal('show');
             });
         });
+
+        function checkOffset() {
+            if($('#mobileCart').offset().top + $('#mobileCart').height() >= $('.footer').offset().top - 30)
+                $('#mobileCart').css('position', 'fixed');
+                $('#mobileCart').addClass('mb-5');
+            if($(document).scrollTop() + window.innerHeight < $('.footer').offset().top)
+                $('#mobileCart').removeClass('mb-5');
+                $('#mobileCart').css('position', 'fixed'); // restore when you scroll up
+        }
+
+        function goToCart(){
+            $('#mobileCart').tooltip('hide');
+            $('body,html').animate({
+                scrollTop: $('#cart-content').offset().top 
+            }, 800);
+            return false;
+        }
 
         function showData(productid){
             $.ajax({

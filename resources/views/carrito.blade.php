@@ -123,15 +123,50 @@
                 <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
             </div>
     </div>
+
+    @if(Cart::getTotalQuantity()>0)
+    <div class="fixed-bottom mb-4 d-lg-none" id="mobileCart">
+        <a onclick="goToCart();" class="btn btn-primary d-flex justify-content-between mobileCart">
+            <div>
+                Tu pedido <span class="badge badge-light ml-1" id="mobileCart-items">{{Cart::getTotalQuantity()}} items</span>
+            </div>
+            <div>
+                <span id="mobileCart-price">${{Cart::getTotal()}}</span>
+            </div>
+        </a>
+    </div>
+    @endif
 </div>
+
 
 @section('js-scripts-carrito')
 
     <script>
 
         $(document).ready(function() {
+
+
+            $(window).on('resize scroll', function() {
+                if ($('#cart-content').isInViewport()) {
+                    $('#mobileCart').fadeOut(300);
+                } else {
+                    $('#mobileCart').fadeIn(300);
+                }
+            });
+
+            $.fn.isInViewport = function() {
+                var elementTop = $(this).offset().top;
+                var elementBottom = elementTop + $(this).outerHeight();
+
+                var viewportTop = $(window).scrollTop();
+                var viewportBottom = viewportTop + $(window).height();
+
+                return elementBottom > viewportTop && elementTop < viewportBottom;
+            };
+
             cartFormat();
         });
+        
 
         function cartFormat(){
             var checkboxDelivery = $('#checkboxDelivery');
@@ -148,10 +183,12 @@
                 $('#cart-not-empty').hide();
                 $('#cart-empty').show();
                 $('#checkout-finish-order').attr('disable', 'disable');
+                $("#mobileCart").hide();
             }else if($('#cart-empty-false').length){
                 $('#cart-not-empty').show();
                 $('#cart-empty').hide();
                 $('#checkout-finish-order').removeAttr('disable', 'disable');
+                $("#mobileCart").show();
             }
         }
 
@@ -170,15 +207,20 @@
                         $('#cart-total-quantity').html(data['items']);
                         $('#checkout-finish-order').prop('disabled', true);
                         $('#finishOrder').hide();
+                        $('#mobileCart').remove();
                     }else{
                         $('#item-'+id).fadeOut(100, function() { $(this).remove(); });
                         $('#cart-subtotal').fadeOut(100);
                         $('#cart-total').fadeOut(100);
+                        $('#mobileCart-items').fadeOut(200);
+                        $('#mobileCart-price').fadeOut(200);
                         $('#checkout-finish-order').prop('disable', true);
                         setTimeout(function(){ 
                             $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                             $('#cart-total').html('$'+data['total']).fadeIn(200);
                             $('#cart-total-quantity').html(data['items']).fadeIn(200);
+                            $('#mobileCart-items').html(data['items']+' items').fadeIn(200);
+                            $('#mobileCart-price').html('$'+data['total']).fadeIn(200);
                         }, 100);
                     }
                 },
@@ -203,11 +245,15 @@
                     $('#cart-subtotal').fadeOut(100);
                     $('#cart-total').fadeOut(100);
                     $('#cart-total-quantity').fadeOut(200);
+                    $('#mobileCart-items').fadeOut(200);
+                    $('#mobileCart-price').fadeOut(200);
                     setTimeout(function(){ 
                         $('#cart-item-'+id+'-price').html('$'+data['itemPrice']*quantity).fadeIn(200);
                         $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                         $('#cart-total').html('$'+data['total']).fadeIn(200);
                         $('#cart-total-quantity').html(data['items']).fadeIn(200);
+                        $('#mobileCart-items').html(data['items']+' items').fadeIn(200);
+                        $('#mobileCart-price').html('$'+data['total']).fadeIn(200);
                     }, 0);
                 },
                 error:function(data){
@@ -237,6 +283,7 @@
                 },
                 data:{restaurant:restaurant,shipping_method:shipping_method},
                 success:function(data){
+
                     if(shipping_method=='delivery'){
                         $('#cart-delivery-info').fadeIn(200);
                         $('#checkout-delivery-info').fadeIn(200);
@@ -245,17 +292,21 @@
                         $('#cart-subtotal').fadeOut(100);
                         $('#cart-total').fadeOut(100);
                         $('#cart-total-quantity').fadeOut(200);
+                        $('#mobileCart-price').fadeOut(200);
                         setTimeout(function(){ 
                             $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                             $('#cart-total').html('$'+data['total']).fadeIn(200);
+                            $('#mobileCart-price').html('$'+data['total']).fadeIn(200);
                         }, 100);
                     }else{
                         $('#cart-delivery-info').fadeOut(300);
                         $('#checkout-delivery-info').fadeOut(300);
                         $('.shipping_method_text').text('Retiro en local');
+                        $('#mobileCart-price').fadeOut(200);
                         setTimeout(function(){ 
                             $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                             $('#cart-total').html('$'+data['total']).fadeIn(200);
+                            $('#mobileCart-price').html('$'+data['total']).fadeIn(200);
                         }, 100);
                     }
                 },
