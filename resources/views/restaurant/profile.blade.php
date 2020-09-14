@@ -12,7 +12,6 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        display: none;
     }
 </style>
 @endsection
@@ -401,14 +400,14 @@
 
 @section('js-scripts')
     <script>
-        $(document).ready(function(){            
+        $(document).ready(function(){       
+            $('#back-to-top').hide();
 
             $(window).scroll(function () {
-                if ($(this).scrollTop() > 50) {
-                    $('#back-to-top').fadeIn();
-                    checkOffset();
-                } else {
-                    $('#back-to-top').fadeOut();
+                if ($(this).scrollTop() > 100) {
+                    $('#back-to-top').fadeIn(100);
+                }else{
+                    $('#back-to-top').fadeOut(100);
                 }
             });
 

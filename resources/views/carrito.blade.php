@@ -145,7 +145,6 @@
 
         $(document).ready(function() {
 
-
             $(window).on('resize scroll', function() {
                 if ($('#cart-content').isInViewport()) {
                     $('#mobileCart').fadeOut(300);

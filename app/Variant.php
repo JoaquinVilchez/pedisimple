@@ -15,7 +15,7 @@ class Variant extends Model
     public function products(){
         return $this->belongsToMany(Product::class, 'products_variants');
     }
-    
+
     public function stateStyle(){
         switch ($this->state) {
             case 'not-available':
