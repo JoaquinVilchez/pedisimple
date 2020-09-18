@@ -108,7 +108,7 @@
                             <tr>
                             <td>{{$item->product->name}}
                                 @if ($item->variants!=null)
-                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}"></i>
+                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{$item->variants}}"></i>
                                 @endif
                                 @if ($item->aditional_notes!=null)
                                     <i class="fas fa-sticky-note" data-toggle="tooltip" data-placement="bottom" title="Nota: {{$item->aditional_notes}}"></i>
@@ -285,7 +285,7 @@
                             <tr>
                             <td>{{$item->product->name}}
                                 @if ($item->variants!=null)
-                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}"></i>
+                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{$item->variants}}"></i>
                                 @endif
                                 @if ($item->aditional_notes!=null)
                                     <i class="fas fa-sticky-note" data-toggle="tooltip" data-placement="bottom" title="Nota: {{$item->aditional_notes}}"></i>

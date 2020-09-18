@@ -3,6 +3,7 @@ use App\Restaurant;
 use Carbon\Carbon;
 use App\OpeningDateTime;
 use App\Product;
+use App\Variant;
 
 function formatPrice($price){
     return number_format($price, 0, ',', '');
@@ -235,5 +236,15 @@ function gluberStatus(){
     }else{
         return false;
     }
+}
+
+function showVariantsName($data){
+
+    $variants = [];
+        foreach($data as $id) {
+            $variant = Variant::find(intval($id));
+            array_push($variants,$variant->name);
+        }
+    return implode(', ', $variants);
 }
 ?>

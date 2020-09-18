@@ -127,11 +127,20 @@ class OrderController extends Controller
     public function close(Request $request)
     {
         $order = Order::find($request->orderid);
+
         $order->update([
             'state' => 'closed',
             'closed' => Carbon::now()
         ]);
-
+            
+        foreach ($order->lineitems as $item) {
+            if($item->variants != null){
+                $item->update([
+                    'variants' => showVariantsName($item->variants)
+                ]);
+            }
+        }
+            
         return back()->with('success_message', 'Pedido cerrado.');
     }
 

@@ -22,7 +22,7 @@
             <div  @if(Cart::isEmpty()) id="cart-empty-true" @else id="cart-empty-false" @endif></div>
             <div id="cart-not-empty">
                 <ul class="list-group list-group-flush">
-                    @foreach (Cart::getContent() as $item)        
+                    @foreach (Cart::getContent() as $item)
                         <li class="list-group-item d-flex justify-content-between lh-condensed" id="item-{{$item->id}}">
                             <div class="col-3">
                                 <div class="row">
@@ -50,7 +50,7 @@
                             <div class="col-7">   
                                 <h6 class="my-0">{{ucfirst($item->name)}}</h6>
                                 @if($item->attributes->variants)
-                                    <small><a href="#" data-toggle="modal" data-target="#variantsItemModal" class="ml-2" onclick="showItemVariants({{json_encode($item->attributes->variants)}}, '{{$item->associatedModel->name}}', {{json_encode($item->attributes->aditional_notes)}})">Ver variantes</a></small>
+                                <small><span style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="{{showVariantsName($item->attributes->variants)}}">Ver variantes </span></small>    
                                 @endif
                             </div>
                             <div class="col">
@@ -313,20 +313,6 @@
                     $.each(data.responseJSON.errors, function(key,value) {
                         $('#cart-data').append('<div class="message-error alert alert-danger">'+value+'</div>');
                     });
-                }
-            });
-        }
-        
-        function showItemVariants(variants, product, aditional_notes){
-            $.ajax({
-                url : '{{ route("variant.showItemVariants") }}',
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data:{variants:variants,product:product,aditional_notes:aditional_notes},
-                success:function(data){
-                    $('#product-modal-body').html(data)
                 }
             });
         }

@@ -131,7 +131,7 @@ class VariantController extends Controller
             'state'=>$request->state
         ]);
 
-        return redirect()->route('variant.index')->with('success_message', 'Variación editada con éxito');
+        return redirect()->route('variant.index')->with('success_message', 'Variante editada con éxito');
     }
 
     /**
@@ -145,8 +145,13 @@ class VariantController extends Controller
         $this->authorize('pass', $variant);
         
         $variants = DB::table('products_variants')->where('variant_id', $request->variantid)->delete();
+        
         $variant->delete();
 
-        return redirect()->route('variant.index')->with('success_message', 'Variación eliminada con éxito');
+        // $variant->update([
+        //     'state' => 'removed'
+        // ]);
+
+        return redirect()->route('variant.index')->with('success_message', 'Variante eliminada con éxito');
     }
 }
