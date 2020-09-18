@@ -102,7 +102,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if(\Cart::getCondition('Delivery'))
+                                        <div id="guest_address">
                                             <div class="form-group mb-1">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-8">
@@ -127,7 +127,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        </div>
                                         
                                         <div class="form-group mb-2">
                                             <div class="row">
@@ -333,6 +333,12 @@
         }
 
         $('#new-address').hide();
+
+        if($('#checkboxDelivery').prop('checked')){
+            $('#guest_address').fadeIn(200);
+        }else if($('#checkboxPickup').prop('checked')){
+            $('#guest_address').hide();
+        }
     });
 
     $('#btn-submit-form').click(function(){
@@ -374,20 +380,6 @@
             address.hide();
             addresstype.val('new-address');
         }
-
-        // address = document.getElementById("address");
-        // newaddress = document.getElementById("new-address");
-        // addresstype = document.getElementById("address_type");
-
-        // if($('#new-address').is(':hidden')){
-        //     newaddress.removeAttribute("hidden","");
-        //     address.setAttribute("hidden","");
-        //     addresstype.value='new-address';
-        // }else{
-        //     newaddress.setAttribute("hidden","");
-        //     address.removeAttribute("hidden","");    
-        //     addresstype.value='data-address';
-        // }
     }
 </script>
 @endsection

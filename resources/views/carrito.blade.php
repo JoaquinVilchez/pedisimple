@@ -284,6 +284,7 @@
                 success:function(data){
 
                     if(shipping_method=='delivery'){
+                        $('#guest_address').fadeIn(200);
                         $('#cart-delivery-info').fadeIn(200);
                         $('#checkout-delivery-info').fadeIn(200);
                         $('.shipping_method_text').text('Delivery');
@@ -298,6 +299,7 @@
                             $('#mobileCart-price').html('$'+data['total']).fadeIn(200);
                         }, 100);
                     }else{
+                        $('#guest_address').fadeOut(200);
                         $('#cart-delivery-info').fadeOut(300);
                         $('#checkout-delivery-info').fadeOut(300);
                         $('.shipping_method_text').text('Retiro en local');
