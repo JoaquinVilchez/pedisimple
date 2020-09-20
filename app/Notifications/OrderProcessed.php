@@ -30,12 +30,11 @@ class OrderProcessed extends Notification
   
   public function toWhatsApp($notifiable)
   {
-    $orderUrl = url("/orders/{$this->order->id}");
-    $company = env('APP_NAME');
-    $deliveryDate = $this->order->created_at->toFormattedDateString();
-
+    $url = url("/pedidos/nuevos");
+    $name = env('APP_NAME');
+    $date = $this->order->created_at->diffForHumans();
 
     return (new WhatsAppMessage)
-        ->content("Your {$company} order of {$this->order->id} has shipped and should be delivered on {$deliveryDate}. Details: {$orderUrl}");
+        ->content("¡Te llegó un nuevo pedido desde {$name}!. Código: *{$this->order->code}*. Accede al mismo haciendo click aquí: {$url}");
   }
 }
