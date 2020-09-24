@@ -49,8 +49,9 @@ Route::post('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
 Route::post('/carrito/remove', 'CartController@remove')->name('cart.remove');
 Route::resource('/carrito', 'CartController')->names('cart');
 
+Route::post('/usuario/administracion/ownerdata', 'UserController@ownerData')->name('restaurant.admin.ownerData')->middleware(['auth','verified', 'Admin']);
 Route::post('/usuario/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth','verified', 'Admin']);
-Route::resource('/usuario/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth','verified', 'Admin']);
+Route::resource('/usuario/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth','verified', 'Admin']);
 Route::get('/usuario/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
 Route::post('/usuario/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
 

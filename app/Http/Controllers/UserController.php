@@ -11,7 +11,12 @@ use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
 
-    
+    public function ownerData(Request $request){
+        $user = User::find($request->id);
+
+        return view('admin.restaurant.modal_info')->with('user',$user);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +24,7 @@ class UserController extends Controller
      */
     public function checkoutLogin(Request $request){
         
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password ], false)) {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password ], false)) {
             return response()->json('Bienvenido', 200);
         }else{
             return response()->json( ['errors' => 'Los datos ingresados no son correctos.'], 422);

@@ -54,7 +54,7 @@ class RestaurantController extends Controller
      */
     public function list()
     {            
-        $restaurants = Restaurant::orderBy('state', 'desc')->get();
+        $restaurants = Restaurant::orderBy('state', 'desc')->paginate(15);
         return view('admin.restaurant.list')->with('restaurants', $restaurants);
     }
 

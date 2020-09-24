@@ -21,7 +21,7 @@
           <h6>{{Auth::user()->restaurant->name}}</h6>
           @if(Auth::user()->restaurant->state=='active')
             @if(count(Auth::user()->restaurant->products)==0)
-            <div class="alert alert-warning m-2" role="alert">Para que tu comercio esté visible debes: <br><a href="{{route('product.create')}}" class="alert-link">Crear un producto</a></div>
+              <div class="alert alert-warning m-2" role="alert">Para que tu comercio esté visible debes: <br><a href="{{route('product.create')}}" class="alert-link">Crear un producto</a></div>
             @else
               <a class="btn btn-sm btn-primary" href="{{route('restaurant.show', Auth::user()->restaurant->slug)}}" target=”_blank” >Ver perfil</a>
             @endif
@@ -242,7 +242,6 @@
         </div>
       @endif
     @endif
-
     
     <main role="main" class="col-auto ml-sm-auto col-xl-10 col-12">    
       @yield('main')
@@ -251,22 +250,21 @@
   </div>
 </div>
 
-  <script>
+<script>
+  $(window).on('load',function(){
+      $('#exampleModal').modal('show');
+  });
 
-    $(window).on('load',function(){
-        $('#exampleModal').modal('show');
-    });
+  var url = window.location.pathname;  
+  const parts = url.split('/');
+  var activeCategory = parts[1];
+  var activePage = parts[2];
+  
+  
+  document.getElementById(activeCategory+'Collapse').classList.add("show")
+  document.getElementById(activePage).classList.add("active")
+</script>
 
-    var url = window.location.pathname;  
-    const parts = url.split('/');
-    var activeCategory = parts[1];
-    var activePage = parts[2];
-    
-    
-    document.getElementById(activeCategory+'Collapse').classList.add("show")
-    document.getElementById(activePage).classList.add("active")
-
-  </script>
 @endsection
 
 
