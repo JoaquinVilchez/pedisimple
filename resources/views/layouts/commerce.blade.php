@@ -27,14 +27,14 @@
             @endif
           @elseif(Auth::user()->restaurant->state=='pending')
             <div class="alert alert-warning p-0" role="alert">
-                <img data-original="{{asset('storage/design/padlock.svg')}}" alt="" width="50px" class="d-block mx-auto my-2">  
+                <i class="fas fa-exclamation-circle"></i>
                 <p class="d-block m-0">Tu comercio está pendiente de aprobación</p>
                 <a class="btn btn-sm btn-danger my-2" href="{{route('restaurant.show', Auth::user()->restaurant->slug)}}" target=”_blank” >Vista previa del perfil</a>
             </div>
           @elseif(Auth::user()->restaurant->state=='cancelled')
             <div class="alert alert-danger m-2" role="alert">Tu comercio fue cancelado</div>
           @elseif(Auth::user()->restaurant->state=='without-times')
-          <div class="alert alert-danger m-2" role="alert">Tu comercio fue inhabilitado temporalmente. <a href="{{route('restaurant.times')}}" class="alert-link">Establece los horarios de apertura</a> y se activará automáticamente.</div>
+            <div class="alert alert-danger m-2" role="alert">Tu comercio fue inhabilitado temporalmente. <a href="{{route('restaurant.times')}}" class="alert-link">Establece los horarios de apertura</a> y se activará automáticamente.</div>
           @endif
           <hr>
         </div>

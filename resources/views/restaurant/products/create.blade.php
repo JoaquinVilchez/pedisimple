@@ -13,10 +13,10 @@
   </div>
 </div>
 <div class="container container-fluid">
-@if(count($categories)==0)
-  <p>Primero debes crear una categoría antes que un producto. <br>
-    <a class="btn btn-sm btn-secondary my-2" href="{{route('category.create')}}">Crear categorías</a></p>
-@else
+  @if(count($categories)==0)
+    <p>Primero debes crear una categoría antes que un producto. <br>
+      <a class="btn btn-sm btn-secondary my-2" href="{{route('category.create')}}">Crear categorías</a></p>
+  @else
   <div class="row">
       <div class="col-xl-6 col-12 my-2 pl-0">
         <div class="card">
@@ -103,7 +103,7 @@
           <div class="card-body">
             @foreach($categories as $category)
             <div class="row">
-              <div class="col-6">
+              <div class="col-12">
               <div class="form-check">
                 <label class="form-check-label">
                   <input class="form-check-input" type="radio" name="category_id" value="{{$category->id}}" value="{{old('category_id')}}">
@@ -201,18 +201,19 @@
         </div>
       </div>
   </div>
-{{-- btn-mobile --}}
-<div class="d-block d-sm-none">
-<div class="row my-3">
-    <div class="col-xl-12">
-      <a href="{{route('product.index')}}" class="btn btn-secondary btn-block">Cancelar</a>
-      <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+  {{-- btn-mobile --}}
+  <div class="d-block d-sm-none">
+    <div class="col-12">
+      <div class="row my-3">
+        <a href="{{route('product.index')}}" class="btn btn-secondary btn-block">Cancelar</a>
+        <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+      </div>
     </div>
   </div>
-</div>
-{{-- btn-mobile --}}
+  {{-- btn-mobile --}}
 @endif
 </form>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="addVariant" tabindex="-1" role="dialog" aria-labelledby="addVariantLabel" aria-hidden="true">

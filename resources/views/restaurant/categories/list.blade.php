@@ -18,7 +18,9 @@
     <a href="{{route('category.create')}}" type="button" class="btn btn-primary">Agregar<i class="fas fa-plus ml-2"></i></a>
     </div>
 </div>
-<small class="ml-2"><i class="fas fa-exclamation-circle"></i> Organice el orden de muestra de sus categorías moviendo los nombres en la tabla.</small>
+@if(count($categories)>1)
+  <small class="ml-2"><i class="fas fa-exclamation-circle"></i> Organice el orden de muestra de sus categorías moviendo los nombres en la tabla.</small>
+@endif
 
 @include('messages')
 @if(count($categories)==0)

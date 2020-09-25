@@ -8,7 +8,7 @@
             <img data-original="{{asset('storage/design/chef.svg')}}" alt="" class="img-default mb-3">
                 <h5 class="txt-bold">¡Hola {{$person->first_name}}, que gusto tenerte por acá!</h5>
                 <p>Este es el primer paso para registrarte en la plataforma.</p>
-                <p>Completa el siguiente formulario con tus datos personales. <br>
+                <p>Completa el siguiente formulario con tus <strong>datos personales</strong>.<br>
                     Una vez completado te enviaremos un email de confirmación para verificar tu correo electrónico.</p>
             </div>
         @else
@@ -25,7 +25,7 @@
 
                 
                 
-                <div class="col-xl-12">
+                <div class="col-12">
                     <div class="card-body">
                     
                         <form method="POST" action="{{ route('register') }}">
@@ -100,33 +100,39 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-12">
-                                <div class="row">
-                                    <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
-                                    <div class="col-md-2 col-12">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control @error('phone') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
-                                            <small class="form-text text-muted ml-2">Ej: 3462</small>
+                            
+                            <div class="row">
+                                <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
+                                <div class="col-md-2 col-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
+                                        <small class="form-text text-muted ml-2">Ej: 3462</small>
+                                    </div>
+                                </div> 
+                                @error('characteristic')
+                                    <span class="invalid-feedback" role="alert">
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+
+                                <div class="col-md-4 col-12">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">15</span>
+                                            </div>
+                                            <input id="phone" type="text" class="form-control @error('characteristic') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
                                         </div>
-                                    </div> 
-                                    @error('characteristic')
+                                        @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
                                         </span>
-                                    @enderror
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <input id="phone" type="text" class="form-control @error('characteristic') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
-                                            <small class="form-text text-muted ml-2">Ej: 654321</small>
-                                        </div>
-                                        @error('phone')
-                                            <span class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </span>
                                         @enderror
+                                        <small class="form-text text-muted ml-2">Ej: 654321</small>
                                     </div>
                                 </div>
                             </div>
+                            
 
 
                             <div class="form-group row mb-0">

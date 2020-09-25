@@ -157,3 +157,52 @@ input[type]:focus {
     border-left: inherit;
     border-radius: 0 0.25rem 0.25rem 0;
 }
+
+/* BTN CHECKBOX */
+.btn-checkbox {
+    background-color: #e4e4e4;
+    border: 0px;
+    color: #3f3a34;
+    cursor: pointer;
+    padding: 2px 5px;
+    font-size: 0.8em;
+}
+
+.btn-checkbox:hover {
+    background-color: #d0d0d0;
+}
+
+.btn-checkbox:focus,
+.btn-checkbox.focus {
+    color: #fff;
+    background-color: #e4e4e4;
+    box-shadow: 0 0 0 0.2rem rgba(224, 224, 224, 0.5);
+}
+
+.btn-checkbox.disabled,
+.btn-checkbox:disabled {
+    color: #fff;
+    background-color: #e4e4e4;
+}
+
+.btn-checkbox:not(:disabled):not(.disabled):active,
+.btn-checkbox:not(:disabled):not(.disabled).active,
+.show > .btn-checkbox.dropdown-toggle {
+    color: #fff;
+    background-color: #e4e4e4;
+}
+
+.btn-checkbox:not(:disabled):not(.disabled):active:focus,
+.btn-checkbox:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(105, 105, 105, 0.591);
+}
+
+textarea:focus,
+input:focus,
+input[type]:focus {
+    border-color: #e4e4e4;
+    box-shadow: 0 1px 1px #d1d1d1 inset, 0 0 8px #d1d1d1;
+    outline: 0 none;
+}
+/* BTN CHECKBOX FIN */
