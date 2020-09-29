@@ -14,7 +14,7 @@ class AddStateColumnToVariantsTable extends Migration
     public function up()
     {
         Schema::table('variants', function (Blueprint $table) {
-            $table->string('state')->default('available')->after('description');
+            $table->string('state')->default('available');
         });
     }
 
