@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Restaurant;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
-use Auth;
+use Spatie\Permission\Models\Role;
 use Policies\RestaurantPolicy;
 
 class Visible
@@ -41,6 +42,8 @@ class Visible
                 }else{
                     return redirect()->route('list.index');
                 } 
+            }else{
+                return back();
             }
         }else{
             if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){

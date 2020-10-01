@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins:400,900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap");
 * {
     font-family: "Poppins", sans-serif;
 }
@@ -59,7 +58,11 @@ a {
 }
 
 .txt-bold {
-    font-weight: 900;
+    font-weight: 800;
+}
+
+.txt-semi-bold {
+    font-weight: 600;
 }
 
 .txt-shadow {
