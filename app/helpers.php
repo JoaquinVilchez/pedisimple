@@ -48,7 +48,6 @@ function normaliza($cadena){
 }
 
 function getDayName($day){
-    
     if(is_array($day)){
         $day=$day['weekday'];
     }else{
@@ -75,10 +74,9 @@ function getDayName($day){
             break;
         case 6:
             return "Sábado";
-            break;        
-    }  
+            break;
+    }
 }
-    
 function getGuestAddress($order){
     if($order->guest_floor==null || $order->guest_department==null){
             return $order->guest_street.' '.$order->guest_number;
@@ -122,7 +120,7 @@ Envío: *$".formatPrice($order->delivery)."* _(El precio puede variar en base a 
 $delivery = '';
 }
 
-return 
+return
 "¡Hola ".$first_name."! Soy ".Auth::user()->first_name." de ".$order->restaurant->name.". Confirmamos tu pedido que hiciste en *".config("app.name")."*.
 
 Código: *".$order->code."*
@@ -168,8 +166,8 @@ Envío: *$".formatPrice($order->delivery)."* _(El precio puede variar en base a 
 $delivery = '';
 }
 
-return 
-"*Pedido modificado:* 
+return
+"*Pedido modificado:*
 
 Detalle del pedido: "
 .$list."
@@ -217,12 +215,12 @@ function gluberMessage($order){
 function getOrderAddress($order){
     if ($order->user_id !=null) {
         if ($order->address_id==null){
-            return getGuestAddress($order);  
+            return getGuestAddress($order);
         }else{
-            return $order->address->getAddress();  
+            return $order->address->getAddress();
         }
     }else{
-        return getGuestAddress($order);  
+        return getGuestAddress($order);
     }
 }
 

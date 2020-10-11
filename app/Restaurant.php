@@ -132,8 +132,8 @@ class restaurant extends Model
                         $start2=null;
                         $end2=null;
                     }
-        
-                    if($schedule[$i]['state']=='open'){  
+
+                    if($schedule[$i]['state']=='open'){
                         if($today->between($start1, $end1) || $today->between($start2, $end2)){
                             return true;
                         }else{
@@ -163,6 +163,10 @@ class restaurant extends Model
         $closedOrders = Order::where('restaurant_id', $this->id)->where('state', 'closed')->get();
 
         return count($closedOrders);
+    }
+
+    public function getNotificationNumber(){
+        return $this->notification_characteristic.$this->notification_number;
     }
 
 }

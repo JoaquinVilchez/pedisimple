@@ -264,32 +264,32 @@
                                 <div class="col-12">
                                     <h6 class="card-subtitle mb-2 text-muted mt-3">Horarios</h6>
                                     <div class=" table-responsive">
-                                        <table class="table table-sm table-striped" style="font-size: 15px">
+                                        <table class="table table-hover table-sm" style="font-size: 15px">
                                             <tbody>
                                                 @foreach($restaurant->getSchedule() as $day)
                                                 @if(is_array($day))
                                                     <tr>
-                                                        <td class="txt-bold">{{getDayName($day)}}</td>
+                                                        <td>{{getDayName($day)}}</td>
                                                         @if($day['state']=='open')
-                                                        @if($day['start_hour_1'] == null or $day['end_hour_1'] == null)
-                                                            <td>Cerrado</td>
-                                                            <td></td>
-                                                            <td>Cerrado</td>
-                                                        @else
-                                                            <td>{{substr($day['start_hour_1'], 0, -3)}}hs</td>
-                                                                <td>a</td>
-                                                            <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
-                                                        @endif
+                                                          @if($day['start_hour_1'] == null or $day['end_hour_1'] == null)
+                                                              <td>Cerrado</td>
+                                                              <td></td>
+                                                              <td>Cerrado</td>
+                                                          @else
+                                                              <td>{{substr($day['start_hour_1'], 0, -3)}}hs</td>
+                                                                  <td>a</td>
+                                                              <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
+                                                          @endif
                                                         
-                                                        @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        @else
-                                                            <td>{{substr($day['start_hour_2'], 0, -3)}}hs</td>
-                                                                <td>a</td>
-                                                            <td>{{substr($day['end_hour_2'], 0, -3)}}hs</td>
-                                                        @endif
+                                                          @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
+                                                              <td></td>
+                                                              <td></td>
+                                                              <td></td>
+                                                          @else
+                                                              <td>{{substr($day['start_hour_2'], 0, -3)}}hs</td>
+                                                                  <td>a</td>
+                                                              <td>{{substr($day['end_hour_2'], 0, -3)}}hs</td>
+                                                          @endif
                                                         @else
                                                             <td><span class="badge badge-danger">Cerrado</span></td>
                                                             <td></td>
@@ -302,12 +302,12 @@
                                                 @else
                                                     <tr>
                                                         <td>{{getDayName($day)}}</td>
-                                                        <td>Cerrado</td>
+                                                        <td><span class="badge badge-danger">Cerrado</span></td>
                                                         <td></td>
-                                                        <td>Cerrado</td>
-                                                        <td>Cerrado</td>
                                                         <td></td>
-                                                        <td>Cerrado</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
                                                     </tr>
                                                 @endif
                                                 @endforeach

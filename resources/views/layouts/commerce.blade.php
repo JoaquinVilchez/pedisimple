@@ -245,16 +245,17 @@
         </div>
       @endif
     @endif
-    
-    <main role="main" class="col-auto ml-sm-auto 
+
+    <main role="main" class="col-auto ml-sm-auto
+
       @if(Auth::check())
-        @if(Auth::user()->restaurant->getSchedule()==null && Request::path()=="configuracion/horarios")  
+        @if(Auth::user()->restaurant->getSchedule()==null && Request::path()=="configuracion/horarios")
           col-xl-12
         @else
           col-xl-10
         @endif
       @endif
-      col-12">    
+      col-12">
 
       @yield('main')
       @include('components.helpButton')
@@ -263,10 +264,11 @@
 </div>
 
 <script>
+
   $(window).on('load',function(){
       $('#exampleModal').modal('show');
   });
-
+  
   var url = window.location.pathname;  
   const parts = url.split('/');
   var activeCategory = parts[1];

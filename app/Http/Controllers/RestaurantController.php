@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Restaurant;
-use App\Category;   
+use App\Category;
 use App\Product;
 use App\City;
 use App\RestaurantCategory;
@@ -28,6 +28,17 @@ use App\Notifications\ReactivateService;
 
 class RestaurantController extends Controller
 {
+
+    public function addNotificationNumber(Request $request){
+        $restaurant = Auth::user()->restaurant;
+
+        $restaurant->update([
+            'notification_characteristic' => $request->characteristic,
+            'notification_number' => $request->phone,
+        ]);
+
+        return;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,9 +46,9 @@ class RestaurantController extends Controller
      */
     public function check(){
 
-        $restaurant = Restaurant::all();
+        $restaurants = Restaurant::all();
         foreach($restaurants as $restaurant){
-            if($restaurant->getSchedule() == null && $restaurant->state=='active'){                
+            if($restaurant->getSchedule() == null && $restaurant->state=='active'){
                 $restaurant->update([
                     'state' => 'without-times'
                 ]);
@@ -53,7 +64,7 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function list()
-    {            
+    {
         $restaurants = Restaurant::orderBy('state', 'desc')->paginate(15);
         return view('admin.restaurant.list')->with('restaurants', $restaurants);
     }
@@ -64,7 +75,7 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function updateStatus(Request $request)
-    {    
+    {
         $restaurant = Restaurant::findOrFail($request->restaurant_id);
 
         if($request->state == 'active'){
@@ -72,17 +83,17 @@ class RestaurantController extends Controller
                 return redirect()->back()->with('error_message', 'Al comercio le falta configurar sus horarios');
             }else{
                 $restaurant->update(['state' => $request->state]);
-    
+
                 $data = [
                     'name' => $restaurant->name,
                     'slug' => $restaurant->slug,
                     'user_name' => $restaurant->user->first_name,
                 ];
-        
+
                 if($request->state == 'active'){
                     Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
                 }
-        
+
                 return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
             }
         }else{
@@ -97,7 +108,7 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function request(Request $request)
-    {            
+    {
         $data = [
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -120,9 +131,9 @@ class RestaurantController extends Controller
     */
     public function openingTime()
     {
-        $restaurant = Auth::user()->restaurant;        
+        $restaurant = Auth::user()->restaurant;
         $schedule = $restaurant->getSchedule();
-        
+
         if ($schedule==null) {
             $schedule=array(0,1,2,3,4,5,6);
         }
@@ -133,15 +144,15 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function openingTimeUpdate(Request $request){        
+    public function openingTimeUpdate(Request $request){
 
         for ($i=0; $i < 7; $i++) {
 
             $state='state_'.$i;
             $start_hour_1 = 'start_hour_1_'.$i;
-            $end_hour_1 = 'end_hour_1_'.$i;    
+            $end_hour_1 = 'end_hour_1_'.$i;
             $start_hour_2 = 'start_hour_2_'.$i;
-            $end_hour_2 = 'end_hour_2_'.$i;   
+            $end_hour_2 = 'end_hour_2_'.$i;
 
 
             if($request->$start_hour_1 == null and $request->$end_hour_1 == null and $request->$start_hour_2 == null and $request->$end_hour_2 == null) {
@@ -156,7 +167,7 @@ class RestaurantController extends Controller
                         $rule2 = 'nullable';
                     }
                 }
-        
+
                 if($request->$start_hour_2 != null or $request->$end_hour_2 != null){
                     $rule1 = 'required';
                     if($request->$start_hour_1 != null or $request->$end_hour_1 != null){
@@ -166,7 +177,7 @@ class RestaurantController extends Controller
                     }
                 }
             }
-            
+
             $request->validate([
                 'start_hour_1_'.$i => $rule1,
                 'end_hour_1_'.$i => $rule1,
@@ -174,18 +185,18 @@ class RestaurantController extends Controller
                 'end_hour_2_'.$i => $rule2,
             ]);
         }
-        
+
         $restaurant = Auth::user()->restaurant;
-        
+
         for ($i=0; $i < 7; $i++) {
 
             $day = OpeningDateTime::where('restaurant_id', $restaurant->id)->where('weekday', $i)->first();
 
             $state='state_'.$i;
             $start_hour_1 = 'start_hour_1_'.$i;
-            $end_hour_1 = 'end_hour_1_'.$i;    
+            $end_hour_1 = 'end_hour_1_'.$i;
             $start_hour_2 = 'start_hour_2_'.$i;
-            $end_hour_2 = 'end_hour_2_'.$i;           
+            $end_hour_2 = 'end_hour_2_'.$i;
 
             if($request->$state == 'on'){
                 $state='open';
@@ -226,7 +237,7 @@ class RestaurantController extends Controller
         }
 
         return redirect()->route('restaurant.info')->with('success_message', 'Horarios modificados con éxito');
-        
+
     }
 
     /**
@@ -272,7 +283,7 @@ class RestaurantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {  
+    {
         if($request->shipping_method == 'pickup'){
             $rule = 'nullable';
         }else{
@@ -311,7 +322,7 @@ class RestaurantController extends Controller
             $path = $file->hashName();
 
             $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
-            
+
             Storage::put("public/uploads/commerce/".$path, $image->__toString());
 
             $data['image'] = $path;
@@ -336,26 +347,25 @@ class RestaurantController extends Controller
             'image' => $data['image'],
         ]);
 
-        $restaurant = Restaurant::where('user_id', Auth::user()->id)->first();        
+        $restaurant = Restaurant::where('user_id', Auth::user()->id)->first();
 
-        
+
         Address::create([
             'street' => $data['street'],
             'number' => $data['number'],
             'restaurant_id' => $restaurant->id,
             'city_id' => $data['city_id']
         ]);
-            
-            
-        for ($i=0; $i < count($data['food_categories']); $i++) { 
+
+        for ($i=0; $i < count($data['food_categories']); $i++) {
         DB::table('relation_restaurant_category')->insert([
             'restaurant_id' => $restaurant->id,
             'category_restaurant_id' => $data['food_categories'][$i]
-            ]);   
+            ]);
         }
-            
+
         $restaurant = Auth::user()->restaurant;
-        
+
         Mail::to(Auth::user()->email)->send(new newCommerce($restaurant));
         Mail::to(env('MAIL_FROM_ADDRESS'))->send(new newCommerceAdmin($restaurant));
 
@@ -432,7 +442,7 @@ class RestaurantController extends Controller
         }else{
             $second_phone_rule = 'nullable';
         }
-        
+
         $data=request()->validate([
             'name'=>'required',
             'street'=>'required',
@@ -465,24 +475,24 @@ class RestaurantController extends Controller
             if($old_image!='commerce.png'){
                 Storage::delete('public/uploads/commerce/'.$old_image);
             }
-            
+
             Storage::put("public/uploads/commerce/".$path, $image->__toString());
 
             // $image->fit(250, 250, function ($constraint) {
             //     $constraint->aspectRatio();
             // });
 
-            $restaurant->update(['image'=>$path]);  
+            $restaurant->update(['image'=>$path]);
 
         }elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
             Storage::delete('public/uploads/commerce/'.$restaurant->image);
         }
 
-        
+
         //FIN IMAGE
 
         if($request->action==='delete'){
-            $restaurant->update(['image'=>'commerce.png']); 
+            $restaurant->update(['image'=>'commerce.png']);
         }
 
         //ADDRESS
@@ -509,7 +519,7 @@ class RestaurantController extends Controller
         for ($i=0; $i < count($foodCategories); $i++){
             DB::table('relation_restaurant_category')->where('category_restaurant_id', $foodCategories[$i]->category_restaurant_id)->where('restaurant_id', $restaurant->id)->delete();
         }
-        for ($i=0; $i < count($data['food_categories']); $i++) { 
+        for ($i=0; $i < count($data['food_categories']); $i++) {
             DB::table('relation_restaurant_category')->insert([
                 'restaurant_id' => $restaurant->id,
                 'category_restaurant_id' => $data['food_categories'][$i]

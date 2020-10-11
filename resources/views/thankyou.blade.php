@@ -21,7 +21,7 @@
     <div class="d-flex justify-content-center my-4">
         <div class="col-12 col-md-10">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-6 mb-3">
+                <div class="col-12 col-md-6 mb-3 order-1 order-md-0">
                     <h5 class="text-muted">Productos pedidos</h5>
                     <ul class="list-group">
                     @foreach($items as $item)
@@ -30,7 +30,7 @@
                             <h6 class="my-0">{{ucwords($item->product->name)}} <small class="text-muted">x{{$item->quantity}}</small>
                                 @if(isset($item->variants))
                                 <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{implode(', ', $item->showVariants())}}"></i>
-                                @endif                        
+                                @endif
                             </h6>
                         </div>
                         <span class="text-muted">${{formatPrice($item->quantity*$item->price)}}</span>
@@ -55,7 +55,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-12 col-md-6 mb-3">
+                <div class="col-12 col-md-6 mb-3 order-0 order-md-1">
                     <hr class="d-block d-md-none">
                     <h5 class="text-muted">Detalles del pedido</h5>
                     <div class="row ml-3">

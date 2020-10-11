@@ -38,7 +38,7 @@ class CheckoutController extends Controller
         if (\Cart::isEmpty()) {
             return abort(404);
         }else{
-            foreach(\Cart::getContent() as $item) { 
+            foreach(\Cart::getContent() as $item) {
                 $itemId = $item->associatedModel->id;
                 if($itemId!=null){
                     break;
@@ -253,7 +253,7 @@ class CheckoutController extends Controller
                     'code' => $code
                 ]);
             }
-    
+
         }
 
         // $order = Order::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
@@ -274,9 +274,9 @@ class CheckoutController extends Controller
 
         //WHATSAPP
         $restaurant_owner = $restaurant->user;
-        
+
         //MENSAJE DE WHATSAPP AL COMERCIANTE
-        // $restaurant_owner->notify(new OrderProcessed($order));
+        $restaurant_owner->notify(new OrderProcessed($order));
         //MAIL AL COMERCIANTE
         //=================
         $restaurant_owner->notify(new NewOrder($order));
@@ -285,7 +285,7 @@ class CheckoutController extends Controller
     }else{
         return back()->with('error_message', 'Este comercio está cerrado, intenta hacer tu pedido más tarde');
     }
-    
+
     }
 
     /**

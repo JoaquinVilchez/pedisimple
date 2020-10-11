@@ -40,17 +40,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function routeNotificationForWhatsApp()
     {
+        // return '+549'.$this->restaurant->notification_characteristic.$this->restaurant->notification_number;
+        // // return '+549'.$this->restaurant->getNotificationNumber();
         return '+549'.$this->characteristic.$this->phone;
     }
 
     public function addresses(){
         return $this->hasMany(Address::class);
     }
-    
+
     public function orders(){
         return $this->hasMany(Order::class);
     }
-    
+
     public function restaurant(){
         return $this->hasOne(Restaurant::class);
     }

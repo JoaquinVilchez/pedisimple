@@ -18,8 +18,8 @@
         @if(Auth::check())
             @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0)
                 ({{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}})
-            @endif 
-        @endif    
+            @endif
+        @endif
         {{config('app.name') }}</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -41,7 +41,7 @@
 
     {{-- Font Awesome --}}
     <script src="https://kit.fontawesome.com/e739f5c7c6.js" crossorigin="anonymous"></script>
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165580235-1"></script>
     <script>
@@ -60,14 +60,14 @@
 
 </head>
 
-<body>  
+<body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mr-0">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{asset('images/logo.png')}}" width="150px" alt="">
                 </a>
-                
+
                 @if(Auth::user())
                     <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <img width="150px" src="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
@@ -157,7 +157,6 @@
             </div>
         </nav>
 
-        
         @if(!\Cart::isEmpty() and Request::path()!="checkout" and Request::path()!="login" and Request::path()!="register" and Request::path()!="email/verify")
             <div class="alert alert-warning mb-0 text-center" role="alert" id="finishOrder" style="font-size:0.8rem">
                 Tienes un pedido pendiente. <a href="{{route('checkout.index')}}" class="alert-link">Finalizar pedido</a> 
@@ -171,14 +170,14 @@
 
         <main role="main" class="flex-shrink-0">
             @yield('content')
-        </main>  
+        </main>
     </div>
 
 <footer class="footer">
     <div class="container">
         <div class="row d-flex justify-content-between">
             <div class="col-xl-12 col-xs-12">
-                <p class="d-inline">Seguinos</p> 
+                <p class="d-inline">Seguinos</p>
                 <div class="icons d-inline ml-3">
                     <a style="color:white" target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
                     <a style="color:white" target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
@@ -193,6 +192,22 @@
 <script>
 
     $(document).ready(function(){
+        $('#card-step2').hide();
+        $('#button-step1').on('click', function(){
+            addNotificationNumber();
+            $('#card-step1').fadeOut(300);
+            setTimeout(function(){
+                $('#card-step2').fadeIn(300);
+             }, 300);
+        });
+
+        $('#back-to-step1').on('click', function(){
+            $('#card-step2').fadeOut(300);
+            setTimeout(function(){
+                $('#card-step1').fadeIn(300);
+             }, 300);
+        });
+
         $('.spinnerSubmitButton').closest('form').on('submit', function(e){
             e.preventDefault();
             $('.loadingIcon').removeClass('d-none');
@@ -230,6 +245,19 @@
         });
     });
 
+    function addNotificationNumber(){
+        let characteristic = $("input[name=notification-characteristic]").val();
+        let phone = $("input[name=notification-phone]").val();
+        $.ajax({
+        url : '{{ route("restaurant.notificationnumber") }}',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        data:{characteristic:characteristic,phone:phone}
+        });
+    }
+
     function emptyCart(restaurant){
         $.ajax({
             url : '/carrito/vaciar',
@@ -259,12 +287,12 @@
         todayHighlight: true
     });
 
-    function onlyNumberKey(evt) { 
-            // Only ASCII charactar in that range allowed 
-            var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
-            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
-                return false; 
-            return true; 
+    function onlyNumberKey(evt) {
+            // Only ASCII charactar in that range allowed
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                return false;
+            return true;
     }
 </script>
 
