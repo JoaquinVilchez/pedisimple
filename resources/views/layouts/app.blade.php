@@ -213,21 +213,21 @@
 
     $(document).ready(function(){
 
-        $('#card-step2').hide();
-        $('#button-step1').on('click', function(){
-            addNotificationNumber();
-            $('#card-step1').fadeOut(300);
-            setTimeout(function(){
-                $('#card-step2').fadeIn(300);
-             }, 300);
-        });
+        // $('#card-step2').hide();
+        // $('#button-step1').on('click', function(){
+        //     addNotificationNumber();
+        //     $('#card-step1').fadeOut(300);
+        //     setTimeout(function(){
+        //         $('#card-step2').fadeIn(300);
+        //      }, 300);
+        // });
 
-        $('#back-to-step1').on('click', function(){
-            $('#card-step2').fadeOut(300);
-            setTimeout(function(){
-                $('#card-step1').fadeIn(300);
-             }, 300);
-        });
+        // $('#back-to-step1').on('click', function(){
+        //     $('#card-step2').fadeOut(300);
+        //     setTimeout(function(){
+        //         $('#card-step1').fadeIn(300);
+        //      }, 300);
+        // });
 
         $('.spinnerSubmitButton').closest('form').on('submit', function(e){
             e.preventDefault();

@@ -11,9 +11,9 @@
 
 @section('content')
 
-        <div class="row d-flex justify-content-center my-auto mx-0" style="background-color: #FFC500">
+        <div class="row d-flex justify-content-center my-auto mx-0 vh-100" style="background-color: #FFC500">
             <div class="col-12 col-md-8">
-                <div class="card text-center" id="card-step1">
+                {{-- <div class="card text-center" id="card-step1">
                     <div class="card-body">
                         <h4 class="my-2 txt-semi-bold">Recibe notificaciones de un nuevo pedido por WhatsApp</h4>
                         <hr class="m-0">
@@ -72,8 +72,8 @@
                         </div>
                         <a class="btn btn-success" target="_blank" id="button-step1" href="https://api.whatsapp.com/send?phone=+14155238886&text=join%20story-exciting&source=&data=&app_absent="><i class="fab fa-whatsapp"></i> Enviar mensaje</a>
                     </div>
-                </div>
-                <div class="card text-center" id="card-step2">
+                </div> --}}
+                <div class="card text-center my-4" id="card-step2">
                     <div class="card-body">
                         <h4 class="my-2 txt-semi-bold">Configura tus horarios para continuar</h4>
                         <hr class="m-0">
@@ -83,9 +83,9 @@
                         </div>
                         <a class="btn btn-primary" href="{{route('restaurant.times')}}" id="button-step2">Establecer horarios</a>
                     </div>
-                    <div class="float-left">
+                    {{-- <div class="float-left">
                         <a href="#" class="text-muted" id="back-to-step1">< Volver atrás</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
