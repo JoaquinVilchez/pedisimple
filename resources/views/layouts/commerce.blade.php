@@ -96,7 +96,7 @@
                             <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
                           @endif
                       </div>
-                        
+
                     </li>
                     <li class="nav-item">
                       <div class="d-flex justify-content-between align-items-center">
@@ -268,13 +268,13 @@
   $(window).on('load',function(){
       $('#exampleModal').modal('show');
   });
-  
-  var url = window.location.pathname;  
+
+  var url = window.location.pathname;
   const parts = url.split('/');
   var activeCategory = parts[1];
   var activePage = parts[2];
-  
-  
+
+
   document.getElementById(activeCategory+'Collapse').classList.add("show")
   document.getElementById(activePage).classList.add("active")
 </script>

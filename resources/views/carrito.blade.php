@@ -328,7 +328,7 @@
                 button.setAttribute("hidden","");
             }else{
                 alert.setAttribute("hidden","");
-                button.removeAttribute("hidden","");    
+                button.removeAttribute("hidden","");
             }
         }
 

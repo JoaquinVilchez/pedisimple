@@ -58,9 +58,9 @@
                         <div class="details">
                             <div class="row">
                                 <div class="col-6">
-                                    <p class="text-muted mobile-title mb-1">Solicitante</p>  
+                                    <p class="text-muted mobile-title mb-1">Solicitante</p>
                                     <p class="mobile-description"><strong>{{$order->getFullName()}}</strong></p>
-                                    <p class="text-muted mobile-title mb-1">Código</p>  
+                                    <p class="text-muted mobile-title mb-1">Código</p>
                                     <p class="mobile-description"><strong>{{$order->code}}</strong></p>
                                 </div>
                                 <div class="col-6" style="text-align: right">
@@ -75,7 +75,7 @@
                         Ver detalles <i class="fas fa-chevron-down"></i>
                     </a>
                 </div>
-            
+
                 <div id="order{{$order->code}}" class="collapse" aria-labelledby="headingOne" data-parent="#orderButton">
                     <div class="card-body">
                         <div class="container">
@@ -166,10 +166,10 @@
                                             </a>
                                         </td>
                                         @if($order->shipping_method=='delivery')
-                                            <td>{{$order->getFullAddress()}}</td>      
+                                            <td>{{$order->getFullAddress()}}</td>
                                             @else
                                             <td> - </td>
-                                        @endif                                
+                                        @endif
                                     <td>{{$order->getShippingMethod()}}</td>
                                     <td>${{formatPrice($order->total)}}</td>
                                 </tr>
@@ -196,7 +196,7 @@
                                 </div>
                             </div>
                             <div class="col-2">
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <div id="orderFooter" class="px-4">

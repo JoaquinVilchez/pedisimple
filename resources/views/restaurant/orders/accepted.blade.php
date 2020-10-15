@@ -35,7 +35,7 @@
     <div style="text-align:center" class="m-auto">
         <img data-original="{{asset('storage/design/complete.svg')}}" alt="" class="img-default my-2">
         <p>No tienes pedidos aceptados.<br>
-    </div>  
+    </div>
     @else
         @foreach($orders as $order)
         {{-- MOBILE --}}
@@ -60,9 +60,9 @@
                         <div class="details">
                             <div class="row">
                                 <div class="col-6">
-                                    <p class="text-muted mobile-title mb-1">Solicitante</p>  
+                                    <p class="text-muted mobile-title mb-1">Solicitante</p>
                                     <p class="mobile-description"><strong>{{$order->getFullName()}}</strong></p>
-                                    <p class="text-muted mobile-title mb-1">Código</p>  
+                                    <p class="text-muted mobile-title mb-1">Código</p>
                                     <p class="mobile-description"><strong>{{$order->code}}</strong></p>
                                 </div>
                                 <div class="col-6" style="text-align: right">
@@ -76,7 +76,7 @@
                             <a class="btn btn-link btn-block mb-0" id="orderButton" type="button" data-toggle="collapse" data-target="#order{{$order->code}}" aria-expanded="true" aria-controls="order{{$order->code}}">
                                 Ver detalles <i class="fas fa-chevron-down"></i>
                             </a>
-                    </div>            
+                    </div>
                     <div id="order{{$order->code}}" class="collapse" aria-labelledby="headingOne" data-parent="#orderButton">
                         <div class="card-body">
                             <div class="container">
@@ -124,7 +124,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">   
+                                <div class="row">
                                     <a data-orderid="{{$order->id}}" data-toggle="modal" data-target="#closeOrderModal" href="#" class="btn btn-sm btn-block btn-danger">Cerrar pedido</a>
                                 </div>
                             </div>
@@ -157,6 +157,7 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 14px">
                                       <h6 class="dropdown-header">Opciones de pedido</h6>
                                       <hr class="m-0">
+                                      <a class="dropdown-item" href="#" onclick="resendDetail();" >Reenviar detalle</a>
                                       <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
                                         @if(gluberStatus())
@@ -174,7 +175,7 @@
                                 <td>
                                     <a target=”_blank” href="
                                     https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">
-                                    
+
                                     {{$order->getPhone()}}
                                     </a>
                                 </td>
@@ -209,7 +210,7 @@
                                 </div>
                             </div>
                             <div class="col-2">
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <div id="orderFooter" class="px-4">
@@ -251,7 +252,7 @@
             <form action="{{route('order.close')}}" method="POST">
                 @csrf
             <div class="modal-body">
-                <h5>¿Estás seguro de cerrar este pedido?</h5>  
+                <h5>¿Estás seguro de cerrar este pedido?</h5>
                 <input type="hidden" id="orderid" name="orderid" value="">
             </div>
             <div class="modal-footer">
@@ -339,6 +340,12 @@ function editOrder(orderid){
           $('#editOrderModalContent').html(data)
       },
     });
+}
+
+function resendDetail(){
+    var sessionVar = '{{session("newurl")}}';
+    console.log(sessionVar)
+    // window.open('{{{session("newurl")}}}', '_blank')
 }
 
 

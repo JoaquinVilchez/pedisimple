@@ -36,6 +36,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>  
     <script src="{{asset('js/bootstrap-select.min.js')}}"></script>
+    <script src="{{asset('ionsound/ion.sound.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-es_ES.min.js"></script>
     <script src="{{asset('js/jquery-lazyload/jquery.lazyload.js')}}"></script>
 
@@ -189,9 +190,29 @@
     </div>
 </footer>
 
+<!-- Modal -->
+<div class="modal fade" id="newNotificationModal" tabindex="-1" aria-labelledby="newNotificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div style="text-align: center">
+                <div class="py-2">
+                    <h5 class="modal-title txt-bold" id="NewOrderModalTitle">¡Tienes un nuevo pedido!</h5>
+                    <img class="my-4" src="{{asset('storage/design/desk-bell.svg')}}" alt="" width="80px">
+                </div>
+                <div class="container">
+                    <a href="{{route('order.new')}}" class="btn btn-block btn-sm btn-primary">Ver pedidos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
 <script>
 
     $(document).ready(function(){
+
         $('#card-step2').hide();
         $('#button-step1').on('click', function(){
             addNotificationNumber();
@@ -243,6 +264,15 @@
             threshold: 200,
             effect: 'fadeIn'
         });
+
+        var MerchantUser = "{{{ (Auth::check()) ? ((Auth::user()->type=='merchant') ? true : false) : false }}}";
+
+        if(MerchantUser==1){
+            loadNotifications();
+            setInterval(function(){
+                loadNotifications();
+            }, 30000);
+        }
     });
 
     function addNotificationNumber(){
@@ -294,6 +324,44 @@
                 return false;
             return true;
     }
+
+    function loadNotifications(){
+        $.ajax({
+            url : '/notifications/load',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success:function(data){
+                if(parseInt(data)>0){
+                    // console.log('Notificacion! ('+data+')');
+                    ion.sound.play("door_bell");
+                    if(data==1){
+                        $('#NewOrderModalTitle').html('¡Tienes un nuevo pedido!');
+                    }else{
+                        $('#NewOrderModalTitle').html('¡Tienes '+data+' nuevos pedidos!');
+                    }
+                    if($('#newNotificationModal').is(':hidden')){
+                        $('#newNotificationModal').modal('toggle');
+                        $('#newNotificationModal').modal('show');
+                    }
+                }
+            }
+        });
+    }
+
+    ion.sound({
+            sounds: [
+                {
+                    name: "door_bell"
+                },
+            ],
+            volume: 1,
+            path: "{{asset('/ionsound/sounds/')}}/",
+            preload: true
+    });
+
+
 </script>
 
 @yield('js-scripts-carrito')

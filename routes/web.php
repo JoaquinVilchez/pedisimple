@@ -19,6 +19,10 @@ use App\User;
 
 Auth::routes(['verify' => true]);
 
+Route::post('/notifications/load', function(){
+    return Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count();
+});
+
 Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
 
 Route::get('/', 'RestaurantController@index')->name('home');
