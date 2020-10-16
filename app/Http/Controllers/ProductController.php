@@ -38,7 +38,7 @@ class ProductController extends Controller
         }
 
         return view('restaurant.products.updateprices')->with(['products' => $products, 'restaurant' => $restaurant]);
-    }   
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -60,7 +60,7 @@ class ProductController extends Controller
         ]);
 
         return redirect('/productos/menu')->with('success_message', 'Precios actualizados con éxito');
-    }   
+    }
 
 
     public function showData(Request $request){
@@ -96,8 +96,8 @@ class ProductController extends Controller
         ]);
 
         $file = $request->file('file');
-                
-        $items = Excel::toCollection(new ProductsImport, $file);        
+
+        $items = Excel::toCollection(new ProductsImport, $file);
 
         // $items = Excel::toCollection(new ProductsImport, $file);
         $restaurant = Auth::user()->restaurant;
@@ -105,8 +105,17 @@ class ProductController extends Controller
         if($request->method == "update"){
             $errors = 0;
             foreach($items as $item){
-                for ($i=0; $i < count($item) ; $i++) { 
-                    if($item[$i]['nombre'] == null || $item[$i]['precio'] == null || $item[$i]['categoria'] == null){
+
+                for ($i=0; $i < count($item) ; $i++) {
+
+                    $price = $item[$i]['precio'];
+
+                    if(substr($price, 0, 1) == '$'){
+                        $price = substr($price, 1);
+                        $price = floatval($price);
+                    }
+
+                    if($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null){
                         $errors = $errors+1;
                     }else{
                         $category_name = $item[$i]['categoria'];
@@ -126,7 +135,7 @@ class ProductController extends Controller
                             Product::create([
                                 'name' => $item[$i]['nombre'],
                                 'details' => $item[$i]['descripcion'],
-                                'price' => $item[$i]['precio'],
+                                'price' => $price,
                                 'category_id' => $category->id,
                                 'restaurant_id' => $restaurant->id,
                             ]);
@@ -138,7 +147,7 @@ class ProductController extends Controller
                                 $product->update([
                                     'name' => $item[$i]['nombre'],
                                     'details' => $item[$i]['descripcion'],
-                                    'price' => $item[$i]['precio'],
+                                    'price' => $price,
                                     'category_id' => $category->id
                                 ]);
                             }
@@ -161,34 +170,42 @@ class ProductController extends Controller
                     }
                 }
             }
-            
+
             foreach($items as $item){
                 for ($i=0; $i < count($item) ; $i++) { 
-                    if($item[$i]['nombre'] == null || $item[$i]['precio'] == null || $item[$i]['categoria'] == null){
+
+                    $price = $item[$i]['precio'];
+
+                    if(substr($price, 0, 1) == '$'){
+                        $price = substr($price, 1);
+                        $price = floatval($price);
+                    }
+
+                    if($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null){
                         $errors = $errors+1;
                     }else{
                         $category_name = $item[$i]['categoria'];
                         $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
-    
+
                         if($category==null){
                             Category::create([
                                 'name' => $category_name,
                                 'state' => 'available',
                                 'restaurant_id' => $restaurant->id
                             ]);
-    
+
                             $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
                         }
-    
+
                         Product::create([
                             'name' => $item[$i]['nombre'],
                             'details' => $item[$i]['descripcion'],
-                            'price' => $item[$i]['precio'],
+                            'price' => $price,
                             'category_id' => $category->id,
                             'restaurant_id' => $restaurant->id,
                         ]);
                     }
-                    
+
                 }
             }
         }//endif
@@ -276,7 +293,7 @@ class ProductController extends Controller
         }else{
             $variantsRule = 'nullable';
             $minimumRule = 'nullable';
-            $maximumRule = 'nullable'; 
+            $maximumRule = 'nullable';
         }
 
         if($request->temporary=='on'){
@@ -300,7 +317,7 @@ class ProductController extends Controller
             'variants' => $variantsRule
         ]);
 
-        
+
 
         $restaurant_id = Auth::user()->restaurant->id;
 
@@ -312,7 +329,7 @@ class ProductController extends Controller
             $path = $file->hashName();
 
             $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
-            
+
             Storage::put("public/uploads/products/".$path, $image->__toString());
 
         }else{
