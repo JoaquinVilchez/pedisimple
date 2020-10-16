@@ -16,10 +16,14 @@
           </div>
           <div class="table-responsive">
             <table class="table">
-                <tbod>
+                <tbody>
                   <tr>
                     <td>Nombre</td>
                     <td>{{$restaurant->name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Slug</td>
+                    <td>{{env('APP_URL').'/'.$restaurant->slug}}</td>
                   </tr>
                   <tr>
                     <td>Dirección</td>
@@ -113,7 +117,7 @@
                                             <td>a</td>
                                         <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
                                     @endif
-                                  
+
                                     @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
                                         <td></td>
                                         <td></td>

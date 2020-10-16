@@ -313,7 +313,7 @@ class RestaurantController extends Controller
             'image'=> ['nullable'],
         ]);
 
-        $slug = str_replace(' ', '-', normaliza($data['name']));
+        $slug = makeSlug($data['name']);
 
         if($request->hasFile('image')){
 
@@ -407,6 +407,8 @@ class RestaurantController extends Controller
     public function edit($id)
     {
         $restaurant = Restaurant::findOrFail($id);
+        $this->authorize('pass', $restaurant);
+
         $address = $restaurant->address;
         $cities = City::all();
         $foodCategories = RestaurantCategory::all();
@@ -430,6 +432,7 @@ class RestaurantController extends Controller
     public function update(Request $request, $id)
     {
         $restaurant = Restaurant::findOrFail($id);
+        $this->authorize('pass', $restaurant);
 
         if($request->shipping_method == 'pickup'){
             $shipping_price_rule = 'nullable';
@@ -450,6 +453,7 @@ class RestaurantController extends Controller
             'city_id' => 'required',
             'characteristic' => 'required|min:4',
             'phone' => 'required|min:6',
+            'slug' => 'required|unique:restaurants',
             'second_characteristic' => $second_phone_rule.'|min:4',
             'second_phone' => $second_phone_rule.'|min:6',
             'description' => 'nullable',
@@ -459,7 +463,7 @@ class RestaurantController extends Controller
             'food_categories' => 'required'
         ]);
 
-        $slug = str_replace(' ', '-', normaliza($data['name']));
+        $slug = makeSlug($request->slug);
 
         //IMAGE
         if($request->hasFile('image')){
