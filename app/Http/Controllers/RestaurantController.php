@@ -446,6 +446,12 @@ class RestaurantController extends Controller
             $second_phone_rule = 'nullable';
         }
 
+        if($request->slug == $restaurant->slug){
+            $slugRule = 'required';
+        }else{
+            $slugRule = 'required|unique:restaurants';
+        }
+
         $data=request()->validate([
             'name'=>'required',
             'street'=>'required',
@@ -453,7 +459,7 @@ class RestaurantController extends Controller
             'city_id' => 'required',
             'characteristic' => 'required|min:4',
             'phone' => 'required|min:6',
-            'slug' => 'required|unique:restaurants',
+            'slug' => $slugRule,
             'second_characteristic' => $second_phone_rule.'|min:4',
             'second_phone' => $second_phone_rule.'|min:6',
             'description' => 'nullable',
