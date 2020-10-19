@@ -16,7 +16,7 @@
             <input type="text" placeholder="Buscar comercio" class="form-control">
             <input type="submit" value="Buscar" class="btn btn-primary mx-2">
           </form> --}}
-          <a href="{{route('list.index')}}" class="btn btn-sm btn-primary mt-2"><strong> Ver todos los comercios</strong></a> 
+          <a href="{{route('home.index')}}" class="btn btn-sm btn-primary mt-2"><strong> Ver todos los comercios</strong></a> 
         </div>
       </div>
     </div>

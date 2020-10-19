@@ -215,7 +215,8 @@ return [
         'variants' => 'variantes',
         'order.items' => 'productos pedidos',
         'order.street' => 'calle',
-        'order.number' => 'numero'        
+        'order.number' => 'numero',
+        'commerce' => 'nombre del comercio'
     ],
 
     'email-confirmation' => [

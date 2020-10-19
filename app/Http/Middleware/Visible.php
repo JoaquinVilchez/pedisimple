@@ -21,36 +21,41 @@ class Visible
     public function handle($request, Closure $next)
     {
         $slug = rawurldecode(substr($request->getRequestUri(), 1));
-        $restaurant = Restaurant::where('slug', $slug)->first();
 
-        if(Auth::check()){
-            if(Auth::user()->hasRole('administrator')) {
-                return $next($request);
-            }elseif(Auth::user()->hasRole('merchant')){
-                if($restaurant->state == 'active'){
+        if($slug != ''){
+            $restaurant = Restaurant::where('slug', $slug)->first();
+    
+            if(Auth::check()){
+                if(Auth::user()->hasRole('administrator')) {
                     return $next($request);
-                }else{
-                    if (Auth::user()->restaurant->id == $restaurant->id) {
+                }elseif(Auth::user()->hasRole('merchant')){
+                    if($restaurant->state == 'active'){
                         return $next($request);
                     }else{
-                        return redirect()->route('list.index');
+                        if (Auth::user()->restaurant->id == $restaurant->id) {
+                            return $next($request);
+                        }else{
+                            return redirect()->route('home.index');
+                        }
                     }
+                }elseif(Auth::user()->hasRole('customer')){
+                    if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
+                        return $next($request);
+                    }else{
+                        return redirect()->route('home.index');
+                    } 
+                }else{
+                    return back();
                 }
-            }elseif(Auth::user()->hasRole('customer')){
+            }else{
                 if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
                     return $next($request);
                 }else{
-                    return redirect()->route('list.index');
-                } 
-            }else{
-                return back();
+                    return redirect()->route('home.index');
+                }
             }
         }else{
-            if($restaurant->state == 'active' && count($restaurant->products) !=0 && count($restaurant->categories) !=0){
-                return $next($request);
-            }else{
-                return redirect()->route('list.index');
-            }
+            return redirect('/');
         }
 
     }

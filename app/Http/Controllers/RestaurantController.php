@@ -118,6 +118,15 @@ class RestaurantController extends Controller
             'aditional_notes' => $request->aditional_notes
         ];
 
+        $data=request()->validate([
+            'first_name'=> 'required',
+            'last_name'=> 'required',
+            'email'=> 'required|email',
+            'phone'=> 'required',
+            'commerce' => 'required',
+            'aditional_notes' => 'nullable'
+        ]);
+
         Mail::to($request->email)->send(new RequestMail);
         Mail::to(env('MAIL_FROM_ADDRESS'))->send(new RequestMailAdmin($data));
 
@@ -258,7 +267,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('list');
     }
 
     /**

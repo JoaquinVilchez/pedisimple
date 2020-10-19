@@ -65,7 +65,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm mr-0">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('home') }}">
+                <a class="navbar-brand" href="{{ route('home.index') }}">
                 <img src="{{asset('images/logo.png')}}" width="150px" alt="">
                 </a>
 

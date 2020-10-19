@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="jumbotron rounded-0 text-center p-0 mb-0" style="background: url('https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
-    <div class="element">
+    <div class="gradient">
       <div class="container d-flex align-items-center justify-content-center" style="height:150px;">
           <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>Checkout</strong></h1>
         </div>

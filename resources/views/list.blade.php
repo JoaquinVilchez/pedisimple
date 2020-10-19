@@ -2,15 +2,35 @@
 
 @section('content')
 
-<section class="jumbotron rounded-0 text-center p-0 mb-0" style="background: url('https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px / cover transparent;">
-  <div class="element">
-    <div class="container d-flex align-items-center justify-content-center" style="height:180px;">
-      {{-- <div class="m-auto"> --}}
-        <h1 class="text-white" style="text-shadow: 0px 5px 8px rgba(0,0,0,0.6);"><strong>{{count($restaurants)}} @if (count($restaurants)==1) Comercio disponible @else Comercios disponibles @endif</strong></h1>
+<section class="jumbotron hero">
+  <div class="gradient">
+        <div class="container d-flex align-items-center">
+            <div class="row d-flex justify-content-center p-4 mt-4">
+              <h1 class="h1" style="text-align: center; font-weight: 800; color: white; text-shadow: 0px 5px 8px rgba(0,0,0,0.6);">Pedír lo que buscás, ahora es más simple</h1>
+              <p class="p" style="color: white">Consultá los productos de los comercios de Venado Tuerto y hace tu pedido 100% online</p>
+            </div>
+        </div>
+
+        <div class="container hero-steps">
+          <div class="row d-flex justify-content-center" style="font-size:.9em">
+            <span>
+              1<br>
+              Elegí un comercio
+            </span>
+
+            <span>
+              2<br>
+              Armá tu pedido
+            </span>
+
+            <span>
+              3<br>
+              Recibí tu pedido
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+  </section>
   <!-- Page Content -->
 <div class="container mt-4">
     {{-- mobile --}}
@@ -27,7 +47,7 @@
             <div class="collapse" id="navbarToggleExternalContent">
               <div class="col-12">
                 @if (count($filters)>0)
-                  <small style="text-align: center"> <i class="fas fa-times" style="color: red"></i><a class="ml-1" style="color: red" href="{{route('list.index')}}">Quitar filtros</a></small> 
+                  <small style="text-align: center"> <i class="fas fa-times" style="color: red"></i><a class="ml-1" style="color: red" href="{{route('home.index')}}">Quitar filtros</a></small> 
                 @endif
                 @foreach ($categories as $category)
                 <div class="d-flex justify-content-between">
@@ -43,12 +63,12 @@
     {{-- mobile --}}
 
     <div class="row justify-content-center">
-        <div class="col-lg-2">
-          <div class="d-none d-lg-block d-xl-block">
+        <div class="col-lg-3">
+          <div class="d-none d-lg-block d-xl-block border py-2 px-4 rounded">
             <div class="mb-3">
-              <p class="mb-0"><strong>Filtros</strong></p>
+              <p class="mb-0"><strong>Filtrar por categoría</strong></p>
               @if (count($filters)>0)
-                <small> <i class="fas fa-times" style="color: red"></i><a class="ml-1" style="color: red" href="{{route('list.index')}}">Quitar filtro</a></small> 
+                <small> <i class="fas fa-times" style="color: red"></i><a class="ml-1" style="color: red" href="{{route('home.index')}}">Quitar filtro</a></small> 
               @endif
             </div>
             @foreach ($categories as $category)
@@ -68,7 +88,7 @@
           <div class="alert alert-danger m-0 p-1 px-2 rounded-0 mb-2" role="alert" style="text-align:center" style="text-decoration: none">
               <div>
                 <div class="mx-auto">@foreach ($filters as $item) {{$item}} @endforeach</div>
-                <div class="mx-auto"><a class="ml-1" href="{{route('list.index')}}"><i class="fas fa-times"></i> Quitar filtro</a></div>
+                <div class="mx-auto"><a class="ml-1" href="{{route('home.index')}}"><i class="fas fa-times"></i> Quitar filtro</a></div>
               </div>
           </div>
           @endif
@@ -94,7 +114,7 @@
                       <a href="{{route('restaurant.show', $pending_restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
                     </div>
 
-                  </div>   
+                  </div>
                 </div>
                 <div style="background-color: rgb(226, 0, 0); height: 15px" class="p-0 mt-2 rounded-bottom">
                   <div style="color:white; font-size:10px" class="ml-2 d-flex justify-content-between">
@@ -115,17 +135,17 @@
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
                         <h5 class="mb-1" style="font-size: 2.5vh"><a @if($restaurant->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
                         <div class="ml-1" style="font-size: .9em">
-                          @if($restaurant->isOpen())
-                            <span style="color: #369a00"><small><i class="far fa-clock"></i> Abierto</small></span>
-                          @else
-                            <small style="color: #bf0000" class="my-0"><i class="far fa-clock"></i> Cerrado</small>
-                          @endif
                           <p class="my-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                           <p class="my-0 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
                           @if ($restaurant->second_phone)
                             <span> | </span><p class="mb-0 ml-1 d-inline"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
                           @endif
                         </div>
+                        @if($restaurant->isOpen())
+                            <small style="color: #369a00"><i class="far fa-clock"></i> Abierto</small>
+                        @else
+                            <small style="color: #bf0000"><i class="far fa-clock"></i> Cerrado en este momento</small>
+                        @endif
                   </div>
                   <div class="col-xl-3 d-flex justify-content-center align-items-center">
                     {{-- <div class="row my-2"> --}}
@@ -144,13 +164,11 @@
         </div>
     </div>
 </div>
-<section class="text-center">
-  <hr>
-  <div class="container col-xl-8 my-3">
-  <img data-original="{{asset('storage/design/merchant.svg')}}" width="60px" class="my-2">
-    <h4 class="txt-bold">¿Comerciante?</h4>
-    <p>Sumate a Pedí Simple y obtené beneficios</p>
-    <a class="btn btn-sm btn-primary" href="{{route('register.request')}}">Más información</a>
+<section class="text-center merchant-joininfo">
+  <div class="container col-12 py-4">
+    <h3 class="txt-bold merchant-joininfo_title">¿Comerciante?</h3>
+    <h4 class="txt-bold merchant-joininfo_description">¡Únase hoy para aumentar sus ventas en línea!</h4>
+    <a class="btn btn-sm btn-link merchant-joininfo_link" href="{{route('register.request')}}">Más información</a>
   </div>
 </section>
 
@@ -159,7 +177,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Comercio cerrado</h5>
+        <h5 class="modal-title" id="  exampleModalCenterTitle">Comercio cerrado</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

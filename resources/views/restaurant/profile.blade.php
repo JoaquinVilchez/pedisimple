@@ -18,7 +18,7 @@
 
 @section('content')
     <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://images.pexels.com/photos/3756523/pexels-photo-3756523.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat scroll 0px 50% / cover transparent; ">
-        <div class="element">
+        <div class="gradient">
             <div class="container text-white col-lg-8 ">
                 <div class="row pb-2">
                     <div class="col-xl-2 col-lg-2 col-md-2 d-none d-md-block d-lg-block d-xl-block">

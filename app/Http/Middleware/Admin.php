@@ -19,7 +19,7 @@ class Admin
         if(Auth::user()->type=='administrator'){
             return $next($request);
         }else{
-            return redirect()->route('home');
+            return redirect()->route('home.index');
         }
     }
 }

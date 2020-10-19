@@ -151,11 +151,6 @@ a {
     object-fit: cover;
 }
 
-.element {
-    background: linear-gradient(to top, black, transparent);
-    height: 100%;
-}
-
 .element_home {
     background: rgb(0, 0, 0);
     background: -moz-linear-gradient(
@@ -368,3 +363,50 @@ a {
     -moz-box-shadow: 0px 11px 31px -13px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 11px 31px -13px rgba(0, 0, 0, 0.4);
 }
+
+.gradient{
+    background: linear-gradient(to top, black, transparent);
+    height: 100%;
+}
+
+.hero{
+    border-radius: 0px;
+    padding: 0px;
+    background: url('../storage/design/home.png') no-repeat scroll 0% 75% / cover transparent;
+    text-align:center;
+}
+
+.hero-steps span{
+    color: white;
+    padding: 0 3%;
+    font-size: .85em;
+}
+
+.merchant-joininfo{
+    background-color:#F4F4F4;
+}
+
+.merchant-joininfo_title{
+    color:#001544;
+}
+
+.merchant-joininfo .merchant-joininfo_description{
+    color:#001544;
+    background-color: #FFC500;
+    width: 100%;
+    margin:auto;
+}
+
+
+.merchant-joininfo_link{
+    margin-top: 20px;
+    color:#001544;
+    text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+    .merchant-joininfo .merchant-joininfo_description{
+        width: 40%;
+    }
+}
+

@@ -120,7 +120,7 @@
                     <img src="{{asset('storage/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
                     <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
                 </div>
-                <a href="{{route('list.index')}}" class="btn btn-primary">Ver comercios</a>
+                <a href="{{route('home.index')}}" class="btn btn-primary">Ver comercios</a>
             </div>
     </div>
 

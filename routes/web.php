@@ -25,7 +25,7 @@ Route::post('/notifications/load', function(){
 
 Route::get('registro/{token}', 'Auth\RegisterController@commerceRegister')->middleware('Invitation');
 
-Route::get('/', 'RestaurantController@index')->name('home');
+// Route::get('/', 'RestaurantController@index')->name('home');
 
 Route::get('/bienvenido',function(){
     return view('auth.welcome');
@@ -60,7 +60,7 @@ Route::resource('/usuario/administracion/invitaciones', 'InvitationController')-
 Route::get('/usuario/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth','verified', 'Admin']);
 Route::post('/usuario/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth','verified', 'Admin']);
 
-Route::resource('/comercios', 'ListController')->names('list');
+Route::resource('/', 'ListController')->names('home');
 
 Route::post('/configuracion/addnotificationnumber', 'RestaurantController@addNotificationNumber')->name('restaurant.notificationnumber')->middleware(['verified', 'hasRestaurant']);
 Route::get('/configuracion/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
