@@ -92,39 +92,59 @@
               </div>
           </div>
           @endif
-          @if(Auth::check() and Auth::user()->type == 'administrator')
-            @foreach($pending_restaurants as $pending_restaurant)
-              <div class="card pt-2 mb-3" style="border: 1px solid rgb(226, 0, 0); min-height:50px">
-                <div class="row px-2">
-                  <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
-                    <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('storage/uploads/commerce/'.$pending_restaurant->image)}}" alt="">
-                  </div>
-                  <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
-                        <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $pending_restaurant->slug)}}">{{$pending_restaurant->name}}</a></h5>
-                        <div class="ml-2">
-                          <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$pending_restaurant->address->getFullAddress()}}</p>
-                          <p class="my-1 mr-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$pending_restaurant->characteristic.'-'.$pending_restaurant->phone}}</p>
-                          @if ($pending_restaurant->second_phone)
-                            <span> | </span><p class="mb-0 ml-1 d-inline" style="font-size: 2vh"> {{$pending_restaurant->second_characteristic.'-'.$pending_restaurant->second_phone}}</p>
-                          @endif
-                        </div>
-                  </div>
-                  <div class="col-xl-3 col-lg-3 col-md-3 d-flex justify-content-center align-items-center">
-                    <div class="row my-2">
-                      <a href="{{route('restaurant.show', $pending_restaurant->slug)}}" class="btn btn-primary btn-sm float-right">Ver Productos</a>
-                    </div>
 
-                  </div>
-                </div>
-                <div style="background-color: rgb(226, 0, 0); height: 15px" class="p-0 mt-2 rounded-bottom">
-                  <div style="color:white; font-size:10px" class="ml-2 d-flex justify-content-between">
-                    <p class="m-0d-inline">Pendiente</p>
-                    <a href="#" class="active_button" data-restaurantid="{{$pending_restaurant->id}}" data-toggle="modal" data-target="#activeRestaurantModal">Activar</a>
-                  </div>
-                </div>
+
+          @if(Auth::check() and Auth::user()->type == 'administrator')
+          <div class="accordion" id="pendingShops">
+            <div class="card border-0">
+              <div class="card-header p-0 mb-2 border-0" id="headingOne">
+                <h2 class="mb-0">
+                  <button class="btn pendingShops_buttonAccordion btn-block text-left" style="color:rgb(226, 0, 0); text-align:center" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Comercios pendientes <small>({{count($pending_restaurants)}})</small>
+                  </button>
+                </h2>
               </div>
-            @endforeach
+          
+              <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#pendingShops">
+                @foreach($pending_restaurants as $pending_restaurant)
+                  <div class="card pt-2 mb-3" style="border: 1px solid rgb(255, 100, 100); min-height:50px">
+                    <div class="row px-2">
+                      <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-4 m-auto px-6" style="text-align: center">
+                        <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('storage/uploads/commerce/'.$pending_restaurant->image)}}" alt="">
+                      </div>
+                      <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
+                            <h5 style="font-size: 2.5vh"><a href="{{route('restaurant.show', $pending_restaurant->slug)}}">{{$pending_restaurant->name}}</a></h5>
+                            <div class="ml-2">
+                              <p class="my-1" style="font-size: 2vh"><i class="fas fa-map-marker-alt"></i> {{$pending_restaurant->address->getFullAddress()}}</p>
+                              <p class="my-1 mr-1 d-inline" style="font-size: 2vh"><i class="fas fa-phone"></i> {{$pending_restaurant->characteristic.'-'.$pending_restaurant->phone}}</p>
+                              @if ($pending_restaurant->second_phone)
+                                <span> | </span><p class="mb-0 ml-1 d-inline" style="font-size: 2vh"> {{$pending_restaurant->second_characteristic.'-'.$pending_restaurant->second_phone}}</p>
+                              @endif
+                            </div>
+                      </div>
+                      <div class="col-xl-3 d-flex justify-content-center align-items-center">
+                        
+                          <a href="{{route('restaurant.show', $pending_restaurant->slug)}}" class="btn btn-primary btn-block btn-sm float-right mt-2">Ver Productos</a>
+                        
+
+                      </div>
+                    </div>
+                    <div style="background-color: rgb(255, 100, 100); height: 15px" class="p-0 mt-2 rounded-bottom">
+                      <div style="color:white; font-size:10px" class="ml-2 d-flex justify-content-between">
+                        <p class="m-0d-inline">Pendiente</p>
+                        <a href="#" class="active_button" data-restaurantid="{{$pending_restaurant->id}}" data-toggle="modal" data-target="#activeRestaurantModal">Activar</a>
+                      </div>
+                    </div>
+                  </div>
+                @endforeach
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-0">
           @endif
+
+
           @foreach($restaurants as $restaurant)
             @if(count($restaurant->products)!=0 && count($restaurant->categories))
               <div class="card p-2 mb-3">
