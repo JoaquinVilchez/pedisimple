@@ -90,13 +90,12 @@
         <hr>
         <div class="row">
             <div class="col-12">
-            
             <div class="address border-bottom" style="font-size: 14px">
                 <h6 class="txt-muted order-title">Dirección de entrega</h6>
                 @if ($order->shipping_method=='delivery')
                     <p>{{$order->getFullAddress()}}</p>
                 @else
-                    <p class="order-text">Retiro en local</p>                         
+                    <p class="order-text">Retiro en local</p>
                 @endif
             </div>
 
@@ -108,7 +107,7 @@
                             <tr>
                             <td>{{$item->product->name}}
                                 @if ($item->variants!=null)
-                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{$item->variants}}"></i>
+                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{showVariantsName($item->variants)}}"></i>
                                 @endif
                                 @if ($item->aditional_notes!=null)
                                     <i class="fas fa-sticky-note" data-toggle="tooltip" data-placement="bottom" title="Nota: {{$item->aditional_notes}}"></i>
@@ -248,7 +247,7 @@
                                 @if ($order->shipping_method=='delivery')
                                     <p class="order-text">Delivery</p>
                                 @else
-                                    <p class="order-text">Retiro en local</p>                         
+                                    <p class="order-text">Retiro en local</p>
                                 @endif
                             </div>
                             <div class="d-inline ml-5">
@@ -263,17 +262,17 @@
         <hr>
         <div class="row">
             <div class="col-8 border-right">
-            
+
             <div class="address border-bottom" style="font-size: 14px">
                 <h6 class="txt-muted order-title">Dirección de entrega</h6>
                 @if ($order->shipping_method=='delivery')
                     @if ($order->address_id==null)
-                        <p class="order-text">{{$order->getFullAddress()}}</p>  
+                        <p class="order-text">{{$order->getFullAddress()}}</p>
                     @else
-                        <p class="order-text">{{$order->address->getAddress()}}</p>      
+                        <p class="order-text">{{$order->address->getAddress()}}</p>
                     @endif
                 @else
-                    <p class="order-text">Retiro en local</p>                         
+                    <p class="order-text">Retiro en local</p>
                 @endif
             </div>
 
@@ -285,7 +284,7 @@
                             <tr>
                             <td>{{$item->product->name}}
                                 @if ($item->variants!=null)
-                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{$item->variants}}"></i>
+                                    <i class="fas fa-plus-circle" data-toggle="tooltip" data-placement="bottom" title="{{showVariantsName($item->variants)}}"></i>
                                 @endif
                                 @if ($item->aditional_notes!=null)
                                     <i class="fas fa-sticky-note" data-toggle="tooltip" data-placement="bottom" title="Nota: {{$item->aditional_notes}}"></i>

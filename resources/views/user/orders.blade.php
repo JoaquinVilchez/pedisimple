@@ -71,6 +71,9 @@ function showClosedOrder(id){
         success:function(data){
             $('#detail-closed-order-modal').html(data)
         },
+        error:function(data){
+            console.log(data);
+        }
     });
 }
 

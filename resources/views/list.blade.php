@@ -123,10 +123,7 @@
                             </div>
                       </div>
                       <div class="col-xl-3 d-flex justify-content-center align-items-center">
-                        
                           <a href="{{route('restaurant.show', $pending_restaurant->slug)}}" class="btn btn-primary btn-block btn-sm float-right mt-2">Ver Productos</a>
-                        
-
                       </div>
                     </div>
                     <div style="background-color: rgb(255, 100, 100); height: 15px" class="p-0 mt-2 rounded-bottom">

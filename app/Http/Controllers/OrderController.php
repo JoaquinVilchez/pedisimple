@@ -31,7 +31,7 @@ class OrderController extends Controller
                 'image' => 'user.png'
             ];
         }
-        
+
         return view('detailClosedOrderModal')->with([
             'order' => $order,
             'items' => $items,
@@ -63,7 +63,7 @@ class OrderController extends Controller
         return view('restaurant.orders.accepted')->with('orders', $orders);
     }
 
-    /** 
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -71,7 +71,6 @@ class OrderController extends Controller
 
     public function closed(){
         $orders = Order::where('restaurant_id', Auth::user()->restaurant->id)->where('state', 'closed')->orderBy('id','desc')->paginate(15);
-        
         // Auth::user()->restaurant->orders->where('state', 'closed')->sortDesc();
         return view('restaurant.orders.closed')->with('orders', $orders);
     }
@@ -89,7 +88,6 @@ class OrderController extends Controller
             'state' => 'accepted',
             'accepted' => Carbon::now()
         ]);
-        
         // Searching the internet I thought I could do it this way, but I found no result.
 
         $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappMessageCustomer($order));
@@ -98,7 +96,7 @@ class OrderController extends Controller
 
         return back()->with('success_message', 'Pedido aceptado.');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *

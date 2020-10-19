@@ -243,7 +243,6 @@ function gluberStatus(){
 }
 
 function showVariantsName($data){
-
     $variants = [];
         foreach($data as $id) {
             $variant = Variant::find(intval($id));
