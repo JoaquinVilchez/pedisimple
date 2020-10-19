@@ -13,7 +13,7 @@
     </div>
 
 <div class="row mt-2">
-    <div class="col-xl-6">
+    <div class="col-12 col-xl-6">
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
@@ -131,13 +131,13 @@
             <div class="form-group">
                 <label>Foto</label>
                 <div class="row">
-                    <div class="col-xl-4">
+                    <div class="col-12 col-md-4">
                         <div class="form-group">
                             <div id="image_container"><img id="view_image" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></div>
                             <div id="delete_image"><a href="#image_container" onclick="removeImage();">Eliminar</a></div>
                         </div>
                     </div>
-                    <div class="col-xl-6 d-flex align-items-center">
+                    <div class="col-12 col-md-6 d-flex align-items-center">
                         <div class="form-group">
                             <label id="upload_image" for="exampleFormControlFile1">Buscar imágen</label>
                             <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" onchange="readURL(this);">
@@ -147,7 +147,7 @@
                 </div>
             </div>
     </div>
-    <div class="col-xl-6">
+    <div class="col-12 col-xl-6">
         <div class="form-group">
             <label>Comidas</label>
             <div class="form-group">

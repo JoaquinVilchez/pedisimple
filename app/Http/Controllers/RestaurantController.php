@@ -503,9 +503,11 @@ class RestaurantController extends Controller
 
             $restaurant->update(['image'=>$path]);
 
-        }elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
-            Storage::delete('public/uploads/commerce/'.$restaurant->image);
         }
+
+        // elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
+        //     Storage::delete('public/uploads/commerce/'.$restaurant->image);
+        // }
 
 
         //FIN IMAGE
