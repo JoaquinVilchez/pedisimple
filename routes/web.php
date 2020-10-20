@@ -62,6 +62,7 @@ Route::post('/usuario/administracion/comercios', 'RestaurantController@updateSta
 
 Route::resource('/', 'ListController')->names('home');
 
+Route::post('/configuracion/readnotification', 'RestaurantController@readNotification')->name('updatePrices.readNotification')->middleware(['verified', 'hasRestaurant']);
 Route::post('/configuracion/addnotificationnumber', 'RestaurantController@addNotificationNumber')->name('restaurant.notificationnumber')->middleware(['verified', 'hasRestaurant']);
 Route::get('/configuracion/informacion', 'RestaurantController@info')->name('restaurant.info')->middleware(['verified', 'hasRestaurant']);
 Route::get('/configuracion/horarios', 'RestaurantController@openingTime')->name('restaurant.times')->middleware(['verified', 'hasRestaurant']);

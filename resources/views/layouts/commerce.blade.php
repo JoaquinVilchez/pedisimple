@@ -226,17 +226,17 @@
     @if(count(Auth::user()->unreadNotifications->where('type', 'App\Notifications\UpdatePricesReminder')))
       @if(Request::path()!='productos/actualizarprecios')
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal fade" id="updatePricesModal" tabindex="-1" role="dialog" aria-labelledby="updatePricesModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-body">
                 <div style="text-align: center">
-                    <h5 class="modal-title txt-bold" id="exampleModalLabel">¡Actualizá tus precios!</h5>
+                    <h5 class="modal-title txt-bold" id="updatePricesModalLabel">¡Actualizá tus precios!</h5>
                     <img class="my-2" src="{{asset('storage/design/price.svg')}}" alt="" width="50px">
                     <div class="container">
                       <p>Te ofrecemos actualizar tus precios de una forma muy sencilla y rápida, sólo te tomará unos minutos.</p>
                         <a href="{{route('product.editprices')}}" class="btn btn-primary">Actualizar Precios</a><br>
-                      <small><a href="#" class="mt-2" data-dismiss="modal" aria-label="Close" onclick="alert('AJAX-MarkReadNotification')">No, gracias.</a></small>
+                      <small><a href="#" class="mt-2" data-dismiss="modal" aria-label="Close" onclick="markReadNotification();">No, gracias.</a></small>
                     </div>
                 </div>
               </div>
@@ -266,7 +266,7 @@
 <script>
 
   $(window).on('load',function(){
-      $('#exampleModal').modal('show');
+      $('#updatePricesModal').modal('show');
   });
 
   var url = window.location.pathname;
@@ -274,6 +274,18 @@
   var activeCategory = parts[1];
   var activePage = parts[2];
 
+  function markReadNotification(){
+    $.ajax({
+      url : '{{ route("updatePrices.readNotification") }}',
+      type: 'POST',
+      headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      success:function(){
+          $('#updatePricesModal').modal('hide');
+      },
+    });
+  }
 
   document.getElementById(activeCategory+'Collapse').classList.add("show")
   document.getElementById(activePage).classList.add("active")

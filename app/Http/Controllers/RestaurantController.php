@@ -29,6 +29,10 @@ use App\Notifications\ReactivateService;
 class RestaurantController extends Controller
 {
 
+    public function readNotification(){
+        return Auth::user()->unreadNotifications->where('type', 'App\Notifications\UpdatePricesReminder')->markAsRead();
+    }
+
     public function addNotificationNumber(Request $request){
         $restaurant = Auth::user()->restaurant;
 
