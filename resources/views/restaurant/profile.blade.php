@@ -17,8 +17,8 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url('https://www.solidbackgrounds.com/images/1920x1080/1920x1080-blue-solid-color-background.jpg') no-repeat scroll 0px 50% / cover transparent; ">
-        {{-- <div class="gradient"> --}}
+    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url({{$restaurant->showCoverPage()}}) no-repeat scroll 0px 50% / cover transparent; ">
+        <div class="gradient">
             <div class="container text-white col-lg-8 ">
                 <div class="row pb-2">
                     <div class="col-xl-2 col-lg-2 col-md-2 d-none d-md-block d-lg-block d-xl-block">
@@ -66,9 +66,9 @@
                             @endif
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
-        {{-- </div> --}}
+        </div>
     </section>
     @if ($restaurant->state != 'active')
         <div class="alert alert-danger m-0 p-1 px-2 rounded-0" role="alert" style="text-align:center; color:white; background-color: rgb(226, 0, 0); border:none">

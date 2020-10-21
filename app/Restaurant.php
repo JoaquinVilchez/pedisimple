@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class restaurant extends Model
 {
@@ -167,6 +168,43 @@ class restaurant extends Model
 
     public function getNotificationNumber(){
         return $this->notification_characteristic.$this->notification_number;
+    }
+
+    public function showCoverPage(){
+        $restaurantCategories = [];
+        foreach($this->restaurantCategories as $category){
+            array_push($restaurantCategories, $category->id);
+        }
+
+        $restaurantCategoriesQuantity = count($restaurantCategories);
+
+        $availablesCoverPages = [];
+
+        for ($i=0; $i < $restaurantCategoriesQuantity; $i++) {
+            if(Storage::exists('public/coverpages/'.$restaurantCategories[$i].'_1.png')){
+                array_push($availablesCoverPages, $restaurantCategories[$i]);
+            }
+        }
+
+        $availablesCoverPagesQuantity = count($availablesCoverPages);
+
+        if($availablesCoverPagesQuantity<=0){
+            return asset('storage/coverpages/generalwood.jpg');
+        }else{
+            $categoryID = rand(0,$availablesCoverPagesQuantity-1);
+
+            $randomNumber=rand(1,5);
+
+            while(Storage::exists('public/coverpages/'.$availablesCoverPages[$categoryID].'_'.$randomNumber.'.png')==false) {
+                $randomNumber=rand(1,5);
+            }
+
+            return asset('storage/coverpages/'.$availablesCoverPages[$categoryID].'_'.$randomNumber.'.png');
+
+        }
+
+        // return array($restaurantCategoriesQuantity,$availablesCoverPagesQuantity);
+
     }
 
 }
