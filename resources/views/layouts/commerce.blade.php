@@ -76,10 +76,12 @@
                   <a class="nav-link" data-toggle="collapse" href="#pedidosCollapse" role="button" aria-expanded="false" aria-controls="pedidosCollapse">
                     <div class="d-flex justify-content-between">
                     <span>
-                      @if((Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count())>0)
-                        <span class="badge badge-pill badge-danger mr-1">{{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}} </span>
-                      @endif
-                      Pedidos
+                      <span id="countNotification" class="badge badge-pill badge-danger mr-1"
+                        @if((Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count())==0)
+                          style="display:none"
+                        @endif>
+                        {{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}} </span>
+                        Pedidos
                     </span>
                     <i class="fas fa-chevron-down"></i>
                     </div>

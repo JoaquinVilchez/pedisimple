@@ -20,7 +20,8 @@
                 ({{Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()}})
             @endif
         @endif
-        {{config('app.name') }}</title>
+        {{config('app.name') }}
+    </title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -212,23 +213,6 @@
 <script>
 
     $(document).ready(function(){
-
-        // $('#card-step2').hide();
-        // $('#button-step1').on('click', function(){
-        //     addNotificationNumber();
-        //     $('#card-step1').fadeOut(300);
-        //     setTimeout(function(){
-        //         $('#card-step2').fadeIn(300);
-        //      }, 300);
-        // });
-
-        // $('#back-to-step1').on('click', function(){
-        //     $('#card-step2').fadeOut(300);
-        //     setTimeout(function(){
-        //         $('#card-step1').fadeIn(300);
-        //      }, 300);
-        // });
-
         $('.spinnerSubmitButton').closest('form').on('submit', function(e){
             e.preventDefault();
             $('.loadingIcon').removeClass('d-none');
@@ -334,8 +318,10 @@
             },
             success:function(data){
                 if(parseInt(data)>0){
-                    // console.log('Notificacion! ('+data+')');
                     ion.sound.play("door_bell");
+                    $('#countNotification').show();
+                    $('#countNotification').html(data);
+                    var appName = document.title = '('+data+') {{{config('app.name') }}}';
                     if(data==1){
                         $('#NewOrderModalTitle').html('¡Tienes un nuevo pedido!');
                     }else{
@@ -348,6 +334,7 @@
                 }
             }
         });
+
     }
 
     ion.sound({
@@ -360,7 +347,6 @@
             path: "{{asset('/ionsound/sounds/')}}/",
             preload: true
     });
-
 
 </script>
 
