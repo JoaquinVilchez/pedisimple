@@ -235,7 +235,7 @@ class CheckoutController extends Controller
 
                     }elseif($request->auth_user=='false'){
 
-                        $transaction = DB::transaction(function () use ($request, $restaurant, $shipping_method, $code, $user) {
+                        $transaction = DB::transaction(function () use ($request, $restaurant, $shipping_method, $code) {
 
                             try{
                                 //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
