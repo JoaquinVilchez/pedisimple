@@ -1,6 +1,7 @@
 <?php
 use App\Restaurant;
 use Carbon\Carbon;
+use Darryldecode\Cart\Cart;
 use App\OpeningDateTime;
 use App\Product;
 use App\Variant;
@@ -11,7 +12,7 @@ function formatPrice($price){
 
 function cartRestaurant(){
     $firstItem = \Cart::getContent()->first();
-    $restaurant = $firstItem->associatedModel->restaurant->id;
+    $restaurant = Product::find($firstItem->attributes->product_id)->restaurant->id;
 
     return $restaurant;
 }

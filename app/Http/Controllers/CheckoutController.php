@@ -16,6 +16,7 @@ use App\LineItem;
 use PDF;
 use App\Notifications\OrderProcessed;
 use App\Notifications\NewOrder;
+use App\Exceptions\Handler;
 
 class CheckoutController extends Controller
 {
@@ -39,14 +40,14 @@ class CheckoutController extends Controller
             return abort(404);
         }else{
             foreach(\Cart::getContent() as $item) {
-                $itemId = $item->associatedModel->id;
+                $itemId = $item->attributes->product_id;
                 if($itemId!=null){
                     break;
                 }
             }
-    
+
             $restaurant = Product::find($itemId)->restaurant;
-            
+
             return view('checkout')->with('restaurant', $restaurant);
         }
 
@@ -70,221 +71,271 @@ class CheckoutController extends Controller
      */
     public function store(Request $request){
 
-    $items = \Cart::getContent();
+        //OPTIMIZACION: SE PUEDE HACER UN ARRAY $args QUE CONTENGA LOS CAMPOS GENERALES A USAR
+        //EN CREATE Y VALIDATE Y DEPENDIENDO DE LAS CONDICIONES IR AGREGANDOLE LAS CARACTERISTICAS
+        //QUE FALTEN CON UNA FUNCION DE AGREGAR ELEMENTOS A ARRAY. ESTO ES PARA NO REPETIR TANTO CODIGO
 
-    //OPTIMIZACION: SE PUEDE HACER UN ARRAY $args QUE CONTENGA LOS CAMPOS GENERALES A USAR
-    //EN CREATE Y VALIDATE Y DEPENDIENDO DE LAS CONDICIONES IR AGREGANDOLE LAS CARACTERISTICAS
-    //QUE FALTEN CON UNA FUNCION DE AGREGAR ELEMENTOS A ARRAY. ESTO ES PARA NO REPETIR TANTO CODIGO
+        $restaurant = Restaurant::find($request->restaurant_id);
+        if($restaurant->isOpen()){
 
-    $restaurant = Restaurant::find($request->restaurant_id);
-    if($restaurant->isOpen()){
-        //CREAR CODIGO
-        //Genera un codigo de referencia para el pedido
-        do {
-            $code = generateCode();
-            $oderCode=Order::where('code', $code)->first();
-        }while ($oderCode!=null);
+            //CREAR CODIGO
+            //Genera un codigo de referencia para el pedido
+            do {
+                $code = generateCode();
+                $oderCode=Order::where('code', $code)->first();
+            }while ($oderCode!=null);
 
-        //CHECKEA METODO DE ENVIO
-        if(\Cart::getCondition('Delivery')){
-            $shipping_method = 'delivery';
-        }else{
-            $shipping_method = 'pickup';
-        }
-
-        //CREAR PEDIDO
-        if($request->auth_user=='true'){
-
-            $user = Auth::user();
-
-            if($user->restaurant == $restaurant){
-                return back()->with('error_message', 'No puedes hacer un pedido a tu propio comercio.');
+            //CHECKEA METODO DE ENVIO
+            if(\Cart::getCondition('Delivery')){
+                $shipping_method = 'delivery';
             }else{
-                //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
-                if (\Cart::getCondition('Delivery')) {
-
-                    $delivery_price = \Cart::getCondition('Delivery')->getValue();
-                    //DIRECCION
-                    if($request->address_type=='data-address') {
-
-                        $request->validate([
-                            'address' => 'required'
-                        ]);
-
-                        $address = Address::find($request->address);
-                        //Crea el pedido con la direccion registrada previamente del usuario
-                        $order = Order::create([
-                            'user_id' => $user->id,
-                            'address_id' => $address->id,
-                            'restaurant_id' => $request->restaurant_id,
-                            'ordered' => Carbon::now(),
-                            'state' => 'pending',
-                            'shipping_method' => $shipping_method,
-                            'delivery' => $delivery_price,
-                            'subtotal' => \Cart::getSubtotal(),
-                            'client_aditional_notes' => $request->client_aditional_notes,
-                            'total' => \Cart::getTotal(),
-                            'code' => $code
-                        ]);
-
-                    }elseif($request->address_type=='new-address'){
-                        
-                        $request->validate([
-                            'client_street' => 'required',
-                            'client_number' => 'required|numeric'
-                        ]);
-
-                        //Si el usuario apreta checkbox para guardar direccion en su perfil
-                        if($request->save=='on'){
-                            $address = Address::create([
-                                'street' => $request->client_street,
-                                'number' => $request->client_number,
-                                'floor' => $request->client_floor,
-                                'department' => $request->client_department,
-                                'user_id' => $user->id,
-                                'city_id' => 1 //Venado Tuerto - Unica ciudad
-                            ]);
-                            
-                            //Crea el pedido con la direccion creada recientemente
-                            $order = Order::create([
-                                'user_id' => $user->id,
-                                'address_id' => $address->id,
-                                'restaurant_id' => $request->restaurant_id,
-                                'ordered' => Carbon::now(),
-                                'state' => 'pending',
-                                'shipping_method' => $shipping_method,
-                                'delivery' => $delivery_price,
-                                'subtotal' => \Cart::getSubtotal(),
-                                'total' => \Cart::getTotal(),
-                                'client_aditional_notes' => $request->client_aditional_notes,
-                                'code' => $code
-                            ]);
-
-                        }else{
-                            //Crea el pedido con la direccion de paso
-                            $order = Order::create([
-                                'user_id' => $user->id,
-                                'restaurant_id' => $request->restaurant_id,
-                                'ordered' => Carbon::now(),
-                                'state' => 'pending',
-                                'shipping_method' => $shipping_method,
-                                'delivery' => $delivery_price,
-                                'subtotal' => \Cart::getSubtotal(),
-                                'total' => \Cart::getTotal(),
-                                'guest_street' => $request->client_street,
-                                'guest_number' => $request->client_number,
-                                'guest_floor' => $request->client_floor,
-                                'guest_department' => $request->client_department,
-                                'client_aditional_notes' => $request->client_aditional_notes,
-                                'code' => $code
-                            ]);
-                        }
-                    }//FIN-DIRECCION  
-                }else{
-                    //Crea el pedido sin direccion de envio (retiro en local)
-                    $order = Order::create([
-                        'user_id' => $user->id,
-                        'restaurant_id' => $request->restaurant_id,
-                        'ordered' => Carbon::now(),
-                        'state' => 'pending',
-                        'shipping_method' => $shipping_method,
-                        'subtotal' => \Cart::getSubtotal(),
-                        'total' => \Cart::getTotal(),
-                        'client_aditional_notes' => $request->client_aditional_notes,
-                        'code' => $code
-                    ]);
-                }   
-            }            
-        
-        }elseif($request->auth_user=='false'){
-            
-            //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
-            if (\Cart::getCondition('Delivery')) {
-
-                $request->validate([
-                    'client_first_name' => 'required',
-                    'client_last_name' => 'required',
-                    'client_characteristic' => 'required|numeric|min:4',
-                    'client_phone' => 'required|numeric|min:6',
-                    'client_street' => 'required',
-                    'client_number' => 'required|numeric',
-                ]);
-
-                $order = Order::create([
-                    'restaurant_id' => $request->restaurant_id,
-                    'ordered' => Carbon::now(),
-                    'state' => 'pending',
-                    'shipping_method' => $shipping_method,
-                    'delivery' => $restaurant->shipping_price,
-                    'subtotal' => \Cart::getSubtotal(),
-                    'total' => \Cart::getTotal(),
-                    'client_aditional_notes' => $request->client_aditional_notes,
-                    'guest_first_name' => $request->client_first_name,
-                    'guest_last_name' => $request->client_last_name,
-                    'guest_street' => $request->client_street,
-                    'guest_number' => $request->client_number,
-                    'guest_floor' => $request->client_floor,
-                    'guest_department' => $request->client_department,
-                    'guest_characteristic' => $request->client_characteristic,
-                    'guest_phone' => $request->client_phone,
-                    'code' => $code
-                ]);
-            }else{
-                $request->validate([
-                    'client_first_name' => 'required',
-                    'client_last_name' => 'required',
-                    'client_characteristic' => 'required|numeric|min:4',
-                    'client_phone' => 'required|numeric|min:6'
-                ]);
-
-                $order = Order::create([
-                    'restaurant_id' => $request->restaurant_id,
-                    'ordered' => Carbon::now(),
-                    'state' => 'pending',
-                    'shipping_method' => $shipping_method,
-                    'delivery' => $restaurant->shipping_price,
-                    'subtotal' => \Cart::getSubtotal(),
-                    'total' => \Cart::getTotal(),
-                    'client_aditional_notes' => $request->client_aditional_notes,
-                    'guest_first_name' => $request->client_first_name,
-                    'guest_last_name' => $request->client_last_name,
-                    'guest_characteristic' => $request->client_characteristic,
-                    'guest_phone' => $request->client_phone,
-                    'code' => $code
-                ]);
+                $shipping_method = 'pickup';
             }
 
+            //CREAR PEDIDO
+                    if($request->auth_user=='true'){
+
+                        $user = Auth::user();
+
+                        if($user->restaurant == $restaurant){
+                            return back()->with('error_message', 'No puedes hacer un pedido a tu propio comercio.');
+                        }else{
+
+                            $transaction = DB::transaction(function () use ($request, $shipping_method, $code, $user, $restaurant) {
+
+                                try{
+                                    //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
+                                    if (\Cart::getCondition('Delivery')) {
+
+                                        $delivery_price = \Cart::getCondition('Delivery')->getValue();
+                                        //DIRECCION
+                                        if($request->address_type=='data-address') {
+
+                                            $request->validate([
+                                                'address' => 'required'
+                                            ]);
+
+                                            $address = Address::find($request->address);
+                                            //Crea el pedido con la direccion registrada previamente del usuario
+                                            $order = Order::create([
+                                                'user_id' => $user->id,
+                                                'address_id' => $address->id,
+                                                'restaurant_id' => $request->restaurant_id,
+                                                'ordered' => Carbon::now(),
+                                                'state' => 'pending',
+                                                'shipping_method' => $shipping_method,
+                                                'delivery' => $delivery_price,
+                                                'subtotal' => \Cart::getSubtotal(),
+                                                'client_aditional_notes' => $request->client_aditional_notes,
+                                                'total' => \Cart::getTotal(),
+                                                'code' => $code
+                                            ]);
+
+                                        }elseif($request->address_type=='new-address'){
+
+                                            $request->validate([
+                                                'client_street' => 'required',
+                                                'client_number' => 'required|numeric'
+                                            ]);
+
+                                            //Si el usuario apreta checkbox para guardar direccion en su perfil
+                                            if($request->save=='on'){
+                                                $address = Address::create([
+                                                    'street' => $request->client_street,
+                                                    'number' => $request->client_number,
+                                                    'floor' => $request->client_floor,
+                                                    'department' => $request->client_department,
+                                                    'user_id' => $user->id,
+                                                    'city_id' => 1 //Venado Tuerto - Unica ciudad
+                                                ]);
+
+                                                //Crea el pedido con la direccion creada recientemente
+                                                $order = Order::create([
+                                                    'user_id' => $user->id,
+                                                    'address_id' => $address->id,
+                                                    'restaurant_id' => $request->restaurant_id,
+                                                    'ordered' => Carbon::now(),
+                                                    'state' => 'pending',
+                                                    'shipping_method' => $shipping_method,
+                                                    'delivery' => $delivery_price,
+                                                    'subtotal' => \Cart::getSubtotal(),
+                                                    'total' => \Cart::getTotal(),
+                                                    'client_aditional_notes' => $request->client_aditional_notes,
+                                                    'code' => $code
+                                                ]);
+
+                                            }else{
+                                                //Crea el pedido con la direccion de paso
+                                                $order = Order::create([
+                                                    'user_id' => $user->id,
+                                                    'restaurant_id' => $request->restaurant_id,
+                                                    'ordered' => Carbon::now(),
+                                                    'state' => 'pending',
+                                                    'shipping_method' => $shipping_method,
+                                                    'delivery' => $delivery_price,
+                                                    'subtotal' => \Cart::getSubtotal(),
+                                                    'total' => \Cart::getTotal(),
+                                                    'guest_street' => $request->client_street,
+                                                    'guest_number' => $request->client_number,
+                                                    'guest_floor' => $request->client_floor,
+                                                    'guest_department' => $request->client_department,
+                                                    'client_aditional_notes' => $request->client_aditional_notes,
+                                                    'code' => $code
+                                                ]);
+                                            }
+                                        }//FIN-DIRECCION
+                                    }else{
+                                        //Crea el pedido sin direccion de envio (retiro en local)
+                                        $order = Order::create([
+                                            'user_id' => $user->id,
+                                            'restaurant_id' => $request->restaurant_id,
+                                            'ordered' => Carbon::now(),
+                                            'state' => 'pending',
+                                            'shipping_method' => $shipping_method,
+                                            'subtotal' => \Cart::getSubtotal(),
+                                            'total' => \Cart::getTotal(),
+                                            'client_aditional_notes' => $request->client_aditional_notes,
+                                            'code' => $code
+                                        ]);
+                                    }
+
+                                    $items = \Cart::getContent();
+
+                                    foreach ($items as $item) {
+                                        LineItem::create([
+                                            'order_id' => $order->id,
+                                            'product_id' => $item->attributes->product_id,
+                                            'price' => $item->price,
+                                            'quantity' => $item->quantity,
+                                            'variants' => $item->attributes->variants,
+                                            'aditional_notes' => $item->attributes->aditional_notes
+                                        ]);
+                                    }
+
+                                    \Cart::clear();
+
+                                    //WHATSAPP
+                                    $restaurant_owner = $restaurant->user;
+
+                                    //MENSAJE DE WHATSAPP AL COMERCIANTE
+                                    // $restaurant_owner->notify(new OrderProcessed($order));
+                                    //MAIL AL COMERCIANTE
+                                    //=================
+                                    $restaurant_owner->notify(new NewOrder($order));
+
+                                    DB::commit();
+                                    return true;
+
+                                }catch (\Throwable $e) {
+                                    DB::rollback();
+                                    return false;
+                                }
+                            });
+                        }
+
+                    }elseif($request->auth_user=='false'){
+
+                        $transaction = DB::transaction(function () use ($request, $restaurant, $shipping_method, $code, $user) {
+
+                            try{
+                                //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
+                                if (\Cart::getCondition('Delivery')) {
+
+                                    $request->validate([
+                                        'client_first_name' => 'required',
+                                        'client_last_name' => 'required',
+                                        'client_characteristic' => 'required|numeric|min:4',
+                                        'client_phone' => 'required|numeric|min:6',
+                                        'client_street' => 'required',
+                                        'client_number' => 'required|numeric',
+                                    ]);
+
+                                    $order = Order::create([
+                                        'restaurant_id' => $request->restaurant_id,
+                                        'ordered' => Carbon::now(),
+                                        'state' => 'pending',
+                                        'shipping_method' => $shipping_method,
+                                        'delivery' => $restaurant->shipping_price,
+                                        'subtotal' => \Cart::getSubtotal(),
+                                        'total' => \Cart::getTotal(),
+                                        'client_aditional_notes' => $request->client_aditional_notes,
+                                        'guest_first_name' => $request->client_first_name,
+                                        'guest_last_name' => $request->client_last_name,
+                                        'guest_street' => $request->client_street,
+                                        'guest_number' => $request->client_number,
+                                        'guest_floor' => $request->client_floor,
+                                        'guest_department' => $request->client_department,
+                                        'guest_characteristic' => $request->client_characteristic,
+                                        'guest_phone' => $request->client_phone,
+                                        'code' => $code
+                                    ]);
+                                }else{
+                                    $request->validate([
+                                        'client_first_name' => 'required',
+                                        'client_last_name' => 'required',
+                                        'client_characteristic' => 'required|numeric|min:4',
+                                        'client_phone' => 'required|numeric|min:6'
+                                    ]);
+
+                                    $order = Order::create([
+                                        'restaurant_id' => $request->restaurant_id,
+                                        'ordered' => Carbon::now(),
+                                        'state' => 'pending',
+                                        'shipping_method' => $shipping_method,
+                                        'delivery' => $restaurant->shipping_price,
+                                        'subtotal' => \Cart::getSubtotal(),
+                                        'total' => \Cart::getTotal(),
+                                        'client_aditional_notes' => $request->client_aditional_notes,
+                                        'guest_first_name' => $request->client_first_name,
+                                        'guest_last_name' => $request->client_last_name,
+                                        'guest_characteristic' => $request->client_characteristic,
+                                        'guest_phone' => $request->client_phone,
+                                        'code' => $code
+                                    ]);
+                                }
+
+                                $items = \Cart::getContent();
+
+                                foreach ($items as $item) {
+                                    LineItem::create([
+                                        'order_id' => $order->id,
+                                        'product_id' => $item->attributes->product_id,
+                                        'price' => $item->price,
+                                        'quantity' => $item->quantity,
+                                        'variants' => $item->attributes->variants,
+                                        'aditional_notes' => $item->attributes->aditional_notes
+                                    ]);
+                                }
+
+                                \Cart::clear();
+
+                                //WHATSAPP
+                                $restaurant_owner = $restaurant->user;
+
+                                //MENSAJE DE WHATSAPP AL COMERCIANTE
+                                // $restaurant_owner->notify(new OrderProcessed($order));
+                                //MAIL AL COMERCIANTE
+                                //=================
+                                $restaurant_owner->notify(new NewOrder($order));
+
+                                DB::commit();
+                                return true;
+
+                            }catch (\Throwable $e) {
+                                DB::rollback();
+                                return false;
+                            }
+                        });
+                    }
+
+                    if ($transaction) {
+                        return redirect()->route('confirmed.order', Crypt::encryptString($code));
+                    }else{
+                        return redirect()->route('checkout.index')->with('error_message', 'Hubo un error y no se pudo procesar tu pedido, intente más tarde.');
+                    }
+        }else{
+            return back()->with('error_message', 'Este comercio está cerrado, intenta hacer tu pedido más tarde');
         }
-
-        // $order = Order::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
-        $items = \Cart::getContent();
-
-        foreach ($items as $item) {
-            LineItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->associatedModel->id,
-                'price' => $item->price,
-                'quantity' => $item->quantity,
-                'variants' => $item->attributes->variants,
-                'aditional_notes' => $item->attributes->aditional_notes
-            ]);
-        }
-
-        \Cart::clear();
-
-        //WHATSAPP
-        $restaurant_owner = $restaurant->user;
-
-        //MENSAJE DE WHATSAPP AL COMERCIANTE
-        $restaurant_owner->notify(new OrderProcessed($order));
-        //MAIL AL COMERCIANTE
-        //=================
-        $restaurant_owner->notify(new NewOrder($order));
-
-        return redirect()->route('confirmed.order', Crypt::encryptString($code));
-    }else{
-        return back()->with('error_message', 'Este comercio está cerrado, intenta hacer tu pedido más tarde');
-    }
 
     }
 
@@ -306,7 +357,7 @@ class CheckoutController extends Controller
             'order' => $order,
             'code' => $code,
             'restaurant' => $restaurant,
-        ]); 
+        ]);
     }
 
     /**

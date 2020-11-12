@@ -46,31 +46,29 @@ class CartController extends Controller
             $variantsRule='nullable';
         }
 
-        request()->validate([   
+        request()->validate([
             'variants'=>$variantsRule
         ]);
-        
+
         $restaurant = $product->restaurant;
 
         if($restaurant->isOpen()){
-            if(\Cart::isEmpty()){
+        if(\Cart::isEmpty()){
                 if (count($product->getVariants)>0) {
                     \Cart::add(array(
                         'id' => generateCode(),
                         'name' => $product->name,
                         'price' => $product->price,
                         'quantity' => $request->quantity,
-                        'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes],
-                        'associatedModel' => $product
+                        'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
                     ));
                 }else{
                     \Cart::add(array(
                         'id' => $request->id,
                         'name' => $product->name,
                         'price' => $product->price,
-                        'attributes' => ['aditional_notes' => $request->aditional_notes],
                         'quantity' => $request->quantity,
-                        'associatedModel' => $product
+                        'attributes' => ['aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
                     ));
                 }
 
@@ -94,16 +92,15 @@ class CartController extends Controller
                 // return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
             }else{
                 $firstItem = \Cart::getContent()->first();
-                
-                if($product->restaurant->id == $firstItem->associatedModel->restaurant->id){
+                $restaurantID = Product::find($firstItem->attributes->product_id)->restaurant->id;
+                if($product->restaurant->id == $restaurantID){
                     if (count($product->getVariants)>0) {
                         \Cart::add(array(
                             'id' => generateCode(),
                             'name' => $product->name,
                             'price' => $product->price,
                             'quantity' => $request->quantity,
-                            'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes],
-                            'associatedModel' => $product
+                            'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id],
                         ));
                     }else{
                         \Cart::add(array(
@@ -111,13 +108,12 @@ class CartController extends Controller
                             'name' => $product->name,
                             'price' => $product->price,
                             'quantity' => $request->quantity,
-                            'attributes' => ['aditional_notes' => $request->aditional_notes],
-                            'associatedModel' => $product
+                            'attributes' => ['aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
                         ));
                     }
 
                     if($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup'){
-                    
+
                         $condition = new \Darryldecode\Cart\CartCondition(array(
                             'name' => 'Delivery',
                             'type' => 'tax',

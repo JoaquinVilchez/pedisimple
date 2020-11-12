@@ -124,6 +124,9 @@
             </div>
     </div>
 
+    <div class="fixed-bottom d-lg-none" style="margin-bottom: 15%" id="mobileMessage">
+    </div>
+
     @if(Cart::getTotalQuantity()>0)
     <div class="fixed-bottom mb-4 d-lg-none" id="mobileCart">
         <a onclick="goToCart();" class="btn btn-primary d-flex justify-content-between mobileCart">
@@ -148,8 +151,10 @@
             $(window).on('resize scroll', function() {
                 if ($('#cart-content').isInViewport()) {
                     $('#mobileCart').fadeOut(300);
+                    $('#mobileMessage').fadeOut(300);
                 } else {
                     $('#mobileCart').fadeIn(300);
+                    $('#mobileMessage').fadeIn(300);
                 }
             });
 
@@ -256,7 +261,7 @@
                     }, 0);
                 },
                 error:function(data){
-                    $('#cart-data').html('<div class="alert alert-warning cart-message px-4 py-1"><small>'+data+'</small></div>');
+                    $('#cart-data').html('<div class="alert alert-warning cart-message px-4 py-1"><small>HOLA HOLA'+data+'</small></div>');
                     $('.cart-message').delay(2000).fadeOut();
                 }
             });

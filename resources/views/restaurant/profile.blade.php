@@ -501,17 +501,19 @@
                     $('#no-confirm-empty-cart').hide();
                 },
                 error:function(data){
-                    console.log(data);
                     $('#addItemModal').modal('hide');
                     $.each(data.responseJSON, function(key,value) {
                         if(value.variants){
                             $('#cart-data').html('<div class="message-error alert alert-danger alert-dismissible fade show" role="alert">'+value.variants+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                            $('#mobileMessage').html('<div class="alert alert-danger cart-message mx-3 py-2 px-3" role="alert">'+value.variants+'</div>');
                         }else{
                             $('#cart-data').html('<div class="message-error alert alert-danger alert-dismissible fade show" role="alert">'+value+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                            $('#mobileMessage').html('<div class="alert alert-danger cart-message mx-3 py-2 px-3" role="alert">'+value+'</div>');
                         }
                     });
                     setTimeout(function() {
                         $(".message-error").fadeOut(200);
+                        $(".cart-message").fadeOut(200);
                     }, 4000);
                 }
             });
