@@ -420,19 +420,22 @@ class RestaurantController extends Controller
     public function edit($id)
     {
         $restaurant = Restaurant::findOrFail($id);
-        $this->authorize('pass', $restaurant);
+        if($restaurant->id == Auth::user()->restaurant->id){
 
-        $address = $restaurant->address;
-        $cities = City::all();
-        $foodCategories = RestaurantCategory::all();
-        $restaurantFoodCategories = $restaurant->restaurantCategories;
-        return view('restaurant.info.edit')->with([
-            'restaurant' => $restaurant,
-            'address' => $address,
-            'cities' => $cities,
-            'foodCategories' => $foodCategories,
-            'restaurantFoodCategories' => $restaurantFoodCategories
-        ]);
+            $address = $restaurant->address;
+            $cities = City::all();
+            $foodCategories = RestaurantCategory::all();
+            $restaurantFoodCategories = $restaurant->restaurantCategories;
+            return view('restaurant.info.edit')->with([
+                'restaurant' => $restaurant,
+                'address' => $address,
+                'cities' => $cities,
+                'foodCategories' => $foodCategories,
+                'restaurantFoodCategories' => $restaurantFoodCategories
+            ]);
+        }else{
+            return redirect()->route('restaurant.info');
+        }
     }
 
     /**
@@ -445,127 +448,130 @@ class RestaurantController extends Controller
     public function update(Request $request, $id)
     {
         $restaurant = Restaurant::findOrFail($id);
-        $this->authorize('pass', $restaurant);
+        if($restaurant->id == Auth::user()->restaurant->id){
 
-        if($request->shipping_method == 'pickup'){
-            $shipping_price_rule = 'nullable';
-        }else{
-            $shipping_price_rule = 'required';
-        }
-
-        if($request->second_phone != null or $request->second_characteristic != null ){
-            $second_phone_rule = 'required';
-        }else{
-            $second_phone_rule = 'nullable';
-        }
-
-        if($request->slug == $restaurant->slug){
-            $slugRule = 'required';
-        }else{
-            $slugRule = 'required|unique:restaurants';
-        }
-
-        $data=request()->validate([
-            'name'=>'required',
-            'street'=>'required',
-            'number'=>'required',
-            'city_id' => 'required',
-            'characteristic' => 'required|min:4',
-            'phone' => 'required|min:6',
-            'slug' => $slugRule,
-            'second_characteristic' => $second_phone_rule.'|min:4',
-            'second_phone' => $second_phone_rule.'|min:6',
-            'description' => 'nullable',
-            'shipping_method' => 'required',
-            'shipping_price' => $shipping_price_rule,
-            'shipping_time' => 'nullable',
-            'food_categories' => 'required'
-        ]);
-
-        $slug = makeSlug($request->slug);
-
-        //IMAGE
-        if($request->hasFile('image')){
-
-            $old_image = $restaurant->image;
-
-            $file = $request->file('image');
-
-            $path = $file->hashName();
-
-            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
-
-            if($old_image!='commerce.png'){
-                Storage::delete('public/uploads/commerce/'.$old_image);
+            if($request->shipping_method == 'pickup'){
+                $shipping_price_rule = 'nullable';
+            }else{
+                $shipping_price_rule = 'required';
             }
 
-            Storage::put("public/uploads/commerce/".$path, $image->__toString());
+            if($request->second_phone != null or $request->second_characteristic != null ){
+                $second_phone_rule = 'required';
+            }else{
+                $second_phone_rule = 'nullable';
+            }
 
-            // $image->fit(250, 250, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
+            if($request->slug == $restaurant->slug){
+                $slugRule = 'required';
+            }else{
+                $slugRule = 'required|unique:restaurants';
+            }
 
-            $restaurant->update(['image'=>$path]);
-
-        }
-
-        // elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
-        //     Storage::delete('public/uploads/commerce/'.$restaurant->image);
-        // }
-
-
-        //FIN IMAGE
-
-        if($request->action==='delete'){
-            $restaurant->update(['image'=>'commerce.png']);
-        }
-
-        //ADDRESS
-        $address = Address::where([
-            ['restaurant_id', '=', $restaurant->id],
-            ['street', '=', $data['street']],
-            ['number', '=', $data['number']],
-            ['city_id', '=', $data['city_id']],
-        ]);
-
-        if(count($address->get())==0){
-            $old_address = Address::where('restaurant_id', '=', $restaurant->id)->first();
-            $old_address->update([
-                'street' => $data['street'],
-                'number' => $data['number'],
-                'city_id' => $data['city_id']
+            $data=request()->validate([
+                'name'=>'required',
+                'street'=>'required',
+                'number'=>'required',
+                'city_id' => 'required',
+                'characteristic' => 'required|min:4',
+                'phone' => 'required|min:6',
+                'slug' => $slugRule,
+                'second_characteristic' => $second_phone_rule.'|min:4',
+                'second_phone' => $second_phone_rule.'|min:6',
+                'description' => 'nullable',
+                'shipping_method' => 'required',
+                'shipping_price' => $shipping_price_rule,
+                'shipping_time' => 'nullable',
+                'food_categories' => 'required'
             ]);
-        }
-        //FIN ADDRESS
 
-                    //OPTIMIZAR
-        //FOOD CATEGORIES
-        $foodCategories = DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->get();
-        for ($i=0; $i < count($foodCategories); $i++){
-            DB::table('relation_restaurant_category')->where('category_restaurant_id', $foodCategories[$i]->category_restaurant_id)->where('restaurant_id', $restaurant->id)->delete();
-        }
-        for ($i=0; $i < count($data['food_categories']); $i++) {
-            DB::table('relation_restaurant_category')->insert([
-                'restaurant_id' => $restaurant->id,
-                'category_restaurant_id' => $data['food_categories'][$i]
+            $slug = makeSlug($request->slug);
+
+            //IMAGE
+            if($request->hasFile('image')){
+
+                $old_image = $restaurant->image;
+
+                $file = $request->file('image');
+
+                $path = $file->hashName();
+
+                $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
+
+                if($old_image!='commerce.png'){
+                    Storage::delete('public/uploads/commerce/'.$old_image);
+                }
+
+                Storage::put("public/uploads/commerce/".$path, $image->__toString());
+
+                // $image->fit(250, 250, function ($constraint) {
+                //     $constraint->aspectRatio();
+                // });
+
+                $restaurant->update(['image'=>$path]);
+
+            }
+
+            // elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
+            //     Storage::delete('public/uploads/commerce/'.$restaurant->image);
+            // }
+
+
+            //FIN IMAGE
+
+            if($request->action==='delete'){
+                $restaurant->update(['image'=>'commerce.png']);
+            }
+
+            //ADDRESS
+            $address = Address::where([
+                ['restaurant_id', '=', $restaurant->id],
+                ['street', '=', $data['street']],
+                ['number', '=', $data['number']],
+                ['city_id', '=', $data['city_id']],
             ]);
+
+            if(count($address->get())==0){
+                $old_address = Address::where('restaurant_id', '=', $restaurant->id)->first();
+                $old_address->update([
+                    'street' => $data['street'],
+                    'number' => $data['number'],
+                    'city_id' => $data['city_id']
+                ]);
+            }
+            //FIN ADDRESS
+
+                        //OPTIMIZAR
+            //FOOD CATEGORIES
+            $foodCategories = DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->get();
+            for ($i=0; $i < count($foodCategories); $i++){
+                DB::table('relation_restaurant_category')->where('category_restaurant_id', $foodCategories[$i]->category_restaurant_id)->where('restaurant_id', $restaurant->id)->delete();
+            }
+            for ($i=0; $i < count($data['food_categories']); $i++) {
+                DB::table('relation_restaurant_category')->insert([
+                    'restaurant_id' => $restaurant->id,
+                    'category_restaurant_id' => $data['food_categories'][$i]
+                ]);
+            }
+            //FIN FOOD CATEGORIES
+
+            $restaurant->update([
+                'name'=> $data['name'],
+                'characteristic'=> $data['characteristic'],
+                'phone'=> $data['phone'],
+                'second_characteristic'=> $data['second_characteristic'],
+                'second_phone'=> $data['second_phone'],
+                'description'=> $data['description'],
+                'slug' => $slug,
+                'shipping_method'=> $data['shipping_method'],
+                'shipping_price'=> $data['shipping_price'],
+                'shipping_time'=> $data['shipping_time']
+            ]);
+
+            return redirect(route('restaurant.info'))->with('success_message', 'Datos editados con éxito');
+        }else{
+            return abort(403);
         }
-        //FIN FOOD CATEGORIES
-
-        $restaurant->update([
-            'name'=> $data['name'],
-            'characteristic'=> $data['characteristic'],
-            'phone'=> $data['phone'],
-            'second_characteristic'=> $data['second_characteristic'],
-            'second_phone'=> $data['second_phone'],
-            'description'=> $data['description'],
-            'slug' => $slug,
-            'shipping_method'=> $data['shipping_method'],
-            'shipping_price'=> $data['shipping_price'],
-            'shipping_time'=> $data['shipping_time']
-        ]);
-
-        return redirect(route('restaurant.info'))->with('success_message', 'Datos editados con éxito');
     }
 
     /**
