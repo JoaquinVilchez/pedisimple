@@ -20,8 +20,7 @@ class RestaurantPolicy
         //
     }
 
-    public function pass(User $user, Restaurant $restaurant)
-    {
+    public function pass(User $user, Restaurant $restaurant){
         return $user->restaurant->id == $restaurant->id;
     }
 }
