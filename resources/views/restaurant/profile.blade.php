@@ -53,7 +53,11 @@
                             @if($restaurant->shipping_method != 'pickup')
                                 <div class="vl"></div>
                                 <div class="d-inline">
-                                    <span class="d-block">${{formatPrice($restaurant->shipping_price)}} <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Importante: El precio del delivery puede variar en base a la distancia."></i></span>
+                                    @if ($restaurant->shipping_price>0)
+                                        <span class="d-block">${{formatPrice($restaurant->shipping_price)}} <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="Importante: El precio del delivery puede variar en base a la distancia."></i></span>
+                                    @else
+                                    <span class="d-block">Sin cargo</span>
+                                    @endif
                                     <small class="d-block txt-muted">Costo de envío</small>
                                 </div>
                                 @if($restaurant->shipping_time)
@@ -394,13 +398,13 @@
         </div>
         </div>
     </div>
-    
+
     <a id="back-to-top" href="#" class="btn btn-primary btn-sm back-to-top d-none d-lg-block" role="button"><i class="fas fa-arrow-circle-up"></i> Ir arriba</a>
 @endsection
 
 @section('js-scripts')
     <script>
-        $(document).ready(function(){       
+        $(document).ready(function(){
             $('#back-to-top').hide();
 
             $(window).scroll(function () {
@@ -441,7 +445,7 @@
         function goToCart(){
             $('#mobileCart').tooltip('hide');
             $('body,html').animate({
-                scrollTop: $('#cart-content').offset().top 
+                scrollTop: $('#cart-content').offset().top
             }, 800);
             return false;
         }
@@ -461,7 +465,6 @@
             });
         }
 
-        
          $('#activeRestaurantModal').on('show.bs.modal', function(event){
             var button = $(event.relatedTarget)
 
@@ -476,7 +479,7 @@
             var variants = [];
             $.each($("input[name='variants[]']:checked"), function(){
                 variants.push($(this).val());
-            });            
+            });
             var aditional_notes = $('#product-aditional_notes').val();
 
             $.ajax({

@@ -26,7 +26,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-8">
                             <label>Dirección <small style="color:rgb(241, 0, 0)">*</small></label>
                             <input type="text" class="form-control" name="street" value="{{old('street')}}" autocomplete="flase">
-                            
+
                         </div>
                         <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 col-4">
                             <label>Número<small style="color:rgb(241, 0, 0)">*</small></label>
@@ -99,12 +99,13 @@
 
                             <div class="col-12 col-md-6">
                                 <label>Costo de envío <small style="color:rgb(241, 0, 0)">*</small></label>
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-0">
                                     <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">$</span>
                                     </div>
                                     <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price')}}" autocomplete="flase">
                                 </div>
+                                <small class="form-text text-muted">En caso que sea sin costo, colocar $0</small>
                             </div>
 
                             <div class="col-12 col-md-6">

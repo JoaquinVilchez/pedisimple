@@ -98,34 +98,41 @@
                 <label>Descripción</label>
                 <textarea class="form-control" rows="3" name="description" value="{{old('description', $restaurant->description)}}">{{old('description', $restaurant->description)}}</textarea>
             </div>
+            {{-- OK --}}
             <hr class="my-2">
             <div class="form-group col-12 col-md-6 pl-0">
                 <label>Retiro o delivery</label>
-                <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()">                    
+                <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()">
                     <option value="delivery" @if($restaurant->shipping_method === 'delivery') selected @endif>Delivery</option>
                     <option value="pickup" @if($restaurant->shipping_method === 'pickup') selected @endif>Retiro en local</option>
                     <option value="delivery-pickup" @if($restaurant->shipping_method === 'delivery-pickup') selected @endif>Delivery y Retiro en local</option>
                 </select>
+            </div>
 
-                <div class="row mt-2 ml-1" id="delivery_options">
+            <div class="row mt-2 ml-1" id="delivery_options">
+                <div class="form-group pl-0">
                     <label>Costo de envío</label>
-                    <div class="input-group mb-3 col-12 col-md-8">
+                    <div class="input-group mb-0 col-12 pl-0">
                         <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1">$</span>
+                        <span class="input-group-text" id="basic-addon1">$</span>
                         </div>
                         <input min="0" type="number" class="form-control" name="shipping_price" value="{{old('shipping_price', formatPrice($restaurant->shipping_price))}}">
                         {!!$errors->first('shipping_price', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
+                    <small class="form-text text-muted ml-3">En caso que sea sin costo, ingresar $0</small>
+                </div>
 
+                <div class="form-group">
                     <label>Tiempo aproximado de envío</label>
-                    <div class="input-group mb-3 col-12 col-md-8">
+                    <div class="input-group mb-3 col-12">
                     <input min="0" step="5" type="number" class="form-control" name="shipping_time" value="{{old('shipping_time', formatPrice($restaurant->shipping_time))}}">
                         <div class="input-group-append">
-                          <span class="input-group-text" id="basic-addon2">min.</span>
+                        <span class="input-group-text" id="basic-addon2">min.</span>
                         </div>
                     </div>
                 </div>
             </div>
+
             <hr class="my-2">
 
             <div class="form-group">
@@ -181,7 +188,7 @@
 @endsection
 
 @section('js-scripts')
-    <script> 
+    <script>
 
         function readURL(input) {
             document.getElementById('image_container').removeAttribute('hidden');

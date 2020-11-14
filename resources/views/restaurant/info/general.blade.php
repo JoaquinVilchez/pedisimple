@@ -43,7 +43,7 @@
                   </tr>
                   <tr>
                     <td>Descripción</td>
-                    @if ($restaurant->second_phone == null)
+                    @if ($restaurant->description == null)
                       <td> - </td>
                     @else
                       <td>{{$restaurant->description}}</td>

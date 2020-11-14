@@ -28,7 +28,7 @@
             <div class="mt-2">
                 @include('messages')
             </div>
-            
+
             <div class="table-responsive">
                 <table class="table mt-3" style="text-align: center">
                     <td>Abierto/Cerrado</td>
@@ -44,8 +44,8 @@
                         @foreach($schedule as $day)
                             @if (isset($day))
                                 <tr class="mb-4">
-                                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox" 
-                                            @if(is_array($day)) name="state_{{$day['weekday']}}" @else name="state_{{$day}}" @endif 
+                                    <td style="text-align:center" width="10%"><span class="mr-2">Abierto</span><input type="checkbox"
+                                            @if(is_array($day)) name="state_{{$day['weekday']}}" @else name="state_{{$day}}" @endif
                                         @if(is_array($day))
                                             @if($day['state']=='open') checked @endif>
                                         @endif
@@ -54,49 +54,49 @@
                                         <strong>{{getDayName($day)}}</strong>
                                     </td>
                                     <td width="10%">
-                                        <input type="time" class="form-control" placeholder="Abre" 
-                                            @if(is_array($day)) 
-                                                value="{{old('start_hour_1_'.$day['weekday'], $day['start_hour_1'])}}" 
-                                                name="start_hour_1_{{$day['weekday']}}" 
-                                            @else 
-                                                value="{{old('start_hour_1_'.$day)}}" 
-                                                name="start_hour_1_{{$day}}" 
+                                        <input type="time" class="form-control" placeholder="Abre"
+                                            @if(is_array($day))
+                                                value="{{old('start_hour_1_'.$day['weekday'], $day['start_hour_1'])}}"
+                                                name="start_hour_1_{{$day['weekday']}}"
+                                            @else
+                                                value="{{old('start_hour_1_'.$day)}}"
+                                                name="start_hour_1_{{$day}}"
                                             @endif
                                             >
                                     </td>
                                     <td width="5%">a</td>
                                     <td width="10%">
-                                        <input type="time" class="form-control" placeholder="Cierra" 
-                                            @if(is_array($day)) 
-                                                value="{{old('end_hour_1_'.$day['weekday'], $day['end_hour_1'])}}" 
-                                                name="end_hour_1_{{$day['weekday']}}" 
-                                            @else 
-                                                value="{{old('end_hour_1_'.$day)}}" 
-                                                name="end_hour_1_{{$day}}" 
+                                        <input type="time" class="form-control" placeholder="Cierra"
+                                            @if(is_array($day))
+                                                value="{{old('end_hour_1_'.$day['weekday'], $day['end_hour_1'])}}"
+                                                name="end_hour_1_{{$day['weekday']}}"
+                                            @else
+                                                value="{{old('end_hour_1_'.$day)}}"
+                                                name="end_hour_1_{{$day}}"
                                             @endif
                                             >
                                     </td>
                                     <td width="5%">|</td>
                                     <td width="10%">
-                                        <input type="time" class="form-control" placeholder="Abre" 
-                                            @if(is_array($day)) 
-                                                value="{{old('start_hour_2_'.$day['weekday'], $day['start_hour_2'])}}" 
-                                                name="start_hour_2_{{$day['weekday']}}" 
-                                            @else 
-                                                value="{{old('start_hour_2_'.$day)}}" 
-                                                name="start_hour_2_{{$day}}" 
+                                        <input type="time" class="form-control" placeholder="Abre"
+                                            @if(is_array($day))
+                                                value="{{old('start_hour_2_'.$day['weekday'], $day['start_hour_2'])}}"
+                                                name="start_hour_2_{{$day['weekday']}}"
+                                            @else
+                                                value="{{old('start_hour_2_'.$day)}}"
+                                                name="start_hour_2_{{$day}}"
                                             @endif
                                             >
                                     </td>
                                     <td width="5%">a</td>
                                     <td width="10%">
-                                        <input type="time" class="form-control" placeholder="Cierra"                            
-                                            @if(is_array($day)) 
-                                                value="{{old('end_hour_2_'.$day['weekday'], $day['end_hour_2'])}}" 
-                                                name="end_hour_2_{{$day['weekday']}}" 
-                                            @else 
-                                                value="{{old('end_hour_2_'.$day)}}" 
-                                                name="end_hour_2_{{$day}}" 
+                                        <input type="time" class="form-control" placeholder="Cierra"
+                                            @if(is_array($day))
+                                                value="{{old('end_hour_2_'.$day['weekday'], $day['end_hour_2'])}}"
+                                                name="end_hour_2_{{$day['weekday']}}"
+                                            @else
+                                                value="{{old('end_hour_2_'.$day)}}"
+                                                name="end_hour_2_{{$day}}"
                                             @endif
                                             >
                                     </td>
@@ -110,5 +110,10 @@
 </div>    
 @endsection
 
+@section('js-scripts')
 
+<script>
+    alert('Hola');
+</script>
+@endsection
 

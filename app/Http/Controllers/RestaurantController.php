@@ -281,12 +281,24 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        $categories = RestaurantCategory::all();
-        $cities = City::all();
-        return view('restaurant.create')->with([
-            'categories' => $categories,
-            'cities' => $cities
-        ]);
+        if(Auth::check()){
+            if(Auth::user()->hasRole('merchant')){
+                if(Auth::user()->restaurant){
+                    $categories = RestaurantCategory::all();
+                    $cities = City::all();
+                    return view('restaurant.create')->with([
+                        'categories' => $categories,
+                        'cities' => $cities
+                    ]);
+                }else{
+                    return redirect()->route('home.index');
+                }
+            }else{
+                return redirect()->route('home.index');
+            }
+        }else{
+            return redirect()->route('home.index');
+        }
     }
 
     /**
