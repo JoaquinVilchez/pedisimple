@@ -6,6 +6,9 @@
 @section('main')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
         <h1 class="h2"><strong>Pedidos cerrados</strong></h1>
+        <div class="mb-2" style="font-size: .8em;">
+            <i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-pedidos" class="txt-semi-bold">Consultar documentación</a>.
+        </div>
     </div>
 
     @include('messages')

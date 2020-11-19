@@ -24,7 +24,7 @@ class Visible
 
         if($slug != ''){
             $restaurant = Restaurant::where('slug', $slug)->first();
-    
+
             if(Auth::check()){
                 if(Auth::user()->hasRole('administrator')) {
                     return $next($request);
@@ -43,7 +43,7 @@ class Visible
                         return $next($request);
                     }else{
                         return redirect()->route('home.index');
-                    } 
+                    }
                 }else{
                     return back();
                 }

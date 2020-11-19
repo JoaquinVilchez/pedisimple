@@ -202,6 +202,10 @@
           </div>
 
         </form>
+
+      </div>
+      <div class="mb-2" style="font-size: .8em; text-align:center">
+      <i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-int-importar-excel" class="txt-semi-bold">Consultar documentación</a>.
       </div>
     </div>
   </div>

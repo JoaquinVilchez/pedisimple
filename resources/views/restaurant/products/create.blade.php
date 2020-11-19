@@ -214,6 +214,11 @@
 @endif
 </form>
 </div>
+<hr>
+
+<div class="alert alert-secondary mb-2" style="font-size: .8em; text-align:center" role="alert">
+<i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-productos" class="txt-semi-bold">Consultar documentación</a>.
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="addVariant" tabindex="-1" role="dialog" aria-labelledby="addVariantLabel" aria-hidden="true">

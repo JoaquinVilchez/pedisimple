@@ -41,7 +41,7 @@
       <tbody>
           @foreach($products as $product)
           <tr>
-            <td>          
+            <td>
               <div class="d-inline">
                 <img data-original="{{asset('storage/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
               </div>

@@ -2,19 +2,9 @@
 
 @section('content')
 
-{{-- @if(Auth::check())
-  @if(Auth::user()->restaurant->getSchedule()==null)
-      <div class="alert alert-danger m-0 rounded-0 py-1" role="alert" style="background-color: #ffc500">
-          <div class="d-flex justify-content-center">
-              <p class="m-0" style="text-align: center"><i class="fas fa-exclamation-circle"></i> <a href="{{route('restaurant.times')}}">Establecer los horarios de apertura es un <strong>requisito obligatorio</strong> para activar el servicio.</a></p>
-          </div>
-      </div>  
-  @endif
-@endif --}}
-
 <div class="container-fluid">
   <div class="row">
-    
+
   @if(Auth::check())
     @if(Auth::user()->restaurant->getSchedule()==null && Request::path()!="configuracion/horarios")
       @include('restaurant.steps')
@@ -187,7 +177,7 @@
                             <span class="text-muted mx-4"><small>{{Auth::user()->restaurant->newOrders()}}</small></span> 
                           @endif
                       </div>
-                        
+
                     </li>
                     <li class="nav-item">
                       <div class="d-flex align-items-center">
@@ -220,7 +210,7 @@
               </ul>
             </nav>
           </div>
-        </nav>    
+        </nav>
         @endif
       @endif
     @endif

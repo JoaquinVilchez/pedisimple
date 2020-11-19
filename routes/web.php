@@ -72,6 +72,11 @@ Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.
 Route::post('/comercio/store', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
 Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware('Visible');
 
+//DOCUMENTACION
+Route::get('/ayuda/documentacion', function(){
+    return view('restaurant.documentation');
+})->name('help.documentation')->middleware(['verified', 'hasRestaurant']);
+
 //PRODUCTOS
 Route::post('/productos/showData', 'ProductController@showData')->name('product.showData');
 Route::get('/productos/export-excel', 'ProductController@exportExcel')->name('product.export.excel')->middleware(['auth','verified', 'hasRestaurant']);
