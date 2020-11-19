@@ -524,9 +524,9 @@ class RestaurantController extends Controller
 
             }
 
-            // elseif($request->hasFile('image')=="" && $restaurant->image!="commerce.png"){
-            //     Storage::delete('public/uploads/commerce/'.$restaurant->image);
-            // }
+            if($request->delete_image=='yes'){
+                Storage::delete('public/uploads/commerce/'.$restaurant->image);
+            }
 
 
             //FIN IMAGE

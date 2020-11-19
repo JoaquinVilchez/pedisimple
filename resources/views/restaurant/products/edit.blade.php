@@ -107,7 +107,7 @@
                 <div class="form-check">
                   <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="category_id" value="{{old('category_id', $category->id)}}" @if($product->category_id==$category->id) checked @endif>
-                    {{$category->name}} 
+                    {{$category->name}}
                   </label>
                 </div>
               </div>
@@ -117,7 +117,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="col-xl-6 col-12 my-2">
         <div class="card">
           <h5 class="card-header">Otros</h5>
@@ -140,12 +140,13 @@
             <label>Imágen</label>
               <div class="form-group">
                 <div id="image_container"><img id="view_image" data-original="{{asset('storage/uploads/products/'.$product->image)}}" class="upload-image-preview"></div>
-                <div id="delete_image"><a onclick="removeImage();">Eliminar</a></div>
+                <div id="delete_image"><a style="cursor: pointer" onclick="removeImage();">Eliminar</a></div>
+                <input type="hidden" name="delete_image" value="no" id="delete-image">
               </div>
               <div class="input-group mb-3">
                 <div class="custom-file">
                   <input type="file" name="image" class="custom-file-input" onchange="readURL(this);">
-                  <label class="custom-file-label" id="upload_image" for="inputGroupFile01">Seleccionar archivo</label>
+                  <label class="custom-file-label" id="upload_image" for="inputGroupFile01">Buscar imágen</label>
                   <input type="hidden" id="img_action" name="action" value="">
                 </div>
               </div>
@@ -162,7 +163,7 @@
                   Este producto es temporal <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="El producto sólo se mostrará en una fecha determinada y luego desaparecerá."></i>
               </label>
             </div>
-        
+
             <div id="temporalCollapse" class="collapse @if(old('temporary', $product->temporary)) show @endif" aria-labelledby="headingOne" data-parent="#temporalAccordion">
               <div class="card-body">
                 <label>Período</label>
@@ -183,13 +184,13 @@
                         <small>Termina a las 00:00hs de este día (Este día no está incluido)</small>
                       </div>
                     </div>
-                  </div>             
+                  </div>
                   {!!$errors->first('start_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                   <br>
                   {!!$errors->first('end_date', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
               </div>
             </div>
-          </div>          
+          </div>
         </div>
       </div>
 </div>
@@ -229,11 +230,11 @@
           <div class="form-group">
             <label for="variantName">Nombre de la variante</label>
             <input type="text" class="form-control" id="variantName" name="variant-name" autocomplete="off">
-          </div>  
+          </div>
           <div class="form-group">
             <label>Descripción</label>
             <textarea class="form-control" name="variant-description" rows="3"></textarea>
-          </div>  
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -269,6 +270,7 @@
       document.getElementById('delete_image').setAttribute('hidden', '');
       document.getElementById("upload_image").value = "";
       document.getElementById("img_action").value = "delete";
+      $('#delete-image').val('yes');
   }
 
   $('#select_all').change(function() {

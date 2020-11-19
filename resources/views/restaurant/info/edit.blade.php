@@ -142,6 +142,7 @@
                         <div class="form-group">
                             <div id="image_container"><img id="view_image" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" class="img-thumbnail" width="150px"></div>
                             <div id="delete_image"><a href="#image_container" onclick="removeImage();">Eliminar</a></div>
+                            <input type="hidden" name="delete_image" value="no" id="delete-image">
                         </div>
                     </div>
                     <div class="col-12 col-md-6 d-flex align-items-center">
@@ -217,6 +218,7 @@
             document.getElementById("upload_image").value = "";
             document.getElementById("img_action").value = "delete";
             document.getElementById("view_image").src = "{{ asset('storage/uploads/commerce/commerce.png') }}";
+            $('#delete-image').val('yes');
 
         }
 
@@ -230,7 +232,7 @@
             }else{
                 delivery_inputs.removeAttribute('hidden');
             }
-        }        
+        }
     </script>
 @endsection
 

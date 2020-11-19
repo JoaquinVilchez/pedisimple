@@ -510,11 +510,13 @@ class ProductController extends Controller
             if($old_image!='no_image.png'){
                 Storage::delete('public/uploads/products/'.$old_image);
             }
-            
+
             Storage::put("public/uploads/products/".$path, $image->__toString()); 
 
             $product->update(['image'=>$path]);  
-        }elseif($request->hasFile('image')=="" && $product->image!="no_image.png"){
+        }
+
+        if($request->delete_image=='yes'){
             Storage::delete('public/uploads/products/'.$product->image);
         }
 
@@ -527,11 +529,11 @@ class ProductController extends Controller
             $new_variants = $request->variants;
 
             $old_variants=[];
-            
+
             foreach($variants as $variant){
                 array_push($old_variants, $variant->id);
             }
-           
+
             if($request->variants==null){
                 $old_variants = $product->getVariants;
                 if(count($old_variants)>0){
@@ -546,9 +548,9 @@ class ProductController extends Controller
                 $remove_variants = array_diff($old_variants, $new_variants);
                 $add_variants = array_diff($new_variants, $old_variants);
                 foreach($remove_variants as $remove_variant){
-                    DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $remove_variant)->delete();                    
+                    DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $remove_variant)->delete();
                 }
-    
+
                 foreach($add_variants as $add_variant){
                     DB::table('products_variants')->insert([
                         'product_id' => $product->id,
@@ -559,7 +561,7 @@ class ProductController extends Controller
                 $maximum = $request->maximum;
                 $minimum = $request->minimum;
             }
-            
+
         }else{
             if(isset($product->getVariants)>0){
                 foreach ($product->getVariants as $variant) {
