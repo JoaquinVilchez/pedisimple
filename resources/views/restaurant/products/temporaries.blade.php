@@ -63,6 +63,9 @@
             <td>{{ucfirst($product->updated_at->calendar())}}</td>
             <td>
               <a href="{{route('product.edit', $product)}}"><i class="far fa-edit"></i></a>
+              @if ($product->isTemporaryActive())
+                <a href="#" data-toggle="modal" data-target="#stopTemporaryProductModal" data-productid="{{$product->id}}"><i class="fas fa-minus-circle"></i></a>
+              @endif
             </td>
           </tr>
           @endforeach
@@ -90,12 +93,39 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="stopTemporaryProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Detener producto temporal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{route('product.temporary.stop')}}" method="POST">
+          @method('post')
+          @csrf
+      <div class="modal-body">
+          <p>¿Estás seguro de detener la publicación de este producto temporal?</p>  
+          <input type="hidden" id="productid" name="productid" value="">
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Detener</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('js-scripts')
 <script>
 
-$('#deleteProductModal').on('show.bs.modal', function(event){
+$('#stopTemporaryProductModal').on('show.bs.modal', function(event){
 var button = $(event.relatedTarget)
 
 var productid = button.data('productid')

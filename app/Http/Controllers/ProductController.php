@@ -264,6 +264,23 @@ class ProductController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function stopTemporaryProduct(Request $request)
+    {
+        $product = Product::find($request->productid);
+        $today = Carbon::today()->toDateString();
+
+        $product->update([
+            'end_date' => $today
+        ]);
+
+        return redirect()->route('product.temporaries');
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
