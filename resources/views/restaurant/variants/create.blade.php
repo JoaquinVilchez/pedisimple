@@ -30,11 +30,6 @@
                 {!!$errors->first('name', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
-              <label for="exampleFormControlTextarea1">Detalles</label>
-              <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3" value={{old('description')}}>{{old('description')}}</textarea>
-              <small class="form-text text-muted">Este campo es opcional</small>
-            </div>
-            <div class="form-group">
               <label>Estado</label>
               <select class="form-control" name="state" value={{old('state')}}>
                 <option value="available" selected>Disponible</option>

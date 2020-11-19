@@ -83,6 +83,7 @@ Route::get('/productos/export-excel', 'ProductController@exportExcel')->name('pr
 Route::post('/productos/import-excel', 'ProductController@importExcel')->name('product.import.excel')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/producto/{id}', 'ProductController@isAvailable')->name('product.available')->middleware(['auth','verified', 'hasRestaurant']);
 
+Route::post('/variante/{id}', 'variantController@isAvailable')->name('variant.available')->middleware(['auth','verified', 'hasRestaurant']);
 Route::post('/variant/ajaxcreate', 'VariantController@ajaxCreate')->name('variant.ajaxcreate');
 Route::post('/getVariants', 'VariantController@getVariants')->name('variant.getVariants');
 Route::post('/showItemVariants', 'VariantController@showItemVariants')->name('variant.showItemVariants');

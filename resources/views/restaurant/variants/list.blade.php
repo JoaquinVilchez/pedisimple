@@ -27,8 +27,7 @@
       <thead>
         <tr>
           <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Estado</th>
+          <th>No disponible</th>
           <th>Última actualización</th>
           <th></th>
         </tr>
@@ -37,8 +36,18 @@
           @foreach ($variants as $variant)
           <tr>
           <td>{{$variant->name}}</td>
-            <td>{{$variant->description}}</td>
-            <td><span class="{{$variant->stateStyle()}}">{{$variant->translateState()}}</span></td>
+            <td style="text-align:center" width="10%">
+              <form id="{{'not_available_checkbox_'.$variant->id}}" action="{{route('variant.available', $variant)}}" method="POST">
+                @csrf
+                <input type="text" value="{{$variant->id}}" name="variant_id" hidden>
+                <input name="checkbox" type="checkbox" value="{{$variant->id}}" onchange="notAvailable({{$variant->id}});"
+                  @if($variant->state=='not-available')
+                    checked
+                  @endif
+                >
+              </form>
+            </td>
+            {{-- <td><span class="{{$variant->stateStyle()}}">{{$variant->translateState()}}</span></td> --}}
             <td>{{ucfirst($variant->updated_at->calendar())}}</td>
             <td>
               <a href="{{route('variant.edit', $variant->id)}}"><i class="far fa-edit"></i></a>
@@ -101,8 +110,6 @@ function notAvailable($id){
   var form = document.getElementById('not_available_checkbox_'+$id)
   form.submit();
 }
-
-
 
 </script>
 @endsection

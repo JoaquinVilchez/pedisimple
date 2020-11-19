@@ -54,12 +54,12 @@
             </td>
             <td>{{$product->details}}</td>
               @if($product->category_id!=null)
-                <td>{{$product->category->name}}</td>  
+                <td>{{$product->category->name}}</td>
               @else
                 <td>Sin categoría</td>
               @endif
             <td>${{formatPrice($product->price)}}</td>
-            <td><small>{{$product->getTemporaryDate()}}</small></td>  
+            <td><small>{{$product->getTemporaryDate()}}</small></td>
             <td>{{ucfirst($product->updated_at->calendar())}}</td>
             <td>
               <a href="{{route('product.edit', $product)}}"><i class="far fa-edit"></i></a>

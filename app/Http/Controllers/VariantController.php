@@ -10,14 +10,32 @@ use App\Product;
 
 class VariantController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function isAvailable(Request $request)
+    {
+        $variant = Variant::find($request->variant_id);
+
+        if($variant->state == 'available'){
+            $variant->update(['state'=>'not-available']);
+            return redirect()->back()->with('success_message', 'Variante cambiada a no disponible');
+        }else{
+            $variant->update(['state'=>'available']);
+            return redirect()->back()->with('success_message', 'Variante cambiada a disponible');
+        }
+    }
+
     public function ajaxCreate(Request $request){
         request()->validate([
             'name' => 'required'
             ]);
-                                    
+
         $variant = Variant::create([
             'name' => $request->name,
-            'description' => $request->description,
             'state' => 'available',
             'restaurant_id' => Auth::user()->restaurant->id
         ]);
@@ -80,7 +98,6 @@ class VariantController extends Controller
 
         Variant::create([
             'name' => $request->name,
-            'description' => $request->description,
             'state' => $request->state,
             'restaurant_id' => Auth::user()->restaurant->id
         ]);
@@ -127,7 +144,6 @@ class VariantController extends Controller
 
         $variant->update([
             'name'=>$request->name,
-            'description'=>$request->description,
             'state'=>$request->state
         ]);
 
@@ -143,14 +159,10 @@ class VariantController extends Controller
     {
         $variant = Variant::findOrFail($request->variantid);
         $this->authorize('pass', $variant);
-        
-        $variants = DB::table('products_variants')->where('variant_id', $request->variantid)->delete();
-        
-        $variant->delete();
 
-        // $variant->update([
-        //     'state' => 'removed'
-        // ]);
+        $variants = DB::table('products_variants')->where('variant_id', $request->variantid)->delete();
+
+        $variant->delete();
 
         return redirect()->route('variant.index')->with('success_message', 'Variante eliminada con éxito');
     }

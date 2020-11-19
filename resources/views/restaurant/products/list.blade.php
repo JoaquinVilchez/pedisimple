@@ -70,7 +70,7 @@
             </td>
             <td>{{mb_strimwidth($product->details, 0, 50, "...")}}</td>
             @if($product->temporary==null)
-              <td>{{$product->category->name}}</td>  
+              <td>{{$product->category->name}}</td>
             @else
               <td>Sin categoria</td>
             @endif

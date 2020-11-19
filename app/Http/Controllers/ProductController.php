@@ -67,8 +67,12 @@ class ProductController extends Controller
         $product = Product::find($request->productid);
         $variants = $product->getVariants;
 
+        $availableVariants = $variants->filter(function ($variant, $key) {
+            return $variant->state == 'available';
+        });
+
         return view('showData')->with([
-            'variants' => $variants,
+            'variants' => $availableVariants,
             'product' => $product
         ]);
     }

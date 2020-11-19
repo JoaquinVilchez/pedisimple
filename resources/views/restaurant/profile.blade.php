@@ -89,7 +89,7 @@
 
     <!-- Page Content -->
     <div class="container mt-3">
-        
+
         <div class="row">
             <div class="col-12">
                 <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
@@ -102,7 +102,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="row">
 
             <div class="col-12 col-lg-8 order-1 order-lg-0 tab-content" id="pills-tabContent">
@@ -148,13 +148,13 @@
                                                     <span>${{formatPrice($temporary_product->price)}}</span>
                                                 </div>
                                                 <small><span class="badge badge-danger" style="font-weight: 400"><i class="far fa-clock"></i> {{$temporary_product->getRemainingDays()}}</span></small>
-                                            </div>  
-                                            
+                                            </div>
+
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
                                                     <a style="color:#ffc500;cursor: pointer"><i class="fas fa-plus-circle"></i></a>
                                                 </span>
-                                            </div>        
+                                            </div>
                                         </div>
                                     </div>
                                 @else
@@ -176,31 +176,31 @@
                                                         <span>${{formatPrice($temporary_product->price)}}</span>
                                                     </div>
                                                     <small><span class="badge badge-danger" style="font-weight: 400"><i class="far fa-clock"></i> {{$temporary_product->getRemainingDays()}}</span></small>
-                                            </div>  
+                                            </div>
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
                                                     <a style="color:#ffc500;cursor: pointer"><i class="fas fa-plus-circle"></i></a>
                                                 </span>
-                                            </div>        
-                                        </div>                                
+                                            </div>
+                                        </div>
                                     </div>
                                 @endif
                             </div>
-                            @endforeach                   
+                            @endforeach
                         </div>
                     @endif
                     {{-- TEMPORALES --}}
-                
+
                 @foreach($categories as $category)
                 @if(count($category->getProducts())>0)
                 <div class="categoria mb-4" id="{{normaliza($category->name)}}">
                 <h3>{{ucfirst($category->name)}}</h3>
-                    <p>{{ucfirst($category->description)}}</p>   
+                    <p>{{ucfirst($category->description)}}</p>
                     <div class="row">
                         @foreach($category->getProducts() as $product)
                         @if ($product->temporary==false)
                             <div class="col-lg-6 px-1">
-                                
+
                                     <div class="card p-2 m-1 product-card" onclick="showData({{$product->id}})" style="min-height:95%">
                                         <div class="row" style="min-height: 100%">
                                             <div class="col-4 pr-0">
@@ -220,17 +220,17 @@
                                                     <div class="mt-1">
                                                         <span>${{formatPrice($product->price)}}</span>
                                                     </div>
-                                            </div>  
+                                            </div>
                                             <div class="col-2 d-flex align-items-center">
                                                 <span class="float-right mr-2" style="font-size:20px">
                                                     <a style="color:#ffc500;cursor: pointer"><i class="fas fa-plus-circle"></i></a>
                                                 </span>
-                                            </div>        
-                                        </div>                                
+                                            </div>
+                                        </div>
                                     </div>
                             </div>
                         @endif
-                        @endforeach                   
+                        @endforeach
                     </div>
                 </div>
                 @endif
@@ -282,9 +282,9 @@
                                                           @else
                                                               <td>{{substr($day['start_hour_1'], 0, -3)}}hs</td>
                                                                   <td>a</td>
-                                                              <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>        
+                                                              <td>{{substr($day['end_hour_1'], 0, -3)}}hs</td>
                                                           @endif
-                                                        
+
                                                           @if($day['start_hour_2'] == null or $day['end_hour_2'] == null)
                                                               <td></td>
                                                               <td></td>
@@ -323,7 +323,7 @@
                             @endif
 
                                 <!--Google map-->
-                                <h6 class="card-subtitle mb-2 text-muted mt-3">Mapa</h6>                                
+                                <h6 class="card-subtitle mb-2 text-muted mt-3">Mapa</h6>
                                 <div id="map-container-google-1" class="z-depth-1-half map-container" width="100%">
                                 <iframe
                                 width="100%"
@@ -331,7 +331,7 @@
                                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDMnvqmPUl5f1uoZHnRgLuF6GhY6F4jYao
                         &q={{$restaurant->address->street}}+{{$restaurant->address->number}},{{$restaurant->address->city->name}}+{{$restaurant->address->city->province->country}}" allowfullscreen>
                                 </iframe>
-                                </div>                    
+                                </div>
                                 <!--Google Maps-->
                         </div>
                     </div>
