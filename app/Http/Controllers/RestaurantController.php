@@ -283,7 +283,7 @@ class RestaurantController extends Controller
     {
         if(Auth::check()){
             if(Auth::user()->hasRole('merchant')){
-                if(Auth::user()->restaurant){
+                if(Auth::user()->restaurant==null){
                     $categories = RestaurantCategory::all();
                     $cities = City::all();
                     return view('restaurant.create')->with([
