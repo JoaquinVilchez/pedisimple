@@ -87,7 +87,7 @@
                 <hr class="my-2">
                 <div class="form-group">
                     <label>Retiro o delivery <small style="color:rgb(241, 0, 0)">*</small></label>
-                    <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()" autocomplete="flase">                    
+                    <select class="form-control" name="shipping_method" id="shipping_method" onchange="showDeliveryInputs()" autocomplete="flase">
                         <option value="delivery-pickup" {{old('shipping_method') == 'delivery-pickup' ? 'selected' : ''}}>Delivery y Retiro en local</option>
                         <option value="delivery" {{old('shipping_method') == 'delivery' ? 'selected' : ''}}>Delivery</option>
                         <option value="pickup" {{old('shipping_method') == 'pickup' ? 'selected' : ''}}>Retiro en local</option>
@@ -116,26 +116,26 @@
                                     <span class="input-group-text" id="basic-addon2" >min.</span>
                                     </div>
                                 </div>
-                            </div>                                
+                            </div>
                         </div>
                         {!!$errors->first('shipping_price', '<small style="color:rgb(241, 0, 0)"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
                 </div>
-                
+
                 <hr class="my-2">
 
                 <div class="col-12 col-md-8">
                     <div class="row mt-2">
-                        <div class="form-group" id="foto">  
+                        <div class="form-group" id="foto">
                                 <label>Foto</label><br>
                                 <div id="image_container" hidden>
                                     <img id="view_image" data-original="" class="img-thumbnail" width="150px">
                                     <div id="delete_image"><a href="#foto" onclick="removeImage();">Eliminar</a></div>
                                 </div>
-    
+
                                 <label for="exampleFormControlFile1">Buscar imágen</label>
                                 <input type="file" id="upload_image"  onchange="readURL(this);" name="image" class="form-control-file" id="exampleFormControlFile1">
-                            </div>  
+                            </div>
                             <small>En caso de no seleccionar una foto, se le asignará una por defecto.</small>
                     </div>
                 </div>
@@ -155,16 +155,26 @@
                                     {{$category->name}}
                                 </span>
                             </label>
-                            
+
                         </div>
                     @endforeach
                     <br>{!!$errors->first('food_categories', '<small style="color:rgb(241, 0, 0)"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                     </div>
             </div>
 
+            <hr>
+            <div class="my-2">
+                <label>
+                    <input type="checkbox" name="termsandconditions">
+                        <small>Al guardar los cambios, usted acepta los <a class="docs-link" target="_autoblank" href="{{route('help.termsandconditions')}}">Términos y condiciones</a> de nuestra plataforma.</small>
+                </label>
+                <br>
+                {!!$errors->first('termsandconditions', '<small style="color:rgb(241, 0, 0)"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
+            </div>
+
             <div class="form-group">
                 <button class="spinnerSubmitButton btn btn-primary btn-block" id="btn_submit" type="submit">
-                    <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                    <i class="loadingIcon fas fa-spinner fa-spin d-none"></i>
                     <span class="btn-txt">Guardar datos</span>
                 </button>
             </div>
@@ -175,14 +185,14 @@
 
 
 @section('js-scripts')
-<script>    
-    function onlyNumberKey(evt) { 
-        // Only ASCII charactar in that range allowed 
-        var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
-        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
-            return false; 
-        return true; 
-    } 
+<script>
+    function onlyNumberKey(evt) {
+        // Only ASCII charactar in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
 
     showDeliveryInputs();
 
@@ -194,7 +204,7 @@
         }else{
             delivery_inputs.removeAttribute('hidden');
         }
-    }        
+    }
 
     function readURL(input) {
         document.getElementById('image_container').removeAttribute('hidden');

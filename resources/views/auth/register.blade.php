@@ -100,7 +100,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="row">
                                 <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
                                 <div class="col-md-2 col-12">
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
 
 
                             <div class="form-group row mb-0">

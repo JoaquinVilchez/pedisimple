@@ -336,6 +336,7 @@ class RestaurantController extends Controller
             'shipping_time'=> ['nullable'],
             'food_categories'=> ['required'],
             'image'=> ['nullable'],
+            'termsandconditions' => 'required'
         ]);
 
         $slug = makeSlug($data['name']);

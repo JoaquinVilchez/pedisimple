@@ -216,7 +216,8 @@ return [
         'order.items' => 'productos pedidos',
         'order.street' => 'calle',
         'order.number' => 'numero',
-        'commerce' => 'nombre del comercio'
+        'commerce' => 'nombre del comercio',
+        'termsandconditions' => 'Términos y condiciones'
     ],
 
     'email-confirmation' => [

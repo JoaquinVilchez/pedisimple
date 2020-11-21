@@ -73,9 +73,13 @@ Route::post('/comercio/store', 'RestaurantController@store')->name('restaurant.s
 Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware('Visible');
 
 //DOCUMENTACION
-Route::get('/ayuda/documentacion', function(){
+Route::get('/docs/documentacion', function(){
     return view('restaurant.documentation');
 })->name('help.documentation')->middleware(['verified', 'hasRestaurant']);
+//TERMINOS Y CONDICIONES
+Route::get('/docs/terminosycondiciones', function(){
+    return view('restaurant.termsandconditions');
+})->name('help.termsandconditions')->middleware(['verified']);
 
 //PRODUCTOS
 Route::post('/productos/showData', 'ProductController@showData')->name('product.showData');

@@ -5,6 +5,7 @@
         <hr class="m-0">
       </li>
       <li><span id="start-tour"><a target=”_autoblank” href="https://wa.me/549{{str_replace('-', '', env('APP_NUMBER'))}}">Hablar con un asesor</a></span></li>
+      <li><span id="start-tour"><a target=”_autoblank” href="{{route('help.termsandconditions')}}">Términos y condiciones</a></span></li>
     </ul>
     <button type="button" class="help-button">
       <span>
