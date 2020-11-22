@@ -3,6 +3,7 @@
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
     <h1 class="h2"><strong>Comercios</strong></h1>
+    <a href="{{route('restaurant.check')}}" class="btn btn-sm btn-primary">Inhabilitar comercios sin horarios</a>
 </div>
 
   @include('messages')

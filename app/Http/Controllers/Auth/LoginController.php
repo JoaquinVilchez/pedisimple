@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
 
     protected $redirectTo = '/';
-    
+
 
     /**
      * Create a new controller instance.
@@ -45,5 +45,5 @@ class LoginController extends Controller
         // {
         //     return back();
         // }
-   
+
 }

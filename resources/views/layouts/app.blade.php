@@ -85,13 +85,15 @@
                     <ul class="navbar-nav ml-auto" style="text-align: center">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
-                            </li>
-                            @if (Route::has('register'))
+                            @if (env('MAINTENANCE')=='NO')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registrarme') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
                                 </li>
+                                @if (Route::has('register'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Registrarme') }}</a>
+                                    </li>
+                                @endif
                             @endif
                         @else
                             <li class="nav-item dropdown d-none d-md-block d-lg-block d-xl-block">
@@ -171,6 +173,11 @@
         @endif
 
         <main role="main" class="flex-shrink-0">
+            @if(env('MAINTENANCE')=='YES')
+                <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
+                    La página no está disponible al público en este momento. Únicamente pueden ingresar los comerciantes para configurar sus productos.
+                </div>
+            @endif
             @yield('content')
         </main>
     </div>

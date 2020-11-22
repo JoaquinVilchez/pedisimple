@@ -111,6 +111,6 @@
 <hr>
 
 <div class="alert alert-secondary mb-2" style="font-size: .8em; text-align:center" role="alert">
-<i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-categorias" class="txt-semi-bold">Consultar documentación</a>.
+<i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-horarios-apertura" class="txt-semi-bold">Consultar documentación</a>.
 </div>
 @endsection

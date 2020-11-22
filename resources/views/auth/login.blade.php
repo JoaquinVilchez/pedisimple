@@ -63,14 +63,16 @@
                                 <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
                                 <span class="btn-txt">{{ __('Login') }}</span>
                             </button>
-                            
+
                             @if (Route::has('password.request'))
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             @endif
+
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

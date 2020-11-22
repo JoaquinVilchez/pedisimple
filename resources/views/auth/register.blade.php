@@ -23,11 +23,8 @@
         @endif
             <div class="card my-4">
 
-                
-                
                 <div class="col-12">
                     <div class="card-body">
-                    
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
 
@@ -108,7 +105,7 @@
                                         <input type="text" class="form-control @error('phone') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
                                         <small class="form-text text-muted ml-2">Ej: 3462</small>
                                     </div>
-                                </div> 
+                                </div>
                                 @error('characteristic')
                                     <span class="invalid-feedback" role="alert">
                                         {{ $message }}
