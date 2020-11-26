@@ -1,304 +1,339 @@
 @extends('layouts.documentation')
 
+@section('css-scripts')
+    <style>
+        #sidebar {
+            position: fixed;
+            overflow-y: scroll;
+            height: 80vh;
+            max-width: 20vw;
+            margin-left: 10px
+        }
+
+        #sidebar::-webkit-scrollbar {
+            background: transparent;
+            height: 8px;
+            width: 8px;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb{
+            border: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            background: #dadce0;
+            -webkit-border-radius: 8px;
+            border-radius: 8px;
+            min-height: 40px;
+        }
+
+        #content{
+            margin-left: 5%;
+        }
+    </style>
+@endsection
+
 @section('main')
 
 <div class="row">
-    <div class="d-none d-lg-block col-2 px-0" id="sidebar">
-        <ul class="nav flex-column">
-            <img src="{{asset('images/logo.png')}}" width="120px" class="ml-5 py-3">
-            <a href="{{route('product.index')}}" class="m-4 btn btn-light" style="text-align: center; font-size:.8em"><i class="fas fa-arrow-left"></i> Volver a mi comercio</a>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-productos">
-                <span>Productos</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
+    <div class="d-none d-lg-block col-2 px-0">
+        <div id="sidebar">
+            <ul class="nav flex-column">
+                <img src="{{asset('images/logo.png')}}" width="120px" class="ml-5 py-3">
+                <a href="{{route('product.index')}}" class="m-4 btn btn-light" style="text-align: center; font-size:.8em"><i class="fas fa-arrow-left"></i> Volver a mi comercio</a>
                 <li class="nav-item">
-                    <a href="#docs-int-crear-producto" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Crear un nuevo producto</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-editar-producto" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Editar producto</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-eliminar-producto" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Eliminar producto</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-disponibilidad-producto" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Disponibilidad de producto</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-categorias">
-                <span>Categorías</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
-                <li class="nav-item">
-                    <a href="#docs-int-crear-categoria" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Crear categoría</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-editar-categoria" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Editar categoría</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-eliminar-categoria" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Eliminar categoría</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-ordenar-categoria" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Ordenar categorías</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-disponibilidad-categoria" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Disponibilidad de categorías</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-variantes">
-                <span>Variantes</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
-                <li class="nav-item">
-                    <a href="#docs-int-como-funcionan-variantes" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>¿Cómo funcionan?</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-crear-variante" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Crear nueva variante</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-editar-variante" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Editar variante</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-eliminar-variante" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Eliminar variante</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-asignar-variante-a-producto" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Asignar variante a producto</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-disponibilidad-variante" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Disponibilidad de variantes</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-productos-temporales">
-                <span>Productos temporales</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
-                <li class="nav-item">
-                    <a href="#docs-int-como-funcionan-productos-temporales" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>¿Cómo funcionan?</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-crear-producto-temporal" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Crear producto temporal</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-editar-producto-temporal" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Editar producto temporal</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-detener-producto-temporal" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Detener producto temporal</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-pedidos">
-                <span>Pedidos</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
-                <li class="nav-item">
-                    <a href="#docs-int-como-funcionan-pedidos" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>¿Cómo funcionan?</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-pedido-nuevo" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Nuevos pedidos</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-pedido-aceptado" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Pedidos aceptados</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-pedido-cerrado" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Pedidos cerrados</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-editar-pedido" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Editar pedido</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-cancelar-pedido" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Cancelar pedido</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-datos-comercio">
-                <span>Datos de mi comercio</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
-                <li class="nav-item">
-                    <a href="#docs-int-editar-datos-comercio" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>¿Cómo editar los datos de mi comercio?</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-que-es-el-slug" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>¿Qué es el slug?</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#docs-int-comidas" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>Comidas</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link txt-semi-bold" href="#docs-horarios-apertura">
-                <span>Horarios de apertura</span>
-            </a>
-            <ul class="list-unstyled ml-4" style="font-size:.9em">
-                <li class="nav-item">
-                    <a href="#docs-int-editar-horarios" style=" color:#7c7c7c">
-                        <div class="d-flex justify-content-between">
-                            <span>¿Cómo editar los horarios de apertura?</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link txt-semi-bold" href="#docs-datos-personales">
-                    <span>Mis datos personales</span>
+                <a class="nav-link txt-semi-bold" href="#docs-productos">
+                    <span>Productos</span>
                 </a>
                 <ul class="list-unstyled ml-4" style="font-size:.9em">
                     <li class="nav-item">
-                        <a href="#docs-int-direcciones" style=" color:#7c7c7c">
+                        <a href="#docs-int-crear-producto" style=" color:#7c7c7c">
                             <div class="d-flex justify-content-between">
-                                <span>Direcciones</span>
+                                <span>Crear un nuevo producto</span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#docs-int-pedidos" style=" color:#7c7c7c">
+                        <a href="#docs-int-editar-producto" style=" color:#7c7c7c">
                             <div class="d-flex justify-content-between">
-                                <span>Pedidos</span>
+                                <span>Editar producto</span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#docs-int-datos" style=" color:#7c7c7c">
+                        <a href="#docs-int-eliminar-producto" style=" color:#7c7c7c">
                             <div class="d-flex justify-content-between">
-                                <span>Datos</span>
+                                <span>Eliminar producto</span>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#docs-int-cambiar-contrasena" style=" color:#7c7c7c">
+                        <a href="#docs-int-disponibilidad-producto" style=" color:#7c7c7c">
                             <div class="d-flex justify-content-between">
-                                <span>Cambiar contraseña</span>
+                                <span>Disponibilidad de producto</span>
                             </div>
                         </a>
                     </li>
                 </ul>
                 </li>
-        </ul>
+                <li class="nav-item">
+                <a class="nav-link txt-semi-bold" href="#docs-categorias">
+                    <span>Categorías</span>
+                </a>
+                <ul class="list-unstyled ml-4" style="font-size:.9em">
+                    <li class="nav-item">
+                        <a href="#docs-int-crear-categoria" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Crear categoría</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-editar-categoria" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Editar categoría</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-eliminar-categoria" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Eliminar categoría</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-ordenar-categoria" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Ordenar categorías</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-disponibilidad-categoria" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Disponibilidad de categorías</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link txt-semi-bold" href="#docs-variantes">
+                    <span>Variantes</span>
+                </a>
+                <ul class="list-unstyled ml-4" style="font-size:.9em">
+                    <li class="nav-item">
+                        <a href="#docs-int-como-funcionan-variantes" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>¿Cómo funcionan?</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-crear-variante" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Crear nueva variante</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-editar-variante" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Editar variante</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-eliminar-variante" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Eliminar variante</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-asignar-variante-a-producto" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Asignar variante a producto</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-disponibilidad-variante" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Disponibilidad de variantes</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link txt-semi-bold" href="#docs-productos-temporales">
+                    <span>Productos temporales</span>
+                </a>
+                <ul class="list-unstyled ml-4" style="font-size:.9em">
+                    <li class="nav-item">
+                        <a href="#docs-int-como-funcionan-productos-temporales" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>¿Cómo funcionan?</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-crear-producto-temporal" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Crear producto temporal</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-editar-producto-temporal" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Editar producto temporal</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-detener-producto-temporal" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Detener producto temporal</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link txt-semi-bold" href="#docs-pedidos">
+                    <span>Pedidos</span>
+                </a>
+                <ul class="list-unstyled ml-4" style="font-size:.9em">
+                    <li class="nav-item">
+                        <a href="#docs-int-como-funcionan-pedidos" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>¿Cómo funcionan?</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-pedido-nuevo" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Nuevos pedidos</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-pedido-aceptado" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Pedidos aceptados</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-pedido-cerrado" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Pedidos cerrados</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-editar-pedido" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Editar pedido</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-cancelar-pedido" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Cancelar pedido</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link txt-semi-bold" href="#docs-datos-comercio">
+                    <span>Datos de mi comercio</span>
+                </a>
+                <ul class="list-unstyled ml-4" style="font-size:.9em">
+                    <li class="nav-item">
+                        <a href="#docs-int-editar-datos-comercio" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>¿Cómo editar los datos de mi comercio?</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-que-es-el-slug" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>¿Qué es el slug?</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#docs-int-comidas" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>Comidas</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link txt-semi-bold" href="#docs-horarios-apertura">
+                    <span>Horarios de apertura</span>
+                </a>
+                <ul class="list-unstyled ml-4" style="font-size:.9em">
+                    <li class="nav-item">
+                        <a href="#docs-int-editar-horarios" style=" color:#7c7c7c">
+                            <div class="d-flex justify-content-between">
+                                <span>¿Cómo editar los horarios de apertura?</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link txt-semi-bold" href="#docs-datos-personales">
+                        <span>Mis datos personales</span>
+                    </a>
+                    <ul class="list-unstyled ml-4" style="font-size:.9em">
+                        <li class="nav-item">
+                            <a href="#docs-int-direcciones" style=" color:#7c7c7c">
+                                <div class="d-flex justify-content-between">
+                                    <span>Direcciones</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#docs-int-pedidos" style=" color:#7c7c7c">
+                                <div class="d-flex justify-content-between">
+                                    <span>Pedidos</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#docs-int-datos" style=" color:#7c7c7c">
+                                <div class="d-flex justify-content-between">
+                                    <span>Datos</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#docs-int-cambiar-contrasena" style=" color:#7c7c7c">
+                                <div class="d-flex justify-content-between">
+                                    <span>Cambiar contraseña</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    </li>
+            </ul>
+        </div>
     </div>
 
 
     <div class="col-12 col-lg-10">
+        <div id="content">
             <div class="pt-3" style="background-color: white">
                 <h4 class="txt-semi-bold ml-2">
                     Documentación
@@ -596,10 +631,6 @@
                             <div class="alert alert-primary" style="font-size: .8em" role="alert">
                                 <i class="fas fa-exclamation-circle"></i> Nota: Es importante que los horarios de apertura y cierre estén establecidos correctamente ya que sólo se podrán realizar pedidos cuando el comercio se encuentre abierto, de lo contrario, la plataforma no permitirá realizar pedidos al comercio.
                             </div>
-
-                            <div class="alert alert-primary" style="font-size: .8em" role="alert">
-                                <i class="fas fa-exclamation-circle"></i> Nota: En caso de cerrar a las 00:00hs, por favor indicar 23:59 para que funcione correctamente. Estamos trabajando en una mejora para evitar este inconveniente, sepa disculpar.
-                            </div>
                         </div>
 
                     </p>
@@ -637,6 +668,7 @@
                 </ul>
             </div>
         </div>
+    </div>
 </div>
 
     @endsection

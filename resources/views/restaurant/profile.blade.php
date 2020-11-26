@@ -30,7 +30,7 @@
                         <div class="ml-3">
                             <div class="d-flex align-items-center">
                                 <h3 class="txt-bold d-inline txt-shadow">{{$restaurant->name}}</h3>
-                                    @if($restaurant->isOpen())
+                                    @if($restaurant->getOpeningHoursData()->isOpen())
                                         <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
                                     @else
                                         <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> Cerrado</span>

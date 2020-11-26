@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Spatie\OpeningHours\OpeningHours;
 
 class restaurant extends Model
 {
@@ -96,56 +97,16 @@ class restaurant extends Model
         $days = OpeningDateTime::where('restaurant_id', $this->id)->get()->toArray();
         if(count($days)>0){
             $schedule = array(0,1,2,3,4,5,6);
-            foreach ($days as $day) {               
+            foreach ($days as $day) {
                     $replace_day = (array($day['weekday']=>$day));
                     $schedule = array_replace_recursive($schedule, $replace_day);
-            }  
-            
+            }
+
         }elseif($days==null){
             $schedule = null;
         }
-        
+
         return $schedule;
-    }
-
-    function isOpen(){
-
-        $today = Carbon::createFromFormat('Y-m-d H:i:s', Carbon::now());
-        $weekday = $today->dayOfWeek;   
-        $schedule = $this->getSchedule();
-
-        for ($i=0; $i < 7; $i++) { 
-            
-            if(isset($schedule[$i]['weekday'])){
-                if($schedule[$i]['weekday']==$weekday){
-                    if($schedule[$i]['start_hour_1']!=null){
-                        $start1 = Carbon::createFromTimeString($schedule[$i]['start_hour_1']);
-                        $end1 = Carbon::createFromTimeString($schedule[$i]['end_hour_1']);
-                    }else{
-                        $start1=null;
-                        $end1=null;
-                    }
-        
-                    if($schedule[$i]['start_hour_2']!=null){
-                        $start2 = Carbon::createFromTimeString($schedule[$i]['start_hour_2']);
-                        $end2 = Carbon::createFromTimeString($schedule[$i]['end_hour_2'])->addDay();
-                    }else{
-                        $start2=null;
-                        $end2=null;
-                    }
-
-                    if($schedule[$i]['state']=='open'){
-                        if($today->between($start1, $end1) || $today->between($start2, $end2)){
-                            return true;
-                        }else{
-                            return false;
-                        }
-                    }else{
-                        return false;
-                    }
-                }
-            }
-        }
     }
 
     public function newOrders(){
@@ -205,6 +166,108 @@ class restaurant extends Model
 
         // return array($restaurantCategoriesQuantity,$availablesCoverPagesQuantity);
 
+    }
+
+    public function getOpeningHoursData(){
+
+        $days = $this->getSchedule();
+
+        $monday = [];
+            if(isset($days[0]['state']) && $days[0]['state']=='open'){
+                $first_turn = substr($days[0]['start_hour_1'], 0, -3).'-'.substr($days[0]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($monday,$first_turn);
+                }
+                $second_turn = substr($days[0]['start_hour_2'], 0, -3).'-'.substr($days[0]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($monday,$second_turn);
+                }
+            }
+
+        $tuesday = [];
+            if(isset($days[1]['state']) && $days[1]['state']=='open'){
+                $first_turn = substr($days[1]['start_hour_1'], 0, -3).'-'.substr($days[1]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($tuesday,$first_turn);
+                }
+                $second_turn = substr($days[1]['start_hour_2'], 0, -3).'-'.substr($days[1]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($tuesday,$second_turn);
+                }
+            }
+
+        $wednesday = [];
+            if(isset($days[2]['state']) && $days[2]['state']=='open'){
+                $first_turn = substr($days[2]['start_hour_1'], 0, -3).'-'.substr($days[2]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($wednesday,$first_turn);
+                }
+                $second_turn = substr($days[2]['start_hour_2'], 0, -3).'-'.substr($days[2]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($wednesday,$second_turn);
+                }
+            }
+
+        $thursday = [];
+            if(isset($days[3]['state']) && $days[3]['state']=='open'){
+                $first_turn = substr($days[3]['start_hour_1'], 0, -3).'-'.substr($days[3]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($thursday,$first_turn);
+                }
+                $second_turn = substr($days[3]['start_hour_2'], 0, -3).'-'.substr($days[3]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($thursday,$second_turn);
+                }
+            }
+
+        $friday = [];
+            if(isset($days[4]['state']) && $days[4]['state']=='open'){
+                $first_turn = substr($days[4]['start_hour_1'], 0, -3).'-'.substr($days[4]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($friday,$first_turn);
+                }
+                $second_turn = substr($days[4]['start_hour_2'], 0, -3).'-'.substr($days[4]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($friday,$second_turn);
+                }
+            }
+
+        $saturday = [];
+            if(isset($days[5]['state']) && $days[5]['state']=='open'){
+                $first_turn = substr($days[5]['start_hour_1'], 0, -3).'-'.substr($days[5]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($saturday,$first_turn);
+                }
+                $second_turn = substr($days[5]['start_hour_2'], 0, -3).'-'.substr($days[5]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($saturday,$second_turn);
+                }
+            }
+
+        $sunday = [];
+            if(isset($days[6]['state']) && $days[6]['state']=='open'){
+                $first_turn = substr($days[6]['start_hour_1'], 0, -3).'-'.substr($days[6]['end_hour_1'], 0, -3);
+                if($first_turn!=null && $first_turn!='-'){
+                    array_push($sunday,$first_turn);
+                }
+                $second_turn = substr($days[6]['start_hour_2'], 0, -3).'-'.substr($days[6]['end_hour_2'], 0, -3);
+                if($second_turn!=null && $second_turn!='-'){
+                    array_push($sunday,$second_turn);
+                }
+            }
+
+        $openingHours = OpeningHours::create([
+            'overflow' => true,
+            'monday'     => $monday,
+            'tuesday'    => $tuesday,
+            'wednesday'  => $wednesday,
+            'thursday'   => $thursday,
+            'friday'     => $friday,
+            'saturday'   => $saturday,
+            'sunday'     => $sunday,
+        ]);
+
+        return $openingHours;
     }
 
 }

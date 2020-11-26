@@ -150,7 +150,7 @@
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
-                        <h5 class="mb-1" style="font-size: 2.5vh"><a @if($restaurant->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
+                        <h5 class="mb-1" style="font-size: 2.5vh"><a @if($restaurant->getOpeningHoursData()->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
                         <div class="ml-1" style="font-size: .9em">
                           <p class="my-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                           <p class="my-0 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
@@ -158,7 +158,7 @@
                             <span> | </span><p class="mb-0 ml-1 d-inline"> {{$restaurant->second_characteristic.'-'.$restaurant->second_phone}}</p>
                           @endif
                         </div>
-                        @if($restaurant->isOpen())
+                        @if($restaurant->getOpeningHoursData()->isOpen())
                             <small style="color: #369a00"><i class="far fa-clock"></i> Abierto</small>
                         @else
                             <small style="color: #bf0000"><i class="far fa-clock"></i> Cerrado en este momento</small>
@@ -166,18 +166,19 @@
                   </div>
                   <div class="col-xl-3 d-flex justify-content-center align-items-center">
                     {{-- <div class="row my-2"> --}}
-                      @if($restaurant->isOpen())
+                      @if($restaurant->getOpeningHoursData()->isOpen())
                         <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-block btn-sm float-right mt-2">Ver Productos</a>
                       @else
                         <a href="#" class="btn btn-primary btn-block btn-sm float-right mt-2" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal">Ver Productos</a>
                       @endif
                     {{-- </div> --}}
 
-                  </div>   
+                  </div>
                 </div>
               </div>
             @endif
             @endforeach
+
         </div>
     </div>
 </div>

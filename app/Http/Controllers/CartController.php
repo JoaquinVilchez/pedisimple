@@ -52,7 +52,7 @@ class CartController extends Controller
 
         $restaurant = $product->restaurant;
 
-        if($restaurant->isOpen()){
+        if($restaurant->getOpeningHoursData()->isOpen()){
         if(\Cart::isEmpty()){
                 if (count($product->getVariants)>0) {
                     \Cart::add(array(
