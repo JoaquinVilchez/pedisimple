@@ -82,8 +82,8 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {   
-        
+    {
+
         if(isset($data['token'])){
             $invitation = Invitation::where('token', $data['token'])->first();
             $invitation->update(['state'=>'used']);

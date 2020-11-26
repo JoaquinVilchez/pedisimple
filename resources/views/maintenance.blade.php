@@ -78,5 +78,19 @@
         </div>
     </div>
 
+    @if(Auth::guest())
+        <div class="row mt-5">
+            <div class="col-12 m-auto" style="text-align: center">
+                <a href="{{route('login')}}" class="btn btn-sm btn-outline-primary"> Ingreso comerciantes <i class="fas fa-sign-in-alt"></i></a>
+            </div>
+        </div>
+    @else
+        <div class="row mt-5">
+            <div class="col-12 m-auto" style="text-align: center">
+                <a href="{{route('product.index')}}" class="btn btn-sm btn-outline-primary"> Ir a mi comercio <i class="fas fa-store"></i></a>
+            </div>
+        </div>   
+    @endif
+
 </div>
 @endsection

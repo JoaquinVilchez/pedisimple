@@ -20,6 +20,10 @@ class Maintenance
 
         if(env('MAINTENANCE')=='YES'){
             if(Auth::check()){
+                if(Auth::user()->hasRole('administrator')){
+                    return $next($request);
+                }
+
                 if(Auth::user()->restaurant){
                     if(Request::path()==Auth::user()->restaurant->slug){
                         return $next($request);
