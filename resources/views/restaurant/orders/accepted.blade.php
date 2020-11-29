@@ -21,11 +21,6 @@
 @endsection
 
 @section('main')
-    @if (session()->has('newurl'))
-        <body onload="window.open('{{session('newurl')}}', '_blank')"></body>
-    @elseif(session()->has('updatedOrder'))
-        <body onload="window.open('{{session('updatedOrder')}}', '_blank')"></body>
-    @endif
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
         <h1 class="h2"><strong>Pedidos aceptados</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>
         <div class="mb-2" style="font-size: .8em;">
@@ -165,7 +160,7 @@
                                         @if(gluberStatus())
                                             <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Gluber</a>
                                         @endif
-                                      <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
+                                      <a class="dropdown-item" data-cancelorderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
                                     </div>
                                 </div>
                             </thead>
@@ -276,24 +271,24 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <form action="{{route('order.cancel')}}" method="POST">
-                @csrf
+            {{-- <form action="{{route('order.cancel')}}" method="POST"> --}}
+            {{-- @csrf --}}
             <div class="modal-body">
-                <h5>¿Estás seguro de cancelar este pedido?</h5>  
+                <h5>¿Estás seguro de cancelar este pedido?</h5>
                 <div class="container">
                     <small>
                         <label>
-                            <input type="checkbox" name="send" checked>
+                            <input type="checkbox" name="send" id="cancelordercheckbox" checked>
                             Informar sobre la cancelación al cliente por WhatsApp
                         </label>
                     </small>
                 </div>
-                <input type="hidden" id="orderid" name="orderid" value="">
+                <input type="hidden" id="cancelorderid" name="cancelorderid" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-danger">Cancelar pedido</button>
-            </form>
+                <button type="button" class="btn btn-danger" onclick="cancelOrder()">Cancelar pedido</button>
+            {{-- </form> --}}
             </div>
         </div>
         </div>
@@ -303,7 +298,7 @@
     <div class="modal fade" id="editOrderModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" id="editOrderModalContent">
-                
+
             </div>
         </div>
     </div>
@@ -314,21 +309,50 @@
 
 $('#closeOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)
-    
+
     var orderid = button.data('orderid')
     var modal = $(this)
-    
+
     modal.find('.modal-body #orderid').val(orderid)
 })
 
 $('#cancelOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)
-    
-    var orderid = button.data('orderid')
+
+    var cancelorderid = button.data('cancelorderid')
     var modal = $(this)
-    
-    modal.find('.modal-body #orderid').val(orderid)
+
+    modal.find('.modal-body #cancelorderid').val(cancelorderid)
 })
+
+function cancelOrder(){
+    var cancelorderid = $('#cancelorderid').val();
+    var send = $('#cancelordercheckbox').is(":checked");
+    console.log(cancelorderid);
+    console.log(send);
+    $.ajax({
+        url:"{{ route('order.cancel') }}",
+        type:"POST",
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        data:{cancelorderid:cancelorderid, send:send},
+        success:function(data) {
+            if(send){
+                var id = (new Date()).getTime();
+                var myWindow = window.open(data, id);
+                $.post("{{ route('order.cancel') }}", data).done(function(htmlContent) {
+                    myWindow.document.write(htmlContent);
+                    myWindow.focus();
+                });
+            }
+            location.reload();
+        },
+        error:function(data){
+            console.log(data);
+        }
+    })
+};
 
 function editOrder(orderid){
     $.ajax({
@@ -349,7 +373,6 @@ function resendDetail(){
     console.log(sessionVar)
     // window.open('{{{session("newurl")}}}', '_blank')
 }
-
 
 </script>
 @endsection

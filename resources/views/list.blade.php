@@ -63,7 +63,7 @@
     {{-- mobile --}}
 
     <div class="row justify-content-center">
-        <div class="col-lg-3">
+        <div class="col-lg-3 mb-3">
           <div class="d-none d-lg-block d-xl-block border py-2 px-4 rounded">
             <div class="mb-3">
               <p class="mb-0"><strong>Filtrar por categoría</strong></p>

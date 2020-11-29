@@ -37,7 +37,7 @@
                                 <a href="#" id="guest_button" class="btn btn-primary btn-sm my-0 btn-xs-block">Continuar como invitado</a>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <h6 class="txt-bold">Ya tengo una cuenta</h6>
                             <div>
@@ -74,18 +74,18 @@
             </div>
 
             <div class="col-md-8 order-md-1">
-                    @include('messages')                    
+                    @include('messages')
                     @if(!Auth::check())
                         <form class="needs-validation" action="{{route('checkout.store')}}" method="POST" novalidate autocomplete="off">
                             @csrf
                             @if(isset($restaurant))
-                                <input type="hidden" name="restaurant_id" value="{{$restaurant->id}}"> 
+                                <input type="hidden" name="restaurant_id" value="{{$restaurant->id}}">
                             @endif
                             <input type="text" name="auth_user" value="false" class="form-control" hidden>
                             <div class="row">
-                                <div class="col-md-12">                                                            
+                                <div class="col-md-12">
                                     <div class="mb-2">
-                                        <h5 class="d-inline">Continuar como invitado</h5> 
+                                        <h5 class="d-inline">Continuar como invitado</h5>
                                         <small class="d-inline ml-2" style="font-size: 12px">¿Tienes una cuenta? <a href="#" id="has_account">Inicia sesión</a></small>
                                     </div>
                                         <div class="form-group mb-1">
@@ -128,12 +128,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group mb-2">
                                             <div class="row">
                                                 <div class="col-4">
                                                     <label>Prefijo</label>
-                                                    <div class="input-group">                                     
+                                                    <div class="input-group">
                                                         <div class="input-group-prepend">
                                                           <span class="input-group-text">0</span>
                                                         </div>
@@ -143,7 +143,7 @@
                                                 </div>
                                                 <div class="col-8">
                                                     <label>Teléfono</label>
-                                                    <div class="input-group">                                     
+                                                    <div class="input-group">
                                                         <div class="input-group-prepend">
                                                           <span class="input-group-text">15</span>
                                                         </div>  
@@ -166,7 +166,7 @@
                                             <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
                                         </div>
                                         <button class="spinnerSubmitButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
-                                            <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                            <i class="loadingIcon fas fa-spinner fa-spin d-none"></i>
                                             <span class="btn-txt">Finalizar pedido</span>
                                         </button>
                                 </div>
@@ -267,10 +267,11 @@
                                 <div class="form-group col-12 mb-3">
                                     <div class="alert alert-warning py-2" role="alert" style="font-size: .8em">
                                         <strong>¡Importante!</strong>
-                                        <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p>
+                                        {{-- <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p> --}}
+                                        <p class="mb-0">Al finalizar el pedido debes esperar a que el comercio lo confirme. Luego de eso, te llegará un WhatsApp con todos los detalles del pedido y la entrega.</p>
                                     </div>
                                     <button class="spinnerSubmitButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
-                                        <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                        <i class="loadingIcon fas fa-spinner fa-spin d-none"></i>
                                         <span class="btn-txt">Finalizar pedido</span>
                                     </button>
                                 </div>
@@ -304,7 +305,7 @@
 @endsection
 
 @section('js-scripts')
-<script>    
+<script>
     $(document).ready(function(){
         var errors = '{{$errors}}';
         var AuthUser = "{{{ (Auth::user()) ? true : false }}}";

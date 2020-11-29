@@ -9,6 +9,9 @@
             <h4 class="txt-bold">¡Listo!</h4>
             <h4 class="txt-bold">Tu pedido fue enviado al comercio</h4>
             <p>Le hemos enviado una notificación al comercio con tu pedido.<br>El comercio se comunicará por WhatsApp contigo a la brevedad.</p>
+            <div class="alert alert-warning py-2" role="alert" style="font-size: .8em">
+                <p class="m-0">Recuerda que debes esperar la confirmación del pedido por parte del comercio para completar el mismo.</p>
+            </div>
             <div class="d-flex justify-content-center my-2">
                 <div class="border rounded" style="width:70%">
                     <small>Código de referencia <i class="far fa-question-circle"  data-toggle="tooltip" data-placement="right" title="Este código identifica a tu pedido."></i></small>
@@ -46,7 +49,7 @@
                             <small class="text-mute py-1"><span>${{formatPrice($order->delivery)}}</span></small>
                         </li>
                             <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
-                                <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar en base a la distancia.
+                                <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar respecto a la distancia.
                             </div>
                         @endif
                         <li class="list-group-item d-flex justify-content-between">
@@ -57,7 +60,7 @@
                 </div>
                 <div class="col-12 col-md-6 mb-3 order-0 order-md-1">
                     <hr class="d-block d-md-none">
-                    <h5 class="text-muted">Detalles del pedido</h5>
+                <h5 class="text-muted">Detalles del pedido</h5>
                     <div class="row ml-3">
                         <div class="d-flex align-items-center">
                             <div class="float-right">
@@ -69,7 +72,7 @@
                                     <small><p class="ml-1 my-0"><i class="fab fa-whatsapp"></i><a target=”_blank” href="https://wa.me/549{{str_replace('-','',$restaurant->getPhone())}}"> {{$restaurant->getPhone()}}</a></p></small>
                                     <small><p class="ml-1 my-0"> @if($order->shipping_method=='pickup') <i class="fas fa-store"></i> @else <i class="fas fa-motorcycle"></i> @endif {{ucwords($order->getShippingMethod())}}</p></small>
                                 </div>
-                            </div>            
+                            </div>
                         </div>
                     </div>
                     <div class="m-3">

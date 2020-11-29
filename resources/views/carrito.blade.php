@@ -72,14 +72,14 @@
                                 <input onchange="updateTax({{$restaurant->id}})" type="radio" id="checkboxPickup" name="shipping_method" class="custom-control-input" value="pickup" @if(!Cart::getCondition('Delivery')) checked @endif>
                                 <label class="custom-control-label" for="checkboxPickup">Retiro en local</label>
                             </div>
-                        </form>        
+                        </form>
                         </li>
                         @elseif($restaurant->shipping_method=='delivery')
                         <li class="list-group-item d-flex justify-content-center">
                             <small style="color:red; text-align:center">
                                 <p class="mb-0">Este comercio solo hace entregas por delivery.</p>
                                 <p class="mb-0">El costo está incluido en el total del pedido.</p>
-                            </small>        
+                            </small>
                         </li>
                         @endif
                     @endif
@@ -94,7 +94,7 @@
                             <strong>${{formatPrice($restaurant->shipping_price)}}</strong>
                         </li>
                         <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
-                            <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar en base a la distancia.
+                            <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar respecto a la distancia.
                         </div>
                     </div>
                     {{-- @endif --}}
@@ -114,7 +114,7 @@
                     </div>
                 @endif
             </div>
-        
+
             <div class="list-group mb-3" id="cart-empty" style="text-align: center">
                 <div style="text-align: center" class="my-4">
                     <img src="{{asset('storage/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
@@ -298,7 +298,7 @@
                         $('#cart-total').fadeOut(100);
                         $('#cart-total-quantity').fadeOut(200);
                         $('#mobileCart-price').fadeOut(200);
-                        setTimeout(function(){ 
+                        setTimeout(function(){
                             $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                             $('#cart-total').html('$'+data['total']).fadeIn(200);
                             $('#mobileCart-price').html('$'+data['total']).fadeIn(200);
@@ -309,7 +309,7 @@
                         $('#checkout-delivery-info').fadeOut(300);
                         $('.shipping_method_text').text('Retiro en local');
                         $('#mobileCart-price').fadeOut(200);
-                        setTimeout(function(){ 
+                        setTimeout(function(){
                             $('#cart-subtotal').html('$'+data['subtotal']).fadeIn(200);
                             $('#cart-total').html('$'+data['total']).fadeIn(200);
                             $('#mobileCart-price').html('$'+data['total']).fadeIn(200);

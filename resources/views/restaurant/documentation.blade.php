@@ -529,13 +529,13 @@
                         Una vez completados los datos, guardar los cambios y el producto temporal estará editado con la nueva información.
                     </p>
                     <hr>
-    
+
                     <li class="txt-semi-bold docs-title" id="docs-int-detener-producto-temporal">Detener producto temporal</li>
                     <p class="container">
                         Para detener la visualización de un producto temporal se debe dirigir a la sección <a target="_autoblank" class="docs-link" href="{{route('product.temporaries')}}"><span class="txt-semi-bold">Productos > Temporales</span></a> buscar el producto temporal que se desea detener  y presionar en el ícono <i class="fas fa-minus-circle"></i>, se pedirá confirmar la acción y una vez confirmado el producto temporal se detendrá y dejará de estar visible.
                     </p>
                 </ul>
-    
+
                 <h5 class="txt-bold ml-2" id="docs-pedidos">Pedidos</h5>
                 <ul class="list-unstyled border p-4 rounded">
                     <li class="txt-semi-bold docs-title" id="docs-int-como-funcionan-pedidos">¿Cómo funcionan?</li>
@@ -544,12 +544,25 @@
                         Para poder recibir pedidos e interactuar con los mismos es necesario que el usuario esté loggeado a la plataforma en el momento en que llegue un nuevo pedido. De todas formas, la plataforma también avisa la llegada de un nuevo pedido a través del correo electrónico establecido por el usuario.
                     </p>
                     <hr>
-    
+
                     <li class="txt-semi-bold docs-title" id="docs-int-pedido-nuevo">Nuevos pedidos</li>
                     <p class="container">
                         Cuando llega un nuevo pedido, la plataforma notifica al usuario a través de una ventana emergente acompañado de un sonido, como así tambíen con una notificación por correo. Para poder ver los nuevos pedidos es necesario presionar el botón <span class="txt-semi-bold">Ver pedidos</span> que aparece en la ventana emergente, o dirigirse a la sección <a target="_autoblank" class="docs-link" href="{{route('order.new')}}"><span class="txt-semi-bold">Pedidos > Nuevos</span></a>.
                         Dentro de esta sección aparecerán los nuevos pedidos que aún no hayan sido aceptados con sus respectivos detalles. Para aceptar y notificar al cliente que su pedido fue tomado, se debe presionar en el botón <span class="txt-semi-bold">Aceptar</span> y la plataforma automáticamente abrirá una nueva ventana que redirige al WhatsApp del cliente con un texto preestablecido que incluye el detalle completo del pedido aceptado. 
-                        Para que esta acción funcione correctamente es necesario que habilite a {{env("APP_NAME")}} para generar ventanas emergentes en su respectivo navegador. Para habilitar esto, es necesario hacer click en el icono de popup arriba a la derecha y seguir los siguientes pasos: <br>
+
+                        <div class="card m-3">
+                            <div class="card-body">
+                                Se recomienda habilitar a {{env('APP_NAME')}} para generar ventanas emergentes.
+                                <small class="form-text text-muted">Consultar la documentación del navegador correspondiente:
+                                    <a target="_autoblank" class="docs-link" href="https://support.google.com/chrome/answer/95472?co=GENIE.Platform%3DDesktop&hl=es"><span class="txt-semi-bold">Chrome</span></a>
+                                    <a target="_autoblank" class="docs-link" href="https://support.mozilla.org/es/kb/configuracion-excepciones-y-solucion-de-problemas-"><span class="txt-semi-bold">Firefox</span></a>
+                                    <a target="_autoblank" class="docs-link" href="https://support.microsoft.com/es-es/microsoft-edge/bloquear-elementos-emergentes-en-microsoft-edge-1d8ba4f8-f385-9a0b-e944-aa47339b6bb5"><span class="txt-semi-bold">Edge</span></a>
+                                </small>
+                            </div>
+                        </div>
+                    </p>
+
+                        {{-- Para que esta acción funcione correctamente es necesario que habilite a {{env("APP_NAME")}} para generar ventanas emergentes en su respectivo navegador. Para habilitar esto, es necesario hacer click en el icono de popup arriba a la derecha y seguir los siguientes pasos: <br>
 
                             <img class="img-fluid p-2 my-2 rounded border" width="25%" src="{{asset('images/popup.png')}}" alt="">
                             <small class="form-text text-muted">En caso de no encontrar dicho icono, consultar la documentación del navegador correspondiente: 
@@ -558,7 +571,8 @@
                                 <a target="_autoblank" class="docs-link" href="https://support.microsoft.com/es-es/microsoft-edge/bloquear-elementos-emergentes-en-microsoft-edge-1d8ba4f8-f385-9a0b-e944-aa47339b6bb5"><span class="txt-semi-bold">Edge</span></a>
                             </small>
 
-                        <br>
+                        <br> --}}
+                    <p class="container">
                         Una vez realizado esto, el pedido se aceptará y aparecerá en la sección de <span class="txt-semi-bold">Aceptados</span>. En caso de querer rechazar el pedido, presionar el botón <span class="txt-semi-bold">Rechazar</span> y también se le enviará automáticamente un mensaje al cliente indicando que el comercio no puede tomar el pedido en este momento.
                         En caso que el pedido se haya demorado en aceptar, la plataforma le indicará un aproximado de los minutos demorados del pedido, en caso que se haya demorado mas de un día, el pedido solo tendrá la opción de Cancelar.
 

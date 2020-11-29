@@ -31,7 +31,7 @@
         <div class="d-flex justify-content-center mt-1">
             <div class="col-12 col-md-10">
                 <div class="form-group">
-                    
+
                     <div class="row">
                         <div class="mx-auto">
                             <small>Nueva dirección de envío</small>
@@ -330,7 +330,13 @@
                 success:function(data) {
                     alert = '<div class="alert alert-success mt-2" role="alert">El pedido se ha editado con éxito.</div>';
                     $('#data').html(alert);
-                    window.location.href = "{{ route('order.accepted')}}";              
+                    var id = (new Date()).getTime();
+                    var myWindow = window.open(data, id);
+                    $.post("{{ route('order.updateOrder') }}", data).done(function(htmlContent) {
+                        myWindow.document.write(htmlContent);
+                        myWindow.focus();
+                    });
+                    location.reload();
                 },
                 error: function(data) {
                     $.each(data.responseJSON.errors, function(key,value) {

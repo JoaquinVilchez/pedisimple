@@ -83,6 +83,7 @@ class OrderController extends Controller
      */
     public function accept(Request $request)
     {
+
         $order = Order::find($request->acceptorderid);
         $order->update([
             'state' => 'accepted',
@@ -94,7 +95,8 @@ class OrderController extends Controller
         session()->flash('newurl', $newUrl);
         //===============================================================================
 
-        return back()->with('success_message', 'Pedido aceptado.');
+        return $newUrl;
+        // return back()->with('success_message', 'Pedido aceptado.');
     }
 
     /**
@@ -113,7 +115,8 @@ class OrderController extends Controller
         $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappRejectOrderMessage($order));
         session()->flash('newurl', $newUrl);
 
-        return back()->with('success_message', 'Pedido rechazado.');
+        return $newUrl;
+        // return back()->with('success_message', 'Pedido rechazado.');
     }
 
     /**
@@ -130,7 +133,7 @@ class OrderController extends Controller
             'state' => 'closed',
             'closed' => Carbon::now()
         ]);
-            
+
         foreach ($order->lineitems as $item) {
             if($item->variants != null){
                 $item->update([
@@ -138,7 +141,6 @@ class OrderController extends Controller
                 ]);
             }
         }
-            
         return back()->with('success_message', 'Pedido cerrado.');
     }
 
@@ -151,17 +153,19 @@ class OrderController extends Controller
      */
     public function cancel(Request $request)
     {
-        $order = Order::find($request->orderid);
+        $order = Order::find($request->cancelorderid);
         $order->update([
             'state' => 'cancelled'
         ]);
 
-        if ($request->send == 'on') {
+        if ($request->send == true) {
             $newUrl='https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappCancelOrderMessage($order));
             session()->flash('newurl', $newUrl);
         }
 
-        return back()->with('success_message', 'Pedido cancelado.');
+        return $newUrl;
+
+        // return back()->with('success_message', 'Pedido cancelado.');
     }
 
     /**
@@ -240,6 +244,8 @@ class OrderController extends Controller
 
         $url = 'https://wa.me/549'.str_replace('-','',whatsappNumberCustomer($order)).'?text='.urlencode(whatsappUpdateOrder($order));
         session()->flash('updatedOrder', $url);
+
+        return $url;
     }
 
     /**

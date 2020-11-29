@@ -35,9 +35,6 @@
 @endsection
 
 @section('main')
-    @if (session()->has('newurl'))
-        <body onload="window.open('{{session('newurl')}}', '_blank')"></body>
-    @endif
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
         <h1 class="h2"><strong>Nuevos pedidos</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>
         <div class="mb-2" style="font-size: .8em;">
@@ -248,8 +245,6 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <form action="{{route('order.accept')}}" method="POST">
-                @csrf
             <div class="modal-body">
                 <h5>¿Estás seguro de aceptar este pedido?</h5>
                 <p>Al aceptar el pedido te redireccionaremos a WhatsApp para poder comunicarte con el cliente</p>  
@@ -257,12 +252,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" target=”_blank” href="
-                    https://wa.me/549{{str_replace('-','',whatsappNumberCustomer($order))}}?text=
-                    {{urlencode(whatsappMessageCustomer($order))}}" 
-                    class="btn btn-success"><i class="fab fa-whatsapp"></i> Confirmar
+                <button type="button" href="#"
+                    class="btn btn-success" onclick="acceptOrder()"><i class="fab fa-whatsapp"></i> Confirmar
                 </button>
-            </form>
             </div>
         </div>
         </div>
@@ -278,20 +270,13 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <form action="{{route('order.reject')}}" method="POST">
-                @csrf
             <div class="modal-body">
-                <h5>¿Estás seguro de rechazar este pedido?</h5>  
+                <h5>¿Estás seguro de rechazar este pedido?</h5>
                 <input type="hidden" id="deleteorderid" name="deleteorderid" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" target=”_blank” href="
-                    https://wa.me/549{{str_replace('-','',whatsappNumberCustomer($order))}}?text=
-                    {{urlencode(whatsappRejectOrderMessage($order))}}" 
-                    class="btn btn-danger"><i class="fab fa-whatsapp"></i> Eliminar
-                </button>
-            </form>
+                <button type="button" href="#" class="btn btn-danger" onclick="rejectOrder()"><i class="fab fa-whatsapp"></i>Eliminar</button>
             </div>
         </div>
         </div>
@@ -305,21 +290,63 @@
 
 $('#deleteOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)
-    
+
     var deleteorderid = button.data('deleteorderid')
     var modal = $(this)
-    
+
     modal.find('.modal-body #deleteorderid').val(deleteorderid)
 })
 
 $('#acceptOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)
-    
+
     var acceptorderid = button.data('acceptorderid')
     var modal = $(this)
-    
+
     modal.find('.modal-body #acceptorderid').val(acceptorderid)
 })
+
+function acceptOrder(){
+    var acceptorderid = $('#acceptorderid').val();
+    $.ajax({
+        url:"{{ route('order.accept') }}",
+        type:"POST",
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        data:{acceptorderid:acceptorderid},
+        success:function(data) {
+            var id = (new Date()).getTime();
+            var myWindow = window.open(data, id);
+            $.post("{{ route('order.accept') }}", data).done(function(htmlContent) {
+                myWindow.document.write(htmlContent);
+                myWindow.focus();
+            });
+            location.reload();
+        }
+    })
+};
+
+function rejectOrder(){
+    var deleteorderid = $('#deleteorderid').val();
+    $.ajax({
+        url:"{{ route('order.reject') }}",
+        type:"POST",
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        data:{deleteorderid:deleteorderid},
+        success:function(data) {
+            var id = (new Date()).getTime();
+            var myWindow = window.open(data, id);
+            $.post("{{ route('order.reject') }}", data).done(function(htmlContent) {
+                myWindow.document.write(htmlContent);
+                myWindow.focus();
+            });
+            location.reload();
+        }
+    })
+};
 
 </script>
 @endsection
