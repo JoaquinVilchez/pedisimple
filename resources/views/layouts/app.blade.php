@@ -84,15 +84,16 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto" style="text-align: center">
                         <!-- Authentication Links -->
-                        @if(env('MAINTENANCE')=='NO')
                             @guest
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
-                                </li>
-                                @if (Route::has('register'))
+                                @if(env('MAINTENANCE')=='NO')
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Registrarme') }}</a>
+                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
                                     </li>
+                                    @if (Route::has('register'))
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Registrarme') }}</a>
+                                        </li>
+                                    @endif
                                 @endif
                             @else
                                 <li class="nav-item dropdown d-none d-md-block d-lg-block d-xl-block">
@@ -155,7 +156,6 @@
                                     </div>
                                 </div>
                             @endguest
-                        @endif
                     </ul>
                 </div>
             </div>

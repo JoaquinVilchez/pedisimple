@@ -18,25 +18,29 @@ class Maintenance
     public function handle($request, Closure $next)
     {
 
-        if(env('MAINTENANCE')=='YES'){
-            if(Auth::check()){
-                if(Auth::user()->hasRole('administrator')){
+        if (env('MAINTENANCE') == 'YES') {
+            if (Auth::check()) {
+                if (Auth::user()->hasRole('administrator')) {
                     return $next($request);
                 }
 
-                if(Auth::user()->restaurant){
-                    if(Request::path()==Auth::user()->restaurant->slug){
+                if (Auth::user()->restaurant) {
+                    if (Request::path() == Auth::user()->restaurant->slug) {
                         return $next($request);
-                    }else{
+                    } else {
                         return redirect()->route('product.index');
                     }
-                }else{
+                } else {
                     return redirect()->route('app.maintenance');
                 }
-            }else{
-                return redirect()->route('app.maintenance');
+            } else {
+                if (Request::path() == "register") {
+                    return redirect()->route('app.maintenance');
+                } else {
+                    return redirect()->route('app.maintenance');
+                }
             }
-        }else{
+        } else {
             return $next($request);
         }
     }
