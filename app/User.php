@@ -5,10 +5,13 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Thomasjohnkane\Snooze\Traits\SnoozeNotifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -35,20 +38,31 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function routeNotificationForWhatsApp()
+    {
+        // return '+549'.$this->restaurant->notification_characteristic.$this->restaurant->notification_number;
+        // // return '+549'.$this->restaurant->getNotificationNumber();
+        return '+549'.$this->characteristic.$this->phone;
+    }
+
     public function addresses(){
         return $this->hasMany(Address::class);
     }
-    
+
     public function orders(){
         return $this->hasMany(Order::class);
     }
-    
+
     public function restaurant(){
         return $this->hasOne(Restaurant::class);
     }
 
     public function fullName(){
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function getPhone(){
+        return $this->characteristic.$this->phone;
     }
 
 }

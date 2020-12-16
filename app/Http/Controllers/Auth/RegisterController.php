@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use Spatie\Permission\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -56,19 +57,6 @@ class RegisterController extends Controller
         $person = Invitation::where('token', $token)->first();
         return view('auth.register')->with('person', $person);
     }
-
-    // public function register(Request $request)
-    // {
-    //     $this->validator($request->all())->validate();
-    
-    //     event(new Registered($user = $this->create($request->all())));
-    
-    //     // $this->guard()->login($user);
-    
-    //     return $this->registered($request, $user)
-    //                     ?: redirect($this->redirectPath());
-    // }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -82,7 +70,8 @@ class RegisterController extends Controller
             'last_name'=> ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => ['required']
+            'characteristic' => ['required', 'min:4'],
+            'phone' => ['required', 'min:6']
         ]);
     }
 
@@ -93,17 +82,31 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {   
-        $invitation = Invitation::where('token', $data['token'])->first();
-        $invitation->update(['state'=>'used']);
-        
+    {
+
+        if(isset($data['token'])){
+            $invitation = Invitation::where('token', $data['token'])->first();
+            $invitation->update(['state'=>'used']);
+            $type='merchant';
+        }else{
+            $type='customer';
+        }
+
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'phone' => $data['phone']
+            'characteristic' => $data['characteristic'],
+            'phone' => $data['phone'],
+            'type' => $type
         ]);
+
+        if($type=='customer'){
+            $user->assignRole('customer');
+        }elseif($type=='merchant'){
+            $user->assignRole('merchant');
+        }
 
         return $user;
     }

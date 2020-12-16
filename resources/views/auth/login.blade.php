@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="image my-4" style="text-align:center">
-                <img src="{{asset('images/logo.png')}}" class="mt-1" width="300px">
+                <img data-original="{{asset('images/logo.png')}}" class="mt-1" width="300px">
                 <div class="icons d-block ml-3">
                     <a target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
                     <a target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
@@ -14,7 +14,6 @@
             </div>
             <hr>
             <div class="container mt-4">
-                <p class="my-2 txt-bold mt-4 mb-4" style="text-align: center">Ingreso comerciantes</p>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
@@ -60,17 +59,20 @@
 
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Login') }}
+                            <button type="submit" class="spinnerSubmitButton btn btn-primary">
+                                <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+                                <span class="btn-txt">{{ __('Login') }}</span>
                             </button>
-                            
+
                             @if (Route::has('password.request'))
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             @endif
+
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

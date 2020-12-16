@@ -43,8 +43,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards'),<br>
-{{ config('app.name') }}
+@lang('Regards'), {{ config('app.name') }}
 @endif
 
 {{-- Subcopy --}}
@@ -58,4 +57,12 @@
 ) <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
 @endslot
 @endisset
+
+{{-- Footer --}}
+@slot('footer')
+    @component('mail::footer')
+        © {{ date('Y') }} {{ env('APP_NAME') }}. Todos los derechos reservados.
+    @endcomponent
+@endslot
+
 @endcomponent

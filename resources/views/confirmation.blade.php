@@ -49,7 +49,7 @@
                 <hr width="30%" style="p-0">
                 <small>Tiempo estimado de entrega: <strong>30 minutos</strong></small><br>
 
-                <img width="30%" src="https://st4.depositphotos.com/16470190/22711/v/1600/depositphotos_227117196-stock-illustration-concept-illustration-of-the-restaurant.jpg" alt="">
+                <img width="30%" data-original="https://st4.depositphotos.com/16470190/22711/v/1600/depositphotos_227117196-stock-illustration-concept-illustration-of-the-restaurant.jpg" alt="">
             </div>
         </div>
 

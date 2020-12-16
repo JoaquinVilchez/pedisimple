@@ -20,7 +20,7 @@ class Invitation
         
         $token = substr($request->getRequestUri(), 10);
         if($token==false){
-            return redirect()->route('home'); //
+            return redirect()->route('home.index'); //
         }else{
             $person = InvitationClass::where('token', $token)->first();       
 
@@ -28,10 +28,10 @@ class Invitation
                 if($person->state=='without-using'){
                     return $next($request);
                 }else{
-                    return redirect()->route('home');
+                    return redirect()->route('home.index');
                 }
             }else{
-                return redirect()->route('home');
+                return redirect()->route('home.index');
             }
         }
         

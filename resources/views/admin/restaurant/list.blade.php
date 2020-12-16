@@ -3,8 +3,7 @@
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
     <h1 class="h2"><strong>Comercios</strong></h1>
-    <div class="btn-toolbar mb-2 mb-md-0 mr-3">
-    </div>
+    <a href="{{route('restaurant.check')}}" class="btn btn-sm btn-primary">Inhabilitar comercios sin horarios</a>
 </div>
 
   @include('messages')
@@ -13,7 +12,7 @@
 <p>Todavía no hay comercios en la plataforma.</p>
 @else
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-sm table-hover">
       <thead>
         <tr>
           <th>#</th>
@@ -29,24 +28,34 @@
           <tr>
             <td>{{$restaurant->id}}</td>
             <td>{{$restaurant->name}}</td>
-            <td>{{$restaurant->user->fullName()}}</td>   
+            <td><a href="#" onclick="showUserInfo({{$restaurant->user->id}})" data-toggle="modal" data-target="#ownerInfoModal">{{$restaurant->user->fullName()}}</a></td>   
           <form action="{{route('restaurant.admin.updateStatus')}}" id="stateSelect{{$restaurant->id}}" method="post">
               @csrf
               <input type="text" value="{{$restaurant->id}}" name="restaurant_id" hidden>
-              <td><select name="state" onchange="updateStatus({{$restaurant->id}})">
-                <option value="active" @if($restaurant->state === 'active') selected @endif>Activo</option>  
-                <option value="pending" @if($restaurant->state === 'pending') selected @endif>Pendiente</option>  
-                <option value="cancelled" @if($restaurant->state === 'cancelled') selected @endif>Cancelado</option>  
-              </select>
-              <span class="{{$restaurant->stateStyle()}}">{{$restaurant->translateState()}}</span></td>
+              @if($restaurant->state === 'without-times')
+                <td>Sin horarios</td>
+              @else
+                <td>
+                  <select name="state" onchange="updateStatus({{$restaurant->id}})">
+                    <option value="active" @if($restaurant->state === 'active') selected @endif>Activo</option>  
+                    <option value="pending" @if($restaurant->state === 'pending') selected @endif>Pendiente</option>  
+                    <option value="cancelled" @if($restaurant->state === 'cancelled') selected @endif>Cancelado</option>  
+                    <option value="without-times" @if($restaurant->state === 'without-times') selected @endif>Sin horarios</option> 
+                  </select>
+                </td>
+              @endif
             </form>       
               <td>{{$restaurant->created_at->calendar()}}</td>
-            <td><a data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#resendInvitationModal" href="#">Eliminar</a></td>
+            <td>
+              <a><i class="far fa-edit"></i></a>
+              <a href="#" data-productid="{{$restaurant->id}}" data-toggle="modal" data-target="#deleteCommerceModal"><i class="far fa-trash-alt"></i></a>
+            </td>
           </tr>
           @endforeach
         </tbody>
-    </table>
-</div>
+      </table>
+      {{$restaurants->links()}}
+    </div>
 @endif
 
 @if(count($restaurants)!=0)
@@ -76,10 +85,39 @@
 </div>
 @endif
 
+<!-- Modal -->
+<div class="modal fade" id="ownerInfoModal" tabindex="-1" aria-labelledby="ownerInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" id="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('js-scripts')
 <script>
+
+function showUserInfo(id){
+    $.ajax({
+      url : '{{ route("restaurant.admin.ownerData") }}',
+      type: 'POST',
+      headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      data:{id:id},
+      success:function(data){
+          $('#modal-body').html(data);
+      },
+      error:function(error){
+        console.log(error)
+        $('#modal-body').html(error);
+      }
+    });
+}
 
 $('#resendInvitationModal').on('show.bs.modal', function(event){
 var button = $(event.relatedTarget)
@@ -91,9 +129,9 @@ modal.find('.modal-body #restaurantid').val(restaurantid)
 })
 
 function updateStatus(id){
-            var form = document.getElementById('stateSelect'+id)
-            form.submit();
-        }
+    var form = document.getElementById('stateSelect'+id)
+    form.submit();
+}
 
 </script>
 @endsection

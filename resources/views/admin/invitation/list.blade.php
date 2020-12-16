@@ -16,12 +16,10 @@
 <p>Todavía no tienes invitaciones. <a href="{{route('invitation.create')}}">Crear una</a></p>
 @else
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-sm table-hover">
       <thead>
         <tr>
-          <th>#</th>
           <th>Nombre</th>
-          <th>Apellido</th>
           <th>Email</th>
           <th>Creada</th>
           <th></th>
@@ -30,12 +28,10 @@
       <tbody>
           @foreach($invitations as $invitation)
           <tr>
-            <td>{{$invitation->id}}</td>
-            <td>{{$invitation->first_name}}</td>
-            <td>{{$invitation->last_name}}</td>
+            <td>{{$invitation->fullName()}}</td>
             <td>{{$invitation->email}}</td>
             <td>{{ucfirst($invitation->updated_at->calendar())}}</td>
-            <td><a data-invitationid="{{$invitation->id}}" data-toggle="modal" data-target="#resendInvitationModal" href="#">Reenviar</a></td>
+            <td><a data-invitationid="{{$invitation->id}}" data-toggle="modal" data-target="#resendInvitationModal" href="#"><i class="fas fa-redo-alt"></i></a></td>
           </tr>
           @endforeach
         </tbody>

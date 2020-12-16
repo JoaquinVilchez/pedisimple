@@ -39,48 +39,41 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $product = Product::find($request->id);
+
+        if($product->variants==true){
+            $variantsRule='required|array|min:'.$product->minimum_variants.'|max:'.$product->maximum_variants;
+        }else{
+            $variantsRule='nullable';
+        }
+
+        request()->validate([
+            'variants'=>$variantsRule
+        ]);
+
         $restaurant = $product->restaurant;
 
+        if($restaurant->getOpeningHoursData()->isOpen()){
         if(\Cart::isEmpty()){
-            \Cart::add(array(
-                'id' => $request->id,
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => $request->quantity,
-                'associatedModel' => $product
-            ));
+                if (count($product->getVariants)>0) {
+                    \Cart::add(array(
+                        'id' => generateCode(),
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'quantity' => $request->quantity,
+                        'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
+                    ));
+                }else{
+                    \Cart::add(array(
+                        'id' => $request->id,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'quantity' => $request->quantity,
+                        'attributes' => ['aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
+                    ));
+                }
 
-            if($restaurant->shipping_method == 'delivery'){
+                if($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup'){
 
-                $condition = new \Darryldecode\Cart\CartCondition(array(
-                    'name' => 'Delivery',
-                    'type' => 'tax',
-                    'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
-                    'value' => $restaurant->shipping_price,
-                    'attributes' => array( // attributes field is optional
-                        'description' => 'Costo del envio'
-                    )
-                ));
-
-                \Cart::condition($condition);
-            }
-
-            return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
-        }else{
-            $firstItem = \Cart::getContent()->first();
-            $product = Product::find($request->id);
-            
-            if($product->restaurant->id == $firstItem->model->restaurant->id){
-                \Cart::add(array(
-                    'id' => $request->id,
-                    'name' => $product->name,
-                    'price' => $product->price,
-                    'quantity' => $request->quantity,
-                    'associatedModel' => $product
-                ));
-
-                if($restaurant->shipping_method == 'delivery'){
-                
                     $condition = new \Darryldecode\Cart\CartCondition(array(
                         'name' => 'Delivery',
                         'type' => 'tax',
@@ -94,16 +87,59 @@ class CartController extends Controller
                     \Cart::condition($condition);
                 }
 
-                return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
+                return view('carrito')->with('restaurant', $restaurant);
+
+                // return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
             }else{
-                return redirect()->back()->with('error_message', 'El producto debe ser del mismo comercio.');
+                $firstItem = \Cart::getContent()->first();
+                $restaurantID = Product::find($firstItem->attributes->product_id)->restaurant->id;
+                if($product->restaurant->id == $restaurantID){
+                    if (count($product->getVariants)>0) {
+                        \Cart::add(array(
+                            'id' => generateCode(),
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'quantity' => $request->quantity,
+                            'attributes' => ['variants'=>$request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id],
+                        ));
+                    }else{
+                        \Cart::add(array(
+                            'id' => $request->id,
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'quantity' => $request->quantity,
+                            'attributes' => ['aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
+                        ));
+                    }
+
+                    if($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup'){
+
+                        $condition = new \Darryldecode\Cart\CartCondition(array(
+                            'name' => 'Delivery',
+                            'type' => 'tax',
+                            'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
+                            'value' => $restaurant->shipping_price,
+                            'attributes' => array( // attributes field is optional
+                                'description' => 'Costo del envio'
+                            )
+                        ));
+
+                        \Cart::condition($condition);
+                    }
+
+                    return view('carrito')->with('restaurant', $restaurant);
+
+                }else{
+                    return response()->json([
+                        'errors'  => 'El producto debe ser del mismo comercio.',
+                    ], 400);
+                }
             }
-
-            // foreach (\Cart::getContent() as $item) {
-            //     $item->attributes;
-            // }
-
-        }   
+        }else{
+            return response()->json([
+                'errors'  => 'Este comercio está cerrado, intenta hacer tu pedido más tarde',
+            ], 400);
+        }
     }
 
     /**
@@ -112,10 +148,13 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function empty(){
+    public function empty(Request $request){
+        $restaurant = Restaurant::findOrFail($request->restaurant);
         \Cart::clearCartConditions();
         \Cart::clear();
-        return redirect()->back()->with('success_message', 'Carrito vaciado con éxito');
+        
+        return view('carrito')->with('restaurant', $restaurant);
+        // return redirect()->back()->with('success_message', 'Carrito vaciado con éxito');
     }
 
     /**
@@ -146,11 +185,11 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function deliveryTax(Request $request)
-    {
-        $restaurant = Restaurant::findOrFail($request->restaurant_id);
-        
+    {        
+        $restaurant = Restaurant::findOrFail($request->restaurant);  
+
         $condition = new \Darryldecode\Cart\CartCondition(array(
             'name' => 'Delivery',
             'type' => 'tax',
@@ -160,15 +199,26 @@ class CartController extends Controller
                 'description' => 'Costo del envio'
             )
         ));
+        
         if($request->shipping_method == 'delivery'){
             \Cart::condition($condition);
-            $option="delivery";
         }else{
-            \Cart::clearCartConditions();
-            $option="pickup";   
+            \Cart::removeCartCondition('Delivery');
+        }
+        
+        if(\Cart::getCondition('Delivery')){
+            $deliveryTax = $restaurant->shipping_price;
+        }else{
+            $deliveryTax = 0;
         }
 
-        return redirect()->back()->with('option', $option);
+        $data = [
+            'subtotal' => \Cart::getSubtotal(),
+            'total' => \Cart::getTotal(),
+            'deliveryTax' => $deliveryTax
+        ];
+
+        return $data;
     }
 
     /**
@@ -187,7 +237,14 @@ class CartController extends Controller
             ),
         ));
 
-        return redirect()->back()->with('success_message', 'Cantidad editada con éxito');
+        $data = [
+            'subtotal' => \Cart::getSubtotal(),
+            'total' => \Cart::getTotal(),
+            'itemPrice' => \Cart::get($id)->price,
+            'items' => \Cart::getTotalQuantity()
+        ];
+
+        return $data;
     }
 
     /**
@@ -196,9 +253,16 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function remove(Request $request)
     {
-        \Cart::remove($id);
-        return redirect()->back()->with('success_message', 'Producto removido con éxito del carrito.');
+        \Cart::remove($request->id);
+
+        $data = [
+            'subtotal' => \Cart::getSubtotal(),
+            'total' => \Cart::getTotal(),
+            'items' => \Cart::getTotalQuantity()
+        ];
+        
+        return $data;
     }
 }

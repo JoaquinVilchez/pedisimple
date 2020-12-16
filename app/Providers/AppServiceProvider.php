@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,9 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if($this->app->environment('local')){
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+        
     }
 
     /**
@@ -25,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        setlocale(LC_ALL, 'es');
+        Carbon::setLocale(config('app.locale'));
     }
 }

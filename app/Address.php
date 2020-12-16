@@ -10,6 +10,10 @@ class Address extends Model
 {
     protected $guarded = [];
     
+    public function order(){
+        return $this->hasMany(Order::class);
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -23,10 +27,18 @@ class Address extends Model
     }
 
     public function getAddress(){
-       if($this->floor==null || $this->department==null || $this->building_name==null){
+       if($this->floor==null || $this->department==null){
             return $this->street.' '.$this->number;
        }else{
-            return $this->street.' '.$this->number.' - '.$this->floor.$this->department.' - '.$this->building_name;
+           if($this->floor==null && $this->department!=null){
+                $address = $this->street.' '.$this->number.' - '.$this->department;
+           }else{
+               $address = $this->street.' '.$this->number.' - '.$this->floor.$this->department;
+           }
+            if($this->building_name!=null){
+                $address = $address.' - Edificio '.$this->building_name;
+            }
+            return $address;
        }
     }
 
@@ -37,6 +49,6 @@ class Address extends Model
      }
 
     public function getFullAddress(){
-        return $this->getAddress().' - '.$this->getCity();
+        return $this->getAddress();
      }
 }

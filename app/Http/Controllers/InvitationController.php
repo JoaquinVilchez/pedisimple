@@ -33,7 +33,7 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        $invitations = Invitation::all();
+        $invitations = Invitation::paginate(15);
         return view('admin.invitation.list')->with('invitations', $invitations);
     }
 

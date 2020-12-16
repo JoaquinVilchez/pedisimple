@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
 
     protected $redirectTo = '/';
-    
+
 
     /**
      * Create a new controller instance.
@@ -40,4 +40,10 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+        // protected function redirectTo()
+        // {
+        //     return back();
+        // }
+
 }

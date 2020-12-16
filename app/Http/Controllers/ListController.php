@@ -21,10 +21,10 @@ class ListController extends Controller
 
         $filter = $request->get('filter');
         $filters = [];
-        $categories = RestaurantCategory::with('restaurants')->get();
+        $categories = RestaurantCategory::with('restaurants')->orderBy('name', 'ASC')->get();
 
         if($filter!=null){
-            $category = RestaurantCategory::with('restaurants')->where('name', $filter)->where('state', 'active')->get();
+            $category = RestaurantCategory::with('restaurants')->where('name', $filter)->where('state', 'active')->orderBy('name', 'ASC')->get();
                 foreach ($category as $filter_category) {
                     $restaurants = $filter_category->restaurants;
                 }
@@ -45,9 +45,9 @@ class ListController extends Controller
 
                 array_push($filters, $filter);
         }else{
-            $active_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->get();
+            $active_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->orderBy('name', 'ASC')->get();
             if(Auth::check() and Auth::user()->type=='administrator'){
-                $pending_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'pending')->get();
+                $pending_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'pending')->orderBy('name', 'ASC')->get();
             }
             $filter = false;
         }
@@ -68,14 +68,14 @@ class ListController extends Controller
 
         if(Auth::check() and Auth::user()->type == 'administrator'){
             return view('list')->with([
-                'categories'=>$filtered_categories->sortBy('name'),
+                'categories'=>$filtered_categories,
                 'restaurants'=>$active_restaurants->sortBy('name'),
-                'pending_restaurants'=>$pending_restaurants->sortBy('name'),
+                'pending_restaurants'=>$pending_restaurants,
                 'filters'=>$filters
             ]);
         }else{
             return view('list')->with([
-                'categories'=>$filtered_categories->sortBy('name'),
+                'categories'=>$filtered_categories,
                 'restaurants'=>$active_restaurants->sortBy('name'),
                 'filters'=>$filters
             ]);

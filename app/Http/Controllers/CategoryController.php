@@ -3,12 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Category;
 use App\Product;
 
+
 class CategoryController extends Controller
 {
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer',
+            ]);
+            
+
+        foreach ($request->ids as $index => $id) {
+            DB::table('categories')
+                ->where('id', $id)
+                ->update([
+                    'position' => $index + 1
+                ]);
+        }
+
+
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
     /** 
      * Display a listing of the resource.
      *
@@ -35,7 +60,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Auth::user()->restaurant->categories;
+        $categories = Auth::user()->restaurant->categories->sortBy('position');
         return view('restaurant.categories.list')->with('categories', $categories);
     }
 

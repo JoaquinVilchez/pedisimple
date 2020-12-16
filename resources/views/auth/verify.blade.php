@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center" style="text-align: center">
         <div class="col-md-8">
-        <img src="{{asset('images/design/email.svg')}}" alt="" class="img-default my-3">
+        <img data-original="{{asset('storage/design/email.svg')}}" alt="" class="img-default my-3">
                     <h4 class="txt-bold">Confirma tu correo electrónico</h4>
             
                     @if (session('resent'))
@@ -17,6 +17,8 @@
                     <br><br>
 
                     <small><strong>El correo puede tardar unos minutos en llegar.</strong></small>
+                    <br>
+                    <small><strong>Si no te aparece en la bandeja de entrada, revisa en los correos no deseados.</strong></small>
 
                     <br><br>
                     {{ __('If you did not receive the email') }},

@@ -16,7 +16,7 @@ class AddressController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $addresses = Address::where('user_id',$user->id)->get();
+        $addresses = Address::where('user_id',$user->id)->get();    
         return view('user.addresses')->with('addresses', $addresses);
     }
 
