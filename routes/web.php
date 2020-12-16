@@ -19,8 +19,6 @@ use App\User;
 
 Auth::routes(['verify' => true]);
 
-Route::get('/register');
-
 Route::get('/mantenimiento', function () {
     return view('maintenance');
 })->name('app.maintenance');
