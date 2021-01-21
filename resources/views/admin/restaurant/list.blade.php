@@ -44,7 +44,7 @@
                   </select>
                 </td>
               @endif
-            </form>       
+            </form>
               <td>{{$restaurant->created_at->calendar()}}</td>
             <td>
               <a><i class="far fa-edit"></i></a>
@@ -54,8 +54,8 @@
           @endforeach
         </tbody>
       </table>
-      {{$restaurants->links()}}
     </div>
+    {{$restaurants->links()}}
 @endif
 
 @if(count($restaurants)!=0)
