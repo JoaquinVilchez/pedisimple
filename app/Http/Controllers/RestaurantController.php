@@ -596,8 +596,50 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $restaurant = Restaurant::find($request->restaurantid);
+        $user = $restaurant->user;
+
+        $transaction = DB::transaction(function () use ($request, $restaurant, $user) {
+            try {
+                if ($user->hasRole('merchant')) {
+                    // $user->assignRole('customer');
+                    dump('Usuario ' . $user->first_name . ' cambia a customer');
+                }
+
+                // $restaurant->address->delete();
+                dump('Direccion ' . $restaurant->address->street . ' se elimina');
+
+                foreach ($restaurant->categories as $category) {
+                    // $category->delete();
+                    dump('Categoria ' . $category->name . ' se elimina');
+                }
+
+                if ($restaurant->line_items) {
+                    foreach ($restaurant->line_items as $line_item) {
+                        // $line_item->delete();
+                        dump('Se elimina line_item');
+                    }
+                } else {
+                    dump('No hay line_items');
+                }
+
+                if (count($restaurant->orders) != 0) {
+                    foreach ($restaurant->orders as $order) {
+                        // $order->delete();
+                        dump('Se elimina order');
+                    }
+                } else {
+                    dump('No hay orders');
+                }
+
+                DB::commit();
+                return true;
+            } catch (\Throwable $e) {
+                DB::rollback();
+                return false;
+            }
+        });
     }
 }

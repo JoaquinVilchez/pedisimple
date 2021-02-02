@@ -73,6 +73,7 @@ Route::resource('/configuracion', 'RestaurantController')->names('restaurant')->
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
 Route::post('/comercio/store', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
 Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible', 'Maintenance']);
+Route::post('/comercio/eliminar', 'RestaurantController@destroy')->name('restaurant.destroy')->middleware(['verified']);
 
 //DOCUMENTACION
 Route::get('/docs/documentacion', function () {

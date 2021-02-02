@@ -33,7 +33,7 @@ class ProductController extends Controller
         $products = Product::where('restaurant_id', Auth::user()->restaurant->id)->where('temporary', false)->where('state', '!=', 'removed')->get();
         $restaurant = Auth::user()->restaurant;
 
-        foreach(Auth::user()->unreadNotifications->where('type', 'App\Notifications\UpdatePricesReminder') as $notification){
+        foreach (Auth::user()->unreadNotifications->where('type', 'App\Notifications\UpdatePricesReminder') as $notification) {
             $notification->markAsRead();
         }
 
@@ -48,7 +48,7 @@ class ProductController extends Controller
      */
     public function updatePrices(Request $request)
     {
-        for ($i=0; $i < count($request->product); $i++) { 
+        for ($i = 0; $i < count($request->product); $i++) {
             $product = Product::find($request->product[$i]);
             $product->update([
                 'price' => $request->price[$i]
@@ -63,7 +63,8 @@ class ProductController extends Controller
     }
 
 
-    public function showData(Request $request){
+    public function showData(Request $request)
+    {
         $product = Product::find($request->productid);
         $variants = $product->getVariants;
 
@@ -84,7 +85,7 @@ class ProductController extends Controller
     public function exportExcel()
     {
         $today = Carbon::today()->toDateString();
-        return Excel::download(new ProductsExport, 'productos-'.$today.'-'.Auth::user()->restaurant->slug.'.xlsx');
+        return Excel::download(new ProductsExport, 'productos-' . $today . '-' . Auth::user()->restaurant->slug . '.xlsx');
     }
 
     /**
@@ -95,8 +96,8 @@ class ProductController extends Controller
     public function importExcel(Request $request)
     {
         request()->validate([
-            'method'=>'required',
-            'file'=>'required'
+            'method' => 'required',
+            'file' => 'required'
         ]);
 
         $file = $request->file('file');
@@ -106,26 +107,26 @@ class ProductController extends Controller
         // $items = Excel::toCollection(new ProductsImport, $file);
         $restaurant = Auth::user()->restaurant;
 
-        if($request->method == "update"){
+        if ($request->method == "update") {
             $errors = 0;
-            foreach($items as $item){
+            foreach ($items as $item) {
 
-                for ($i=0; $i < count($item) ; $i++) {
+                for ($i = 0; $i < count($item); $i++) {
 
                     $price = $item[$i]['precio'];
 
-                    if(substr($price, 0, 1) == '$'){
+                    if (substr($price, 0, 1) == '$') {
                         $price = substr($price, 1);
                         $price = floatval($price);
                     }
 
-                    if($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null){
-                        $errors = $errors+1;
-                    }else{
+                    if ($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null) {
+                        $errors = $errors + 1;
+                    } else {
                         $category_name = $item[$i]['categoria'];
                         $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
 
-                        if($category==null){
+                        if ($category == null) {
                             Category::create([
                                 'name' => $category_name,
                                 'state' => 'available',
@@ -135,7 +136,7 @@ class ProductController extends Controller
                             $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
                         }
 
-                        if($item[$i]['token_no_borrar']==null){
+                        if ($item[$i]['token_no_borrar'] == null) {
                             Product::create([
                                 'name' => $item[$i]['nombre'],
                                 'details' => $item[$i]['descripcion'],
@@ -143,11 +144,10 @@ class ProductController extends Controller
                                 'category_id' => $category->id,
                                 'restaurant_id' => $restaurant->id,
                             ]);
-
-                        }else{
+                        } else {
                             $product_id = decrypt($item[$i]['token_no_borrar']);
                             $product = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('id', $product_id)->first();
-                            if($product !== null){
+                            if ($product !== null) {
                                 $product->update([
                                     'name' => $item[$i]['nombre'],
                                     'details' => $item[$i]['descripcion'],
@@ -159,39 +159,38 @@ class ProductController extends Controller
                     }
                 }
             }
-
-        }elseif($request->method == "replace"){
+        } elseif ($request->method == "replace") {
 
             $errors = 0;
             $products = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('temporary', false)->get();
 
-            if($products!=null){
+            if ($products != null) {
                 foreach ($products as $product) {
-                    if($product->lineItem->count()>0){
+                    if ($product->lineItem->count() > 0) {
                         $product->update(['state' => 'removed']);
-                    }else{
+                    } else {
                         $product->delete();
                     }
                 }
             }
 
-            foreach($items as $item){
-                for ($i=0; $i < count($item) ; $i++) { 
+            foreach ($items as $item) {
+                for ($i = 0; $i < count($item); $i++) {
 
                     $price = $item[$i]['precio'];
 
-                    if(substr($price, 0, 1) == '$'){
+                    if (substr($price, 0, 1) == '$') {
                         $price = substr($price, 1);
                         $price = floatval($price);
                     }
 
-                    if($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null){
-                        $errors = $errors+1;
-                    }else{
+                    if ($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null) {
+                        $errors = $errors + 1;
+                    } else {
                         $category_name = $item[$i]['categoria'];
                         $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
 
-                        if($category==null){
+                        if ($category == null) {
                             Category::create([
                                 'name' => $category_name,
                                 'state' => 'available',
@@ -209,14 +208,13 @@ class ProductController extends Controller
                             'restaurant_id' => $restaurant->id,
                         ]);
                     }
-
                 }
             }
-        }//endif
+        } //endif
 
-        if($errors>0){
-            return redirect()->back()->with('success_message', 'Archivo importado con éxito')->with('error_message', $errors.' producto/s no fueron importados. Los campos nombre, precio y categoria son obligatorios.');
-        }else{
+        if ($errors > 0) {
+            return redirect()->back()->with('success_message', 'Archivo importado con éxito')->with('error_message', $errors . ' producto/s no fueron importados. Los campos nombre, precio y categoria son obligatorios.');
+        } else {
             return redirect()->back()->with('success_message', 'Archivo importado con éxito');
         }
     }
@@ -231,11 +229,11 @@ class ProductController extends Controller
         $product = Product::find($request->product_id);
         $this->authorize('pass', $product);
 
-        if($product->state == 'available'){
-            $product->update(['state'=>'not-available']);
+        if ($product->state == 'available') {
+            $product->update(['state' => 'not-available']);
             return redirect()->back()->with('success_message', 'Producto cambiado a no disponible');
-        }else{
-            $product->update(['state'=>'available']);
+        } else {
+            $product->update(['state' => 'available']);
             return redirect()->back()->with('success_message', 'Producto cambiado a disponible');
         }
     }
@@ -249,7 +247,7 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = Product::where('restaurant_id', $restaurant->id)->where('temporary',false)->where('state', '!=', 'removed')->orderBy('category_id', 'asc')->paginate(15);
+        $products = Product::where('restaurant_id', $restaurant->id)->where('temporary', false)->where('state', '!=', 'removed')->orderBy('category_id', 'asc')->paginate(15);
 
         return view('restaurant.products.list')->with('products', $products);
     }
@@ -263,7 +261,7 @@ class ProductController extends Controller
     {
         $user = Auth::user();
         $restaurant = $user->restaurant;
-        $products = $restaurant->products()->where('temporary',true)->where('state', '!=', 'removed')->orderBy('created_at','desc')->get();
+        $products = $restaurant->products()->where('temporary', true)->where('state', '!=', 'removed')->orderBy('created_at', 'desc')->get();
         return view('restaurant.products.temporaries')->with('products', $products);
     }
 
@@ -305,34 +303,35 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        if($request->has_variants=='on'){
+        if ($request->has_variants == 'on') {
             $variantsRule = 'required|array|min:1';
             $minimumRule = 'required|numeric|min:1';
             $maximumRule = 'required|numeric|gte:minimum';
-        }else{
+        } else {
             $variantsRule = 'nullable';
             $minimumRule = 'nullable';
             $maximumRule = 'nullable';
         }
 
-        if($request->temporary=='on'){
-            $categoryRule='nullable';
-            $startDateRule='required|date_format:d/m/Y|before:end_date';
-            $endDateRule='required|date_format:d/m/Y|after:start_date';
-        }else{
-            $categoryRule='required';
-            $startDateRule='nullable';
-            $endDateRule='nullable';
+        if ($request->temporary == 'on') {
+            $categoryRule = 'nullable';
+            $startDateRule = 'required|date_format:d/m/Y|before:end_date';
+            $endDateRule = 'required|date_format:d/m/Y|after:start_date';
+        } else {
+            $categoryRule = 'required';
+            $startDateRule = 'nullable';
+            $endDateRule = 'nullable';
         }
 
         request()->validate([
             'name' => 'required',
             'price' => 'required',
             'category_id' => $categoryRule,
-            'start_date'=>$startDateRule,
-            'end_date'=>$endDateRule,
+            'start_date' => $startDateRule,
+            'end_date' => $endDateRule,
             'minimum' => $minimumRule,
             'maximum' => $maximumRule,
             'variants' => $variantsRule
@@ -343,44 +342,44 @@ class ProductController extends Controller
         $restaurant_id = Auth::user()->restaurant->id;
 
         //DATOS DE IMAGEN
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
 
             $file = $request->file('image');
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {
+                $constraint->aspectRatio();
+            })->crop(785, 785)->encode('jpg', 75);
 
-            Storage::put("public/uploads/products/".$path, $image->__toString());
-
-        }else{
+            Storage::put("public/uploads/products/" . $path, $image->__toString());
+        } else {
             $path = 'no_image.png';
         }
 
         //DATOS DE FECHA TEMPORAL
-        if($request->temporary=='on'){
-            $temporary=true;
-            $startDate=Carbon::createFromFormat('d/m/Y', $request->start_date);
-            $endDate=Carbon::createFromFormat('d/m/Y', $request->end_date);
-
-        }else{
-            $temporary=false;
-            $startDate=null;
-            $endDate=null;
+        if ($request->temporary == 'on') {
+            $temporary = true;
+            $startDate = Carbon::createFromFormat('d/m/Y', $request->start_date);
+            $endDate = Carbon::createFromFormat('d/m/Y', $request->end_date);
+        } else {
+            $temporary = false;
+            $startDate = null;
+            $endDate = null;
         }
 
         //DATOS DE CATEGORIA
-        if ($request->category_id==null) {
-            $category=null;
-        }else{
-            $category=$request->category_id;
+        if ($request->category_id == null) {
+            $category = null;
+        } else {
+            $category = $request->category_id;
         }
 
-        if($request->has_variants=='on') {
+        if ($request->has_variants == 'on') {
             $variants = true;
             $minimum_variants = $request->minimum;
             $maximum_variants = $request->maximum;
-        }else{
+        } else {
             $variants = false;
             $minimum_variants = null;
             $maximum_variants = null;
@@ -396,14 +395,14 @@ class ProductController extends Controller
             'image' => $path,
             'temporary' => $temporary,
             'start_date' => $startDate,
-            'end_date'=>$endDate,
+            'end_date' => $endDate,
             'variants' => $variants,
             'minimum_variants' => $minimum_variants,
             'maximum_variants' => $maximum_variants,
         ]);
 
-        if($request->has_variants=='on') {
-            foreach($request->variants as $variant){
+        if ($request->has_variants == 'on') {
+            foreach ($request->variants as $variant) {
                 DB::table('products_variants')->insert([
                     'product_id' => $product->id,
                     'variant_id' => $variant,
@@ -411,7 +410,7 @@ class ProductController extends Controller
             }
         }
 
-        if($request->temporary=='on'){
+        if ($request->temporary == 'on') {
             Mail::to("contacto@pedisimple.com")->send(new NewTemporaryProduct(Auth::user()->restaurant, $product));
         }
 
@@ -463,26 +462,26 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $this->authorize('pass', $product);
 
-        if($request->has_variants=='on'){
-            $minimumRule = 'required|numeric|min:'.$request->minimum;
-            $maximumRule = 'required|numeric|gte:'.$request->minimum;
-            $variantsRule='required|array';
-        }else{
-            $minimumRule='nullable';
-            $maximumRule='nullable';
-            $variantsRule='nullable';
+        if ($request->has_variants == 'on') {
+            $minimumRule = 'required|numeric|min:' . $request->minimum;
+            $maximumRule = 'required|numeric|gte:' . $request->minimum;
+            $variantsRule = 'required|array';
+        } else {
+            $minimumRule = 'nullable';
+            $maximumRule = 'nullable';
+            $variantsRule = 'nullable';
         }
 
-        if($request->temporary=='on'){
+        if ($request->temporary == 'on') {
             $temporaryRule = 'required';
-            $categoryRule='nullable';
-            $startDateRule='required|date_format:d/m/Y|before:end_date';
-            $endDateRule='required|date_format:d/m/Y|after:start_date';
-        }else{
+            $categoryRule = 'nullable';
+            $startDateRule = 'required|date_format:d/m/Y|before:end_date';
+            $endDateRule = 'required|date_format:d/m/Y|after:start_date';
+        } else {
             $temporaryRule = 'nullable';
-            $categoryRule='required';
-            $startDateRule='nullable';
-            $endDateRule='nullable';
+            $categoryRule = 'required';
+            $startDateRule = 'nullable';
+            $endDateRule = 'nullable';
         }
 
         request()->validate([
@@ -490,14 +489,14 @@ class ProductController extends Controller
             'price' => 'required',
             'category_id' => $categoryRule,
             'temporary' => $temporaryRule,
-            'start_date'=>$startDateRule,
-            'end_date'=>$endDateRule,
-            'minimum'=>$minimumRule,
-            'maximum'=>$maximumRule,
-            'variants'=>$variantsRule
+            'start_date' => $startDateRule,
+            'end_date' => $endDateRule,
+            'minimum' => $minimumRule,
+            'maximum' => $maximumRule,
+            'variants' => $variantsRule
         ]);
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
 
             $old_image = $product->image;
 
@@ -505,38 +504,40 @@ class ProductController extends Controller
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {
+                $constraint->aspectRatio();
+            })->crop(785, 785)->encode('jpg', 75);
 
-            if($old_image!='no_image.png'){
-                Storage::delete('public/uploads/products/'.$old_image);
+            if ($old_image != 'no_image.png') {
+                Storage::delete('public/uploads/products/' . $old_image);
             }
 
-            Storage::put("public/uploads/products/".$path, $image->__toString()); 
+            Storage::put("public/uploads/products/" . $path, $image->__toString());
 
-            $product->update(['image'=>$path]);  
+            $product->update(['image' => $path]);
         }
 
-        if($request->delete_image=='yes'){
-            Storage::delete('public/uploads/products/'.$product->image);
+        if ($request->delete_image == 'yes') {
+            Storage::delete('public/uploads/products/' . $product->image);
         }
 
-        if($request->action==='delete'){
-            $product->update(['image'=>'no_image.png']); 
+        if ($request->action === 'delete') {
+            $product->update(['image' => 'no_image.png']);
         }
 
-        if($request->has_variants=="on"){
+        if ($request->has_variants == "on") {
             $variants = $product->getVariants;
             $new_variants = $request->variants;
 
-            $old_variants=[];
+            $old_variants = [];
 
-            foreach($variants as $variant){
+            foreach ($variants as $variant) {
                 array_push($old_variants, $variant->id);
             }
 
-            if($request->variants==null){
+            if ($request->variants == null) {
                 $old_variants = $product->getVariants;
-                if(count($old_variants)>0){
+                if (count($old_variants) > 0) {
                     foreach ($old_variants as $variant) {
                         DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
                     }
@@ -544,14 +545,14 @@ class ProductController extends Controller
                 $has_variants = false;
                 $maximum = null;
                 $minimum = null;
-            }else{
+            } else {
                 $remove_variants = array_diff($old_variants, $new_variants);
                 $add_variants = array_diff($new_variants, $old_variants);
-                foreach($remove_variants as $remove_variant){
+                foreach ($remove_variants as $remove_variant) {
                     DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $remove_variant)->delete();
                 }
 
-                foreach($add_variants as $add_variant){
+                foreach ($add_variants as $add_variant) {
                     DB::table('products_variants')->insert([
                         'product_id' => $product->id,
                         'variant_id' => $add_variant,
@@ -561,9 +562,8 @@ class ProductController extends Controller
                 $maximum = $request->maximum;
                 $minimum = $request->minimum;
             }
-
-        }else{
-            if(isset($product->getVariants)>0){
+        } else {
+            if (isset($product->getVariants) > 0) {
                 foreach ($product->getVariants as $variant) {
                     DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
                 }
@@ -574,26 +574,26 @@ class ProductController extends Controller
         }
 
         //DATOS DE FECHA TEMPORAL
-        if($request->temporary==true){
-            $temporary=true;
-            $startTemporaryDate=Carbon::createFromFormat('d/m/Y', $request->start_date);
-            $endTemporaryDate=Carbon::createFromFormat('d/m/Y', $request->end_date);
+        if ($request->temporary == true) {
+            $temporary = true;
+            $startTemporaryDate = Carbon::createFromFormat('d/m/Y', $request->start_date);
+            $endTemporaryDate = Carbon::createFromFormat('d/m/Y', $request->end_date);
 
             // dd($request->start_date, $request->end_date, $startTemporaryDate, $endTemporaryDate);
 
-        }else{
-            $temporary=false;
-            $startTemporaryDate=null;
-            $endTemporaryDate=null;
+        } else {
+            $temporary = false;
+            $startTemporaryDate = null;
+            $endTemporaryDate = null;
         }
 
         //DATOS DE CATEGORIA
-        if ($request->category_id==null) {
-            $category=null;
-        }else{
-            $category=$request->category_id;
+        if ($request->category_id == null) {
+            $category = null;
+        } else {
+            $category = $request->category_id;
         }
-        
+
         $product->update([
             'name' => $request->name,
             'details' => $request->details,
@@ -601,8 +601,8 @@ class ProductController extends Controller
             'price' => $request->price,
             'state' => $request->state,
             'temporary' => $temporary,
-            'start_date'=> $startTemporaryDate,
-            'end_date'=>$endTemporaryDate,
+            'start_date' => $startTemporaryDate,
+            'end_date' => $endTemporaryDate,
             'variants' => $has_variants,
             'maximum_variants' => $maximum,
             'minimum_variants' => $minimum
@@ -619,30 +619,30 @@ class ProductController extends Controller
      */
     public function destroy(Request $request)
     {
-        
+
         $product = Product::findOrFail($request->productid);
         $this->authorize('pass', $product);
 
-        if(count($product->getVariants)>0){
+        if (count($product->getVariants) > 0) {
             foreach ($product->getVariants as $variant) {
                 DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
             }
-        }   
+        }
 
-        if($product->lineItem->count()>0){
+        if ($product->lineItem->count() > 0) {
             $product->update([
                 'state' => 'removed'
-            ]);     
-        }else{
+            ]);
+        } else {
             $old_image = $product->image;
-    
-            if($old_image != 'no_image.png'){
-                $path_old_image = 'images/uploads/products/'.$old_image;
-                    if(file_exists($path_old_image)){
-                        unlink($path_old_image);
-                    }
-            }   
-    
+
+            if ($old_image != 'no_image.png') {
+                $path_old_image = 'images/uploads/products/' . $old_image;
+                if (file_exists($path_old_image)) {
+                    unlink($path_old_image);
+                }
+            }
+
             $product->delete();
         }
         return redirect()->back()->with('success_message', 'Producto eliminado con éxito');
@@ -652,31 +652,31 @@ class ProductController extends Controller
     {
 
         $products = Product::where('restaurant_id', Auth::user()->restaurant->id)->get();
-        foreach($products as $product){
+        foreach ($products as $product) {
             $this->authorize('pass', $product);
 
-            if(count($product->getVariants)>0){
+            if (count($product->getVariants) > 0) {
                 foreach ($product->getVariants as $variant) {
                     DB::table('-')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
                 }
-            }   
+            }
 
-            if($product->lineItem->count()>0){
+            if ($product->lineItem->count() > 0) {
                 $product->update([
                     'state' => 'removed'
-                ]);     
-            }else{
+                ]);
+            } else {
                 $old_image = $product->image;
 
-                if($old_image != 'no_image.png'){
-                    $path_old_image = 'images/uploads/products/'.$old_image;
-                        if(file_exists($path_old_image)){
-                            unlink($path_old_image);
-                        }
-                }   
-                
+                if ($old_image != 'no_image.png') {
+                    $path_old_image = 'images/uploads/products/' . $old_image;
+                    if (file_exists($path_old_image)) {
+                        unlink($path_old_image);
+                    }
+                }
+
                 $product->delete();
-            }          
+            }
         }
         return redirect(route('product.index'))->with('success_message', 'Productos eliminados con éxito');
     }

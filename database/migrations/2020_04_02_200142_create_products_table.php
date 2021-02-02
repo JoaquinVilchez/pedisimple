@@ -20,9 +20,9 @@ class CreateProductsTable extends Migration
             $table->decimal('price', 8, 2);
             $table->string('state')->default('available');
             $table->unsignedBigInteger('category_id');
-                $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedBigInteger('restaurant_id');
-                $table->foreign('restaurant_id')->references('id')->on('restaurants');
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
             $table->string('image')->default('no_image.png');
             $table->timestamps();
         });

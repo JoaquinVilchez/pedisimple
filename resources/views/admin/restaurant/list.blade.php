@@ -48,7 +48,7 @@
               <td>{{$restaurant->created_at->calendar()}}</td>
             <td>
               <a><i class="far fa-edit"></i></a>
-              <a href="#" data-productid="{{$restaurant->id}}" data-toggle="modal" data-target="#deleteCommerceModal"><i class="far fa-trash-alt"></i></a>
+              <a href="#" data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#deleteRestaurantModal"><i class="far fa-trash-alt"></i></a>
             </td>
           </tr>
           @endforeach
@@ -60,7 +60,7 @@
 
 @if(count($restaurants)!=0)
 <!-- Modal -->
-<div class="modal fade" id="deleteCommerceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="deleteRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
       <div class="modal-header">
@@ -69,11 +69,11 @@
           <span aria-hidden="true">&times;</span>
       </button>
       </div>
-          <form action="#" method="POST">
+          <form action="{{route('restaurant.destroy')}}" method="POST">
               @csrf
       <div class="modal-body">
               <h5>¿Estás seguro de eliminar este comercio?</h5>  
-              <input type="hidden" id="invitationid" name="invitationid" value="">
+              <input type="hidden" id="restaurantid" name="restaurantid" value="">
       </div>
       <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -90,7 +90,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body" id="modal-body">
-        
+
       </div>
     </div>
   </div>
@@ -120,6 +120,15 @@ function showUserInfo(id){
 }
 
 $('#resendInvitationModal').on('show.bs.modal', function(event){
+var button = $(event.relatedTarget)
+
+var restaurantid = button.data('restaurantid')
+var modal = $(this)
+
+modal.find('.modal-body #restaurantid').val(restaurantid)
+})
+
+$('#deleteRestaurantModal').on('show.bs.modal', function(event){
 var button = $(event.relatedTarget)
 
 var restaurantid = button.data('restaurantid')
