@@ -55,7 +55,7 @@ return [
     'url' => env('APP_URL', 'pedisimple.test'),
 
     'asset_url' => env('ASSET_URL', null),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -167,6 +167,7 @@ return [
         Laraveles\Spanish\SpanishServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        NZTim\Mailchimp\MailchimpServiceProvider::class,
 
 
         /*
@@ -180,7 +181,8 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,  
+        App\Providers\RouteServiceProvider::class,
+
 
     ],
 
@@ -237,6 +239,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Mailchimp' => NZTim\Mailchimp\MailchimpFacade::class,
     ],
 
 ];
