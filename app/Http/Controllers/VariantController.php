@@ -20,19 +20,20 @@ class VariantController extends Controller
     {
         $variant = Variant::find($request->variant_id);
 
-        if($variant->state == 'available'){
-            $variant->update(['state'=>'not-available']);
+        if ($variant->state == 'available') {
+            $variant->update(['state' => 'not-available']);
             return redirect()->back()->with('success_message', 'Variante cambiada a no disponible');
-        }else{
-            $variant->update(['state'=>'available']);
+        } else {
+            $variant->update(['state' => 'available']);
             return redirect()->back()->with('success_message', 'Variante cambiada a disponible');
         }
     }
 
-    public function ajaxCreate(Request $request){
+    public function ajaxCreate(Request $request)
+    {
         request()->validate([
             'name' => 'required'
-            ]);
+        ]);
 
         $variant = Variant::create([
             'name' => $request->name,
@@ -42,7 +43,8 @@ class VariantController extends Controller
         return view('variantAjaxCreate')->with('variant', $variant);
     }
 
-    public function showItemVariants(Request $request){
+    public function showItemVariants(Request $request)
+    {
         $product = $request->product;
         $variants = Variant::find($request->variants);
         return view('showItemVariants')->with([
@@ -52,7 +54,8 @@ class VariantController extends Controller
         ]);
     }
 
-    public function getVariants(Request $request){
+    public function getVariants(Request $request)
+    {
         $product = Product::find($request->productid);
         $variants = $product->getVariants;
 
@@ -65,7 +68,7 @@ class VariantController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function index()
     {
         $variants = Variant::where('restaurant_id', Auth::user()->restaurant->id)->paginate(15);
@@ -143,8 +146,8 @@ class VariantController extends Controller
         $this->authorize('pass', $variant);
 
         $variant->update([
-            'name'=>$request->name,
-            'state'=>$request->state
+            'name' => $request->name,
+            'state' => $request->state
         ]);
 
         return redirect()->route('variant.index')->with('success_message', 'Variante editada con éxito');
@@ -154,7 +157,7 @@ class VariantController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function destroy(Request $request)
     {
         $variant = Variant::findOrFail($request->variantid);

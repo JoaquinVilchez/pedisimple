@@ -135,3 +135,5 @@ Route::post('/pedidos/update', 'OrderController@updateOrder')->name('order.updat
 Route::post('/pedidos/edit', 'OrderController@editOrder')->name('order.editOrder')->middleware(['auth', 'verified', 'hasRestaurant']);
 Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
 Route::resource('usuario/pedidos', 'OrderController')->names('order')->middleware(['auth', 'verified', 'Maintenance']);
+
+Route::post('/mailsubscription/create', 'MailSubscriptionController@store')->name('mailsubscription.store');

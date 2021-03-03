@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description" content="Pedir comida, ahora es más simple">
+    <meta name="description" content="Pedir lo que buscás, ahora es más simple">
     <meta property="og:title" content="{{config('app.name')}}" />
     <meta property="og:url" content="{{env('APP_URL')}}" />
-    <meta property="og:description" content="Pedir comida, ahora es más simple">
+    <meta property="og:description" content="Pedir lo que buscás, ahora es más simple">
     <meta property="og:image" content="{{asset('images/share_logo.png')}}">
     <meta property="og:locale:alternate" content="es_ES" />
 
