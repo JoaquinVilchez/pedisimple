@@ -56,11 +56,18 @@ Route::post('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
 Route::post('/carrito/remove', 'CartController@remove')->name('cart.remove');
 Route::resource('/carrito', 'CartController')->names('cart');
 
-Route::post('/usuario/administracion/ownerdata', 'UserController@ownerData')->name('restaurant.admin.ownerData')->middleware(['auth', 'verified', 'Admin']);
-Route::post('/usuario/invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth', 'verified', 'Admin']);
-Route::resource('/usuario/administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth', 'verified', 'Admin']);
-Route::get('/usuario/administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth', 'verified', 'Admin']);
-Route::post('/usuario/administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth', 'verified', 'Admin']);
+Route::post('administracion/ownerdata', 'UserController@ownerData')->name('restaurant.admin.ownerData')->middleware(['auth', 'verified', 'Admin']);
+Route::post('invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth', 'verified', 'Admin']);
+Route::resource('administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth', 'verified', 'Admin']);
+Route::get('administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth', 'verified', 'Admin']);
+Route::post('administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth', 'verified', 'Admin']);
+
+Route::get('administracion/suscripciones/planes', 'SubscriptionController@index')->name('subscription.index');
+Route::get('administracion/suscripciones/planes/nuevo', 'SubscriptionController@create')->name('subscription.create');
+Route::post('administracion/suscripciones/planes/crear', 'SubscriptionController@store')->name('subscription.store');
+Route::get('administracion/suscripciones/planes/editar/{id}', 'SubscriptionController@edit')->name('subscription.edit');
+Route::put('administracion/suscripciones/planes/editar/{id}', 'SubscriptionController@update')->name('subscription.update');
+Route::post('administracion/suscripciones/planes/eliminar', 'SubscriptionController@destroy')->name('subscription.destroy');
 
 Route::resource('/', 'ListController')->names('home')->middleware('Maintenance');
 

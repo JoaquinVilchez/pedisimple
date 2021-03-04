@@ -217,7 +217,9 @@ return [
         'order.street' => 'calle',
         'order.number' => 'numero',
         'commerce' => 'nombre del comercio',
-        'termsandconditions' => 'Términos y condiciones'
+        'termsandconditions' => 'Términos y condiciones',
+        'freedays' => 'días gratis',
+        'gracedays' => 'días de gracia'
     ],
 
     'email-confirmation' => [

@@ -85,8 +85,8 @@ class SubscriptionController extends Controller
      */
     public function edit($id)
     {
-        $subscription = app('rinvex.subscriptions.plan')->find($id);
-        return view('admin.subscriptions.edit')->with('subscription', $subscription);
+        $plan = app('rinvex.subscriptions.plan')->find($id);
+        return view('admin.subscriptions.edit')->with('plan', $plan);
     }
 
     /**
