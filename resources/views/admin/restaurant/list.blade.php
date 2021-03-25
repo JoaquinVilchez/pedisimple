@@ -16,10 +16,9 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Nombre</th> 
-          <th>Responsable</th>
+          <th>Nombre</th>
           <th>Estado</th>
-          <th>Creada</th>
+          <th>Vigencia</th>
           <th></th>
         </tr>
       </thead>
@@ -28,27 +27,16 @@
           <tr>
             <td>{{$restaurant->id}}</td>
             <td>{{$restaurant->name}}</td>
-            <td><a href="#" onclick="showUserInfo({{$restaurant->user->id}})" data-toggle="modal" data-target="#ownerInfoModal">{{$restaurant->user->fullName()}}</a></td>   
-          <form action="{{route('restaurant.admin.updateStatus')}}" id="stateSelect{{$restaurant->id}}" method="post">
-              @csrf
-              <input type="text" value="{{$restaurant->id}}" name="restaurant_id" hidden>
-              @if($restaurant->state === 'without-times')
-                <td>Sin horarios</td>
-              @else
-                <td>
-                  <select name="state" onchange="updateStatus({{$restaurant->id}})">
-                    <option value="active" @if($restaurant->state === 'active') selected @endif>Activo</option>  
-                    <option value="pending" @if($restaurant->state === 'pending') selected @endif>Pendiente</option>  
-                    <option value="cancelled" @if($restaurant->state === 'cancelled') selected @endif>Cancelado</option>  
-                    <option value="without-times" @if($restaurant->state === 'without-times') selected @endif>Sin horarios</option> 
-                  </select>
-                </td>
+            <td> <span class="ml-2 {{$restaurant->stateStyle()}}">{{$restaurant->translateState()}}</span>
+              @if ($restaurant->state!='active')
+                <small><a class="docs-link" href="#" data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#activeRestaurantModal">Activar</a></small>
               @endif
-            </form>
-              <td>{{$restaurant->created_at->calendar()}}</td>
+            </td>
+            <td>{{ucfirst($restaurant->created_at->diffForHumans())}}</td>
             <td>
-              <a><i class="far fa-edit"></i></a>
+              <a href="#"><i class="far fa-edit"></i></a>
               <a href="#" data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#deleteRestaurantModal"><i class="far fa-trash-alt"></i></a>
+              <a href="#" onclick="showUserInfo({{$restaurant->user->id}})" data-toggle="modal" data-target="#ownerInfoModal"><i class="fas fa-info-circle"></i></a>
             </td>
           </tr>
           @endforeach
@@ -92,6 +80,42 @@
       <div class="modal-body" id="modal-body">
 
       </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="activeRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Activar comercio</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{route('restaurant.admin.updateStatus')}}" method="post">
+        @csrf
+        <div class="modal-body">
+          <h5>¿Estás seguro de activar este comercio?</h5>  
+          <input type="hidden" id="restaurantid" name="restaurant_id" value="">
+          <input type="hidden" name="status" value="active">
+          <label>Plan</label>
+          <div class="form-group">
+            <select name="plan_id" class="form-control" aria-label="Default select example">
+              @foreach ($plans as $plan)
+                <option value="{{$plan->id}}">{{$plan->name}}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Activar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -142,5 +166,22 @@ function updateStatus(id){
     form.submit();
 }
 
+$('#activeRestaurantModal').on('show.bs.modal', function(event){
+  var button = $(event.relatedTarget)
+
+  var restaurantid = button.data('restaurantid')
+  var modal = $(this)
+
+  modal.find('.modal-body #restaurantid').val(restaurantid)
+  })
+
+  var restaurantSlug = null
+
+  $('#closedRestaurantModal').on('show.bs.modal', function(event){
+  var button = $(event.relatedTarget)
+
+  restaurantSlug = button.data('restaurantslug')
+  var modal = $(this)
+  })
 </script>
 @endsection

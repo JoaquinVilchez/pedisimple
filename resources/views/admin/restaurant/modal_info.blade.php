@@ -22,11 +22,11 @@
         <small><p class="mb-0"><i class="fas fa-map-marker-alt"></i> {{$user->restaurant->address->getAddress()}}</p></small>
     </div>
 </div>  
-<hr>
+{{-- <hr>
 <div class="card">
     <div class="card-body p-0">
         <small><p class="my-0"> <span class="txt-muted">(Test) Última facturacion:</span> 01/09/2020</p></small>
         <small><p class="my-0"> <span class="txt-muted">(Test) Facturas impagas:</span> 0</p></small>
         <small><p class="my-0"> <span class="txt-muted">(Test) Cliente desde:</span> Hace 2 meses</p></small>
     </div>
-</div>
+</div> --}}

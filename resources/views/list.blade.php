@@ -33,6 +33,9 @@
   </section>
   <!-- Page Content -->
 <div class="container mt-4">
+  
+    @include('messages')
+
     {{-- mobile --}}
     <div class="col-12 d-block d-sm-none">
       <div class="d-flex justify-content-center">
@@ -81,8 +84,6 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
-
-          @include('messages')
           
           @if (count($filters)>0)
           <div class="alert alert-danger m-0 p-1 px-2 rounded-0 mb-2" role="alert" style="text-align:center" style="text-decoration: none">
@@ -230,7 +231,14 @@
         <div class="modal-body">
           <h5>¿Estás seguro de activar este comercio?</h5>  
           <input type="hidden" id="restaurantid" name="restaurant_id" value="">
-          <input type="hidden" name="state" value="active">
+          <input type="hidden" name="status" value="active">
+          <div class="form-group">
+            <select name="plan_id" class="form-control" aria-label="Default select example">
+              @foreach ($plans as $plan)
+                <option value="{{$plan->id}}">{{$plan->name}}</option>
+              @endforeach
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -246,7 +254,7 @@
 @section('js-scripts')
 <script>
 
-  $('#activeRestaurcommerantModal').on('show.bs.modal', function(event){
+  $('#activeRestaurantModal').on('show.bs.modal', function(event){
   var button = $(event.relatedTarget)
 
   var restaurantid = button.data('restaurantid')

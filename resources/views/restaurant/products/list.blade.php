@@ -264,7 +264,7 @@
 $('#deleteProductModal').on('show.bs.modal', function(event){
 var button = $(event.relatedTarget)
 
-var productid = button.data('productid')
+var productid = button.data('productid')  
 var modal = $(this)
 
 modal.find('.modal-body #productid').val(productid)

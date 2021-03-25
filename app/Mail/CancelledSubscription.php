@@ -7,22 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class InvitationMail extends Mailable implements ShouldQueue
+class CancelledSubscription extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $data;
-    public $token;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data, $token)
+    public function __construct($data)
     {
         $this->data = $data;
-        $this->token = $token;
     }
 
     /**
@@ -32,7 +29,7 @@ class InvitationMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $subject = '¡Hola, queremos invitarte a ' . env('APP_NAME') . '!';
-        return $this->markdown('emails.invitation')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
+        $subject = 'Hemos cancelado tu suscripción';
+        return $this->markdown('emails.subscription.cancelled')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

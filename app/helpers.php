@@ -1,4 +1,6 @@
 <?php
+
+use Illuminate\Support\Facades\DB;
 use App\Restaurant;
 use Carbon\Carbon;
 use Darryldecode\Cart\Cart;
@@ -6,18 +8,21 @@ use App\OpeningDateTime;
 use App\Product;
 use App\Variant;
 
-function formatPrice($price){
+function formatPrice($price)
+{
     return number_format($price, 0, ',', '');
 }
 
-function cartRestaurant(){
+function cartRestaurant()
+{
     $firstItem = \Cart::getContent()->first();
     $restaurant = Product::find($firstItem->attributes->product_id)->restaurant->id;
 
     return $restaurant;
 }
 
-function generateCode()  {
+function generateCode()
+{
     $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $digits = '1234567890';
     $randomString = '';
@@ -30,7 +35,8 @@ function generateCode()  {
     return $randomString;
 }
 
-function generateNumberCode()  {
+function generateNumberCode()
+{
     $digits = '1234567890';
     $randomString = '';
     for ($i = 0; $i < 3; $i++) {
@@ -39,7 +45,8 @@ function generateNumberCode()  {
     return $randomString;
 }
 
-function normaliza($cadena){
+function normaliza($cadena)
+{
     $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ!¡?¿';
     $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr    ';
     $cadena = utf8_decode($cadena);
@@ -48,17 +55,19 @@ function normaliza($cadena){
     return utf8_encode($cadena);
 }
 
-function makeSlug($text){
+function makeSlug($text)
+{
     $find = array(' ', '-');
     $replace = array('', '');
     return str_replace($find, $replace, normaliza($text));
 }
 
-function getDayName($day){
-    if(is_array($day)){
-        $day=$day['weekday'];
-    }else{
-        $day=$day;
+function getDayName($day)
+{
+    if (is_array($day)) {
+        $day = $day['weekday'];
+    } else {
+        $day = $day;
     }
     switch ($day) {
         case 0:
@@ -84,59 +93,62 @@ function getDayName($day){
             break;
     }
 }
-function getGuestAddress($order){
-    if($order->guest_floor==null || $order->guest_department==null){
-            return $order->guest_street.' '.$order->guest_number;
-    }else{
-            return $order->guest_street.' '.$order->guest_number.' - '.$order->guest_floor.$order->guest_department;
+function getGuestAddress($order)
+{
+    if ($order->guest_floor == null || $order->guest_department == null) {
+        return $order->guest_street . ' ' . $order->guest_number;
+    } else {
+        return $order->guest_street . ' ' . $order->guest_number . ' - ' . $order->guest_floor . $order->guest_department;
     }
 }
 
-function whatsappNumberCustomer($order){
-    if($order->user_id!=null){
+function whatsappNumberCustomer($order)
+{
+    if ($order->user_id != null) {
         $phone = $order->user->getPhone();
-    }else{
-        $phone = $order->guest_characteristic.$order->guest_phone;
+    } else {
+        $phone = $order->guest_characteristic . $order->guest_phone;
     }
 
     return $phone;
 }
 
-function whatsappMessageCustomer($order){
-if($order->user_id!=null){
-    $first_name = $order->user->first_name;
-}else{
-    $first_name = $order->guest_first_name;
-}
+function whatsappMessageCustomer($order)
+{
+    if ($order->user_id != null) {
+        $first_name = $order->user->first_name;
+    } else {
+        $first_name = $order->guest_first_name;
+    }
 
-$list = '';
-foreach($order->lineItems as $item){
-if($item->variants==null){
-$list .= "
-_- (".$item->quantity.") ".$item->product->name." [$".formatPrice($item->price*$item->quantity)."]_";
-}else{
-$list .= "
-_- (".$item->quantity.") ".$item->product->name." (".implode(', ', $item->showVariants()).") [$".formatPrice($item->price*$item->quantity)."]_";
-}
-}
+    $list = '';
+    foreach ($order->lineItems as $item) {
+        if ($item->variants == null) {
+            $list .= "
+_- (" . $item->quantity . ") " . $item->product->name . " [$" . formatPrice($item->price * $item->quantity) . "]_";
+        } else {
+            $list .= "
+_- (" . $item->quantity . ") " . $item->product->name . " (" . implode(', ', $item->showVariants()) . ") [$" . formatPrice($item->price * $item->quantity) . "]_";
+        }
+    }
 
-if($order->shipping_method=='delivery'){
-$delivery = "
-Envío: *$".formatPrice($order->delivery)."* _(El precio puede variar en base a la distancia)_";
-}else{
-$delivery = '';
-}
+    if ($order->shipping_method == 'delivery') {
+        $delivery = "
+Envío: *$" . formatPrice($order->delivery) . "* _(El precio puede variar en base a la distancia)_";
+    } else {
+        $delivery = '';
+    }
 
-return
-"¡Hola ".$first_name."! Soy ".Auth::user()->first_name." de ".$order->restaurant->name.". Confirmamos tu pedido que hiciste en *".config("app.name")."*.
+    return
+        "¡Hola " . $first_name . "! Soy " . Auth::user()->first_name . " de " . $order->restaurant->name . ". Confirmamos tu pedido que hiciste en *" . config("app.name") . "*.
 
-Código: *".$order->code."*
+Código: *" . $order->code . "*
 Detalle del pedido: "
-.$list."
+        . $list . "
 
-Subtotal: *$".formatPrice($order->subtotal)."*".$delivery."
+Subtotal: *$" . formatPrice($order->subtotal) . "*" . $delivery . "
 
-Total: *$".formatPrice($order->total)."*
+Total: *$" . formatPrice($order->total) . "*
 
 Nos mantendremos en contacto contigo para coordinar la entrega del pedido.
 
@@ -144,112 +156,132 @@ Nos mantendremos en contacto contigo para coordinar la entrega del pedido.
 
 ________________________________
 _www.pedisimple.com_
-_Venado Tuerto, Santa Fe_"
-;
+_Venado Tuerto, Santa Fe_";
 }
 
-function whatsappUpdateOrder($order){
-if($order->user_id!=null){
-    $first_name = $order->user->first_name;
-}else{
-    $first_name = $order->guest_first_name;
-}
+function whatsappUpdateOrder($order)
+{
+    if ($order->user_id != null) {
+        $first_name = $order->user->first_name;
+    } else {
+        $first_name = $order->guest_first_name;
+    }
 
-$list = '';
-foreach($order->lineItems as $item){
-if($item->variants==null){
-$list .= "
-_- (".$item->quantity.") ".$item->product->name." [$".formatPrice($item->price*$item->quantity)."]_";
-}else{
-$list .= "
-_- (".$item->quantity.") ".$item->product->name." (".implode(', ', $item->showVariants()).") [$".formatPrice($item->price*$item->quantity)."]_";
-}
-}
+    $list = '';
+    foreach ($order->lineItems as $item) {
+        if ($item->variants == null) {
+            $list .= "
+_- (" . $item->quantity . ") " . $item->product->name . " [$" . formatPrice($item->price * $item->quantity) . "]_";
+        } else {
+            $list .= "
+_- (" . $item->quantity . ") " . $item->product->name . " (" . implode(', ', $item->showVariants()) . ") [$" . formatPrice($item->price * $item->quantity) . "]_";
+        }
+    }
 
-if($order->shipping_method=='delivery'){
-$delivery = "
-Envío: *$".formatPrice($order->delivery)."* _(El precio puede variar en base a la distancia)_";
-}else{
-$delivery = '';
-}
+    if ($order->shipping_method == 'delivery') {
+        $delivery = "
+Envío: *$" . formatPrice($order->delivery) . "* _(El precio puede variar en base a la distancia)_";
+    } else {
+        $delivery = '';
+    }
 
-return
-"*Pedido modificado:*
+    return
+        "*Pedido modificado:*
 
 Detalle del pedido: "
-.$list."
+        . $list . "
 
-Subtotal: *$".formatPrice($order->subtotal)."*".$delivery."
+Subtotal: *$" . formatPrice($order->subtotal) . "*" . $delivery . "
 
-Total: *$".formatPrice($order->total)."*
+Total: *$" . formatPrice($order->total) . "*
 ________________________________
 _www.pedisimple.com_
-_Venado Tuerto, Santa Fe_"
-;
+_Venado Tuerto, Santa Fe_";
 }
 
 
-function whatsappRejectOrderMessage($order){
-    if($order->user_id!=null){
+function whatsappRejectOrderMessage($order)
+{
+    if ($order->user_id != null) {
         $first_name = $order->user->first_name;
-    }else{
+    } else {
         $first_name = $order->guest_first_name;
     }
 
-    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
+    return '¡Hola ' . $first_name . '! Soy ' . Auth::user()->first_name . ' de ' . $order->restaurant->name . '. Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
 }
 
-function whatsappCancelOrderMessage($order){
-    if($order->user_id!=null){
+function whatsappCancelOrderMessage($order)
+{
+    if ($order->user_id != null) {
         $first_name = $order->user->first_name;
-    }else{
+    } else {
         $first_name = $order->guest_first_name;
     }
 
-    return '¡Hola '.$first_name.'! Soy '.Auth::user()->first_name.' de '.$order->restaurant->name.'. Te informamos que hemos cancelado tu pedido. ';
+    return '¡Hola ' . $first_name . '! Soy ' . Auth::user()->first_name . ' de ' . $order->restaurant->name . '. Te informamos que hemos cancelado tu pedido. ';
 }
 
-function gluberMessage($order){
-    if($order->user_id!=null){
+function gluberMessage($order)
+{
+    if ($order->user_id != null) {
         $first_name = $order->user->first_name;
-    }else{
+    } else {
         $first_name = $order->guest_first_name;
     }
 
-    return 'Hola, soy '.Auth::user()->first_name.' de '.$order->restaurant->name.' (_'.$order->restaurant->address->getAddress().'_) Me comunico desde '.config("app.name").'. '.'Tengo que hacer una entrega a *'.getOrderAddress($order).'* con el codigo *'.$order->code.'*. ¿Hay disponibilidad?';
+    return 'Hola, soy ' . Auth::user()->first_name . ' de ' . $order->restaurant->name . ' (_' . $order->restaurant->address->getAddress() . '_) Me comunico desde ' . config("app.name") . '. ' . 'Tengo que hacer una entrega a *' . getOrderAddress($order) . '* con el codigo *' . $order->code . '*. ¿Hay disponibilidad?';
 }
 
-function getOrderAddress($order){
-    if ($order->user_id !=null) {
-        if ($order->address_id==null){
+function getOrderAddress($order)
+{
+    if ($order->user_id != null) {
+        if ($order->address_id == null) {
             return getGuestAddress($order);
-        }else{
+        } else {
             return $order->address->getAddress();
         }
-    }else{
+    } else {
         return getGuestAddress($order);
     }
 }
 
-function getVariantsName($data){
+function getVariantsName($data)
+{
     implode(', ', $item->showVariants());
 }
 
-function gluberStatus(){
-    if(env('GLUBER_STATUS')=='YES'){
+function gluberStatus()
+{
+    if (env('GLUBER_STATUS') == 'YES') {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
 
-function showVariantsName($data){
+function showVariantsName($data)
+{
     $variants = [];
-        foreach($data as $id) {
-            $variant = Variant::find(intval($id));
-            array_push($variants,$variant->name);
-        }
+    foreach ($data as $id) {
+        $variant = Variant::find(intval($id));
+        array_push($variants, $variant->name);
+    }
     return implode(', ', $variants);
 }
 
-?>
+function updateRestaurantsStatus()
+{
+    $subscriptions = DB::table('plan_subscriptions')->get('slug');
+
+    foreach ($subscriptions as $subscription) {
+        $restaurant = Restaurant::find($subscription->slug);
+        if ($restaurant->user->subscriptionIsActive() == 'ended') {
+            if ($restaurant->state == 'active') {
+                $restaurant->updateStatus('pending');
+            }
+        }
+    }
+
+    return true;
+}

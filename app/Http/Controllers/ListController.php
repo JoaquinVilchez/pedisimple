@@ -16,68 +16,74 @@ class ListController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {        
+    {
         // $categories = DB::table('relation_restaurant_category')->select('category_restaurant_id')->get()->groupBy('category_restaurant_id');
+
+        updateRestaurantsStatus();
+        $plans = app('rinvex.subscriptions.plan')->all();
 
         $filter = $request->get('filter');
         $filters = [];
         $categories = RestaurantCategory::with('restaurants')->orderBy('name', 'ASC')->get();
 
-        if($filter!=null){
+        if ($filter != null) {
             $category = RestaurantCategory::with('restaurants')->where('name', $filter)->where('state', 'active')->orderBy('name', 'ASC')->get();
-                foreach ($category as $filter_category) {
-                    $restaurants = $filter_category->restaurants;
-                }
+            foreach ($category as $filter_category) {
+                $restaurants = $filter_category->restaurants;
+            }
 
-                $active_restaurants = $restaurants->filter(function ($restaurants) {
-                    if($restaurants->state == 'active'){
+            $active_restaurants = $restaurants->filter(function ($restaurants) {
+                if ($restaurants->state == 'active') {
+                    return $restaurants;
+                }
+            });
+
+            if (Auth::check() and Auth::user()->type == 'administrator') {
+                $pending_restaurants = $restaurants->filter(function ($restaurants) {
+                    if ($restaurants->state == 'pending') {
                         return $restaurants;
                     }
                 });
+            }
 
-                if(Auth::check() and Auth::user()->type == 'administrator'){
-                    $pending_restaurants = $restaurants->filter(function ($restaurants) {
-                        if($restaurants->state == 'pending'){
-                            return $restaurants;
-                        }
-                    });
-                }
-
-                array_push($filters, $filter);
-        }else{
+            array_push($filters, $filter);
+        } else {
             $active_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'active')->orderBy('name', 'ASC')->get();
-            if(Auth::check() and Auth::user()->type=='administrator'){
+
+            if (Auth::check() and Auth::user()->type == 'administrator') {
                 $pending_restaurants = Restaurant::with('products')->with('categories')->with('address')->where('state', 'pending')->orderBy('name', 'ASC')->get();
             }
             $filter = false;
         }
-        
+
         $filtered_categories = $categories->filter(function ($categories) {
             $active_restaurants = [];
 
             foreach ($categories->restaurants as $restaurant) {
-                if($restaurant->state=='active'){
+                if ($restaurant->state == 'active') {
                     array_push($active_restaurants, $restaurant);
                 }
             }
 
-            if(count($active_restaurants)>0){
+            if (count($active_restaurants) > 0) {
                 return $active_restaurants;
             }
         });
 
-        if(Auth::check() and Auth::user()->type == 'administrator'){
+        if (Auth::check() and Auth::user()->type == 'administrator') {
             return view('list')->with([
-                'categories'=>$filtered_categories,
-                'restaurants'=>$active_restaurants->sortBy('name'),
-                'pending_restaurants'=>$pending_restaurants,
-                'filters'=>$filters
+                'categories' => $filtered_categories,
+                'restaurants' => $active_restaurants->sortBy('name'),
+                'pending_restaurants' => $pending_restaurants,
+                'filters' => $filters,
+                'plans' => $plans,
             ]);
-        }else{
+        } else {
             return view('list')->with([
-                'categories'=>$filtered_categories,
-                'restaurants'=>$active_restaurants->sortBy('name'),
-                'filters'=>$filters
+                'categories' => $filtered_categories,
+                'restaurants' => $active_restaurants->sortBy('name'),
+                'filters' => $filters,
+                'plans' => $plans,
             ]);
         }
     }

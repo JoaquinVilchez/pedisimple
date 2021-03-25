@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Restaurant;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SubscriptionController extends Controller
 {
@@ -14,8 +16,25 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
+        $subscriptions = DB::table('plan_subscriptions')->get('slug');
         $plans = app('rinvex.subscriptions.plan')->all();
-        return view('admin.subscriptions.list')->with('plans', $plans);
+
+        $subscriptions_restaurants = [];
+        foreach ($subscriptions as $subscription) {
+            array_push($subscriptions_restaurants, $subscription->slug);
+        }
+
+        $restaurants = Restaurant::all();
+
+        $subscriptions_restaurants = collect(Restaurant::find($subscriptions_restaurants));
+
+        $available_restaurants = $restaurants->diff($subscriptions_restaurants);
+
+        return view('admin.subscriptions.restaurants.list')->with([
+            'subscribed_restaurants' => $subscriptions_restaurants,
+            'available_restaurants' => $available_restaurants,
+            'plans' => $plans
+        ]);
     }
 
     /**
@@ -25,7 +44,7 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        return view('admin.subscriptions.create');
+        //
     }
 
     /**
@@ -36,33 +55,18 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'frequency' => 'required',
-            'freedays' => 'required|min:1|max:31',
-            'gracedays' => 'required|min:1|max:31'
-        ]);
-
         try {
-            $plan = app('rinvex.subscriptions.plan')->create([
-                'name' => $request->name,
-                'description' => '',
-                'price' => $request->price,
-                'signup_fee' => 0,
-                'invoice_period' => $request->frequency,
-                'invoice_interval' => 'month',
-                'trial_period' => $request->freedays,
-                'trial_interval' => 'day',
-                'grace_period' => $request->gracedays,
-                'grace_interval' => 'day',
-                'sort_order' => 1,
-                'currency' => 'ARS',
-            ]);
+            $user = Restaurant::find($request->restaurant_id)->user;
+            // $plan = app('rinvex.subscriptions.plan')->find($request->plan_id);
 
-            return redirect()->route('subscription.index')->with('success_message', 'Plan creado con éxito');
+            // $user->newSubscription(strval($user->restaurant->id), $plan);
+            $restaurant = $user->restaurant;
+
+            $restaurant->updateStatus('active', $request->plan_id);
+
+            return redirect()->route('subscription.index')->with('success_message', 'Suscripción creada con éxito');
         } catch (\Throwable $th) {
-            return redirect()->route('subscription.index')->with('error_message', 'Hubo un error. No se pudo crear el plan');
+            return redirect()->route('subscription.index')->with('error_message', 'Hubo un problema y no pudo realizarse la suscripción');
         }
     }
 
@@ -85,8 +89,12 @@ class SubscriptionController extends Controller
      */
     public function edit($id)
     {
-        $plan = app('rinvex.subscriptions.plan')->find($id);
-        return view('admin.subscriptions.edit')->with('plan', $plan);
+        $restaurant = Restaurant::find($id);
+        $subscription = DB::table('plan_subscriptions')->where('subscriber_id', $restaurant->user->id)->first();
+        return view('admin.subscriptions.restaurants.edit')->with([
+            'restaurant' => $restaurant,
+            'subscription' => $subscription
+        ]);
     }
 
     /**
@@ -98,26 +106,22 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'frequency' => 'required',
-            'freedays' => 'required|min:1|max:31',
-            'gracedays' => 'required|min:1|max:31'
-        ]);
-
         try {
-            DB::table('plans')->where('id', $id)->update([
-                'name' => '{"es": "' . $request->name . '"}',
-                'price' => $request->price,
-                'trial_period' => $request->freedays,
-                'invoice_period' => $request->frequency,
-                'grace_period' => $request->gracedays
+            $restaurant = Restaurant::find($id);
+            $trial_ends_at = Carbon::createFromFormat('d/m/Y', $request->trial_ends_at);
+            $subscription_starts_at = Carbon::createFromFormat('d/m/Y', $request->subscription_starts_at);
+            $subscription_ends_at = Carbon::createFromFormat('d/m/Y', $request->subscription_ends_at);
+
+            DB::table('plan_subscriptions')->where('subscriber_id', $restaurant->user->id)->update([
+                'trial_ends_at' => $trial_ends_at,
+                'starts_at' => $subscription_starts_at,
+                'ends_at' => $subscription_ends_at
             ]);
 
-            return redirect()->route('subscription.index')->with('success_message', 'Plan editado con éxito');
+            return redirect()->route('subscription.index')->with('success_message', 'Suscripción editada con éxito.');
         } catch (\Throwable $th) {
-            return redirect()->route('subscription.index')->with('error_message', 'Hubo un error. No se pudo editar el plan');
+            dd($th);
+            return redirect()->route('subscription.index')->with('error_message', 'Hubo un error y no se pudo editar suscripción.');
         }
     }
 
@@ -130,10 +134,23 @@ class SubscriptionController extends Controller
     public function destroy(Request $request)
     {
         try {
-            DB::table('plans')->where('id', $request->planid)->delete();
-            return redirect()->route('subscription.index')->with('success_message', 'Plan eliminado con éxito');
+            $user = Restaurant::find($request->restaurantid)->user;
+            $user->restaurant->updateStatus('cancelled');
+            DB::table('plan_subscriptions')->where('subscriber_id', $user->id)->delete();
+            return redirect()->route('subscription.index')->with('success_message', 'Suscripción eliminada con éxito');
         } catch (\Throwable $th) {
-            return redirect()->route('subscription.index')->with('error_message', 'Hubo un error. No se pudo eliminar el plan');
+            return redirect()->route('subscription.index')->with('error_message', 'Hubo un problema y no pudo eliminarse la suscripción');
+        }
+    }
+
+    public function renew(Request $request)
+    {
+        try {
+            $user = Restaurant::find($request->restaurantid)->user;
+            $user->restaurant->updateStatus('active');
+            return redirect()->route('subscription.index')->with('success_message', 'Suscripción renovada con éxito');
+        } catch (\Throwable $th) {
+            return redirect()->route('subscription.index')->with('error_message', 'Hubo un problema y no pudo renovarse la suscripción');
         }
     }
 }

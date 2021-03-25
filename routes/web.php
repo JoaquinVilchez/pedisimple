@@ -60,14 +60,27 @@ Route::post('administracion/ownerdata', 'UserController@ownerData')->name('resta
 Route::post('invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth', 'verified', 'Admin']);
 Route::resource('administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth', 'verified', 'Admin']);
 Route::get('administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth', 'verified', 'Admin']);
-Route::post('administracion/comercios', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth', 'verified', 'Admin']);
+Route::post('administracion/updatestatus', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth', 'verified', 'Admin']);
 
-Route::get('administracion/suscripciones/planes', 'SubscriptionController@index')->name('subscription.index');
-Route::get('administracion/suscripciones/planes/nuevo', 'SubscriptionController@create')->name('subscription.create');
-Route::post('administracion/suscripciones/planes/crear', 'SubscriptionController@store')->name('subscription.store');
-Route::get('administracion/suscripciones/planes/editar/{id}', 'SubscriptionController@edit')->name('subscription.edit');
-Route::put('administracion/suscripciones/planes/editar/{id}', 'SubscriptionController@update')->name('subscription.update');
-Route::post('administracion/suscripciones/planes/eliminar', 'SubscriptionController@destroy')->name('subscription.destroy');
+//SUSCRIPCIONES/PLANES
+Route::get('administracion/servicio/planes', 'PlanController@index')->name('plan.index');
+Route::get('administracion/servicio/planes/nuevo', 'PlanController@create')->name('plan.create');
+Route::post('administracion/servicio/planes/crear', 'PlanController@store')->name('plan.store');
+Route::get('administracion/servicio/planes/editar/{id}', 'PlanController@edit')->name('plan.edit');
+Route::put('administracion/servicio/planes/editar/{id}', 'PlanController@update')->name('plan.update');
+Route::post('administracion/servicio/planes/eliminar', 'PlanController@destroy')->name('plan.destroy');
+//FIN-SUSCRIPCIONES/PLANES
+
+//SUSCRIPCIONES/COMERCIOS
+Route::get('administracion/servicio/suscripciones', 'SubscriptionController@index')->name('subscription.index');
+Route::get('administracion/servicio/suscripciones/editar/{id}', 'SubscriptionController@edit')->name('subscription.edit');
+Route::put('administracion/servicio/suscripciones/editar/{id}', 'SubscriptionController@update')->name('subscription.update');
+Route::post('administracion/servicio/suscripciones/store', 'SubscriptionController@store')->name('subscription.store');
+Route::post('administracion/servicio/suscripciones/destroy', 'SubscriptionController@destroy')->name('subscription.destroy');
+Route::post('administracion/servicio/suscripciones/renew', 'SubscriptionController@renew')->name('subscription.renew');
+//FIN-SUSCRIPCIONES/COMERCIOS
+
+//COMERCIOS
 
 Route::resource('/', 'ListController')->names('home')->middleware('Maintenance');
 

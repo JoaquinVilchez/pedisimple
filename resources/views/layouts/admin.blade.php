@@ -14,17 +14,23 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="#suscripcionesCollapse" role="button" aria-expanded="false" aria-controls="suscripcionesCollapse">
+              <a class="nav-link" data-toggle="collapse" href="#servicioCollapse" role="button" aria-expanded="false" aria-controls="servicioCollapse">
                 <div class="d-flex justify-content-between">
-                  Suscripciones
+                  Servicio
                 <i class="fas fa-chevron-down"></i>
                 </div>
                 </a>
             </li>
-              <div class="collapse nav-pills" id="suscripcionesCollapse">
+              <div class="collapse nav-pills" id="servicioCollapse">
                 <ul class="list-unstyled ml-3">
                   <li class="nav-item">
-                      <a class="nav-link" id="link-planes" href="{{route('subscription.index')}}">Planes</a>
+                      <a class="nav-link" id="link-planes" href="{{route('plan.index')}}">Planes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="link-suscripciones" href="{{route('subscription.index')}}">Suscripciones</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="link-facturas" href="{{route('plan.index')}}">Facturas</a>
                   </li>
                 </ul>
               </div>
@@ -53,10 +59,12 @@
   if (parts.length==4) {
     activeCategory = parts[2];
     activePage = parts[3];
+    console.log('link-'+activePage, parts, parts.length, activeCategory, activePage)
     document.getElementById('link-'+activePage).classList.add("active")
     document.getElementById(activeCategory+'Collapse').classList.add("show")
   }else{
     activePage = parts[2];
+    console.log('link-'+activePage, parts, parts.length, activeCategory, activePage)
     document.getElementById('link-'+activePage).classList.add("active")
   }
 

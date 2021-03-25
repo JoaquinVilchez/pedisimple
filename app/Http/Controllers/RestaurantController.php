@@ -72,41 +72,20 @@ class RestaurantController extends Controller
      */
     public function list()
     {
+        updateRestaurantsStatus();
+        $plans = app('rinvex.subscriptions.plan')->all();
         $restaurants = Restaurant::orderBy('state', 'asc')->orderBy('id', 'desc')->paginate(15);
-        return view('admin.restaurant.list')->with('restaurants', $restaurants);
+
+        return view('admin.restaurant.list')->with(['restaurants' => $restaurants, 'plans' => $plans]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function updateStatus(Request $request)
     {
-        $restaurant = Restaurant::findOrFail($request->restaurant_id);
+        $restaurant = Restaurant::find($request->restaurant_id);
 
-        if ($request->state == 'active') {
-            if ($restaurant->getSchedule() == null) {
-                return redirect()->back()->with('error_message', 'Al comercio le falta configurar sus horarios');
-            } else {
-                $restaurant->update(['state' => $request->state]);
+        $restaurant->updateStatus($request->status, $request->plan_id);
 
-                $data = [
-                    'name' => $restaurant->name,
-                    'slug' => $restaurant->slug,
-                    'user_name' => $restaurant->user->first_name,
-                ];
-
-                if ($request->state == 'active') {
-                    Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
-                }
-
-                return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
-            }
-        } else {
-            $restaurant->update(['state' => $request->state]);
-            return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
-        }
+        return redirect()->back();
     }
 
     /**

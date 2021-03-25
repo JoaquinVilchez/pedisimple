@@ -383,7 +383,7 @@
         items.forEach(function(currentValue, index, arr){
             if(items[index].id==id){
                 item = items[index];
-            }   
+            }
         })
         select.selectpicker('val', item.variants);
         select.selectpicker();

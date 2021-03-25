@@ -7,22 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class LineItem extends Model
 {
     protected $guarded = [];
-    protected $casts = ['variants'=>'array'];
+    protected $casts = ['variants' => 'array'];
 
-    public function order(){
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function showVariants(){
+    public function showVariants()
+    {
         $variants = [];
         foreach (Variant::find($this->variants) as $variant) {
-            array_push($variants,$variant->name);
+            array_push($variants, $variant->name);
         }
         return $variants;
     }
-    
 }

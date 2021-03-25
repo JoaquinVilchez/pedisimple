@@ -77,7 +77,7 @@
                               <input name="variants[]" type="checkbox" value="{{$variant->id}}" 
                                 @foreach($product->getVariants as $product_variant)
                                   @if($product_variant->id==$variant->id) checked @endif
-                                @endforeach                                   
+                                @endforeach
                               >
                               {{$variant->name}}
                             </label>
