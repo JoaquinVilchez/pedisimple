@@ -11,6 +11,7 @@ use App\Product;
 use App\City;
 use App\RestaurantCategory;
 use App\Address;
+use App\Invitation;
 use App\OpeningDateTime;
 use Darryldecode\Cart\Cart;
 use Illuminate\Support\Facades\DB;
@@ -580,45 +581,66 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::find($request->restaurantid);
         $user = $restaurant->user;
 
-        $transaction = DB::transaction(function () use ($request, $restaurant, $user) {
+        $transaction = DB::transaction(function () use ($restaurant, $user) {
             try {
                 if ($user->hasRole('merchant')) {
-                    // $user->assignRole('customer');
-                    dump('Usuario ' . $user->first_name . ' cambia a customer');
+                    $user->removeRole('merchant');
+                    $user->assignRole('customer');
+                    $user->update(['type' => 'customer']);
                 }
 
-                // $restaurant->address->delete();
-                dump('Direccion ' . $restaurant->address->street . ' se elimina');
+                Invitation::where('email', $user->email)->delete();
 
-                foreach ($restaurant->categories as $category) {
-                    // $category->delete();
-                    dump('Categoria ' . $category->name . ' se elimina');
-                }
+                DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->delete();
 
-                if ($restaurant->line_items) {
+                if (isset($restaurant->line_items)) {
                     foreach ($restaurant->line_items as $line_item) {
-                        // $line_item->delete();
-                        dump('Se elimina line_item');
+                        $line_item->delete();
                     }
-                } else {
-                    dump('No hay line_items');
                 }
 
-                if (count($restaurant->orders) != 0) {
+                if (isset($restaurant->orders)) {
                     foreach ($restaurant->orders as $order) {
-                        // $order->delete();
-                        dump('Se elimina order');
+                        $order->delete();
                     }
-                } else {
-                    dump('No hay orders');
+                }
+
+                if (isset($restaurant->products)) {
+                    foreach ($restaurant->products as $product) {
+                        $product->delete();
+                    }
+                }
+
+
+                DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->delete();
+
+                if (isset($restaurant->categories)) {
+                    foreach ($restaurant->categories as $category) {
+                        $category->delete();
+                    }
+                }
+
+                if (isset($restaurant->address)) {
+                    $restaurant->address->delete();
+                }
+
+                if (isset($restaurant)) {
+                    $restaurant->delete();
                 }
 
                 DB::commit();
                 return true;
             } catch (\Throwable $e) {
                 DB::rollback();
+                dd($e);
                 return false;
             }
         });
+
+        if ($transaction) {
+            return redirect()->route('restaurant.admin.list')->with('success_message', 'Comercio eliminado con exito');
+        } else {
+            return redirect()->route('restaurant.admin.list')->with('error_message', 'El comercio no se pudo eliminar');
+        }
     }
 }

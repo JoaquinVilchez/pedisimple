@@ -58,6 +58,7 @@ Route::resource('/carrito', 'CartController')->names('cart');
 
 Route::post('administracion/ownerdata', 'UserController@ownerData')->name('restaurant.admin.ownerData')->middleware(['auth', 'verified', 'Admin']);
 Route::post('invitaciones/reenviar', 'InvitationController@resend')->name('invitation.resend')->middleware(['auth', 'verified', 'Admin']);
+Route::post('administracion/invitaciones/eliminar', 'InvitationController@delete')->name('invitation.delete')->middleware(['auth', 'verified', 'Admin']);
 Route::resource('administracion/invitaciones', 'InvitationController')->names('invitation')->middleware(['auth', 'verified', 'Admin']);
 Route::get('administracion/comercios', 'RestaurantController@list')->name('restaurant.admin.list')->middleware(['auth', 'verified', 'Admin']);
 Route::post('administracion/updatestatus', 'RestaurantController@updateStatus')->name('restaurant.admin.updateStatus')->middleware(['auth', 'verified', 'Admin']);
@@ -90,7 +91,7 @@ Route::get('/configuracion/informacion', 'RestaurantController@info')->name('res
 Route::get('/configuracion/horarios', 'RestaurantController@openingTime')->name('restaurant.times')->middleware(['verified', 'hasRestaurant']);
 Route::put('/configuracion/horarios', 'RestaurantController@openingTimeUpdate')->name('restaurant.times.update')->middleware(['verified', 'hasRestaurant']);
 Route::resource('/configuracion', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
-Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified']);
+Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified', 'isMerchant']);
 Route::post('/comercio/store', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
 Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible', 'Maintenance']);
 Route::post('/comercio/eliminar', 'RestaurantController@destroy')->name('restaurant.destroy')->middleware(['verified']);

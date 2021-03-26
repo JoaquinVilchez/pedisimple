@@ -28,14 +28,14 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-    
+
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
     protected $redirectTo = '/email/verify';
-    
+
     /**
      * Create a new controller instance.
      *
@@ -66,8 +66,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'first_name'=> ['required', 'string'],
-            'last_name'=> ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'characteristic' => ['required', 'min:4'],
@@ -84,12 +84,12 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        if(isset($data['token'])){
+        if (isset($data['token'])) {
             $invitation = Invitation::where('token', $data['token'])->first();
-            $invitation->update(['state'=>'used']);
-            $type='merchant';
-        }else{
-            $type='customer';
+            $invitation->update(['state' => 'used']);
+            $type = 'merchant';
+        } else {
+            $type = 'customer';
         }
 
         $user = User::create([
@@ -102,9 +102,9 @@ class RegisterController extends Controller
             'type' => $type
         ]);
 
-        if($type=='customer'){
+        if ($type == 'customer') {
             $user->assignRole('customer');
-        }elseif($type=='merchant'){
+        } elseif ($type == 'merchant') {
             $user->assignRole('merchant');
         }
 

@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'Invitation' =>  \App\Http\Middleware\Invitation::class,
         'Admin' =>  \App\Http\Middleware\Admin::class,
         'Maintenance' =>  \App\Http\Middleware\Maintenance::class,
+        'isMerchant' =>  \App\Http\Middleware\isMerchant::class,
     ];
 }

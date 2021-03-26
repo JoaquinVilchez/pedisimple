@@ -4,8 +4,9 @@
 Queremos invitarte a que formes parte de <strong>{{env('APP_NAME')}}</strong><br>
 
 Para eso, podés registrarte por medio del siguiente Link.
-<a href="{{env('APP_URL').'/registro/'.$token}}"></a>
-@component('mail::button', ['url' => env('APP_URL').'/registro/'.$token])
+<a href="{{$data['url']}}"></a>
+
+@component('mail::button', ['url' => $data['url']])
 Registrarme
 @endcomponent
 

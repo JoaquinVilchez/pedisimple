@@ -12,17 +12,15 @@ class InvitationMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public $data;
-    public $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data, $token)
+    public function __construct($data)
     {
         $this->data = $data;
-        $this->token = $token;
     }
 
     /**

@@ -7,23 +7,56 @@ use App\Invitation;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvitationMail;
 use Carbon\Carbon;
+use App\User;
 
 class InvitationController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function resend(Request $request){
+    public function resend(Request $request)
+    {
         $invitation = Invitation::where('id', $request->invitationid)->first();
 
         $invitation->update(['state' => 'without-using']);
 
-        Mail::to($invitation->email)->send(new InvitationMail($invitation, $invitation->token));
+        $user = User::where('email', $invitation->email)->first();
+        if ($user != null) {
+            $url = env('APP_URL') . '/comercio/create';
+
+            if ($user) {
+                $user->update(['type' => 'merchant']);
+                $user->assignRole('merchant');
+            }
+        } else {
+            $url = env('APP_URL') . '/registro/' . $invitation->token;
+        }
+
+        $data = [
+            'first_name' => $invitation->first_name,
+            'url' => $url
+        ];
+
+        Mail::to($invitation->email)->send(new InvitationMail($data));
 
         return redirect()->route('invitation.index')->with('success_message', 'Invitacion reenviada con exito');
+    }
+
+    public function delete(Request $request)
+    {
+        $invitation = Invitation::find($request->invitationid);
+        $user = User::where('email', $invitation->email)->first();
+        if ($user) {
+            $user->removeRole('merchant');
+            $user->assignRole('customer');
+            $user->update(['type', 'merchant']);
+        }
+        $invitation->delete();
+
+        return redirect()->route('invitation.index');
     }
 
     /**
@@ -33,7 +66,7 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        $invitations = Invitation::paginate(15);
+        $invitations = Invitation::orderBy('id', 'desc')->paginate(15);
         return view('admin.invitation.list')->with('invitations', $invitations);
     }
 
@@ -61,9 +94,25 @@ class InvitationController extends Controller
             'email' => 'required | email',
         ]);
 
-        $token = bcrypt(Carbon::now());    
-        $token = str_replace ('/', 'P', $token);
-        $token = str_replace ('$', 'S', $token);
+        $token = bcrypt(Carbon::now());
+        $token = str_replace('/', 'P', $token);
+        $token = str_replace('$', 'S', $token);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user != null) {
+            $url = env('APP_URL') . '/comercio/create';
+            if ($user) {
+                $user->update(['type' => 'merchant']);
+                $user->assignRole('merchant');
+            }
+        } else {
+            $url = env('APP_URL') . '/registro/' . $token;
+        }
+
+        $data = [
+            'first_name' => $request->first_name,
+            'url' => $url
+        ];
 
         Invitation::create([
             'first_name' => $request->first_name,
@@ -72,9 +121,7 @@ class InvitationController extends Controller
             'token' => $token
         ]);
 
-        $person = Invitation::where('email', $request->email)->first();
-        
-        Mail::to($request->email)->send(new InvitationMail($data, $person->token));
+        Mail::to($request->email)->send(new InvitationMail($data));
 
         return redirect()->route('invitation.index')->with('success_message', 'Invitación enviada con éxito');
     }
