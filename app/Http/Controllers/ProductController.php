@@ -305,15 +305,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         if ($request->has_variants == 'on') {
-            $variantsRule = 'required|array|min:1';
-            $minimumRule = 'required|numeric|min:1';
-            $maximumRule = 'required|numeric|gte:minimum';
+            $minimumRule = 'required|numeric|min:' . $request->minimum;
+            $maximumRule = 'required|numeric|gte:' . $request->maximum;
+            $variantsRule = 'required|array';
         } else {
-            $variantsRule = 'nullable';
             $minimumRule = 'nullable';
             $maximumRule = 'nullable';
+            $variantsRule = 'nullable';
         }
 
         if ($request->temporary == 'on') {
@@ -464,7 +463,7 @@ class ProductController extends Controller
 
         if ($request->has_variants == 'on') {
             $minimumRule = 'required|numeric|min:' . $request->minimum;
-            $maximumRule = 'required|numeric|gte:' . $request->minimum;
+            $maximumRule = 'required|numeric|gte:' . $request->maximum;
             $variantsRule = 'required|array';
         } else {
             $minimumRule = 'nullable';
