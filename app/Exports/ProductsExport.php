@@ -15,7 +15,7 @@ class ProductsExport implements FromQuery, WithMapping, WithHeadings
 
     public function query()
     {
-        return Product::query()->where('restaurant_id', Auth::user()->restaurant->id)->where('temporary',false)->where('state', '!=', 'removed');
+        return Product::query()->where('restaurant_id', Auth::user()->restaurant->id)->where('temporary', false)->where('state', '!=', 'removed');
     }
 
     public function map($product): array
@@ -39,5 +39,4 @@ class ProductsExport implements FromQuery, WithMapping, WithHeadings
             'TOKEN (NO BORRAR)',
         ];
     }
-
 }
