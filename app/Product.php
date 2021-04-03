@@ -11,29 +11,36 @@ class Product extends Model
 {
     protected $guarded = [];
 
-    public function restaurant(){
+    public function restaurant()
+    {
         return $this->belongsTo(Restaurant::class);
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function orders(){
+    public function orders()
+    {
         return $this->belongsToMany(Order::class);
     }
 
-    public function lineItem(){
+    public function lineItem()
+    {
         return $this->hasMany(LineItem::class);
     }
 
-    public function getVariants(){
+    public function getVariants()
+    {
         return $this->belongsToMany('App\Variant', 'products_variants');
     }
-    public function variantsArray(){
+
+    public function variantsArray()
+    {
         $variants = $this->getVariants;
 
-        $array_variants=[];
+        $array_variants = [];
         foreach ($variants as $variant) {
             array_push($array_variants, $variant->name);
         }
@@ -41,7 +48,8 @@ class Product extends Model
         return $array_variants;
     }
 
-    public function stateStyle(){
+    public function stateStyle()
+    {
         switch ($this->state) {
             case 'not-available':
                 return 'badge badge-danger';
@@ -49,10 +57,11 @@ class Product extends Model
             case 'available':
                 return 'badge badge-success';
                 break;
-       }
+        }
     }
 
-    public function translateState(){
+    public function translateState()
+    {
         switch ($this->state) {
             case 'not-available':
                 return 'No disponible';
@@ -60,57 +69,59 @@ class Product extends Model
             case 'available':
                 return 'Disponible';
                 break;
-       }
+        }
     }
 
-    public function getTemporaryDate(){
+    public function getTemporaryDate()
+    {
         $now = Carbon::now();
         $start_date = Carbon::parse($this->start_date);
         $end_date = Carbon::parse($this->end_date);
 
-        if($now>$end_date){
+        if ($now > $end_date) {
             return 'Finalizado.';
-        }elseif($now<$start_date){
-            if($now->diffInDays($start_date, false)>1){
-                return 'Programado - Comienza en: '.$now->diffInDays($start_date, false).' días.';
-            }else{
+        } elseif ($now < $start_date) {
+            if ($now->diffInDays($start_date, false) > 1) {
+                return 'Programado - Comienza en: ' . $now->diffInDays($start_date, false) . ' días.';
+            } else {
                 return 'Programado - Comienza mañana.';
             }
-        }elseif($now>=$start_date){
-            if($now->diffInDays($end_date, false)>=1){
-                return 'Activo - Termina en: '.$now->diffInDays($end_date, false).' días.';
-            }else{
+        } elseif ($now >= $start_date) {
+            if ($now->diffInDays($end_date, false) >= 1) {
+                return 'Activo - Termina en: ' . $now->diffInDays($end_date, false) . ' días.';
+            } else {
                 return 'Activo - Termina hoy.';
             }
         }
     }
 
-    public function isTemporaryActive(){
+    public function isTemporaryActive()
+    {
         $now = Carbon::now();
         $start_date = Carbon::parse($this->start_date);
         $end_date = Carbon::parse($this->end_date);
 
-        if($now>=$start_date and $now<$end_date){
+        if ($now >= $start_date and $now < $end_date) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function getRemainingDays(){
+    public function getRemainingDays()
+    {
         $now = Carbon::now();
         $start_date = Carbon::parse($this->start_date);
         $end_date = Carbon::parse($this->end_date);
 
-        if($now>=$start_date){
-            if($now->diffInDays($end_date, false)==1){
+        if ($now >= $start_date) {
+            if ($now->diffInDays($end_date, false) == 1) {
                 return 'Termina mañana';
-            }elseif($now->diffInDays($end_date, false)>1){
-                return 'Termina en: '.$now->diffInDays($end_date, false).' días.';
-            }else{
+            } elseif ($now->diffInDays($end_date, false) > 1) {
+                return 'Termina en: ' . $now->diffInDays($end_date, false) . ' días.';
+            } else {
                 return 'Termina hoy.';
             }
         }
     }
-
 }

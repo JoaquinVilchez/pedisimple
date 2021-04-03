@@ -21,6 +21,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithMultipleSheets
             'details' => $row['descripcion'],
             'price' => $row['precio'],
             'category' => $row['categoria'],
+            'variants' => $row['variantes'],
             'product_id' => $row['token (no borrar)']
         ]);
     }

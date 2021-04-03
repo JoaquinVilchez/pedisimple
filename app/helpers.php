@@ -248,7 +248,7 @@ function getOrderAddress($order)
 
 function getVariantsName($data)
 {
-    implode(', ', $item->showVariants());
+    implode(', ', $data->showVariants());
 }
 
 function gluberStatus()

@@ -47,7 +47,7 @@
       @foreach($categories as $category)
         <tr data-id="{{$category->id }}">
             <td><small><i style="color: rgb(133, 133, 133)" class="fas fa-arrows-alt"></i>  <i @if($category->state=='available') style="color:#28a745" @else style="color:#dc3545" @endif class="fas fa-circle"  data-toggle="tooltip" data-placement="bottom" @if($category->state=='available') title="Disponible" @else title="No disponible"@endif></i></small></td>            
-            <td>{{$category->name}} <small class="txt-muted"> ({{count($category->products)}})</small></td>
+            <td>{{$category->name}} <small class="txt-muted"> ({{count($category->getProducts())}})</small></td>
             <td width="40%">{{$category->description}}</td>
             <td style="text-align:center" width="10%">
               <form id="{{'not_available_checkbox_'.$category->id}}" action="{{route('category.available', $category)}}" method="POST">

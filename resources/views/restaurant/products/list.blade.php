@@ -198,7 +198,7 @@
           </div>
           <hr>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Importar</button>
+            <button type="submit" class="spinnerSubmitButton btn btn-primary btn-block">Importar</button>
           </div>
 
         </form>

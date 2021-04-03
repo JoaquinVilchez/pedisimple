@@ -100,17 +100,16 @@ class ProductController extends Controller
             'file' => 'required'
         ]);
 
+
         $file = $request->file('file');
 
         $items = Excel::toCollection(new ProductsImport, $file);
 
-        // $items = Excel::toCollection(new ProductsImport, $file);
         $restaurant = Auth::user()->restaurant;
 
         if ($request->method == "update") {
             $errors = 0;
             foreach ($items as $item) {
-
                 for ($i = 0; $i < count($item); $i++) {
 
                     $price = $item[$i]['precio'];
@@ -123,37 +122,130 @@ class ProductController extends Controller
                     if ($item[$i]['nombre'] == null || $price == null || $item[$i]['categoria'] == null) {
                         $errors = $errors + 1;
                     } else {
-                        $category_name = $item[$i]['categoria'];
-                        $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
 
-                        if ($category == null) {
-                            Category::create([
-                                'name' => $category_name,
-                                'state' => 'available',
-                                'restaurant_id' => $restaurant->id
-                            ]);
-
-                            $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
-                        }
-
-                        if ($item[$i]['token_no_borrar'] == null) {
-                            Product::create([
-                                'name' => $item[$i]['nombre'],
-                                'details' => $item[$i]['descripcion'],
-                                'price' => $price,
-                                'category_id' => $category->id,
-                                'restaurant_id' => $restaurant->id,
-                            ]);
+                        if ($item[$i]['variantes'] != null && $item[$i]['variantes_maximo'] == null) {
+                            $errors = $errors + 1;
                         } else {
-                            $product_id = decrypt($item[$i]['token_no_borrar']);
-                            $product = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('id', $product_id)->first();
-                            if ($product !== null) {
-                                $product->update([
-                                    'name' => $item[$i]['nombre'],
-                                    'details' => $item[$i]['descripcion'],
-                                    'price' => $price,
-                                    'category_id' => $category->id
-                                ]);
+                            if ($item[$i]['variantes_maximo'] < $item[$i]['variantes_minimo']) {
+                                $errors = $errors + 1;
+                            } else {
+
+                                //CATEGORIA
+
+                                $category_name = $item[$i]['categoria'];
+                                $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+
+                                if ($category == null) {
+                                    Category::create([
+                                        'name' => $category_name,
+                                        'state' => 'available',
+                                        'restaurant_id' => $restaurant->id
+                                    ]);
+
+                                    $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
+                                }
+
+                                //FIN-CATEGORIA
+
+                                //VARIANTES MAXIMO MINIMO
+                                if ($item[$i]['variantes'] != null) {
+                                    $variants = true;
+
+                                    if ($item[$i]['variantes_maximo'] > count(explode(',', $item[$i]['variantes']))) {
+                                        $item[$i]['variantes_maximo'] = count(explode(',', $item[$i]['variantes']));
+                                    }
+                                } else {
+                                    $variants = false;
+                                }
+                                //FIN VARIANTES MAXIMO MINIMO
+
+                                //PRODUCTO
+
+                                if ($item[$i]['token_no_borrar'] != null) {
+                                    $product_id = decrypt($item[$i]['token_no_borrar']);
+                                    $product = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('id', $product_id)->first();
+                                }
+
+                                if ($item[$i]['token_no_borrar'] == null || $product == null) {
+                                    $product = Product::create([
+                                        'name' => $item[$i]['nombre'],
+                                        'details' => $item[$i]['descripcion'],
+                                        'price' => $price,
+                                        'category_id' => $category->id,
+                                        'restaurant_id' => $restaurant->id,
+                                        'variants' => $variants,
+                                        'minimum_variants' => $item[$i]['variantes_minimo'],
+                                        'maximum_variants' => $item[$i]['variantes_maximo']
+                                    ]);
+                                } else {
+                                    if ($product !== null) {
+                                        $product->update([
+                                            'name' => $item[$i]['nombre'],
+                                            'details' => $item[$i]['descripcion'],
+                                            'price' => $price,
+                                            'category_id' => $category->id,
+                                            'variants' => $variants,
+                                            'minimum_variants' => $item[$i]['variantes_minimo'],
+                                            'maximum_variants' => $item[$i]['variantes_maximo']
+                                        ]);
+                                    }
+                                }
+
+                                //FIN-PRODUCTO
+
+                                //VARIANTES
+
+                                $old_variants_array = [];
+                                if (isset($product->getVariants)) {
+                                    $old_variants = $product->getVariants;
+                                    foreach ($old_variants as $old_variant) {
+                                        $old_variant = DB::table('variants')->where('id', $old_variant->id)->where('restaurant_id', $restaurant->id)->get();
+                                        array_push($old_variants_array, $old_variant);
+                                    }
+                                } else {
+                                    $old_variants = null;
+                                }
+
+                                $new_variants_array = [];
+
+                                if ($item[$i]['variantes'] != null) {
+                                    $new_variants = explode(',', $item[$i]['variantes']);
+
+                                    foreach ($new_variants as $new_variant) {
+                                        $new_variant_name = strtolower(trim($new_variant));
+                                        $new_variant = DB::table('variants')->where('name', $new_variant_name)->where('restaurant_id', $restaurant->id)->get();
+                                        if (count($new_variant) == 0) {
+                                            $new_variant = Variant::create([
+                                                'name' => ucfirst($new_variant_name),
+                                                'restaurant_id' => $restaurant->id
+                                            ]);
+                                            $new_variant = DB::table('variants')->where('id', $new_variant->id)->get();
+                                        }
+                                        array_push($new_variants_array, $new_variant);
+                                    }
+                                }
+
+                                if (!empty($old_variants_array)) {
+                                    $array_difference = array_diff($old_variants_array, $new_variants_array);
+                                    foreach ($array_difference as $old_variant_to_delete) {
+                                        DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $old_variant_to_delete[0]->id)->delete();
+                                    }
+                                }
+
+                                if ($item[$i]['variantes'] != null) {
+                                    if (!empty($new_variants_array)) {
+                                        foreach ($new_variants_array as $new_variant_to_add) {
+                                            $exists = DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $new_variant_to_add[0]->id)->first();
+                                            if ($exists == null) {
+                                                DB::table('products_variants')->insert([
+                                                    'product_id' => $product->id,
+                                                    'variant_id' => $new_variant_to_add[0]->id,
+                                                ]);
+                                            }
+                                        }
+                                    }
+                                }
+                                //FIN - VARIANTES
                             }
                         }
                     }
@@ -166,6 +258,14 @@ class ProductController extends Controller
 
             if ($products != null) {
                 foreach ($products as $product) {
+
+                    $variants = $product->getVariants;
+                    if ($variants != null) {
+                        foreach ($variants as $variant) {
+                            DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
+                        }
+                    }
+
                     if ($product->lineItem->count() > 0) {
                         $product->update(['state' => 'removed']);
                     } else {
@@ -200,13 +300,85 @@ class ProductController extends Controller
                             $category = Category::where('restaurant_id', $restaurant->id)->where('name', $category_name)->first();
                         }
 
-                        Product::create([
-                            'name' => $item[$i]['nombre'],
-                            'details' => $item[$i]['descripcion'],
-                            'price' => $price,
-                            'category_id' => $category->id,
-                            'restaurant_id' => $restaurant->id,
-                        ]);
+                        //VARIANTES MAXIMO MINIMO
+                        if ($item[$i]['variantes'] != null) {
+                            $variants = true;
+
+                            if ($item[$i]['variantes_maximo'] > count(explode(',', $item[$i]['variantes']))) {
+                                $item[$i]['variantes_maximo'] = count(explode(',', $item[$i]['variantes']));
+                            }
+                        } else {
+                            $variants = false;
+                        }
+                        //FIN VARIANTES MAXIMO MINIMO
+
+                        //PRODUCTO
+
+                        $product_id = decrypt($item[$i]['token_no_borrar']);
+                        $product = Product::where('restaurant_id', $restaurant->id)->where('state', '!=', 'removed')->where('id', $product_id)->first();
+
+                        if ($item[$i]['token_no_borrar'] == null || $product == null) {
+                            $product = Product::create([
+                                'name' => $item[$i]['nombre'],
+                                'details' => $item[$i]['descripcion'],
+                                'price' => $price,
+                                'category_id' => $category->id,
+                                'restaurant_id' => $restaurant->id,
+                                'variants' => $variants,
+                                'minimum_variants' => $item[$i]['variantes_minimo'],
+                                'maximum_variants' => $item[$i]['variantes_maximo']
+                            ]);
+                        } else {
+                            if ($product !== null) {
+                                $product->update([
+                                    'name' => $item[$i]['nombre'],
+                                    'details' => $item[$i]['descripcion'],
+                                    'price' => $price,
+                                    'category_id' => $category->id,
+                                    'variants' => $variants,
+                                    'minimum_variants' => $item[$i]['variantes_minimo'],
+                                    'maximum_variants' => $item[$i]['variantes_maximo']
+                                ]);
+                            }
+                        }
+
+                        //FIN PRODUCTO
+
+                        //VARIANTES
+
+                        $new_variants_array = [];
+
+                        if ($item[$i]['variantes'] != null) {
+                            $new_variants = explode(',', $item[$i]['variantes']);
+
+                            foreach ($new_variants as $new_variant) {
+                                $new_variant_name = strtolower(trim($new_variant));
+                                $new_variant = DB::table('variants')->where('name', $new_variant_name)->where('restaurant_id', $restaurant->id)->get();
+                                if (count($new_variant) == 0) {
+                                    $new_variant = Variant::create([
+                                        'name' => ucfirst($new_variant_name),
+                                        'restaurant_id' => $restaurant->id
+                                    ]);
+                                    $new_variant = DB::table('variants')->where('id', $new_variant->id)->get();
+                                }
+                                array_push($new_variants_array, $new_variant);
+                            }
+                        }
+
+                        if ($item[$i]['variantes'] != null) {
+                            if (!empty($new_variants_array)) {
+                                foreach ($new_variants_array as $new_variant_to_add) {
+                                    $exists = DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $new_variant_to_add[0]->id)->first();
+                                    if ($exists == null) {
+                                        DB::table('products_variants')->insert([
+                                            'product_id' => $product->id,
+                                            'variant_id' => $new_variant_to_add[0]->id,
+                                        ]);
+                                    }
+                                }
+                            }
+                        }
+                        //FIN - VARIANTES
                     }
                 }
             }
@@ -654,27 +826,29 @@ class ProductController extends Controller
         foreach ($products as $product) {
             $this->authorize('pass', $product);
 
-            if (count($product->getVariants) > 0) {
-                foreach ($product->getVariants as $variant) {
-                    DB::table('-')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
-                }
-            }
-
-            if ($product->lineItem->count() > 0) {
-                $product->update([
-                    'state' => 'removed'
-                ]);
-            } else {
-                $old_image = $product->image;
-
-                if ($old_image != 'no_image.png') {
-                    $path_old_image = 'images/uploads/products/' . $old_image;
-                    if (file_exists($path_old_image)) {
-                        unlink($path_old_image);
+            if ($product->temporary == false) {
+                if (count($product->getVariants) > 0) {
+                    foreach ($product->getVariants as $variant) {
+                        DB::table('products_variants')->where('product_id', $product->id)->where('variant_id', $variant->id)->delete();
                     }
                 }
 
-                $product->delete();
+                if ($product->lineItem->count() > 0) {
+                    $product->update([
+                        'state' => 'removed'
+                    ]);
+                } else {
+                    $old_image = $product->image;
+
+                    if ($old_image != 'no_image.png') {
+                        $path_old_image = 'images/uploads/products/' . $old_image;
+                        if (file_exists($path_old_image)) {
+                            unlink($path_old_image);
+                        }
+                    }
+
+                    $product->delete();
+                }
             }
         }
         return redirect(route('product.index'))->with('success_message', 'Productos eliminados con éxito');

@@ -41,10 +41,16 @@ class CartController extends Controller
         $product = Product::find($request->id);
 
         if ($product->variants == true) {
+            // dd($product->minimum_variants, $product->maximum_variants);
             if ($product->minimum_variants == $product->maximum_variants) {
                 $variantsRule = 'required|array|size:' . $product->maximum_variants;
             } else {
-                $variantsRule = 'array|between:' . $product->minimum_variants . ',' . $product->maximum_variants;
+                if ($product->minimum_variants > 0) {
+                    $required_variants = 'required|';
+                } else {
+                    $required_variants = null;
+                }
+                $variantsRule = $required_variants . 'array|between:' . $product->minimum_variants . ',' . $product->maximum_variants;
             }
             // |gte:' . $product->minimum_variants . '|max:' . $product->maximum_variants
         } else {

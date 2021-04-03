@@ -25,6 +25,9 @@ class ProductsExport implements FromQuery, WithMapping, WithHeadings
             $product->details,
             $product->price,
             $product->category->name,
+            implode(', ', $product->variantsArray()),
+            $product->minimum_variants,
+            $product->maximum_variants,
             encrypt($product->id)
         ];
     }
@@ -36,6 +39,9 @@ class ProductsExport implements FromQuery, WithMapping, WithHeadings
             'DESCRIPCION',
             'PRECIO',
             'CATEGORIA',
+            'VARIANTES',
+            'VARIANTES_MINIMO',
+            'VARIANTES_MAXIMO',
             'TOKEN (NO BORRAR)',
         ];
     }

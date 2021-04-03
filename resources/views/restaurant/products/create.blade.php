@@ -233,15 +233,10 @@
       <div class="modal-body">
         <form id="variantForm" method="POST">
           @csrf
-          @method('POST')
           <div class="form-group">
             <label for="variantName">Nombre de la variante</label>
             <input type="text" class="form-control" id="variantName" name="variant-name" autocomplete="off">
-          </div>  
-          <div class="form-group">
-            <label>Descripción</label>
-            <textarea class="form-control" name="variant-description" rows="3"></textarea>
-          </div>  
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -284,17 +279,16 @@
 
   function createVariant(){
     let name = $("input[name=variant-name]").val();
-    let description = $("textarea[name=variant-description]").val();
     $.ajax({
       url : '{{ route("variant.ajaxcreate") }}',
       type: 'POST',
       headers: {
           'X-CSRF-TOKEN': '{{ csrf_token() }}'
       },
-      data:{name:name,description:description},
+      data:{name:name},
       success:function(data){
           $('.variants-details').append(data);
-          $('#addVariant').find("input[type=text], textarea").val("");
+          $('#addVariant').find("input[type=text]").val("");
           $('#addVariant').modal('hide');
       },
     });
