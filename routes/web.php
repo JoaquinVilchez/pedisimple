@@ -35,7 +35,7 @@ Route::get('/bienvenido', function () {
 
 Route::get('/solicitud', function () {
     return view('request');
-})->name('register.request')->middleware('Maintenance');
+})->name('register.request');
 Route::post('/solicitud', 'RestaurantController@request')->name('restaurant.request');
 
 Route::get('/confirmado', function () {
