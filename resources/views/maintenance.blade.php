@@ -21,7 +21,7 @@
         text-align: center;
         letter-spacing: -.7px;
         font-size: 1.5em;
-    }
+}
 
     .mnt-second-description{
         font-weight: 400;
@@ -89,10 +89,11 @@
         </div>
         
     </div>
-
     @if(Auth::guest())
         <div class="row mt-2">
             <div class="col-12 m-auto" style="text-align: center">
+                <a href="{{route('register.request')}}" class="btn btn-sm btn-link"> Quiero agregar mi comercio <i class="fas fa-plus-circle"></i></a><br>
+
                 <a href="{{route('login')}}" class="btn btn-sm btn-link"> Ingreso comerciantes <i class="fas fa-sign-in-alt"></i></a>
             </div>
         </div>
