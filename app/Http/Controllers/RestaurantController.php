@@ -69,7 +69,12 @@ class RestaurantController extends Controller
     public function list()
     {
         $restaurants = Restaurant::orderBy('state', 'asc')->orderBy('id', 'desc')->paginate(15);
-        return view('admin.restaurant.list')->with('restaurants', $restaurants);
+        $plans = app('rinvex.subscriptions.plan')->all();
+
+        return view('admin.restaurant.list')->with([
+            'restaurants' => $restaurants,
+            'plans' => $plans
+        ]);
     }
 
     /**
