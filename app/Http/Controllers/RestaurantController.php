@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use App\Restaurant;
 use App\Category;
 use App\Product;
 use App\City;
 use App\RestaurantCategory;
 use App\Address;
-use App\Invitation;
 use App\OpeningDateTime;
-use Darryldecode\Cart\Cart;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
@@ -23,9 +20,7 @@ use App\Mail\newCommerce;
 use App\Mail\newCommerceAdmin;
 use App\Mail\UpdateStatusMail;
 use Illuminate\Support\Facades\Mail;
-use Carbon\Carbon;
 use App\Notifications\StatusUpdate;
-use App\Notifications\ReactivateService;
 
 class RestaurantController extends Controller
 {
@@ -58,9 +53,9 @@ class RestaurantController extends Controller
         foreach ($restaurants as $restaurant) {
             if ($restaurant->getSchedule() == null && $restaurant->state == 'active') {
                 $restaurant->update([
-                    'state' => 'without-times'
+                    'state' => 'pendiente'
                 ]);
-                $restaurant->user->notify(new StatusUpdate());
+                // $restaurant->user->notify(new StatusUpdate());
             }
         }
 
@@ -73,20 +68,41 @@ class RestaurantController extends Controller
      */
     public function list()
     {
-        updateRestaurantsStatus();
-        $plans = app('rinvex.subscriptions.plan')->all();
         $restaurants = Restaurant::orderBy('state', 'asc')->orderBy('id', 'desc')->paginate(15);
-
-        return view('admin.restaurant.list')->with(['restaurants' => $restaurants, 'plans' => $plans]);
+        return view('admin.restaurant.list')->with('restaurants', $restaurants);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function updateStatus(Request $request)
     {
-        $restaurant = Restaurant::find($request->restaurant_id);
+        $restaurant = Restaurant::findOrFail($request->restaurant_id);
 
-        $restaurant->updateStatus($request->status, $request->plan_id);
+        if ($request->state == 'active') {
+            if ($restaurant->getSchedule() == null) {
+                return redirect()->back()->with('error_message', 'Al comercio le falta configurar sus horarios');
+            } else {
+                $restaurant->update(['state' => $request->state]);
 
-        return redirect()->back();
+                $data = [
+                    'name' => $restaurant->name,
+                    'slug' => $restaurant->slug,
+                    'user_name' => $restaurant->user->first_name,
+                ];
+
+                if ($request->state == 'active') {
+                    Mail::to($restaurant->user->email)->send(new UpdateStatusMail($data));
+                }
+
+                return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
+            }
+        } else {
+            $restaurant->update(['state' => $request->state]);
+            return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
+        }
     }
 
     /**
@@ -226,9 +242,8 @@ class RestaurantController extends Controller
 
 
         if ($restaurant->state == 'without-times') {
-            $restaurant->user->notify(new ReactivateService());
             $restaurant->update([
-                'state' => 'active'
+                'state' => 'pending'
             ]);
         }
 
@@ -576,71 +591,8 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $restaurant = Restaurant::find($request->restaurantid);
-        $user = $restaurant->user;
-
-        $transaction = DB::transaction(function () use ($restaurant, $user) {
-            try {
-                if ($user->hasRole('merchant')) {
-                    $user->removeRole('merchant');
-                    $user->assignRole('customer');
-                    $user->update(['type' => 'customer']);
-                }
-
-                Invitation::where('email', $user->email)->delete();
-
-                DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->delete();
-
-                if (isset($restaurant->line_items)) {
-                    foreach ($restaurant->line_items as $line_item) {
-                        $line_item->delete();
-                    }
-                }
-
-                if (isset($restaurant->orders)) {
-                    foreach ($restaurant->orders as $order) {
-                        $order->delete();
-                    }
-                }
-
-                if (isset($restaurant->products)) {
-                    foreach ($restaurant->products as $product) {
-                        $product->delete();
-                    }
-                }
-
-
-                DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->delete();
-
-                if (isset($restaurant->categories)) {
-                    foreach ($restaurant->categories as $category) {
-                        $category->delete();
-                    }
-                }
-
-                if (isset($restaurant->address)) {
-                    $restaurant->address->delete();
-                }
-
-                if (isset($restaurant)) {
-                    $restaurant->delete();
-                }
-
-                DB::commit();
-                return true;
-            } catch (\Throwable $e) {
-                DB::rollback();
-                dd($e);
-                return false;
-            }
-        });
-
-        if ($transaction) {
-            return redirect()->route('restaurant.admin.list')->with('success_message', 'Comercio eliminado con exito');
-        } else {
-            return redirect()->route('restaurant.admin.list')->with('error_message', 'El comercio no se pudo eliminar');
-        }
+        //
     }
 }
