@@ -596,8 +596,72 @@ class RestaurantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $restaurant = Restaurant::find($request->restaurantid);
+        $user = $restaurant->user;
+
+        $transaction = DB::transaction(function () use ($restaurant, $user) {
+            try {
+                if ($user->hasRole('merchant')) {
+                    $user->removeRole('merchant');
+                    $user->assignRole('customer');
+                    $user->update(['type' => 'customer']);
+                }
+
+                Invitation::where('email', $user->email)->delete();
+
+                DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->delete();
+
+                if (isset($restaurant->line_items)) {
+                    foreach ($restaurant->line_items as $line_item) {
+                        $line_item->delete();
+                    }
+                }
+
+                if (isset($restaurant->orders)) {
+                    foreach ($restaurant->orders as $order) {
+                        $order->delete();
+                    }
+                }
+
+                if (isset($restaurant->products)) {
+                    foreach ($restaurant->products as $product) {
+                        $product->delete();
+                    }
+                }
+
+
+                DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->delete();
+
+                if (isset($restaurant->categories)) {
+                    foreach ($restaurant->categories as $category) {
+                        $category->delete();
+                    }
+                }
+
+                if (isset($restaurant->address)) {
+                    $restaurant->address->delete();
+                }
+
+                if (isset($restaurant)) {
+                    $restaurant->delete();
+                }
+
+                DB::commit();
+                return true;
+            } catch (\Throwable $e) {
+                DB::rollback();
+                dd($e);
+                return false;
+            }
+        });
+
+        if ($transaction) {
+            return redirect()->route('restaurant.admin.list')->with('success_message', 'Comercio eliminado con exito');
+        } else {
+            return redirect()->route('restaurant.admin.list')->with('error_message', 'El comercio no se pudo eliminar');
+        }
     }
+}
 }
