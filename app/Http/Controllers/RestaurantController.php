@@ -652,7 +652,6 @@ class RestaurantController extends Controller
                 return true;
             } catch (\Throwable $e) {
                 DB::rollback();
-                dd($e);
                 return false;
             }
         });
@@ -663,5 +662,4 @@ class RestaurantController extends Controller
             return redirect()->route('restaurant.admin.list')->with('error_message', 'El comercio no se pudo eliminar');
         }
     }
-}
 }
