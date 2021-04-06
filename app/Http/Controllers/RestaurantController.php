@@ -10,6 +10,7 @@ use App\Product;
 use App\City;
 use App\RestaurantCategory;
 use App\Address;
+use App\Invitation;
 use App\OpeningDateTime;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -652,6 +653,7 @@ class RestaurantController extends Controller
                 return true;
             } catch (\Throwable $e) {
                 DB::rollback();
+                dd($e);
                 return false;
             }
         });
