@@ -298,17 +298,14 @@
     });
   }
 
-  // Si pulsamos tecla en un Input
-  $("input[name=variant-name]").keydown(function (e){
-   // Capturamos qué telca ha sido
+  $("#variantName").keydown(function (e){
    var keyCode= e.which;
-   // Si la tecla es el Intro/Enter
    if (keyCode == 13){
-     // Evitamos que se ejecute eventos
      event.preventDefault();
-     // Devolvemos falso
+     alert("NO");
      return false;
    }
+
  });
 </script>
 @endsection

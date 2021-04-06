@@ -279,8 +279,17 @@
     });
   }
 
-  document.getElementById(activeCategory+'Collapse').classList.add("show")
-  document.getElementById(activePage).classList.add("active")
+  activeCategoryElement = document.getElementById(activeCategory+'Collapse')
+  activePageElement = document.getElementById(activePage)
+
+  if(activeCategoryElement!=null){
+    activeCategoryElement.classList.add("show")
+  }
+
+  if(activePageElement!=null){
+    activePageElement.classList.add("active")
+  }
+
 </script>
 
 @endsection

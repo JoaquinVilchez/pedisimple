@@ -74,7 +74,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
       <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalCenterTitle">Reenviar invitación</h5>
+      <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar invitación</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
       </button>
@@ -82,12 +82,12 @@
           <form action="{{route('invitation.delete')}}" method="POST">
               @csrf
       <div class="modal-body">
-              <h5>¿Estás seguro de reenviar esta invitación?</h5>  
+              <h5>¿Estás seguro de eliminar esta invitación?</h5>  
               <input type="hidden" id="invitationid" name="invitationid" value="">
       </div>
       <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-danger">Reenviar</button>
+              <button type="submit" class="btn btn-danger">Eliminar</button>
           </form>
       </div>
   </div>
