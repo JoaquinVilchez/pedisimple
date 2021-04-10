@@ -83,6 +83,10 @@
     <!-- Languaje -->
     <script src="{{asset('datepicker\locales\bootstrap-datepicker.es.min.js')}}"></script>
 
+    {{-- Cleave --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
+
+
 </head>
 
 <body>

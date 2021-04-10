@@ -285,7 +285,6 @@
       },
       data:{name:name},
       success:function(data){
-          console.log(data);
           $('.variants-details').append(data);
           $('#addVariant').find("input[type=text]").val("");
           $('#addVariant').modal('hide');

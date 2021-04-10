@@ -164,7 +164,6 @@ class RestaurantController extends Controller
 
     public function openingTimeUpdate(Request $request)
     {
-
         for ($i = 0; $i < 7; $i++) {
 
             $state = 'state_' . $i;
@@ -207,6 +206,8 @@ class RestaurantController extends Controller
 
         $restaurant = Auth::user()->restaurant;
 
+        $schedule_array = [];
+
         for ($i = 0; $i < 7; $i++) {
 
             $day = OpeningDateTime::where('restaurant_id', $restaurant->id)->where('weekday', $i)->first();
@@ -224,13 +225,19 @@ class RestaurantController extends Controller
             }
 
             if ($day != null) {
-                $day->update([
-                    'state' => $state,
-                    'start_hour_1' => $request->$start_hour_1,
-                    'end_hour_1' => $request->$end_hour_1,
-                    'start_hour_2' => $request->$start_hour_2,
-                    'end_hour_2' => $request->$end_hour_2,
-                ]);
+                if ($request->$start_hour_1 == null | $request->$end_hour_1 == null) {
+                    $day->update([
+                        'state' => $state
+                    ]);
+                } else {
+                    $day->update([
+                        'state' => $state,
+                        'start_hour_1' => $request->$start_hour_1,
+                        'end_hour_1' => $request->$end_hour_1,
+                        'start_hour_2' => $request->$start_hour_2,
+                        'end_hour_2' => $request->$end_hour_2,
+                    ]);
+                }
             } else {
                 if ($request->$start_hour_1 != null || $request->$end_hour_1 != null || $request->$start_hour_2 != null || $request->$end_hour_2 != null) {
                     OpeningDateTime::create([
@@ -245,7 +252,6 @@ class RestaurantController extends Controller
                 }
             }
         }
-
 
         if ($restaurant->state == 'without-times') {
             $restaurant->update([
