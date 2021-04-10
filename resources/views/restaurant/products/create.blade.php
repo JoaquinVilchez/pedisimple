@@ -297,7 +297,6 @@
   $("#variantName").keydown(function (e){
    var keyCode= e.which;
    if (keyCode == 13){
-    alert("NO");
      event.preventDefault();
      return false;
    }

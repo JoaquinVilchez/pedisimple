@@ -301,7 +301,6 @@
    var keyCode= e.which;
    if (keyCode == 13){
      event.preventDefault();
-     alert("NO");
      return false;
    }
 
