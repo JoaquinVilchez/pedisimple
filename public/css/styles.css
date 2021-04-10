@@ -315,6 +315,7 @@ a {
     -webkit-transform-origin: bottom center;
     transform-origin: bottom center;
     opacity: 0;
+    display: none;
 }
 
 .expanded .help-list {
@@ -327,6 +328,7 @@ a {
     background-color: #fff;
     padding: 10px;
     border-radius: 10px 10px 0 10px;
+    display: block;
 }
 
 .help-list li {
