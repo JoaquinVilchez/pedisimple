@@ -358,24 +358,34 @@
     <div class="modal fade" id="activeRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Activar comercio</h5>
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Agregar nueva suscripción</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-            </div>
-            <form action="{{route('restaurant.admin.updateStatus')}}" method="post">
-                @csrf
+                </div>
                 <div class="modal-body">
-                <h5>¿Estás seguro de activar este comercio?</h5>  
-                <input type="hidden" id="restaurantid" name="restaurant_id" value="">
-                <input type="hidden" name="state" value="active">
+                    <div class="row d-flex justify-content-center">
+                      <div class="col-12">
+                        <form action="{{route('subscription.store')}}" method="post">
+                            @csrf
+                            <input name="restaurant_id" value="{{$restaurant->id}}" hidden>
+                            <label>Plan</label>
+                            <div class="form-group">
+                              <select name="plan_id" class="form-control" aria-label="Default select example">
+                                @foreach (getPlans() as $plan)
+                                  <option value="{{$plan->id}}">{{$plan->name}}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                      </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-danger">Activar</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary">Suscribir</button>
+                    </form>
                 </div>
-            </form>
             </div>
         </div>
     </div>

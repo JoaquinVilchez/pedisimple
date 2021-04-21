@@ -26,7 +26,7 @@
           @foreach($restaurants as $restaurant)
           <tr>
             <td>{{$restaurant->id}}</td>
-            <td>{{$restaurant->name}}</td>
+            <td><a target="_blank" href="{{route('restaurant.show', $restaurant->slug)}}">{{$restaurant->name}}</a></td>
             <td> <span class="ml-2 {{$restaurant->stateStyle()}}">{{$restaurant->translateState()}}</span>
               @if ($restaurant->state!='active')
                 <small><a class="docs-link" href="#" data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#activeRestaurantModal">Activar</a></small>
@@ -96,12 +96,11 @@
             <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{route('restaurant.admin.updateStatus')}}" method="post">
+      <form action="{{route('subscription.store')}}" method="post">
         @csrf
         <div class="modal-body">
           <h5>¿Estás seguro de activar este comercio?</h5>  
           <input type="hidden" id="restaurantid" name="restaurant_id" value="">
-          <input type="hidden" name="status" value="active">
           <label>Plan</label>
           <div class="form-group">
             <select name="plan_id" class="form-control" aria-label="Default select example">

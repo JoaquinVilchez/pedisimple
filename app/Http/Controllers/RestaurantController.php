@@ -616,6 +616,8 @@ class RestaurantController extends Controller
                     $user->update(['type' => 'customer']);
                 }
 
+                DB::table('plan_suscriptions')->where('suscriber_id', $user->id)->delete();
+
                 Invitation::where('email', $user->email)->delete();
 
                 DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->delete();

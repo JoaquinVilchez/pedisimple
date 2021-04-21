@@ -285,3 +285,8 @@ function updateRestaurantsStatus()
 
     return true;
 }
+
+function getPlans()
+{
+    return app('rinvex.subscriptions.plan')->all();
+}
