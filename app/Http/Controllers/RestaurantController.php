@@ -620,24 +620,23 @@ class RestaurantController extends Controller
 
                 DB::table('opening_date_times')->where('restaurant_id', $restaurant->id)->delete();
 
-                if (isset($restaurant->line_items)) {
-                    foreach ($restaurant->line_items as $line_item) {
-                        $line_item->delete();
-                    }
-                }
-
                 if (isset($restaurant->orders)) {
                     foreach ($restaurant->orders as $order) {
+                        foreach ($order->lineitems as $lineitem) {
+                            $lineitem->delete();
+                        }
                         $order->delete();
                     }
                 }
 
                 if (isset($restaurant->products)) {
                     foreach ($restaurant->products as $product) {
+                        DB::table('products_variants')->where('product_id', $product->id)->delete();
                         $product->delete();
                     }
                 }
 
+                DB::table('variants')->where('restaurant_id', $restaurant->id)->delete();
 
                 DB::table('relation_restaurant_category')->where('restaurant_id', $restaurant->id)->delete();
 
@@ -659,7 +658,6 @@ class RestaurantController extends Controller
                 return true;
             } catch (\Throwable $e) {
                 DB::rollback();
-                dd($e);
                 return false;
             }
         });
