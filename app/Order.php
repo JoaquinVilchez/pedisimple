@@ -166,4 +166,15 @@ class Order extends Model
             }
         }
     }
+
+    public function getDelayTime()
+    {
+        if ($this->delay_time != 0) {
+            $string = $this->delay_time . ' minutos.';
+        } else {
+            $string = 'Más de una hora.';
+        }
+
+        return $string;
+    }
 }

@@ -237,7 +237,7 @@
 @if(count($orders)!=0)
     <!-- Modal -->
     <div class="modal fade" id="acceptOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalCenterTitle">Aceptar pedido</h5>
@@ -245,21 +245,38 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="text-align: center">
                 <h5>¿Estás seguro de aceptar este pedido?</h5>
-                <p>Al aceptar el pedido te redireccionaremos a WhatsApp para poder comunicarte con el cliente</p>  
-                <input type="hidden" id="acceptorderid" name="acceptorderid" value="">
+                <div class="row d-flex justify-content-center mt-4">
+                    <label><i class="far fa-clock"></i> Indica a tu cliente la demora del pedido</label>
+                    <div class="col-6">
+                        <div class="form-group" width="50%">
+                            <select name="delay_time" id="delay_time" class="form-control">
+                                @for ($i = 10; $i <= 60; $i=$i+5)
+                                    <option value="{{$i}}" @if (Auth::user()->restaurant->shipping_time == $i) selected @endif>{{$i}} Minutos</option>
+                                @endfor
+                                <option value="0">Más de una hora</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <small>Al aceptar el pedido te redireccionaremos a WhatsApp con un mensaje que contiene el detalle completo del pedido para tu cliente.</small>
+                <input type="hidden" id="acceptorderid" name="acceptorderid" value="" hidden>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                {{-- <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">Cancelar</button> --}}
                 <button type="button" href="#"
-                    class="btn btn-success" onclick="acceptOrder()"><i class="fab fa-whatsapp"></i> Confirmar
+                    class="btn btn-success btn-block" onclick="acceptOrder()"><i class="fab fa-whatsapp"></i> Confirmar
                 </button>
+                <div class="mx-auto">
+                    <small><a href="#" data-dismiss="modal" class="docs-link">Cancelar</a></small>
+                </div>
             </div>
         </div>
         </div>
     </div>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -308,13 +325,14 @@ $('#acceptOrderModal').on('show.bs.modal', function(event){
 
 function acceptOrder(){
     var acceptorderid = $('#acceptorderid').val();
+    var delay_time = $('#delay_time').val();
     $.ajax({
         url:"{{ route('order.accept') }}",
         type:"POST",
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
-        data:{acceptorderid:acceptorderid},
+        data:{acceptorderid:acceptorderid,delay_time:delay_time},
         success:function(data) {
             var id = (new Date()).getTime();
             var myWindow = window.open(data, id);

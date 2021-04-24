@@ -359,11 +359,5 @@ class restaurant extends Model
         });
 
         return $transaction;
-
-        // if ($transaction) {
-        //     return redirect()->back()->with('success_message', 'Estado actualizado con éxito');
-        // } else {
-        //     return redirect()->back()->with('error_message', 'Hubo un error y no se pudo actualizar el estado');
-        // }
     }
 }

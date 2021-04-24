@@ -140,7 +140,9 @@ Envío: *$" . formatPrice($order->delivery) . "* _(El precio puede variar en bas
     }
 
     return
-        "¡Hola " . $first_name . "! Soy " . Auth::user()->first_name . " de " . $order->restaurant->name . ". Confirmamos tu pedido que hiciste en *" . config("app.name") . "*.
+        "¡Hola " . $first_name . "! Me comunico de " . $order->restaurant->name . ". Confirmamos tu pedido que hiciste en *" . config("app.name") . "*.
+
+Demora del pedido: *" . $order->getDelayTime() . "*
 
 Código: *" . $order->code . "*
 Detalle del pedido: "

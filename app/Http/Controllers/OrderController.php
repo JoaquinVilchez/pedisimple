@@ -87,11 +87,11 @@ class OrderController extends Controller
      */
     public function accept(Request $request)
     {
-
         $order = Order::find($request->acceptorderid);
         $order->update([
             'state' => 'accepted',
-            'accepted' => Carbon::now()
+            'accepted' => Carbon::now(),
+            'delay_time' => $request->delay_time
         ]);
         // Searching the internet I thought I could do it this way, but I found no result.
 
