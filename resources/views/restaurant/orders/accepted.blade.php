@@ -46,6 +46,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 16px">
                           <h6 class="dropdown-header">Opciones de pedido</h6>
                           <hr class="m-0">
+                          <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text={{urlencode(whatsappMessageCustomer($order))}}">Reenviar detalle de pedido</a>
                           <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                           <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
                             @if(gluberStatus())
@@ -155,6 +156,7 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 14px">
                                       <h6 class="dropdown-header">Opciones de pedido</h6>
                                       <hr class="m-0">
+                                      <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text={{urlencode(whatsappMessageCustomer($order))}}">Reenviar detalle de pedido</a>
                                       <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
                                         @if(gluberStatus())
@@ -366,12 +368,6 @@ function editOrder(orderid){
           $('#editOrderModalContent').html(data)
       },
     });
-}
-
-function resendDetail(){
-    var sessionVar = '{{session("newurl")}}';
-    console.log(sessionVar)
-    // window.open('{{{session("newurl")}}}', '_blank')
 }
 
 </script>
