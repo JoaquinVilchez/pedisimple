@@ -616,7 +616,7 @@ class RestaurantController extends Controller
                     $user->update(['type' => 'customer']);
                 }
 
-                DB::table('plan_suscriptions')->where('suscriber_id', $user->id)->delete();
+                DB::table('plan_subscriptions')->where('subscriber_id', $user->id)->delete();
 
                 Invitation::where('email', $user->email)->delete();
 
@@ -660,6 +660,7 @@ class RestaurantController extends Controller
                 return true;
             } catch (\Throwable $e) {
                 DB::rollback();
+                dd($e);
                 return false;
             }
         });
