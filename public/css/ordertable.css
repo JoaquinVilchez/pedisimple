@@ -1,0 +1,29 @@
+#orderTable thead tr th {
+    padding-bottom: 0px;
+    font-size: 13px;
+}
+#orderTable tbody tr td {
+    padding-top: 0px;
+    padding-bottom: 2px;
+    font-size: 13px;
+}
+
+#orderFooter p {
+    margin-bottom: 0px;
+    font-size: 13px;
+}
+
+.details {
+    margin-bottom: 5px;
+}
+
+.mobile-title {
+    font-size: 0.8em;
+    margin-bottom: 1px;
+}
+
+.mobile-description {
+    font-size: 0.9em;
+    margin-bottom: 4px;
+    margin-left: 4px;
+}

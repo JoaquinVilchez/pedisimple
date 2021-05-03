@@ -95,6 +95,7 @@ Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.
 Route::post('/comercio/store', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
 Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible', 'Maintenance']);
 Route::post('/comercio/eliminar', 'RestaurantController@destroy')->name('restaurant.destroy')->middleware(['verified']);
+Route::post('/comercio/pausarpedidos', 'RestaurantController@pauseOrders')->name('restaurant.pauseOrders')->middleware(['verified', 'hasRestaurant']);
 
 //DOCUMENTACION
 Route::get('/docs/documentacion', function () {

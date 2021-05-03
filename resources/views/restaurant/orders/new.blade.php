@@ -1,48 +1,42 @@
 @extends('layouts.commerce')
 
 @section('css-scripts')
-<style>
-    #orderTable thead tr th{
-        padding-bottom:0px;
-        font-size: 13px;
-    }
-    #orderTable tbody tr td{
-        padding-top:0px;
-        padding-bottom: 2px;
-        font-size: 13px;
-    }
-
-    #orderFooter p{
-        margin-bottom: 0px;
-        font-size: 13px;
-    }
-
-    .details{
-        margin-bottom: 5px;
-    }
-
-    .mobile-title{
-        font-size: .8em;
-        margin-bottom: 1px;
-    }
-
-    .mobile-description{
-        font-size: .9em;
-        margin-bottom: 4px;
-        margin-left: 4px;
-    }
-</style>
+<link rel="stylesheet" href="{{asset('css/ordertable.css')}}">
+<link rel="stylesheet" href="{{asset('css/switch.css')}}">
 @endsection
 
 @section('main')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
-        <h1 class="h2"><strong>Nuevos pedidos</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>
-        <div class="mb-2" style="font-size: .8em;">
-        <i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-pedidos" class="txt-semi-bold">Consultar documentación</a>.
+        <div class="header-left d-flex align-items-center">
+            <h1 class="h2"><strong>Nuevos pedidos</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>
+            <div class="switcher ml-4">
+                <label class="switch" data-toggle="tooltip" data-placement="bottom" title="Pausar pedidos">
+                    <form action="{{route('restaurant.pauseOrders')}}" method="post" id="pauseOrderForm">
+                        @csrf
+                        <input name="status" id="pauseOrderStatus" type="checkbox" value="runOrders"
+                        @if (Auth::user()->restaurant->getOrderStatus()===1)
+                            checked
+                        @endif
+                        >
+                        <span class="slider round"></span>
+                    </form>
+                </label>
+                {{-- <span class="text-muted"><small>Pausar pedidos</small></span> --}}
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="mb-2" style="font-size: .8em;">
+                <i class="fas fa-question-circle"></i> ¿Tenés dudas? <a target="_autoblank" href="{{route('help.documentation')}}#docs-pedidos" class="txt-semi-bold">Consultar documentación</a>.
+            </div>
         </div>
     </div>
 
     @include('messages')
+    @if (Auth::user()->restaurant->getOrderStatus()===0)
+        <div class="alert alert-warning" role="alert">
+            Ya no recibirás más pedidos hasta que vuelvas a activarlos.
+        </div>
+    @endif
     @if(count($orders)==0)
     <div style="text-align:center" class="m-auto">
         <img data-original="{{asset('storage/design/complete.svg')}}" alt="" class="img-default my-2">
@@ -304,6 +298,10 @@
 
 @section('js-scripts')
 <script>
+
+$('#pauseOrderStatus').on('change', function(){
+    $('#pauseOrderForm').submit();
+})
 
 $('#deleteOrderModal').on('show.bs.modal', function(event){
     var button = $(event.relatedTarget)

@@ -89,7 +89,11 @@
 
     <!-- Page Content -->
     <div class="container mt-3">
-
+        @if (Auth::user()->restaurant->getOrderStatus()===0)
+            <div class="alert alert-danger" style="text-align: center" role="alert">
+                <strong>El comercio no recibe más pedidos por hoy</strong>
+            </div>
+        @endif
         <div class="row">
             <div class="col-12">
                 <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">

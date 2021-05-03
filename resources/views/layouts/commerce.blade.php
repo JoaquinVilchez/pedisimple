@@ -10,10 +10,24 @@
       @include('restaurant.steps')
     @else
       @if(Auth::user()->restaurant->getSchedule()!=null)
-        <nav class="col-xl-2 bg-light sidebar">      
+        <nav class="col-xl-2 bg-light sidebar">
           <div class="sidebar-sticky">
+            <div class="m-2 mb-0">
+              @if (Auth::user()->restaurant->getOrderStatus()===0)
+                <div style="text-align: center" class="alert alert-warning p-1 mb-0" role="alert">
+                  <small><strong>
+                    Pausaste la recepción de nuevos pedidos.<br>
+                    <form action="{{route('restaurant.pauseOrders')}}" method="post" id="pauseOrderForm">
+                      @csrf
+                      <input type="text" name="status" value="true" hidden>
+                      <a href="#" onclick="pauseOrderForm()">Activar</a>
+                    </form>
+                  </strong></small>
+                </div>
+              @endif
+            </div>
             <div style="text-align:center">
-              <img width="100px" data-original="{{asset('storage/uploads/commerce/'.Auth::user()->restaurant->image)}}" class="img-thumbnail mt-4">
+              <img width="100px" data-original="{{asset('storage/uploads/commerce/'.Auth::user()->restaurant->image)}}" class="img-thumbnail mt-2">
               <h6>{{Auth::user()->restaurant->name}}</h6>
               @if(Auth::user()->restaurant->state=='active')
                 @if(count(Auth::user()->restaurant->products)==0)
@@ -288,6 +302,10 @@
 
   if(activePageElement!=null){
     activePageElement.classList.add("active")
+  }
+
+  function pauseOrderForm(){
+      $('#pauseOrderForm').submit();
   }
 
 </script>

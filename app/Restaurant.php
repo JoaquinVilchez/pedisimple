@@ -360,4 +360,9 @@ class restaurant extends Model
 
         return $transaction;
     }
+
+    public function getOrderStatus()
+    {
+        return $this->order_status;
+    }
 }

@@ -660,7 +660,6 @@ class RestaurantController extends Controller
                 return true;
             } catch (\Throwable $e) {
                 DB::rollback();
-                dd($e);
                 return false;
             }
         });
@@ -670,5 +669,17 @@ class RestaurantController extends Controller
         } else {
             return redirect()->route('restaurant.admin.list')->with('error_message', 'El comercio no se pudo eliminar');
         }
+    }
+
+    public function pauseOrders(Request $request)
+    {
+        $restaurant = Auth::user()->restaurant;
+        if (isset($request->status)) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+        $restaurant->update(['order_status' => $status]);
+        return redirect()->route('order.new');
     }
 }
