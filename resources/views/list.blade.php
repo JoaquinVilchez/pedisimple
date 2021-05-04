@@ -151,7 +151,18 @@
                     <img width="110vh" style="border: 1px solid rgb(233, 233, 233)" class="rounded fluid img-responsive" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" alt="">
                   </div>
                   <div class="col-xl-7 col-lg-7 col-md-7 col-sm-9 col-8 pl-2 px-4 my-auto">
-                        <h5 class="mb-1" style="font-size: 2.5vh"><a @if($restaurant->getOpeningHoursData()->isOpen()) href="{{route('restaurant.show', $restaurant->slug)}}" @else href="#" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal" @endif>{{$restaurant->name}}</a></h5>
+                        <h5 class="mb-1" style="font-size: 2.5vh"><a 
+                            @if($restaurant->getOpeningHoursData()->isOpen())
+                              @if ($restaurant->getOrderStatus() == 0)
+                                href="#" data-restaurantslug="{{$restaurant->slug}}"
+                                data-toggle="modal" data-target="#orderStoppedRestaurantModal"
+                              @else
+                                href="{{route('restaurant.show', $restaurant->slug)}}"
+                              @endif
+                            @else href="#" data-restaurantslug="{{$restaurant->slug}}"
+                               data-toggle="modal" data-target="#closedRestaurantModal"
+                            @endif>
+                        {{$restaurant->name}}</a></h5>
                         <div class="ml-1" style="font-size: .9em">
                           <p class="my-0"><i class="fas fa-map-marker-alt"></i> {{$restaurant->address->getFullAddress()}}</p>
                           <p class="my-0 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
@@ -160,18 +171,27 @@
                           @endif
                         </div>
                         @if($restaurant->getOpeningHoursData()->isOpen())
+                          @if ($restaurant->getOrderStatus() == 0)
+                          <span class="badge badge-pill badge-danger" style="font-weight: 400"><i class="far fa-times-circle"></i> No recibe pedidos ahora</span>
+                          @else()
                             <small style="color: #369a00"><i class="far fa-clock"></i> Abierto</small>
+                          @endif
                         @else
                             <small style="color: #bf0000"><i class="far fa-clock"></i> Cerrado en este momento</small>
                         @endif
                   </div>
                   <div class="col-xl-3 d-flex justify-content-center align-items-center">
                     {{-- <div class="row my-2"> --}}
-                      @if($restaurant->getOpeningHoursData()->isOpen())
-                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-block btn-sm float-right mt-2">Ver Productos</a>
+
+                    @if($restaurant->getOpeningHoursData()->isOpen())
+                      @if ($restaurant->getOrderStatus() == 0)
+                        <a href="#" class="btn btn-primary btn-block btn-sm float-right mt-2" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#orderStoppedRestaurantModal">Ver Productos</a>
                       @else
-                        <a href="#" class="btn btn-primary btn-block btn-sm float-right mt-2" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal">Ver Productos</a>
+                        <a href="{{route('restaurant.show', $restaurant->slug)}}" class="btn btn-primary btn-block btn-sm float-right mt-2">Ver Productos</a>
                       @endif
+                    @else
+                      <a href="#" class="btn btn-primary btn-block btn-sm float-right mt-2" data-restaurantslug="{{$restaurant->slug}}" data-toggle="modal" data-target="#closedRestaurantModal">Ver Productos</a>
+                    @endif
                     {{-- </div> --}}
 
                   </div>
@@ -202,11 +222,35 @@
         </button>
       </div>
         <div class="modal-body text-center">
-          <img src="{{asset('storage/design/close.svg')}}" class="img-step mb-4">
-          <h5>En este momento el comercio se encuentra cerrado</h5>  
-          <p>¿Queres ingresar al perfil de todas formas?</p>
-          <input type="hidden" id="restaurantid" name="restaurant_id" value="">
-          <input type="hidden" name="state" value="active">
+            <img src="{{asset('storage/design/close.svg')}}" class="img-step mb-4">
+            <h5>En este momento el comercio se encuentra cerrado</h5>  
+            <p>¿Queres ingresar al perfil de todas formas?</p>
+            <input type="hidden" id="restaurantid" name="restaurant_id" value="">
+            <input type="hidden" name="state" value="active">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="continueToRestaurant()">Ir al comercio</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="orderStoppedRestaurantModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="  exampleModalCenterTitle">El comercio no recibe pedidos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body text-center">
+            <h5>El comercio no recibe pedidos en este momento</h5>
+            <p>¿Queres ingresar al perfil de todas formas?</p>
+            <input type="hidden" id="restaurantid" name="restaurant_id" value="">
+            <input type="hidden" name="state" value="active">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -266,6 +310,13 @@
   var restaurantSlug = null
 
   $('#closedRestaurantModal').on('show.bs.modal', function(event){
+  var button = $(event.relatedTarget)
+
+  restaurantSlug = button.data('restaurantslug')
+  var modal = $(this) 
+  })
+
+  $('#orderStoppedRestaurantModal').on('show.bs.modal', function(event){
   var button = $(event.relatedTarget)
 
   restaurantSlug = button.data('restaurantslug')

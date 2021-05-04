@@ -30,11 +30,15 @@
                         <div class="ml-3">
                             <div class="d-flex align-items-center">
                                 <h3 class="txt-bold d-inline txt-shadow">{{$restaurant->name}}</h3>
-                                    @if($restaurant->getOpeningHoursData()->isOpen())
-                                        <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
-                                    @else
-                                        <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> Cerrado</span>
+                                @if($restaurant->getOpeningHoursData()->isOpen())
+                                    @if ($restaurant->getOrderStatus() == 0)
+                                    <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-times-circle"></i> No recibe pedidos ahora</span>
+                                    @else()
+                                    <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
                                     @endif
+                                @else
+                                    <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> Cerrado</span>
+                                @endif
                             </div>
                             <div>
                                 <p class="mb-0 mr-2 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
@@ -89,9 +93,9 @@
 
     <!-- Page Content -->
     <div class="container mt-3">
-        @if (Auth::user()->restaurant->getOrderStatus()===0)
+        @if ($restaurant->getOrderStatus()===0)
             <div class="alert alert-danger" style="text-align: center" role="alert">
-                <strong>El comercio no recibe más pedidos por hoy</strong>
+                <strong>El comercio no recibe pedidos en este momento, intenta hacer tu pedido más tarde</strong>
             </div>
         @endif
         <div class="row">

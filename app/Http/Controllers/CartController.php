@@ -64,54 +64,15 @@ class CartController extends Controller
         $restaurant = $product->restaurant;
 
         if ($restaurant->getOpeningHoursData()->isOpen()) {
-            if (\Cart::isEmpty()) {
-                if (count($product->getVariants) > 0) {
-                    \Cart::add(array(
-                        'id' => generateCode(),
-                        'name' => $product->name,
-                        'price' => $product->price,
-                        'quantity' => $request->quantity,
-                        'attributes' => ['variants' => $request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
-                    ));
-                } else {
-                    \Cart::add(array(
-                        'id' => $request->id,
-                        'name' => $product->name,
-                        'price' => $product->price,
-                        'quantity' => $request->quantity,
-                        'attributes' => ['aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
-                    ));
-                }
-
-                if ($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup') {
-
-                    $condition = new \Darryldecode\Cart\CartCondition(array(
-                        'name' => 'Delivery',
-                        'type' => 'tax',
-                        'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
-                        'value' => $restaurant->shipping_price,
-                        'attributes' => array( // attributes field is optional
-                            'description' => 'Costo del envio'
-                        )
-                    ));
-
-                    \Cart::condition($condition);
-                }
-
-                return view('carrito')->with('restaurant', $restaurant);
-
-                // return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
-            } else {
-                $firstItem = \Cart::getContent()->first();
-                $restaurantID = Product::find($firstItem->attributes->product_id)->restaurant->id;
-                if ($product->restaurant->id == $restaurantID) {
+            if ($restaurant->getOrderStatus() == 1) {
+                if (\Cart::isEmpty()) {
                     if (count($product->getVariants) > 0) {
                         \Cart::add(array(
                             'id' => generateCode(),
                             'name' => $product->name,
                             'price' => $product->price,
                             'quantity' => $request->quantity,
-                            'attributes' => ['variants' => $request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id],
+                            'attributes' => ['variants' => $request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
                         ));
                     } else {
                         \Cart::add(array(
@@ -139,15 +100,65 @@ class CartController extends Controller
                     }
 
                     return view('carrito')->with('restaurant', $restaurant);
+
+                    // return redirect()->back()->with('success_message', 'Agregado al carrito con éxito');
                 } else {
-                    return response()->json([
-                        'errors'  => 'El producto debe ser del mismo comercio.',
-                    ], 400);
+                    $firstItem = \Cart::getContent()->first();
+                    $restaurantID = Product::find($firstItem->attributes->product_id)->restaurant->id;
+                    if ($product->restaurant->id == $restaurantID) {
+                        if (count($product->getVariants) > 0) {
+                            \Cart::add(array(
+                                'id' => generateCode(),
+                                'name' => $product->name,
+                                'price' => $product->price,
+                                'quantity' => $request->quantity,
+                                'attributes' => ['variants' => $request->variants, 'aditional_notes' => $request->aditional_notes, 'product_id' => $product->id],
+                            ));
+                        } else {
+                            \Cart::add(array(
+                                'id' => $request->id,
+                                'name' => $product->name,
+                                'price' => $product->price,
+                                'quantity' => $request->quantity,
+                                'attributes' => ['aditional_notes' => $request->aditional_notes, 'product_id' => $product->id]
+                            ));
+                        }
+
+                        if ($restaurant->shipping_method == 'delivery' || $restaurant->shipping_method == 'delivery-pickup') {
+
+                            $condition = new \Darryldecode\Cart\CartCondition(array(
+                                'name' => 'Delivery',
+                                'type' => 'tax',
+                                'target' => 'total', // this condition will be applied to cart's subtotal when getSubTotal() is called.
+                                'value' => $restaurant->shipping_price,
+                                'attributes' => array( // attributes field is optional
+                                    'description' => 'Costo del envio'
+                                )
+                            ));
+
+                            \Cart::condition($condition);
+                        }
+
+                        return view('carrito')->with('restaurant', $restaurant);
+                    } else {
+                        return response()->json([
+                            'errors'  => 'El producto debe ser del mismo comercio.',
+                        ], 400);
+                    }
                 }
+            } else {
+
+                if (!\Cart::isEmpty()) {
+                    \Cart::clear();
+                }
+
+                return response()->json([
+                    'errors'  => 'El comercio no recibe pedidos en este momento, intenta hacer tu pedido más tarde',
+                ], 400);
             }
         } else {
             return response()->json([
-                'errors'  => 'Este comercio está cerrado, intenta hacer tu pedido más tarde',
+                'errors'  => 'El comercio está cerrado, intenta hacer tu pedido más tarde',
             ], 400);
         }
     }
