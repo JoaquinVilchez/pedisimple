@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Variant;
 use App\Product;
@@ -163,7 +163,7 @@ class VariantController extends Controller
         $variant = Variant::findOrFail($request->variantid);
         $this->authorize('pass', $variant);
 
-        $variants = DB::table('products_variants')->where('variant_id', $request->variantid)->delete();
+        DB::table('products_variants')->where('variant_id', $request->variantid)->delete();
 
         $variant->delete();
 

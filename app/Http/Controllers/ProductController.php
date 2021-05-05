@@ -461,7 +461,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Auth::user()->restaurant->categories;
+        $categories = Auth::user()->restaurant->categories->where('state', '!=', 'removed');
         $variants = Variant::where('restaurant_id', Auth::user()->restaurant->id)->get();
         return view('restaurant.products.create')->with([
             'categories' => $categories,

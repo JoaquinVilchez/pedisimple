@@ -18,8 +18,8 @@ class CategoryController extends Controller
         $request->validate([
             'ids'   => 'required|array',
             'ids.*' => 'integer',
-            ]);
-            
+        ]);
+
 
         foreach ($request->ids as $index => $id) {
             DB::table('categories')
@@ -44,11 +44,11 @@ class CategoryController extends Controller
         $category = Category::find($request->category_id);
         $this->authorize('pass', $category);
 
-        if($category->state == 'available'){
-            $category->update(['state'=>'not-available']);
+        if ($category->state == 'available') {
+            $category->update(['state' => 'not-available']);
             return redirect()->back()->with('success_message', 'Categoria cambiada a no disponible');
-        }else{
-            $category->update(['state'=>'available']);
+        } else {
+            $category->update(['state' => 'available']);
             return redirect()->back()->with('success_message', 'Categoria cambiada a disponible');
         }
     }
@@ -60,7 +60,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Auth::user()->restaurant->categories->sortBy('position');
+        $categories = Auth::user()->restaurant->categories->where('state', '!=', 'removed')->sortBy('position');
         return view('restaurant.categories.list')->with('categories', $categories);
     }
 
@@ -135,13 +135,13 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $this->authorize('pass', $category);
 
-        $data=request()->validate([
-            'name'=>'required',
-            'description'=>'nullable',
+        $data = request()->validate([
+            'name' => 'required',
+            'description' => 'nullable',
             'state' => 'required',
             'restaurant_id' => 'nullable',
         ]);
-        
+
         $category->update($data);
         return redirect(route('category.index'))->with('success_message', 'Categoria editada con éxito');
     }
@@ -157,14 +157,30 @@ class CategoryController extends Controller
         $category = Category::findOrFail($request->categoryid);
         $this->authorize('pass', $category);
 
+        $hasOrder = false;
         $products = Product::where('category_id', $category->id)->get();
-        if($products!=null){
-            foreach($products as $product){
+        if ($products != null) {
+            foreach ($products as $product) {
                 $this->authorize('pass', $product);
-                $product->delete();
+
+                if ($product->lineItem->count() > 0) {
+                    $hasOrder = true;
+                    $product->update([
+                        'state' => 'removed'
+                    ]);
+                } else {
+                    $product->delete();
+                }
             }
         }
-        $category->delete();
+
+        if ($hasOrder) {
+            $category->update([
+                'state' => 'removed'
+            ]);
+        } else {
+            $category->delete();
+        }
         return redirect()->route('category.index')->with('success_message', 'Categoria eliminada con éxito');
     }
 }
