@@ -67,7 +67,7 @@
                 <h5 style="color:#008e15"><i class="fas fa-check-circle"></i> Ya estás suscrito, gracias.</h5>
             </div>
         </div>
-        <div class="col-12 col-md-10 col-lg-6 col-xl-6 m-auto d-none d-md-block" id="subscribe-form">
+        <div class="col-12 col-md-10 col-lg-6 col-xl-6 m-auto" id="subscribe-form">
             <div class="my-4" style="text-align: center">
                 <small class="txt-mute">Quiero conocer las últimas novedades</small>
                 <form action="#" method="POST">
