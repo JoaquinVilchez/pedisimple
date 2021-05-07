@@ -83,8 +83,8 @@
                             @endif
                             <input type="text" name="auth_user" value="false" class="form-control" hidden>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-2">
+                                <div class="col-md-12 px-sm-4">
+                                    <div class="mb-2 d-flex flex-wrap" >
                                         <h5 class="d-inline">Continuar como invitado</h5>
                                         <small class="d-inline ml-2" style="font-size: 12px">¿Tienes una cuenta? <a href="#" id="has_account">Inicia sesión</a></small>
                                     </div>
@@ -307,8 +307,11 @@
 @section('js-scripts')
 <script>
     $(document).ready(function(){
-        var errors = '{{$errors}}';
+        var errors = '{{$errors->first()}}';
         var AuthUser = "{{{ (Auth::user()) ? true : false }}}";
+        
+        console.log(errors)
+
         if(AuthUser==1 || errors.length>2){
             $('#step-1').hide();
             $('#step-2').show();

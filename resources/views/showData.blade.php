@@ -1,5 +1,5 @@
 <div class="modal-header">
-<h5 class="modal-title">Agregar producto</h5><br>
+<h5 class="modal-title">Agregar a mi pedido</h5><br>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -16,23 +16,10 @@
                     @endif
                 </div>
                 <div class="col-7 col-md-8">
-                    <h6 class="txt-bold">{{ucwords($product->name)}}</h6>
+                    <h6 class="txt-bold">{{ucwords($product->name)}} (${{formatPrice($product->price)}})</h6>
                         <div class="ml-2">
                             @if ($product->details)
-                                <p class="text-mute my-1" style="font-size:.9em">Descripción: {{$product->details}}</p>
-                            @endif
-                                <p class="text-mute my-1" style="font-size:.9em">Precio unitario: ${{formatPrice($product->price)}}</p>
-                            @if(!$product->variants)
-                                <div class="form-group mt-2" style="font-size:.9em">
-                                    <label>Cantidad</label>
-                                    <select name="quantity" id="product-quantity">
-                                        @for ($i = 1; $i < 10; $i++)
-                                            <option value="{{$i}}">{{$i}}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                            @else
-                                <input name="quantity" id="product-quantity" value="1" hidden>
+                                <p class="text-mute my-1" style="font-size:.9em">{{$product->details}}</p>
                             @endif
                         </div>
                 </div>
@@ -53,6 +40,18 @@
                             </div>
                             <small style="color:red" id="errormessage"><i class="fas fa-exclamation-circle"></i> Solo puedes elegir hasta 4 variantes</small>
                         </div>
+                    @endif
+                    @if(!$product->variants)
+                        <div class="form-group mt-2" style="font-size:.9em">
+                            <label>Cantidad a pedir</label>
+                            <select name="quantity" id="product-quantity">
+                                @for ($i = 1; $i < 10; $i++)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    @else
+                        <input name="quantity" id="product-quantity" value="1" hidden>
                     @endif
                     <div class="form-group mt-0">
                         <textarea class="form-control" rows="3" name="aditional_notes" id="product-aditional_notes" placeholder="Notas adicionales"></textarea>

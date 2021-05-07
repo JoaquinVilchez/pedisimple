@@ -2,7 +2,7 @@
 @section('content')
 <div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-lg-8">
         @if(isset($person))
             <div style="text-align:center" class="mb-2">
             <img data-original="{{asset('storage/design/chef.svg')}}" alt="" class="img-default mb-3">
@@ -100,10 +100,12 @@
 
                             <div class="row">
                                 <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
-                                <div class="col-md-2 col-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
-                                        <small class="form-text text-muted ml-2">Ej: 3462</small>
+                                <div class="col-md-2 col-12 pr-md-1">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">0</span>
+                                        </div>
+                                        <input type="text" class="form-control @error('characteristic') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
                                     </div>
                                 </div>
                                 @error('characteristic')
@@ -112,13 +114,13 @@
                                     </span>
                                 @enderror
 
-                                <div class="col-md-4 col-12">
+                                <div class="col-md-4 col-12 pl-md-0">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">15</span>
                                             </div>
-                                            <input id="phone" type="text" class="form-control @error('characteristic') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
                                         </div>
                                         @error('phone')
                                         <span class="invalid-feedback" role="alert">

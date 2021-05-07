@@ -2,7 +2,7 @@
 
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
-    <h1 class="h2"><strong>Menú</strong></h1>
+    <h1 class="h2"><strong>Carta</strong></h1>
     <div class="btn-toolbar mb-2 mb-md-0 mr-3">
     <div class="btn-group d-none d-xl-block" role="group" >
       <button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle mx-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -17,7 +17,7 @@
         @endif
       </div>
     </div>
-    <a href="{{route('product.create')}}" type="button" class="btn btn-primary">Agregar<i class="fas fa-plus ml-2"></i></a>
+    <a href="{{route('product.create')}}" type="button" class="btn btn-primary">Agregar producto<i class="fas fa-plus ml-2"></i></a>
     </div>
   </div>
 
@@ -27,7 +27,7 @@
     <div style="text-align:center" class="m-auto">
       <img data-original="{{asset('/storage/design/new-product.svg')}}" alt="" class="img-default my-2">
       <p>Todavía no tienes productos.<br>
-      <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
+      <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar producto</a></p>
       {{-- <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2 d-inline">Importar planilla</a></p> --}}
     </div>
   @else

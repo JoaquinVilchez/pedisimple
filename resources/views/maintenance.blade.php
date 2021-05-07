@@ -67,7 +67,7 @@
                 <h5 style="color:#008e15"><i class="fas fa-check-circle"></i> Ya estás suscrito, gracias.</h5>
             </div>
         </div>
-        <div class="col-12 col-md-7 m-auto" id="subscribe-form">
+        <div class="col-12 col-md-10 col-lg-6 col-xl-6 m-auto d-none d-md-block" id="subscribe-form">
             <div class="my-4" style="text-align: center">
                 <small class="txt-mute">Quiero conocer las últimas novedades</small>
                 <form action="#" method="POST">
@@ -87,6 +87,29 @@
             <div class="alert alert-danger p-1" role="alert" id="error_message" hidden style="text-align: center">
             </div>
         </div>
+
+        {{-- <div class="col-12 col-md-7 m-auto d-md-none" id="subscribe-form">
+            <div class="my-4" style="text-align: center">
+                <small class="txt-mute">Quiero conocer las últimas novedades</small>
+                <form action="#" method="POST">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input name="email" type="text" class="form-control" placeholder="Ingresa tu correo electrónico" aria-label="Ingresa tu correo electrónico">
+                    </div>
+                    <select name="type" class="form-control input-group mb-3">
+                        <option value="customer">Soy usuario</option>
+                        <option value="merchant">Soy comerciante</option>
+                    </select>
+                    <div class="input-group mb-3">
+                        <div class="input-group mb-3">
+                          <button class="btn btn-primary btn-block" type="button" onclick="subscribeToNewsletter()">Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="alert alert-danger p-1" role="alert" id="error_message" hidden style="text-align: center">
+            </div>
+        </div> --}}
         
     </div>
     @if(Auth::guest())

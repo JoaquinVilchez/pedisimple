@@ -17,28 +17,30 @@
 @endsection
 
 @section('content')
-    <section class="jumbotron px-0 pb-0 mb-0 rounded-0" style="background: url({{$restaurant->showCoverPage()}}) no-repeat scroll 0px 50% / cover transparent; ">
+    <section class="jumbotron px-0 pb-0 mb-0 pt-xs-1 rounded-0" style="background: url({{$restaurant->showCoverPage()}}) no-repeat scroll 0px 50% / cover transparent; ">
         <div class="gradient">
             <div class="container text-white col-lg-8 ">
                 <div class="row pb-2">
-                    <div class="col-xl-2 col-lg-2 col-md-2 d-none d-md-block d-lg-block d-xl-block">
-                        <div class="d-flex align-items-center justify-content-center">
+                    <div class="col-md-2 col-sm-12">
+                        <div class="d-flex align-items-center justify-content-center mb-md-0 mb-4">
                             <img class="border rounded" width="120px" data-original="{{asset('storage/uploads/commerce/'.$restaurant->image)}}" alt="">
                         </div>
                     </div>
-                    <div class="col-xl-10 col-lg-10 col-md-10 pl-0">
+                    <div class="col-md-10 pl-0">
                         <div class="ml-3">
-                            <div class="d-flex align-items-center">
-                                <h3 class="txt-bold d-inline txt-shadow">{{$restaurant->name}}</h3>
+                            <div class="d-flex align-items-center flex-wrap">
+                                <h3 class="txt-bold d-inline txt-shadow mb-0 mr-3">{{$restaurant->name}}</h3>
+
                                 @if($restaurant->getOpeningHoursData()->isOpen())
                                     @if ($restaurant->getOrderStatus() == 0)
-                                    <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-times-circle"></i> No recibe pedidos ahora</span>
+                                    <span class="badge badge-danger d-inline align-items-center my-2"><i class="far fa-times-circle"></i> No recibe pedidos ahora</span>
                                     @else()
-                                    <span class="badge badge-success d-inline align-items-center ml-3"><i class="far fa-clock"></i> Abierto</span>
+                                    <span class="badge badge-success d-inline align-items-center my-2"><i class="far fa-clock"></i> Abierto</span>
                                     @endif
                                 @else
-                                    <span class="badge badge-danger d-inline align-items-center ml-3"><i class="far fa-clock"></i> Cerrado</span>
+                                    <span class="badge badge-danger d-inline align-items-center my-2"><i class="far fa-clock"></i> Cerrado</span>
                                 @endif
+
                             </div>
                             <div>
                                 <p class="mb-0 mr-2 d-inline"><i class="fas fa-phone"></i> {{$restaurant->characteristic.'-'.$restaurant->phone}}</p>
@@ -95,7 +97,7 @@
     <div class="container mt-3">
         @if ($restaurant->getOrderStatus()===0)
             <div class="alert alert-danger" style="text-align: center" role="alert">
-                <strong>El comercio no recibe pedidos en este momento, intenta hacer tu pedido más tarde</strong>
+                El comercio no recibe pedidos en este momento, intenta hacer tu pedido más tarde
             </div>
         @endif
         <div class="row">
@@ -115,21 +117,23 @@
 
             <div class="col-12 col-lg-8 order-1 order-lg-0 tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                    <div class="container">
-                        <div class="row my-3">
-                            <div class="d-flex align-items-center">
-                                <h6>Ir a categoria:</h6>
-                                    <div class="form-group">
-                                        <select class="form-control ml-3" id="goToCategorySelect">
-                                            @foreach($categories as $category)
-                                                @if(count($category->products)>0)
-                                                    <option value="{{normaliza($category->name)}}">
-                                                        {{ucfirst($category->name)}}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
+                    <div class="sticky-top m-0 p-0 border-bottom" style="background-color: white">
+                        <div class="container">
+                            <div class="row">
+                                <div class="d-flex align-items-center justify-content-center flex-wrap my-2 px-2" style="text-align:center">
+                                    <h6>Ir a categoria: </h6>
+                                        <div class="form-group ml-sm-3 mb-0">
+                                            <select class="form-control" id="goToCategorySelect">
+                                                @foreach($categories as $category)
+                                                    @if(count($category->products)>0)
+                                                        <option value="{{normaliza($category->name)}}">
+                                                            {{ucfirst($category->name)}}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,7 +153,7 @@
                                                 <h6 class="mb-0"><strong>{{ucfirst($temporary_product->name)}}</strong></h6>
                                                 @if($temporary_product->details)
                                                 <div class="ml-2 mt-1">
-                                                    <small>{{ucfirst($temporary_product->details)}}</small><br>
+                                                    <small>{{truncateText(ucfirst($temporary_product->details),80)}}</small><br>
                                                 </div>
                                                 @endif
                                                 <div class="ml-2 mt-1">
@@ -177,7 +181,7 @@
                                                 <h6 class="mb-0"><strong>{{ucfirst($temporary_product->name)}}</strong></h6>
                                                     @if($temporary_product->details)
                                                     <div class="mt-1">
-                                                        <small>{{ucfirst($temporary_product->details)}}</small><br>
+                                                        <small>{{truncateText(ucfirst($temporary_product->details),80)}}</small><br>
                                                     </div>
                                                     @endif
                                                     <div class="mt-1">
@@ -222,11 +226,11 @@
                                                 <h6 class="mb-0"><strong>{{ucfirst($product->name)}}</strong></h6>
                                                     @if($product->details)
                                                     <div class="mt-1">
-                                                        <small>{{ucfirst($product->details)}}</small><br>
+                                                        <small>{{truncateText(ucfirst($product->details),80)}}</small><br>
                                                     </div>
                                                     @endif
                                                     <div class="mt-1">
-                                                        <span>${{formatPrice($product->price)}}</span>
+                                                        <span class="txt-semi-bold text-muted">${{formatPrice($product->price)}}</span>
                                                     </div>
                                             </div>
                                             <div class="col-2 d-flex align-items-center">

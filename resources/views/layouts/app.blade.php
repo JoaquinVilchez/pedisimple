@@ -124,7 +124,7 @@
                                 @endif
                             @else
                                 <li class="nav-item dropdown d-none d-md-block d-lg-block d-xl-block">
-                                    <img width="150px" data-original="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
+                                    <img width="150px" data-original="{{asset('storage/uploads/user/'.Auth::user()->image)}}" class="img-nav d-inline m-1 border" @if(Auth::user()->unreadNotifications()->where('type', 'App\Notifications\NewOrder')->count()>0) style="border: 3px solid #d60000" @endif>
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline pl-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{Auth::user()->first_name}} <span class="caret"></span>
                                     </a>
@@ -189,12 +189,12 @@
         </nav>
 
         @if(!\Cart::isEmpty() and Request::path()!="checkout" and Request::path()!="login" and Request::path()!="register" and Request::path()!="email/verify")
-            <div class="alert alert-warning mb-0 text-center" role="alert" id="finishOrder" style="font-size:0.8rem">
+            <div class="alert alert-warning mb-0 text-center" role="alert" id="finishOrder" style="font-size:0.8rem;">
                 Tienes un pedido pendiente. <a href="{{route('checkout.index')}}" class="alert-link">Finalizar pedido</a> 
                 <div class="float-right">
-                    <a href="#" id="trash-empty-cart"><i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="bottom" title="Vaciar carrito."></i></a>
-                    <a href="#" id="no-confirm-empty-cart" style="background-color: #d60000; color: white; padding: 2px 5px; border-radius:2px">Cancelar</a>
+                    <a href="#" id="trash-empty-cart"><i class="fas fa-trash-alt"></i></a>
                     <a href="#" id="yes-confirm-empty-cart" onclick="emptyCart({{cartRestaurant()}})" style="background-color: #00c738; color: white; padding: 2px 5px; border-radius:2px">Confirmar</a>
+                    <a href="#" id="no-confirm-empty-cart" style="background-color: #d60000; color: white; padding: 2px 5px; border-radius:2px">Cancelar</a>
                 </div>
             </div>
         @endif

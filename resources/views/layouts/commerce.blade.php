@@ -62,7 +62,7 @@
                 <div class="collapse nav-pills" id="productosCollapse">
                   <ul class="list-unstyled ml-3">
                     <li class="nav-item">
-                        <a class="nav-link" id="menu" href="{{route('product.index')}}">Menú</a>
+                        <a class="nav-link" id="menu" href="{{route('product.index')}}">Carta</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" id="categorias" href="{{route('category.index')}}">Categorías</a>

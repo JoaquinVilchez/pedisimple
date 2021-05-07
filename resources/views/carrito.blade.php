@@ -23,7 +23,7 @@
             <div id="cart-not-empty">
                 <ul class="list-group list-group-flush">
                     @foreach (Cart::getContent() as $item)
-                        <li class="list-group-item d-flex justify-content-between lh-condensed" id="item-{{$item->id}}">
+                        <li class="list-group-item px-1 d-flex justify-content-between lh-condensed" id="item-{{$item->id}}">
                             <div class="col-3">
                                 <div class="row">
                                     <a onclick="removeItem('{{$item->id}}')" style="cursor:pointer"><i style="color: #e70000" class="d-inline fas fa-times-circle mr-2"></i></a>
@@ -47,7 +47,7 @@
                                     {{-- </form> --}}
                                 </div>
                             </div>
-                            <div class="col-7">   
+                            <div class="col-6">   
                                 <h6 class="my-0">{{ucfirst($item->name)}}</h6>
                                 @if($item->attributes->variants)
                                 <small><span style="cursor: pointer" data-toggle="tooltip" data-placement="bottom" title="{{showVariantsName($item->attributes->variants)}}">Ver variantes </span></small>    

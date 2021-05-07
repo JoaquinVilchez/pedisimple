@@ -6,13 +6,13 @@
   <div class="gradient">
         <div class="container d-flex align-items-center">
             <div class="row d-flex justify-content-center p-4 mt-4">
-              <h1 class="h1" style="text-align: center; font-weight: 800; color: white; text-shadow: 0px 5px 8px rgba(0,0,0,0.6);">Pedír lo que buscás, ahora es más simple</h1>
+              <h1 class="h1" style="text-align: center; font-weight: 800; color: white; text-shadow: 0px 5px 8px rgba(0,0,0,0.6); font-size:2em">Pedír lo que buscás, ahora es más simple</h1>
               <p class="p" style="color: white">Consultá los productos de los comercios de Venado Tuerto y hace tu pedido 100% online</p>
             </div>
         </div>
 
         <div class="container hero-steps">
-          <div class="row d-flex justify-content-center" style="font-size:.9em">
+          <div class="row d-flex justify-content-center" style="font-size:.85em">
             <span>
               1<br>
               Elegí un comercio
@@ -46,7 +46,7 @@
               Filtros 
             </button>
           </nav>
-          <div class="d-flex justify-content-center ">
+          <div>
             <div class="collapse" id="navbarToggleExternalContent">
               <div class="col-12">
                 @if (count($filters)>0)
@@ -172,7 +172,7 @@
                         </div>
                         @if($restaurant->getOpeningHoursData()->isOpen())
                           @if ($restaurant->getOrderStatus() == 0)
-                          <span class="badge badge-pill badge-danger" style="font-weight: 400"><i class="far fa-times-circle"></i> No recibe pedidos ahora</span>
+                          <span class="badge badge-pill badge-danger" style="font-weight: 400; font-size: .7em"><i class="far fa-times-circle"></i> No recibe pedidos ahora</span>
                           @else()
                             <small style="color: #369a00"><i class="far fa-clock"></i> Abierto</small>
                           @endif
