@@ -22,10 +22,17 @@
         <p class="text-muted">Solicitante: {{$order->getFullName()}}</p>
         <div class="col-12 m-auto col-md-4">
             <select class="custom-select mr-sm-2" id="order-shippingmethod" name="shippingmethod">
-                <option value="delivery" @if($order->shipping_method=='delivery') selected @endif>Delivery</option>
-                <option value="pickup" @if($order->shipping_method=='pickup') selected @endif>Retiro en local</option>
+                @if ($order->restaurant->shipping_method=='delivery-pickup')
+                    <option value="delivery" @if($order->shipping_method=='delivery') selected @endif>Delivery</option>
+                    <option value="pickup" @if($order->shipping_method=='pickup') selected @endif>Retiro en local</option>
+                @elseif($order->restaurant->shipping_method=='delivery')
+                    <option value="delivery" @if($order->shipping_method=='delivery') selected @endif>Delivery</option>
+                @elseif($order->restaurant->shipping_method=='pickup')
+                    <option value="pickup" @if($order->shipping_method=='pickup') selected @endif>Retiro en local</option>
+                @endif
             </select>
         </div>
+
     </div>
     <div id="order-address">
         <div class="d-flex justify-content-center mt-1">

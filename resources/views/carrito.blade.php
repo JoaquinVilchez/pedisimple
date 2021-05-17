@@ -75,29 +75,28 @@
                         </form>
                         </li>
                         @elseif($restaurant->shipping_method=='delivery')
-                        <li class="list-group-item d-flex justify-content-center">
-                            <small style="color:red; text-align:center">
-                                <p class="mb-0">Este comercio solo hace entregas por delivery.</p>
-                                <p class="mb-0">El costo está incluido en el total del pedido.</p>
-                            </small>
-                        </li>
+                        <div class="alert alert-primary py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px; text-align:center" role="alert">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Este comercio solo entrega por delivery. <br>
+                            El costo está incluido en el total del pedido.
+                        </div>
                         @endif
                     @endif
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Subtotal </span>
                         <strong id="cart-subtotal">${{Cart::getSubTotal()}}</strong>
                     </li>
-                    {{-- @if(Cart::getCondition('Delivery')) --}}
-                    <div id="cart-delivery-info">
-                        <li class="list-group-item d-flex justify-content-between rounded-0">
-                            <span>Delivery </span>
-                            <strong>${{formatPrice($restaurant->shipping_price)}}</strong>
-                        </li>
-                        <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
-                            <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar respecto a la distancia.
+                    @if ($restaurant->shipping_method!='pickup')
+                        <div id="cart-delivery-info">
+                            <li class="list-group-item d-flex justify-content-between rounded-0">
+                                <span>Delivery </span>
+                                <strong>${{formatPrice($restaurant->shipping_price)}}</strong>
+                            </li>
+                            <div class="alert alert-warning py-1 mb-0" style="font-size: 12px; border-radius: 0px 0px 2px 2px" role="alert">
+                                <i class="fas fa-exclamation-circle"></i> El precio del delivery puede variar respecto a la distancia.
+                            </div>
                         </div>
-                    </div>
-                    {{-- @endif --}}
+                    @endif
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total </span>
                         <strong id="cart-total">${{Cart::getTotal()}}</strong>
@@ -107,7 +106,7 @@
                 @if(Route::current()->getName()=='checkout.index')
                     <div class="my-3">
                         <a href="{{route('restaurant.show', $restaurant->slug)}}" type="button" class="btn btn-light btn-block"><i class="fas fa-angle-left"></i> Seguir comprando</a>
-                    </div>  
+                    </div>
                 @else
                     <div class="my-3">
                         <a href="{{route('checkout.index')}}" class="btn btn-primary btn-block">Finalizar pedido</a>

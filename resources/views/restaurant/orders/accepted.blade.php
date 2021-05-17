@@ -367,6 +367,9 @@ function editOrder(orderid){
       success:function(data){
           $('#editOrderModalContent').html(data)
       },
+        error:function(data){
+            console.log(data);
+        }
     });
 }
 
