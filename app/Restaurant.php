@@ -14,7 +14,7 @@ use Spatie\OpeningHours\OpeningHours;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UpdateStatusMail;
 
-class restaurant extends Model
+class Restaurant extends Model
 {
     protected $guarded = [];
 
