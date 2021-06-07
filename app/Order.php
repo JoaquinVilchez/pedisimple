@@ -177,4 +177,25 @@ class Order extends Model
 
         return $string;
     }
+
+    public function estimatedDeliveryTime()
+    {
+        $delayTime = $this->delay_time;
+        $accepted = Carbon::createFromFormat('Y-m-d H:i:s', $this->accepted);
+
+        $minimumTime = $accepted->addMinutes($delayTime - 5)->format('H:i');
+        $maximumTime = $accepted->addMinutes($delayTime + 5)->format('H:i');
+
+        return 'Entre las ' . $minimumTime . ' hs y las ' . $maximumTime . ' hs';
+    }
+
+    public function acceptanceDelayTime()
+    {
+        $now = Carbon::now();
+        $ordered = Carbon::createFromFormat('Y-m-d H:i:s', $this->ordered);
+
+        $minutes = $ordered->diffInMinutes($now);
+
+        return $minutes;
+    }
 }

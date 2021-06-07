@@ -7,11 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RequestMailAdmin extends Mailable implements ShouldQueue
+class UserCancelOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $data;
+
     /**
      * Create a new message instance.
      *
@@ -29,8 +30,7 @@ class RequestMailAdmin extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $subject = 'Un nuevo comercio quiere sumarse.';
-
-        return $this->markdown('emails.request.admin')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
+        $subject = 'Pedido cancelado con éxito';
+        return $this->markdown('emails.orders.userCancelOrder')->subject($subject)->from(env('MAIL_FROM_ADDRESS'), 'Pedí Simple');
     }
 }

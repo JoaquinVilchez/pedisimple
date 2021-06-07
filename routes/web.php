@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
 use App\Exports\UsersExport;
+use App\Order;
 use App\User;
 
 /*
@@ -155,6 +156,7 @@ Route::post('/pedidos/cerrar', 'OrderController@close')->name('order.close')->mi
 Route::post('/pedidos/cancelar', 'OrderController@cancel')->name('order.cancel')->middleware(['auth', 'verified', 'hasRestaurant']);
 Route::post('/pedidos/update', 'OrderController@updateOrder')->name('order.updateOrder')->middleware(['auth', 'verified', 'hasRestaurant']);
 Route::post('/pedidos/edit', 'OrderController@editOrder')->name('order.editOrder')->middleware(['auth', 'verified', 'hasRestaurant']);
+Route::post('/pedidos/usuario/cancelar', 'OrderController@UserCancelOrder')->name('order.userCancel');
 Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
 Route::resource('usuario/pedidos', 'OrderController')->names('order')->middleware(['auth', 'verified', 'Maintenance']);
 

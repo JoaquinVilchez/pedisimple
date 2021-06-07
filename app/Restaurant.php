@@ -365,4 +365,48 @@ class Restaurant extends Model
     {
         return $this->order_status;
     }
+
+    public function averageAcceptanceOfOrders()
+    {
+        $today = Carbon::now()->format('Y-m-d');
+        $todayOrders = Order::where('restaurant_id', $this->id)->whereDate('ordered', $today)->where('accepted', '!=', null)->get();
+        $total = 0;
+        $average = 0;
+        if (count($todayOrders) > 0) {
+            foreach ($todayOrders as $order) {
+                $accepted = Carbon::createFromFormat('Y-m-d H:i:s', $order->accepted);
+                $ordered = Carbon::createFromFormat('Y-m-d H:i:s', $order->ordered);
+                $difference = $accepted->diffInMinutes($ordered);
+                $total = $total + $difference;
+            }
+            $average = round($total / count($todayOrders));
+        }
+
+        return $average;
+    }
+
+    public function approximateDeliveryTime()
+    {
+        $today = Carbon::now()->format('Y-m-d');
+        $todayOrders = Order::where('restaurant_id', $this->id)->whereDate('ordered', $today)->where('accepted', '!=', null)->pluck('delay_time');
+        $total = 0;
+
+        if (count($todayOrders) > 0) {
+            foreach ($todayOrders as $item) {
+                $total = $total + $item;
+            }
+
+            $delayTimeAverage = round($total / count($todayOrders));
+            $averageAcceptanceOfOrders = $this->averageAcceptanceOfOrders();
+
+            $minimumTime = Carbon::now()->addMinutes($delayTimeAverage + $averageAcceptanceOfOrders - 5)->format('H:i');
+            $maximumTime = Carbon::now()->addMinutes($delayTimeAverage + $averageAcceptanceOfOrders + 5)->format('H:i');
+
+            $result = 'Entre las ' . $minimumTime . 'hs y las ' . $maximumTime . 'hs';
+        } else {
+            $result = 'no-data';
+        }
+
+        return $result;
+    }
 }

@@ -210,7 +210,7 @@ function whatsappRejectOrderMessage($order)
         $first_name = $order->guest_first_name;
     }
 
-    return '¡Hola ' . $first_name . '! Soy ' . Auth::user()->first_name . ' de ' . $order->restaurant->name . '. Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
+    return '¡Hola ' . $first_name . '! me comunico de ' . $order->restaurant->name . '. Lamentamos informarte que no podemos tomar tu pedido en este momento. ';
 }
 
 function whatsappCancelOrderMessage($order)
@@ -221,7 +221,7 @@ function whatsappCancelOrderMessage($order)
         $first_name = $order->guest_first_name;
     }
 
-    return '¡Hola ' . $first_name . '! Soy ' . Auth::user()->first_name . ' de ' . $order->restaurant->name . '. Te informamos que hemos cancelado tu pedido. ';
+    return '¡Hola ' . $first_name . '! me comunico de ' . $order->restaurant->name . '. Te informamos que hemos cancelado tu pedido. ';
 }
 
 function gluberMessage($order)
@@ -232,7 +232,12 @@ function gluberMessage($order)
         $first_name = $order->guest_first_name;
     }
 
-    return 'Hola, soy ' . Auth::user()->first_name . ' de ' . $order->restaurant->name . ' (_' . $order->restaurant->address->getAddress() . '_) Me comunico desde ' . config("app.name") . '. ' . 'Tengo que hacer una entrega a *' . getOrderAddress($order) . '* con el codigo *' . $order->code . '*. ¿Hay disponibilidad?';
+    return 'Hola, me comunico de ' . $order->restaurant->name . ' (_' . $order->restaurant->address->getAddress() . '_) Te contacto desde ' . config("app.name") . ' para hacer una entrega a *' . getOrderAddress($order) . '* con el codigo *' . $order->code . '*. ¿Hay disponibilidad?';
+}
+
+function delayedOrder($order)
+{
+    return 'Hola, queria informar que tengo un pedido sin aceptar hace ' . $order->acceptanceDelayTime() . ' minutos en ' . $order->restaurant->name;
 }
 
 function getOrderAddress($order)

@@ -330,8 +330,6 @@ $('#cancelOrderModal').on('show.bs.modal', function(event){
 function cancelOrder(){
     var cancelorderid = $('#cancelorderid').val();
     var send = $('#cancelordercheckbox').is(":checked");
-    console.log(cancelorderid);
-    console.log(send);
     $.ajax({
         url:"{{ route('order.cancel') }}",
         type:"POST",
@@ -340,18 +338,15 @@ function cancelOrder(){
         },
         data:{cancelorderid:cancelorderid, send:send},
         success:function(data) {
-            if(send){
+            if(data.newUrl){
                 var id = (new Date()).getTime();
-                var myWindow = window.open(data, id);
-                $.post("{{ route('order.cancel') }}", data).done(function(htmlContent) {
-                    myWindow.document.write(htmlContent);
-                    myWindow.focus();
-                });
+                var myWindow = window.open(data.newUrl, id);
             }
+            $.post("{{ route('order.cancel') }}", data).done(function(htmlContent) {
+                myWindow.document.write(htmlContent);
+                myWindow.focus();
+            });
             location.reload();
-        },
-        error:function(data){
-            console.log(data);
         }
     })
 };
@@ -366,10 +361,7 @@ function editOrder(orderid){
       data:{orderid:orderid},
       success:function(data){
           $('#editOrderModalContent').html(data)
-      },
-        error:function(data){
-            console.log(data);
-        }
+      }
     });
 }
 

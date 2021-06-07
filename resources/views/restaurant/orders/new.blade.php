@@ -8,7 +8,7 @@
 @section('main')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom mb-4">
         <div class="header-left d-flex align-items-center">
-            <h1 class="h2"><strong>Nuevos pedidos</strong> @if(count($orders)>0)<small>({{count($orders)}})</small>@endif</h1>
+            <h1 class="h2"><strong>Nuevos pedidos</strong> @if(count($countOrders)>0)<small>({{count($countOrders)}})</small>@endif</h1>
             <div class="switcher ml-4">
                 <label class="switch" data-toggle="tooltip" data-placement="bottom" title="Pausar pedidos">
                     <form action="{{route('restaurant.pauseOrders')}}" method="post" id="pauseOrderForm">
@@ -43,9 +43,11 @@
         <p>No tienes nuevos pedidos.<br>
     </div>  
     @else
+    
+        <div class="col-12">
+            {{$orders->links()}}
         @foreach($orders as $order)
         {{-- MOBILE --}}
-        <div class="col-12">
             <div class="order-mobile d-xl-none" width="100%" style="font-size:15px;">
                 <div class="card mb-2">
                     <div class="card-header" style="border-bottom:10px solid #ffa64d; border-radius: 5px;padding-bottom:0px;font-size:15px; background-color: white;" id="headingOne">
@@ -126,10 +128,8 @@
                 </div>
                 </div>
             </div>
-        </div>
         {{-- FIN MOBILE --}}
         {{-- DESKTOP --}}
-        <div class="col-12">
             <div class="order d-none d-xl-block" width="100%" style="font-size:15px" id="orderHeader" style="font-size:15px">
                 <div class="card mb-4">
                     <div class="border-bottom px-2">
@@ -207,11 +207,7 @@
                                 <div class="float-right d-flex">
                                     <div class="d-inline mr-2">
                                         @if($order->delayHours() >= 24)
-                                            <form action="{{route('order.cancel')}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" id="orderid" name="orderid" value="{{$order->id}}">
-                                                <button type="submit" class="btn btn-danger">Cancelar pedido</button>
-                                            </form>
+                                            <a href="#" class="btn btn-danger" data-cancelorderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal">Eliminar pedido</a>
                                         @else
                                             <a href="#" class="btn btn-secondary" data-deleteorderid="{{$order->id}}" data-toggle="modal" data-target="#deleteOrderModal">Rechazar</a>
                                             <a href="#" class="btn btn-primary" data-acceptorderid="{{$order->id}}" data-toggle="modal" data-target="#acceptOrderModal">Aceptar</a>
@@ -223,73 +219,98 @@
                     </div>
                 </div>
             </div>
+            {{-- FIN DESKTOP --}}
+            @endforeach
+            {{$orders->links()}}
         </div>
-        {{-- FIN DESKTOP --}}
-        @endforeach
+
     @endif
 
 @if(count($orders)!=0)
     <!-- Modal -->
-    <div class="modal fade" id="acceptOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">Aceptar pedido</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body" style="text-align: center">
-                <h5>¿Estás seguro de aceptar este pedido?</h5>
-                <div class="row d-flex justify-content-center mt-4">
-                    <label><i class="far fa-clock"></i> Indica a tu cliente la demora del pedido</label>
-                    <div class="col-6">
-                        <div class="form-group" width="50%">
-                            <select name="delay_time" id="delay_time" class="form-control">
-                                @for ($i = 10; $i <= 60; $i=$i+5)
-                                    <option value="{{$i}}" @if (Auth::user()->restaurant->shipping_time == $i) selected @endif>{{$i}} Minutos</option>
-                                @endfor
-                                <option value="0">Más de una hora</option>
-                            </select>
-                        </div>
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Eliminar pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     </div>
-                </div>
-                <hr>
-                <small>Al aceptar el pedido te redireccionaremos a WhatsApp con un mensaje que contiene el detalle completo del pedido para tu cliente.</small>
-                <input type="hidden" id="acceptorderid" name="acceptorderid" value="" hidden>
-            </div>
-            <div class="modal-footer">
-                {{-- <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">Cancelar</button> --}}
-                <button type="button" href="#"
-                    class="btn btn-success btn-block" onclick="acceptOrder()"><i class="fab fa-whatsapp"></i> Confirmar
-                </button>
-                <div class="mx-auto">
-                    <small><a href="#" data-dismiss="modal" class="docs-link">Cancelar</a></small>
+                    <div class="modal-body">
+                        <h5>¿Estás seguro de eliminar este pedido?</h5>
+                        <div class="container">
+                        <input type="hidden" id="cancelorderid" name="cancelorderid" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-danger" onclick="cancelOrder()">Eliminar pedido</button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="acceptOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Aceptar pedido</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <h5>¿Estás seguro de aceptar este pedido?</h5>
+                    <div class="row d-flex justify-content-center mt-4">
+                        <label><i class="far fa-clock"></i> Indica a tu cliente la demora del pedido</label>
+                        <div class="col-6">
+                            <div class="form-group" width="50%">
+                                <select name="delay_time" id="delay_time" class="form-control">
+                                    @for ($i = 10; $i <= 60; $i=$i+5)
+                                        <option value="{{$i}}" @if (Auth::user()->restaurant->shipping_time == $i) selected @endif>{{$i}} Minutos</option>
+                                    @endfor
+                                    <option value="0">Más de una hora</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <small>Al aceptar el pedido te redireccionaremos a WhatsApp con un mensaje que contiene el detalle completo del pedido para tu cliente.</small>
+                    <input type="hidden" id="acceptorderid" name="acceptorderid" value="" hidden>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" href="#"
+                        class="btn btn-success btn-block" onclick="acceptOrder()"><i class="fab fa-whatsapp"></i> Confirmar
+                    </button>
+                    <div class="mx-auto">
+                        <small><a href="#" data-dismiss="modal" class="docs-link">Cancelar</a></small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalCenterTitle">Rechazar pedido</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Rechazar pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <h5>¿Estás seguro de rechazar este pedido?</h5>
+                    <input type="hidden" id="deleteorderid" name="deleteorderid" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" href="#" class="btn btn-danger" onclick="rejectOrder()"><i class="fab fa-whatsapp"></i>Rechazar</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <h5>¿Estás seguro de rechazar este pedido?</h5>
-                <input type="hidden" id="deleteorderid" name="deleteorderid" value="">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" href="#" class="btn btn-danger" onclick="rejectOrder()"><i class="fab fa-whatsapp"></i>Eliminar</button>
-            </div>
-        </div>
         </div>
     </div>
 @endif
@@ -299,70 +320,106 @@
 @section('js-scripts')
 <script>
 
-$('#pauseOrderStatus').on('change', function(){
-    $('#pauseOrderForm').submit();
-})
+    $('#cancelOrderModal').on('show.bs.modal', function(event){
+        var button = $(event.relatedTarget)
 
-$('#deleteOrderModal').on('show.bs.modal', function(event){
-    var button = $(event.relatedTarget)
+        var cancelorderid = button.data('cancelorderid')
+        var modal = $(this)
 
-    var deleteorderid = button.data('deleteorderid')
-    var modal = $(this)
-
-    modal.find('.modal-body #deleteorderid').val(deleteorderid)
-})
-
-$('#acceptOrderModal').on('show.bs.modal', function(event){
-    var button = $(event.relatedTarget)
-
-    var acceptorderid = button.data('acceptorderid')
-    var modal = $(this)
-
-    modal.find('.modal-body #acceptorderid').val(acceptorderid)
-})
-
-function acceptOrder(){
-    var acceptorderid = $('#acceptorderid').val();
-    var delay_time = $('#delay_time').val();
-    $.ajax({
-        url:"{{ route('order.accept') }}",
-        type:"POST",
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        data:{acceptorderid:acceptorderid,delay_time:delay_time},
-        success:function(data) {
-            var id = (new Date()).getTime();
-            var myWindow = window.open(data, id);
-            $.post("{{ route('order.accept') }}", data).done(function(htmlContent) {
-                myWindow.document.write(htmlContent);
-                myWindow.focus();
-            });
-            location.reload();
-        }
+        modal.find('.modal-body #cancelorderid').val(cancelorderid)
     })
-};
 
-function rejectOrder(){
-    var deleteorderid = $('#deleteorderid').val();
-    $.ajax({
-        url:"{{ route('order.reject') }}",
-        type:"POST",
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        data:{deleteorderid:deleteorderid},
-        success:function(data) {
-            var id = (new Date()).getTime();
-            var myWindow = window.open(data, id);
-            $.post("{{ route('order.reject') }}", data).done(function(htmlContent) {
-                myWindow.document.write(htmlContent);
-                myWindow.focus();
-            });
-            location.reload();
-        }
+    $('#pauseOrderStatus').on('change', function(){
+        $('#pauseOrderForm').submit();
     })
-};
+
+    $('#deleteOrderModal').on('show.bs.modal', function(event){
+        var button = $(event.relatedTarget)
+
+        var deleteorderid = button.data('deleteorderid')
+        var modal = $(this)
+
+        modal.find('.modal-body #deleteorderid').val(deleteorderid)
+    })
+
+    $('#acceptOrderModal').on('show.bs.modal', function(event){
+        var button = $(event.relatedTarget)
+
+        var acceptorderid = button.data('acceptorderid')
+        var modal = $(this)
+
+        modal.find('.modal-body #acceptorderid').val(acceptorderid)
+    })
+
+    function acceptOrder(){
+        var acceptorderid = $('#acceptorderid').val();
+        var delay_time = $('#delay_time').val();
+        $.ajax({
+            url:"{{ route('order.accept') }}",
+            type:"POST",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            data:{acceptorderid:acceptorderid,delay_time:delay_time},
+            success:function(data) {
+                if(data.newUrl){
+                    var id = (new Date()).getTime();
+                    var myWindow = window.open(data.newUrl, id);
+                }
+                $.post("{{ route('order.accept') }}", data).done(function(htmlContent) {
+                    myWindow.document.write(htmlContent);
+                    myWindow.focus();
+                });
+                location.reload();
+            }
+        })
+    }
+
+    function rejectOrder(){
+        var deleteorderid = $('#deleteorderid').val();
+        $.ajax({
+            url:"{{ route('order.reject') }}",
+            type:"POST",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            data:{deleteorderid:deleteorderid},
+            success:function(data) {
+                if(data.newUrl){
+                    var id = (new Date()).getTime();
+                    var myWindow = window.open(data.newUrl, id);
+                }
+                $.post("{{ route('order.reject') }}", data).done(function(htmlContent) {
+                    myWindow.document.write(htmlContent);
+                    myWindow.focus();
+                });
+                location.reload();
+            }
+        })
+    }
+
+    function cancelOrder(){
+        var cancelorderid = $('#cancelorderid').val();
+        $.ajax({
+            url:"{{ route('order.cancel') }}",
+            type:"POST",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            data:{cancelorderid:cancelorderid, send:false},
+            success:function(data) {
+                if(data.newUrl){
+                    var id = (new Date()).getTime();
+                    var myWindow = window.open(data.newUrl, id);
+                }
+                $.post("{{ route('order.cancel') }}", data).done(function(htmlContent) {
+                    myWindow.document.write(htmlContent);
+                    myWindow.focus();
+                });
+                location.reload();
+            }
+        })
+    }
 
 </script>
 @endsection

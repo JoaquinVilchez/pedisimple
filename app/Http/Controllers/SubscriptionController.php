@@ -120,7 +120,6 @@ class SubscriptionController extends Controller
 
             return redirect()->route('subscription.index')->with('success_message', 'Suscripción editada con éxito.');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('subscription.index')->with('error_message', 'Hubo un error y no se pudo editar suscripción.');
         }
     }

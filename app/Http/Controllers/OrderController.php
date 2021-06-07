@@ -8,11 +8,15 @@ use Illuminate\Support\Facades\Validator;
 use App\Order;
 use App\User;
 use App\LineItem;
+use App\Mail\UserCancelOrderMail;
+use App\Mail\UserCancelOrderToRestaurantMail;
 use Redirect;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+
     public function getClosedDetails(Request $request)
     {
         $order = Order::find($request->id);
@@ -50,8 +54,12 @@ class OrderController extends Controller
     public function new()
     {
         Auth::user()->unreadNotifications->markAsRead();
+        $countOrders = Order::where('restaurant_id', Auth::user()->restaurant->id)->where('state', 'pending')->orderBy('id', 'desc')->get();
         $orders = Order::where('restaurant_id', Auth::user()->restaurant->id)->where('state', 'pending')->orderBy('id', 'desc')->paginate(10);
-        return view('restaurant.orders.new')->with('orders', $orders);
+        return view('restaurant.orders.new')->with([
+            'orders' => $orders,
+            'countOrders' => $countOrders
+        ]);
     }
 
     /** 
@@ -88,19 +96,45 @@ class OrderController extends Controller
     public function accept(Request $request)
     {
         $order = Order::find($request->acceptorderid);
-        $order->update([
-            'state' => 'accepted',
-            'accepted' => Carbon::now(),
-            'delay_time' => $request->delay_time
-        ]);
-        // Searching the internet I thought I could do it this way, but I found no result.
+        if ($order->state == 'pending') {
+            $order->update([
+                'state' => 'accepted',
+                'accepted' => Carbon::now(),
+                'delay_time' => $request->delay_time
+            ]);
+            // Searching the internet I thought I could do it this way, but I found no result.
 
-        $newUrl = 'https://wa.me/549' . str_replace('-', '', whatsappNumberCustomer($order)) . '?text=' . urlencode(whatsappMessageCustomer($order));
-        session()->flash('newurl', $newUrl);
-        //===============================================================================
+            $newUrl = 'https://wa.me/549' . str_replace('-', '', whatsappNumberCustomer($order)) . '?text=' . urlencode(whatsappMessageCustomer($order));
+            session()->flash('newurl', $newUrl);
+            //===============================================================================
 
-        return $newUrl;
-        // return back()->with('success_message', 'Pedido aceptado.');
+            $data = [
+                'newUrl' => $newUrl,
+                'message' => 'Pedido aceptado con éxito',
+                'message_type' => 'success_message'
+            ];
+        } elseif ($order->state == 'cancelled') {
+            $data = [
+                'message' => 'El pedido fue cancelado por el cliente',
+                'message_type' => 'alert_message'
+            ];
+
+            session()->flash($data['message_type'], $data['message']);
+        } elseif ($order->state == 'accepted') {
+            $data = [
+                'message' => 'El pedido ya esta aceptado',
+                'message_type' => 'alert_message'
+            ];
+            session()->flash($data['message_type'], $data['message']);
+        } elseif ($order->state == 'rejected') {
+            $data = [
+                'message' => 'El pedido ya fue rechazado',
+                'message_type' => 'alert_message'
+            ];
+            session()->flash($data['message_type'], $data['message']);
+        }
+
+        return $data;
     }
 
     /**
@@ -112,15 +146,43 @@ class OrderController extends Controller
     public function reject(Request $request)
     {
         $order = Order::find($request->deleteorderid);
-        $order->update([
-            'state' => 'rejected'
-        ]);
 
-        $newUrl = 'https://wa.me/549' . str_replace('-', '', whatsappNumberCustomer($order)) . '?text=' . urlencode(whatsappRejectOrderMessage($order));
-        session()->flash('newurl', $newUrl);
+        if ($order->state == 'pending') {
+            $order->update([
+                'state' => 'rejected'
+            ]);
+
+            $newUrl = 'https://wa.me/549' . str_replace('-', '', whatsappNumberCustomer($order)) . '?text=' . urlencode(whatsappMessageCustomer($order));
+
+            $data = [
+                'newUrl' => $newUrl,
+                'message' => 'Pedido rechazado con éxito',
+                'message_type' => 'success_message'
+            ];
+
+            session()->flash('newurl', $newUrl);
+        } elseif ($order->state == 'cancelled') {
+            $data = [
+                'message' => 'El pedido fue cancelado por el cliente',
+                'message_type' => 'alert_message'
+            ];
+
+            session()->flash($data['message_type'], $data['message']);
+        } elseif ($order->state == 'accepted') {
+            $data = [
+                'message' => 'El pedido ya fue aceptado',
+                'message_type' => 'alert_message'
+            ];
+            session()->flash($data['message_type'], $data['message']);
+        } elseif ($order->state == 'rejected') {
+            $data = [
+                'message' => 'El pedido ya fue rechazado',
+                'message_type' => 'alert_message'
+            ];
+            session()->flash($data['message_type'], $data['message']);
+        }
 
         return $newUrl;
-        // return back()->with('success_message', 'Pedido rechazado.');
     }
 
     /**
@@ -133,19 +195,23 @@ class OrderController extends Controller
     {
         $order = Order::find($request->orderid);
 
-        $order->update([
-            'state' => 'closed',
-            'closed' => Carbon::now()
-        ]);
+        if ($order->state == 'accepted') {
+            $order->update([
+                'state' => 'closed',
+                'closed' => Carbon::now()
+            ]);
 
-        foreach ($order->lineitems as $item) {
-            if ($item->variants != null) {
-                $item->update([
-                    'variants' => showVariantsName($item->variants)
-                ]);
+            foreach ($order->lineitems as $item) {
+                if ($item->variants != null) {
+                    $item->update([
+                        'variants' => showVariantsName($item->variants)
+                    ]);
+                }
             }
+            return back()->with('success_message', 'Pedido cerrado.');
+        } else {
+            return back()->with('alert_message', 'El pedido ya fue cerrado.');
         }
-        return back()->with('success_message', 'Pedido cerrado.');
     }
 
 
@@ -157,19 +223,79 @@ class OrderController extends Controller
      */
     public function cancel(Request $request)
     {
-        $order = Order::find($request->cancelorderid);
-        $order->update([
-            'state' => 'cancelled'
-        ]);
-
-        if ($request->send == true) {
-            $newUrl = 'https://wa.me/549' . str_replace('-', '', whatsappNumberCustomer($order)) . '?text=' . urlencode(whatsappCancelOrderMessage($order));
-            session()->flash('newurl', $newUrl);
+        if ($request->send == "true") {
+            $send = true;
+        } else {
+            $send = false;
         }
+        $order = Order::find($request->cancelorderid);
+        if ($order->state == 'accepted' || $order->state == 'pending') {
+            $order->update([
+                'state' => 'cancelled'
+            ]);
 
-        return $newUrl;
+            if ($send == true) {
+                $newUrl = 'https://wa.me/549' . str_replace('-', '', whatsappNumberCustomer($order)) . '?text=' . urlencode(whatsappCancelOrderMessage($order));
+                $data = [
+                    'newUrl' => $newUrl,
+                    'message' => 'El pedido fue cancelado con éxito',
+                    'message_type' => 'success_message'
+                ];
+                session()->flash('newurl', $newUrl);
+            } else {
+                $data = [
+                    'message' => 'El pedido fue cancelado con éxito',
+                    'message_type' => 'success_message'
+                ];
+            }
 
-        // return back()->with('success_message', 'Pedido cancelado.');
+            return $data;
+        } elseif ($order->state == 'cancelled') {
+            $data = [
+                'message' => 'El pedido ya fue cancelado',
+                'message_type' => 'alert_message'
+            ];
+            session()->flash($data['message_type'], $data['message']);
+
+            return $data;
+        }
+    }
+
+
+    public function UserCancelOrder(Request $request)
+    {
+        $orderId = $request->orderid;
+
+        $order = Order::findOrFail($orderId);
+        if ($order->state == 'pending') {
+            $order->update([
+                'state' => 'cancelled'
+            ]);
+
+            if ($order->user) {
+                $data = [
+                    'first_name' => $order->user->first_name,
+                    'last_name' => $order->user->last_name,
+                    'restaurant' => $order->restaurant->name,
+                    'order_code' => $order->code
+                ];
+
+                Mail::to($order->user->email)->send(new UserCancelOrderMail($data));
+            } else {
+                $data = [
+                    'first_name' => $order->guest_first_name,
+                    'last_name' => $order->guest_last_name,
+                    'restaurant' => $order->restaurant->name,
+                    'order_code' => $order->code
+                ];
+            }
+
+            Mail::to($order->restaurant->user->email)->send(new UserCancelOrderToRestaurantMail($data));
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
