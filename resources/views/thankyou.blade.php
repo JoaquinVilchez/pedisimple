@@ -284,8 +284,8 @@
                             $('#response-success').show();
                             setTimeout(function(){ 
                                 $('#cancelOrderModal').modal('hide');
-                                window.location.replace(url);
-                            }, 1000);
+                                window.location.href = url;
+                            }, 500);
                         }else{
                             console.log(data)
                             $('#question').hide();
