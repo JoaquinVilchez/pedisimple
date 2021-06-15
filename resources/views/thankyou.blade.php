@@ -270,7 +270,6 @@
             $('.questionIcon').addClass('d-none');
             $('#cancelOrderModal').find('.modal-header').hide();
             $('#cancelOrderModal').find('.modal-footer').hide();
-            url = "{{env('APP_URL')}}"
             $.ajax({
                 url : '{{ route("order.userCancel") }}',
                 type: 'POST',
@@ -284,7 +283,7 @@
                             $('#response-success').show();
                             setTimeout(function(){ 
                                 $('#cancelOrderModal').modal('hide');
-                                window.location.href = url;
+                                window.location.href = '/';
                             }, 500);
                         }else{
                             console.log(data)
