@@ -219,7 +219,9 @@ return [
         'commerce' => 'nombre del comercio',
         'termsandconditions' => 'Términos y condiciones',
         'freedays' => 'días gratis',
-        'gracedays' => 'días de gracia'
+        'gracedays' => 'días de gracia',
+        'g-recaptcha-response.required' => 'Captcha is Required'
+
     ],
 
     'email-confirmation' => [

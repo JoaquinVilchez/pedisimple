@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Http\FormRequest;
+
 
 class RegisterController extends Controller
 {
@@ -71,7 +73,8 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'characteristic' => ['required', 'min:4'],
-            'phone' => ['required', 'min:6']
+            'phone' => ['required', 'min:6'],
+            'g-recaptcha-response' => 'recaptcha',
         ]);
     }
 
@@ -83,7 +86,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
         if (isset($data['token'])) {
             $invitation = Invitation::where('token', $data['token'])->first();
             $invitation->update(['state' => 'used']);
