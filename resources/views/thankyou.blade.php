@@ -57,6 +57,20 @@
                             <small class="text-muted"><p><i class="fas fa-user"></i> {{$order->getFullName()}}</p></small>
                         </li>
                         <li>
+                            <strong>Teléfono de contacto</strong>
+                            {{-- <div id="new-order-phone">
+                                <div class="input-group input-group-sm mb-3">
+                                    <input type="text" style="max-width:50%" class="form-control rounded " value="{{$order->getPhone()}}">
+                                    <button type="button" id="order-buttonSubmit" class="btn btn-sm btn-outline-success mx-2"><i class="far fa-check-circle"></i></button>
+                                </div>
+                            </div> --}}
+                            <div id="order-phone">
+                                <small class="text-muted"><p><i class="fas fa-phone"></i>
+                                    {{$order->getPhone()}}
+                                </small>
+                            </div>
+                        </li>
+                        <li>
                             @if ($order->shipping_method=='delivery')
                                 <strong>Dirección de entrega</strong>
                                 <small class="text-muted"><p><i class="fas fa-map-marker-alt"></i> {{$order->getFullAddress()}}</p></small>
@@ -270,7 +284,6 @@
             $('.questionIcon').addClass('d-none');
             $('#cancelOrderModal').find('.modal-header').hide();
             $('#cancelOrderModal').find('.modal-footer').hide();
-            url = "{{env('APP_URL')}}"
             $.ajax({
                 url : '{{ route("order.userCancel") }}',
                 type: 'POST',
@@ -284,7 +297,7 @@
                             $('#response-success').show();
                             setTimeout(function(){ 
                                 $('#cancelOrderModal').modal('hide');
-                                window.location.href = url;
+                                window.location.href = '/';
                             }, 500);
                         }else{
                             console.log(data)

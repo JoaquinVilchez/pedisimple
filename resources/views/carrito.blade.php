@@ -337,13 +337,15 @@
         }
 
         function emptyCart(restaurant){
+            idmateria = $('#select').val();
             $.ajax({
                 url : '/carrito/vaciar',
                 type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                data:{restaurant:restaurant},
+                data:{idmateria:idmateria},
+
                 success:function(data){
                     $('#cart-content').html(data);
                     cartFormat();

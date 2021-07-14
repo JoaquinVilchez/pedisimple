@@ -8,6 +8,41 @@ use App\OpeningDateTime;
 use App\Product;
 use App\Variant;
 
+function validatePhone($tel)
+{
+    $re = '/^(?:((?P<p1>(?:\( ?)?+)(?:\+|00)?(54)(?<p2>(?: ?\))?+)(?P<sep>(?:[-.]| (?:[-.] )?)?+)(?:(?&p1)(9)(?&p2)(?&sep))?|(?&p1)(0)(?&p2)(?&sep))?+(?&p1)(11|([23]\d{2}(\d)??|(?(-10)(?(-5)(?!)|[68]\d{2})|(?!))))(?&p2)(?&sep)(?(-5)|(?&p1)(15)(?&p2)(?&sep))?(?:([3-6])(?&sep)|([12789]))(\d(?(-5)|\d(?(-6)|\d)))(?&sep)(\d{4})|(1\d{2}|911))$/D';
+    if (preg_match($re, $tel, $match)) {
+        //texto capturado por cada grupo -> variables individuales
+        list(, $internacional_completo,, $internacional,,, $internacional_celu, $prefijo_acceso, $area,,,
+            $prefijo_celu, $local_1a, $local_1b, $local_1c, $local_2, $numero_social
+        ) = array_pad($match, 20, '');
+
+        //arreglar un poco los valores
+        $local_1 = $local_1a . $local_1b . $local_1c;
+        $local = $local_1 . $local_2;
+        $es_fijo = !($internacional_celu || $prefijo_celu);
+        $numero = $area . $local . $numero_social;
+        $completo = $internacional . $internacional_celu . $area . $prefijo_celu . $local . $numero_social;
+
+        //devolver sólo lo que importa en un array
+        return compact(
+            'numero',
+            'completo',
+            'internacional',
+            'internacional_celu',
+            'area',
+            'prefijo_celu',
+            'local',
+            'local_1',
+            'local_2',
+            'numero_social',
+            'es_fijo'
+        );
+    } else {
+        return false;
+    }
+}
+
 function formatPrice($price)
 {
     return number_format($price, 0, ',', '');

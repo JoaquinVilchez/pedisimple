@@ -10,7 +10,7 @@
         <section>
             <h4>{{$user->fullName()}}</h4>
             <span><i class="fas fa-envelope mr-2"></i>{{$user->email}}</span><br>
-            <span><i class="fas fa-phone mr-2"></i>{{$user->characteristic.' - '.$user->phone}}</span>
+            <span><i class="fas fa-phone mr-2"></i>{{$user->getPhone()}}</span>
         </section> 
         <hr>
     <a href="#" class="btn btn-primary btn-block" id="editData">Editar datos</a>
@@ -57,16 +57,10 @@
                 {!!$errors->first('email', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group">
-                <label>Teléfono </label>
-                <div class="row">
-                    <div class="col-md-4 col-4 pr-1">
-                        <input type="text" class="form-control" name="characteristic" value="{{old('characteristic',$user->characteristic)}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
-                    </div> 
-                    <div class="col-md-8 col-8 pl-1">
-                        <input id="phone" type="text" class="form-control" name="phone" value="{{old('phone',$user->phone)}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
-                    </div>
+                <label>Teléfono</label>
+                <div class="input-group">
+                    <input type="text" name="phone" value="{{old('phone', $user->getPhone())}}" class="form-control rounded" autocomplete="off">
                 </div>
-                {!!$errors->first('characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                 {!!$errors->first('phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
             </div>
             <div class="form-group mt-2">

@@ -36,7 +36,7 @@
                                 <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" @if(isset($person)) value="{{ old('first_name', $person->first_name)}}@endif"autofocus>
+                                    <input id="first_name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" @if(isset($person)) value="{{ old('email', $person->first_name) }}" @else value="{{ old('first_name') }}" @endif autofocus>
 
                                     @error('first_name')
                                         <span class="invalid-feedback" role="alert">
@@ -50,7 +50,7 @@
                                 <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Apellido') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" @if(isset($person)) value="{{ old('last_name', $person->last_name)}}@endif">
+                                    <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" @if(isset($person)) value="{{ old('email', $person->last_name) }}" @else value="{{ old('last_name') }}" @endif>
 
                                     @error('last_name')
                                         <span class="invalid-feedback" role="alert">
@@ -65,9 +65,22 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" @if(isset($person)) value="{{ old('email', $person->email) }}@endif">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" @if(isset($person)) value="{{ old('email', $person->email) }}" @else value="{{ old('email') }}" @endif>
 
                                     @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{old('phone')}}">
+                                    @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
                                         </span>
@@ -97,42 +110,18 @@
                                 </div>
                             </div>
 
-
-                            <div class="row">
-                                <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
-                                <div class="col-md-2 col-12 pr-md-1">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">0</span>
-                                        </div>
-                                        <input type="text" class="form-control @error('characteristic') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="Prefijo" maxlength="4" onkeypress="return onlyNumberKey(event)">
-                                    </div>
-                                </div>
-                                @error('characteristic')
-                                    <span class="invalid-feedback" role="alert">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-
-                                <div class="col-md-4 col-12 pl-md-0">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">15</span>
-                                            </div>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="Teléfono" maxlength="6" onkeypress="return onlyNumberKey(event)">
+                                            {!! htmlFormSnippet() !!}
                                         </div>
-                                        @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            {{ $message }}
-                                        </span>
-                                        @enderror
-                                        <small class="form-text text-muted ml-2">Ej: 654321</small>
+                                        @if($errors->first('g-recaptcha-response'))
+                                            <small style="color:#dc3545"> El captcha es obligatorio.</small>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-
-
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
@@ -149,4 +138,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js-scripts')
+    <script src="{{asset('/js/inputNumber.js')}}"></script>
 @endsection
