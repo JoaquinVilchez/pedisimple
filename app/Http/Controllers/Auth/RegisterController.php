@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Invitation;
+use App\Rules\validatePhone;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -72,12 +73,11 @@ class RegisterController extends Controller
             'last_name' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'characteristic' => ['required', 'min:4'],
-            'phone' => ['required', 'min:6'],
+            'phone' => ['required', new validatePhone],
             'g-recaptcha-response' => 'recaptcha',
         ]);
     }
-
+    // 
     /**
      * Create a new user instance after a valid registration.
      *
@@ -86,6 +86,9 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        $phone = validatePhone($data['phone']);
+
         if (isset($data['token'])) {
             $invitation = Invitation::where('token', $data['token'])->first();
             $invitation->update(['state' => 'used']);
@@ -95,12 +98,12 @@ class RegisterController extends Controller
         }
 
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
+            'first_name' => ucfirst($data['first_name']),
+            'last_name' => ucfirst($data['last_name']),
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'characteristic' => $data['characteristic'],
-            'phone' => $data['phone'],
+            'characteristic' => $phone['area'],
+            'phone' => $phone['local'],
             'type' => $type
         ]);
 

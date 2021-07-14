@@ -78,7 +78,7 @@ class Order extends Model
         if ($this->user_id != null) {
             return $this->user->getPhone();
         } else {
-            return $this->guest_characteristic . '-' . $this->guest_phone;
+            return $this->guest_characteristic . $this->guest_phone;
         }
     }
 

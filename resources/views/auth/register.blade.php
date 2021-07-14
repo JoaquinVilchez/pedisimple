@@ -75,37 +75,16 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <label for="phone" class="col-md-4 col-form-label text-md-right pl-0">Teléfono</label>
-                                <div class="col-md-3 col-12 pr-md-1">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">0</span>
-                                        </div>
-                                        <input type="text" class="form-control @error('characteristic') is-invalid @enderror" name="characteristic" value="{{old('characteristic')}}" autocomplete="false" placeholder="3462" maxlength="4" onkeypress="return onlyNumberKey(event)">
-                                    </div>
-                                </div>
-                                @error('characteristic')
-                                    <span class="invalid-feedback" role="alert">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
+                            <div class="form-group row">
+                                <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
 
-                                <div class="col-md-3 col-12 pl-md-0">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">15</span>
-                                            </div>
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{old('phone')}}" autocomplete="false" placeholder="654321" maxlength="6" onkeypress="return onlyNumberKey(event)">
-                                        </div>
-                                        @error('phone')
+                                <div class="col-md-6">
+                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{old('phone')}}">
+                                    @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             {{ $message }}
                                         </span>
-                                        @enderror
-                                        {{-- <small class="form-text text-muted ml-2">Ej: 654321</small> --}}
-                                    </div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -159,4 +138,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js-scripts')
+    <script src="{{asset('/js/inputNumber.js')}}"></script>
 @endsection

@@ -7,14 +7,16 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Storage;
+use App\Rules\validatePhone;
 
 class UserController extends Controller
 {
 
-    public function ownerData(Request $request){
+    public function ownerData(Request $request)
+    {
         $user = User::find($request->id);
 
-        return view('admin.restaurant.modal_info')->with('user',$user);
+        return view('admin.restaurant.modal_info')->with('user', $user);
     }
 
     /**
@@ -22,12 +24,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkoutLogin(Request $request){
-        
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password ], false)) {
+    public function checkoutLogin(Request $request)
+    {
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], false)) {
             return response()->json('Bienvenido', 200);
-        }else{
-            return response()->json( ['errors' => 'Los datos ingresados no son correctos.'], 422);
+        } else {
+            return response()->json(['errors' => 'Los datos ingresados no son correctos.'], 422);
         }
     }
 
@@ -60,7 +63,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
     }
 
     /**
@@ -82,7 +84,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        
     }
 
     /**
@@ -98,13 +99,13 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
-            'characteristic' => 'required',
-            'phone' => 'required',
+            'phone' => ['required', new validatePhone],
         ]);
 
         $user = User::findOrFail($id);
-        
-        if($request->hasFile('image')){
+        $phone = validatePhone($request->phone);
+
+        if ($request->hasFile('image')) {
 
             $old_image = $user->image;
 
@@ -113,48 +114,55 @@ class UserController extends Controller
             $path = $file->hashName();
 
             $image = Image::make($file)->encode('jpg', 75);
-            
+
             $image->fit(250, 250, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            
-            if($old_image != 'user.png'){
-                $path_old_image = 'images/uploads/user/'.$old_image;
-                    if(file_exists($path_old_image)){
-                        unlink($path_old_image);
-                    }
-            }    
-            
-            $file->store('public/uploads/user');   
 
-            $user->update(['image'=>$path]);  
+            if ($old_image != 'user.png') {
+                $path_old_image = 'images/uploads/user/' . $old_image;
+                if (file_exists($path_old_image)) {
+                    unlink($path_old_image);
+                }
+            }
+
+            $file->store('public/uploads/user');
+
+            $user->update(['image' => $path]);
         }
 
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $old_image = $user->image;
 
             $file = $request->file('image');
 
             $path = $file->hashName();
 
-            $image = Image::make($file)->fit(785, 785, function ($constraint) {$constraint->aspectRatio();})->crop(785,785)->encode('jpg', 75);
+            $image = Image::make($file)->fit(785, 785, function ($constraint) {
+                $constraint->aspectRatio();
+            })->crop(785, 785)->encode('jpg', 75);
 
-            if($old_image!='user.png'){
-                Storage::delete('public/uploads/user/'.$old_image);
+            if ($old_image != 'user.png') {
+                Storage::delete('public/uploads/user/' . $old_image);
             }
-            
-            Storage::put("public/uploads/user/".$path, $image->__toString());
 
-            $user->image = $path;         
-        }elseif($request->hasFile('image')=="" && $user->image!="user.png"){
-            Storage::delete('public/uploads/user/'.$user->image);
+            Storage::put("public/uploads/user/" . $path, $image->__toString());
+
+            $user->image = $path;
+        } elseif ($request->hasFile('image') == "" && $user->image != "user.png") {
+            Storage::delete('public/uploads/user/' . $user->image);
         }
 
-        $user->update($request->only('first_name','last_name','email','characteristic','phone'));
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'characteristic' => $phone['area'],
+            'phone' => $phone['local']
+        ]);
 
         return redirect(route('user.index'))->with('success_message', 'Datos editados con éxito');
-
     }
 
     /**

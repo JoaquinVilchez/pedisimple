@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Darryldecode\Cart\Cart;
 use Carbon\Carbon;
+use App\Rules\validatePhone;
 use App\Order;
 use App\Product;
 use App\Address;
@@ -102,6 +103,17 @@ class CheckoutController extends Controller
                         return back()->with('error_message', 'No puedes hacer un pedido a tu propio comercio.');
                     } else {
 
+                        if ($request->address_type == 'data-address') {
+                            $request->validate([
+                                'address' => 'required'
+                            ]);
+                        } elseif ($request->address_type == 'new-address') {
+                            $request->validate([
+                                'client_street' => 'required',
+                                'client_number' => 'required|numeric'
+                            ]);
+                        }
+
                         $transaction = DB::transaction(function () use ($request, $shipping_method, $code, $user, $restaurant) {
 
                             try {
@@ -111,10 +123,6 @@ class CheckoutController extends Controller
                                     $delivery_price = \Cart::getCondition('Delivery')->getValue();
                                     //DIRECCION
                                     if ($request->address_type == 'data-address') {
-
-                                        $request->validate([
-                                            'address' => 'required'
-                                        ]);
 
                                         $address = Address::find($request->address);
                                         //Crea el pedido con la direccion registrada previamente del usuario
@@ -132,11 +140,6 @@ class CheckoutController extends Controller
                                             'code' => $code
                                         ]);
                                     } elseif ($request->address_type == 'new-address') {
-
-                                        $request->validate([
-                                            'client_street' => 'required',
-                                            'client_number' => 'required|numeric'
-                                        ]);
 
                                         //Si el usuario apreta checkbox para guardar direccion en su perfil
                                         if ($request->save == 'on') {
@@ -232,20 +235,30 @@ class CheckoutController extends Controller
                     }
                 } elseif ($request->auth_user == 'false') {
 
+                    if (\Cart::getCondition('Delivery')) {
+
+                        $request->validate([
+                            'client_first_name' => 'required',
+                            'client_last_name' => 'required',
+                            'client_phone' => ['required', new validatePhone],
+                            'client_street' => 'required',
+                            'client_number' => 'required|numeric',
+                        ]);
+                    } else {
+                        $request->validate([
+                            'client_first_name' => 'required',
+                            'client_last_name' => 'required',
+                            'client_phone' => ['required', new validatePhone],
+                        ]);
+                    }
+
                     $transaction = DB::transaction(function () use ($request, $restaurant, $shipping_method, $code) {
 
                         try {
+                            $phone = validatePhone($request->client_phone);
+
                             //CHECKEA SI EL PEDIDO ES CON DELIVERY O SIN (EN CASO DE QUE SEA RETIRO EN LOCAL NO REGISTRA DIRECCION)
                             if (\Cart::getCondition('Delivery')) {
-
-                                $request->validate([
-                                    'client_first_name' => 'required',
-                                    'client_last_name' => 'required',
-                                    'client_characteristic' => 'required|numeric|min:4',
-                                    'client_phone' => 'required|numeric|min:6',
-                                    'client_street' => 'required',
-                                    'client_number' => 'required|numeric',
-                                ]);
 
                                 $order = Order::create([
                                     'restaurant_id' => $request->restaurant_id,
@@ -262,17 +275,11 @@ class CheckoutController extends Controller
                                     'guest_number' => $request->client_number,
                                     'guest_floor' => $request->client_floor,
                                     'guest_department' => $request->client_department,
-                                    'guest_characteristic' => $request->client_characteristic,
-                                    'guest_phone' => $request->client_phone,
+                                    'guest_characteristic' => $phone['area'],
+                                    'guest_phone' => $phone['local'],
                                     'code' => $code
                                 ]);
                             } else {
-                                $request->validate([
-                                    'client_first_name' => 'required',
-                                    'client_last_name' => 'required',
-                                    'client_characteristic' => 'required|numeric|min:4',
-                                    'client_phone' => 'required|numeric|min:6'
-                                ]);
 
                                 $order = Order::create([
                                     'restaurant_id' => $request->restaurant_id,
@@ -285,8 +292,8 @@ class CheckoutController extends Controller
                                     'client_aditional_notes' => $request->client_aditional_notes,
                                     'guest_first_name' => $request->client_first_name,
                                     'guest_last_name' => $request->client_last_name,
-                                    'guest_characteristic' => $request->client_characteristic,
-                                    'guest_phone' => $request->client_phone,
+                                    'guest_characteristic' => $phone['area'],
+                                    'guest_phone' => $phone['local'],
                                     'code' => $code
                                 ]);
                             }

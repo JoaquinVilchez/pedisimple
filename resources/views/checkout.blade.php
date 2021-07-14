@@ -84,7 +84,7 @@
                             <input type="text" name="auth_user" value="false" class="form-control" hidden>
                             <div class="row">
                                 <div class="col-md-12 px-sm-4">
-                                    <div class="mb-2 d-flex flex-wrap" >
+                                    <div class="mb-2 d-flex align-items-center flex-wrap ">
                                         <h5 class="d-inline">Continuar como invitado</h5>
                                         <small class="d-inline ml-2" style="font-size: 12px">¿Tienes una cuenta? <a href="#" id="has_account">Inicia sesión</a></small>
                                     </div>
@@ -130,29 +130,20 @@
                                         </div>
 
                                         <div class="form-group mb-2">
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <label>Prefijo</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                          <span class="input-group-text">0</span>
-                                                        </div>
-                                                        <input type="text" name="client_characteristic" value="{{old('client_characteristic')}}" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)" autocomplete="off">
-                                                    </div>
-                                                    {!!$errors->first('client_characteristic', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
-                                                </div>
-                                                <div class="col-8">
+                                            <div class="row g-2">
+                                                <div class="col-12">
                                                     <label>Teléfono</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                          <span class="input-group-text">15</span>
-                                                        </div>  
-                                                        <input type="text" name="client_phone" value="{{old('client_phone')}}" class="form-control" maxlength="6" onkeypress="return onlyNumberKey(event)" autocomplete="off">
+                                                    <div class="input-group d-flex justify-content-center flex-direction-column">
+                                                        <input type="text" style="min-width: 50%" name="client_phone" value="{{old('client_phone')}}" class="form-control rounded" autocomplete="off">
+                                                        <div class="alert alert-primary px-3 py-1 m-1 d-flex align-items-center" role="alert" style="font-size: 14px">
+                                                            <p class="mb-0"><i class="fas fa-exclamation-circle"></i> Asegurate que el teléfono sea el correcto.</p>
+                                                        </div>
                                                     </div>
                                                     {!!$errors->first('client_phone', '<small style="color:red"><i class="fas fa-exclamation-circle"></i> :message</small>') !!}
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="form-group mb-3">
                                             <div class="row">
                                                 <div class="col">
@@ -267,7 +258,6 @@
                                 <div class="form-group col-12 mb-3">
                                     <div class="alert alert-warning py-2" role="alert" style="font-size: .8em">
                                         <strong>¡Importante!</strong>
-                                        {{-- <p class="mb-0">Esta acción no confirma el pedido, sino que envía el detalle del pedido y tus datos personales al comercio para coordinar el pedido y la entrega a través de WhatsApp o teléfono.</p> --}}
                                         <p class="mb-0">Al finalizar el pedido debes esperar a que el comercio lo confirme. Luego de eso, te llegará un WhatsApp con todos los detalles del pedido y la entrega.</p>
                                     </div>
                                     <button class="spinnerSubmitButton btn btn-primary btn-block" id="checkout-finish-order" type="submit" @if(Cart::isEmpty()) disabled @endif>
@@ -309,8 +299,6 @@
     $(document).ready(function(){
         var errors = '{{$errors->first()}}';
         var AuthUser = "{{{ (Auth::user()) ? true : false }}}";
-        
-        console.log(errors)
 
         if(AuthUser==1 || errors.length>2){
             $('#step-1').hide();
@@ -319,7 +307,7 @@
             $('#step-1').show();
             $('#step-2').hide();
         }
-    
+
         $('#guest_button').on('click', function(){
             $('#step-1').hide();
             $('#step-2').fadeIn(500);
@@ -377,8 +365,8 @@
 
         if($('#new-address').is(':visible')){
             newaddress.hide();
-            address.show();    
-            addresstype.val('data-address');            
+            address.show();
+            addresstype.val('data-address');
         }else{
             newaddress.show();
             address.hide();
@@ -386,4 +374,6 @@
         }
     }
 </script>
+
+<script src="{{asset('/js/inputNumber.js')}}"></script>
 @endsection
