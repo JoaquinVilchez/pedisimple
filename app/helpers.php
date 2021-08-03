@@ -262,12 +262,29 @@ function whatsappCancelOrderMessage($order)
 function gluberMessage($order)
 {
     if ($order->user_id != null) {
-        $first_name = $order->user->first_name;
+        $name = $order->user->fullName();
     } else {
-        $first_name = $order->guest_first_name;
+        $name = $order->getFullName();
+    }
+    $list = '';
+    foreach ($order->lineItems as $item) {
+        if ($item->variants == null) {
+            $list .= "
+_- (" . $item->quantity . ") " . $item->product->name . " [$" . formatPrice($item->price * $item->quantity) . "]_";
+        } else {
+            $list .= "
+_- (" . $item->quantity . ") " . $item->product->name . " (" . implode(', ', $item->showVariants()) . ") [$" . formatPrice($item->price * $item->quantity) . "]_";
+        }
     }
 
-    return 'Hola, me comunico de ' . $order->restaurant->name . ' (_' . $order->restaurant->address->getAddress() . '_) Te contacto desde ' . config("app.name") . ' para hacer una entrega a *' . getOrderAddress($order) . '* con el codigo *' . $order->code . '*. ¿Hay disponibilidad?';
+    return
+        '*PEDISIMPLE* - Solicito un Gluber desde el comercio ' . $order->restaurant->name . ' (_' . $order->restaurant->address->getAddress() . '_) para hacer una entrega a *' . getOrderAddress($order) . '* con el codigo *' . $order->code . '*.
+
+Solicitante: ' . $name . '
+Detalle del pedido: ' . $list . '
+
+Costo total del pedido: $' . $order->total . '
+    ';
 }
 
 function delayedOrder($order)

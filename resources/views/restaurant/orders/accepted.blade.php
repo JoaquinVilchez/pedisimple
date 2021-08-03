@@ -49,7 +49,7 @@
                           <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text={{urlencode(whatsappMessageCustomer($order))}}">Reenviar detalle de pedido</a>
                           <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                           <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
-                            @if(gluberStatus())
+                            @if(gluberStatus() && $order->restaurant->shipping_method!='pickup')
                                 <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Gluber</a>
                             @endif
                           <a class="dropdown-item" data-orderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
@@ -159,8 +159,8 @@
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}?text={{urlencode(whatsappMessageCustomer($order))}}">Reenviar detalle de pedido</a>
                                       <a class="dropdown-item" href="#" onclick="editOrder({{$order->id}})" data-toggle="modal" data-target="#editOrderModal" >Editar pedido</a>
                                       <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', whatsappNumberCustomer($order))}}">Hablar con el cliente</a>
-                                        @if(gluberStatus())
-                                            <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Los Glubers son deliverys particulares que puedes pedir en cualquier momento de manera opcional.">Pedir un Gluber</a>
+                                        @if(gluberStatus() && $order->restaurant->shipping_method!='pickup')
+                                            <a class="dropdown-item" target=”_blank” href="https://wa.me/549{{str_replace('-', '', env('GLUBER_NUMBER'))}}?text={{urlencode(gluberMessage($order))}}" data-toggle="tooltip" data-placement="left" title="Solicita un delivery particular para que entregue tu pedido.">Pedir un Delivery (+${{env('GLUBER_TAX')}})</a>
                                         @endif
                                       <a class="dropdown-item" data-cancelorderid="{{$order->id}}" data-toggle="modal" data-target="#cancelOrderModal" href="#">Cancelar pedido</a>
                                     </div>
