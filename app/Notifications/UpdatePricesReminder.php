@@ -41,9 +41,9 @@ class UpdatePricesReminder extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(env('APP_NAME').' - Por favor, actualiza tus precios.')
+            ->subject(env('APP_NAME') . ' - Por favor, actualiza tus precios.')
             ->line('Es importante mantener tus precios actualizados en la plataforma para que los clientes tengan una mejor experiencia a la hora de pedir tus productos. Por eso te ofrecemos actualizar tus precios de una forma muy sencilla y rápida, sólo te tomará unos minutos.')
-            ->action('Actualizar precios', (env('APP_URL').'/productos/menu'))
+            ->action('Actualizar precios', (env('APP_URL') . '/productos/menu'))
             ->line('Si tus precios estan actualizados, solo omite este correo.')
             ->line('¡Gracias por mantener actualizada tu información!');
     }

@@ -44,6 +44,7 @@ Route::get('/confirmado', function () {
 })->name('confirmation');
 
 Route::get('/comercios/check', 'RestaurantController@check')->name('restaurant.check');
+Route::get('/update-prices-reminder/{id?}', 'RestaurantController@updatePricesReminder')->name('restaurant.updateprices');
 
 Route::get('/checkout/descargar/{order}', 'CheckoutController@download')->name('checkout.download');
 Route::resource('/checkout', 'CheckoutController')->names('checkout');

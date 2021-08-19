@@ -3,7 +3,11 @@
 @section('main')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
     <h1 class="h2"><strong>Comercios</strong></h1>
-    <a href="{{route('restaurant.check')}}" class="btn btn-sm btn-primary">Inhabilitar comercios sin horarios</a>
+
+    <a href="{{route('restaurant.updateprices')}}" class="spinnerClickButton btn btn-sm btn-primary" type="button">
+      <i class="loadingIcon fas fa-spinner fa-spin d-none"></i> 
+      <span class="btn-txt">Solicitar actualizar precios</span>
+    </a>
 </div>
 
   @include('messages')
@@ -37,6 +41,7 @@
               <a href="#"><i class="far fa-edit"></i></a>
               <a href="#" data-restaurantid="{{$restaurant->id}}" data-toggle="modal" data-target="#deleteRestaurantModal"><i class="far fa-trash-alt"></i></a>
               <a href="#" onclick="showUserInfo({{$restaurant->user->id}})" data-toggle="modal" data-target="#ownerInfoModal"><i class="fas fa-info-circle"></i></a>
+              <a href="{{route('restaurant.updateprices', $restaurant->id)}}"  data-toggle="tooltip" data-placement="top" title="Solicitar actualizar precios"><i class="fas fa-dollar-sign"></i></a>
             </td>
           </tr>
           @endforeach

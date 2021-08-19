@@ -21,7 +21,7 @@ use App\Mail\newCommerce;
 use App\Mail\newCommerceAdmin;
 use App\Mail\UpdateStatusMail;
 use Illuminate\Support\Facades\Mail;
-use App\Notifications\StatusUpdate;
+use App\Notifications\UpdatePricesReminder;
 
 class RestaurantController extends Controller
 {
@@ -62,6 +62,22 @@ class RestaurantController extends Controller
 
         return redirect()->back();
     }
+
+
+    public function updatePricesReminder($restaurant_id = null)
+    {
+        if ($restaurant_id != null) {
+            $restaurants = Restaurant::where('state', 'active')->where('id', $restaurant_id)->get();
+        } else {
+            $restaurants = Restaurant::where('state', 'active')->get();
+        }
+        foreach ($restaurants as $restaurant) {
+            $restaurant->user->notify(new UpdatePricesReminder());
+        }
+
+        return redirect()->back();
+    }
+
     /**
      * Display a listing of the resource.
      *

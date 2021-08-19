@@ -14,6 +14,7 @@
         {{-- href="{{route('product.export.excel')}}" --}}
         @if(count($products)!=0)
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteAllModal">Eliminar todos</a>
+        <a class="dropdown-item" href="{{route('product.editprices')}}">Actualizar precios</a>
         @endif
       </div>
     </div>

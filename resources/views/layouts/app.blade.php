@@ -259,7 +259,7 @@
         });
 
         $('.spinnerClickButton').on('click', function(e){
-            e.preventDefault();
+            // e.preventDefault();
             $('.loadingIcon').removeClass('d-none');
             $('.spinnerClickButton').attr('disabled', true);
             $('.btn-txt').text("Espere por favor...");
