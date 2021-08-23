@@ -422,7 +422,7 @@ class ProductController extends Controller
         $products = Product::where('restaurant_id', $restaurant->id)
             ->where('temporary', false)
             ->where('state', '!=', 'removed')
-            ->orderBy('state', 'asc')
+            ->orderBy('category_id', 'asc')
             ->paginate(45);
 
         return view('restaurant.products.list')->with('products', $products);
