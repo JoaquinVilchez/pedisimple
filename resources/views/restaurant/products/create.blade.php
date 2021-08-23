@@ -117,8 +117,7 @@
           </div>
         </div>
 
-      </div>    
-    
+      </div>
       <div class="col-xl-6 col-12 pl-0">
         <div class="card my-2">
           <h5 class="card-header">Otros</h5>

@@ -11,7 +11,6 @@
       <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importExcelModal">Importar</a>
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exportExcelModal">Exportar</a>
-        {{-- href="{{route('product.export.excel')}}" --}}
         @if(count($products)!=0)
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteAllModal">Eliminar todos</a>
         <a class="dropdown-item" href="{{route('product.editprices')}}">Actualizar precios</a>
@@ -29,76 +28,75 @@
       <img data-original="{{asset('/storage/design/new-product.svg')}}" alt="" class="img-default my-2">
       <p>Todavía no tienes productos.<br>
       <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar producto</a></p>
-      {{-- <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2 d-inline">Importar planilla</a></p> --}}
     </div>
   @else
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Foto</th>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Categoría</th>
-          <th>Precio</th>
-          <th>No disponible</th>
-          <th>Última actualización</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-          @foreach($products as $product)
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
           <tr>
-            <td><small><i @if($product->state=='available') style="color:#28a745" @else style="color:#dc3545" @endif class="fas fa-circle"  data-toggle="tooltip" data-placement="bottom" @if($product->state=='available') title="Disponible" @else title="No disponible"@endif></i></small></td>
-            <td>
-              <div class="d-flex">
-                @if($product->temporary!=null)
-                  <div class="d-inline">
-                      <i class="far fa-clock mr-2"></i>
-                  </div>
-                @endif
-                  <div class="d-inline">
-                    <img data-original="{{asset('/storage/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
-                  </div>
-              </div>
-            </td>
-            <td>
-              {{$product->name}} <br>
-                @if(count($product->getVariants)>0)
-                  <small><a href="#" data-toggle="modal" data-target="#variantsModal" onclick="showVariants({{$product->id}})">Ver variantes</a></small>
-                @endif
-            </td>
-            <td>{{mb_strimwidth($product->details, 0, 50, "...")}}</td>
-            @if($product->temporary==null)
-              <td>{{$product->category->name}}</td>
-            @else
-              <td>Sin categoria</td>
-            @endif
-            <td>${{formatPrice($product->price)}}</td>
-            <td style="text-align:center" width="10%">
-              <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
-                @csrf
-                <input type="text" value="{{$product->id}}" name="product_id" hidden>
-                <input name="checkbox" type="checkbox" value="{{$product->id}}" onchange="notAvailable({{$product->id}});"
-                  @if($product->state=='not-available')
-                    checked
-                  @endif
-                >
-              </form>
-            </td>
-            <td>{{ucfirst($product->updated_at->calendar())}}</td>
-            <td>
-              <a href="{{route('product.edit', $product)}}"><i class="far fa-edit"></i></a>
-              <a href="#" data-productid="{{$product->id}}" data-toggle="modal" data-target="#deleteProductModal"><i class="far fa-trash-alt"></i></a>
-            </td>
+            <th></th>
+            <th>Foto</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>No disponible</th>
+            <th>Última actualización</th>
+            <th></th>
           </tr>
-          @endforeach
-        @endif
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+            @foreach($products as $product)
+            <tr>
+              <td><small><i @if($product->state=='available') style="color:#28a745" @else style="color:#dc3545" @endif class="fas fa-circle"  data-toggle="tooltip" data-placement="bottom" @if($product->state=='available') title="Disponible" @else title="No disponible"@endif></i></small></td>
+              <td>
+                <div class="d-flex">
+                  @if($product->temporary!=null)
+                    <div class="d-inline">
+                        <i class="far fa-clock mr-2"></i>
+                    </div>
+                  @endif
+                    <div class="d-inline">
+                      <img data-original="{{asset('/storage/uploads/products/'.$product->image)}}" class="img-thumbnail" style="object-fit: cover; width:50px" alt="">
+                    </div>
+                </div>
+              </td>
+              <td>
+                {{$product->name}} <br>
+                  @if(count($product->getVariants)>0)
+                    <small><a href="#" data-toggle="modal" data-target="#variantsModal" onclick="showVariants({{$product->id}})">Ver variantes</a></small>
+                  @endif
+              </td>
+              <td>{{mb_strimwidth($product->details, 0, 50, "...")}}</td>
+              @if($product->temporary==null)
+                <td>{{$product->category->name}}</td>
+              @else
+                <td>Sin categoria</td>
+              @endif
+              <td>${{formatPrice($product->price)}}</td>
+              <td style="text-align:center" width="10%">
+                <form id="{{'not_available_checkbox_'.$product->id}}" action="{{route('product.available', $product)}}" method="POST">
+                  @csrf
+                  <input type="text" value="{{$product->id}}" name="product_id" hidden>
+                  <input name="checkbox" type="checkbox" value="{{$product->id}}" onchange="notAvailable({{$product->id}});"
+                    @if($product->state=='not-available')
+                      checked
+                    @endif
+                  >
+                </form>
+              </td>
+              <td>{{ucfirst($product->updated_at->calendar())}}</td>
+              <td>
+                <a href="{{route('product.edit', $product)}}"><i class="far fa-edit"></i></a>
+                <a href="#" data-productid="{{$product->id}}" data-toggle="modal" data-target="#deleteProductModal"><i class="far fa-trash-alt"></i></a>
+              </td>
+            </tr>
+            @endforeach
+        </tbody>
+      </table>
+    </div>
   {{$products->links()}}
+  @endif
 
 @if(count($products)!=0)
 <!-- Modal -->
