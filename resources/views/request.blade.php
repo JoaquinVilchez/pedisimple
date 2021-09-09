@@ -34,26 +34,26 @@
                 @csrf
                 <p>Dejanos tus datos</p>
                 <div class="form-group" data-error="{{$errors->first('name', ':message')}}">
-                  <input type="text" name="name" class="form-input" placeholder="Nombre y Apellido">
+                  <input type="text" name="name" class="form-input" placeholder="Nombre y Apellido" value="{{old('name')}}">
                 </div>
                 <div class="form-group"  data-error="{{$errors->first('email', ':message')}}">
-                  <input type="email" name="email" class="form-input" placeholder="Email">
+                  <input type="email" name="email" class="form-input" placeholder="Email" value="{{old('email')}}">
                 </div>
                 <div class="form-group"  data-error="{{$errors->first('phone', ':message')}}">
-                  <input type="text" name="phone" class="form-input" placeholder="Teléfono">
+                  <input type="text" name="phone" class="form-input" placeholder="Teléfono" value="{{old('phone')}}">
                 </div>
                 <p class="mt-4">Comentanos sobre tu comercio</p>
                 <div class="form-group"  data-error="{{$errors->first('commerce', ':message')}}">
-                  <input type="text" name="commerce" class="form-input" placeholder="Nombre de tu comercio">
+                  <input type="text" name="commerce" class="form-input" placeholder="Nombre de tu comercio" value="{{old('commerce')}}">
                 </div>
                 <div class="form-group"  data-error="{{$errors->first('address', ':message')}}">
-                  <input type="text" name="address" class="form-input" placeholder="Dirección">
+                  <input type="text" name="address" class="form-input" placeholder="Dirección" value="{{old('address')}}">
                 </div>
                 <div class="form-group"  data-error="{{$errors->first('havecomputer', ':message')}}">
-                  <input type="text" name="havecomputer" class="form-input" placeholder="¿Tienes una computadora?">
+                  <input type="text" name="havecomputer" class="form-input" placeholder="¿Tienes una computadora?" value="{{old('havecomputer')}}">
                 </div>
                 <div class="form-group"  data-error="{{$errors->first('commercerole', ':message')}}">
-                  <textarea class="form-input" name="commercerole" id="" cols="30" rows="4" placeholder="¿A qué se dedica tu comercio?"></textarea>
+                  <textarea class="form-input" name="commercerole" id="" cols="30" rows="4" placeholder="¿A qué se dedica tu comercio?" value="{{old('commercerole')}}">{{old('commercerole')}}</textarea>
                 </div>
                 <button class="spinnerSubmitButton btn btn-primary btn-block" type="submit">
                     <i class="loadingIcon fas fa-spinner fa-spin d-none"></i>
