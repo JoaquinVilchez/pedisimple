@@ -135,21 +135,23 @@ class RestaurantController extends Controller
     public function request(Request $request)
     {
         $data = [
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'commerce' => $request->commerce,
-            'aditional_notes' => $request->aditional_notes
+            'address' => $request->address,
+            'havecomputer' => $request->havecomputer,
+            'commercerole' => $request->commercerole
         ];
 
         $data = request()->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
             'commerce' => 'required',
-            'aditional_notes' => 'nullable'
+            'address' => 'required',
+            'havecomputer' => 'required',
+            'commercerole' => 'required',
         ]);
 
         Mail::to($request->email)->send(new RequestMail);

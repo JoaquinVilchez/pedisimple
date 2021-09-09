@@ -34,10 +34,10 @@ Route::get('/bienvenido', function () {
     return view('auth.welcome');
 })->name('welcome')->middleware(['auth', 'verified']);
 
-Route::get('/solicitud', function () {
+Route::get('/registra-tu-comercio', function () {
     return view('request');
 })->name('register.request');
-Route::post('/solicitud', 'RestaurantController@request')->name('restaurant.request');
+Route::post('/registra-tu-comercio', 'RestaurantController@request')->name('restaurant.request');
 
 Route::get('/confirmado', function () {
     return view('confirmation');

@@ -15,10 +15,9 @@ class RequestMail extends Mailable implements ShouldQueue
      * Create a new message instance.
      *
      * @return void
-     */ 
+     */
     public function __construct()
     {
-
     }
 
     /**

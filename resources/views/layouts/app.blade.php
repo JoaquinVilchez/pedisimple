@@ -50,6 +50,12 @@
     <link rel="stylesheet" href="{{asset('css/bootstrap-select.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-variations.css')}}">
 
+    <!-- Datepicker Files -->
+    <link rel="stylesheet" href="{{asset('datepicker\css\bootstrap-datepicker3.css')}}">
+    <link rel="stylesheet" href="{{asset('datepicker\css\bootstrap-datepicker.standalone.css')}}">
+    <script src="{{asset('datepicker\js\bootstrap-datepicker.js')}}"></script>
+    <!-- Languaje -->
+
     @yield('css-scripts')
 
     {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}
@@ -75,12 +81,6 @@
             gtag('config', 'UA-165580235-1');
         </script>
     @endif
-
-    <!-- Datepicker Files -->
-    <link rel="stylesheet" href="{{asset('datepicker\css\bootstrap-datepicker3.css')}}">
-    <link rel="stylesheet" href="{{asset('datepicker\css\bootstrap-datepicker.standalone.css')}}">
-    <script src="{{asset('datepicker\js\bootstrap-datepicker.js')}}"></script>
-    <!-- Languaje -->
     <script src="{{asset('datepicker\locales\bootstrap-datepicker.es.min.js')}}"></script>
 
     {{-- Cleave --}}
@@ -211,7 +211,7 @@
             @yield('content')
         </main>
     </div>
-
+{{-- 
 <footer class="footer">
     <div class="container">
         <div class="row d-flex justify-content-between">
@@ -220,13 +220,12 @@
                 <div class="icons d-inline ml-3">
                     <a style="color:white" target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
                     <a style="color:white" target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
-                    {{-- <a style="color:white" target=”_blank” href="http://twitter.com/pedisimple"><i class="fab fa-twitter mr-1"></i></a> --}}
                     <a style="color:white" target=”_blank” href="mailto:contacto@pedisimple.com"><i class="far fa-envelope mr-1"></i></a>
                 </div>
             </div>
         </div>
     </div>
-</footer>
+</footer> --}}
 
 <!-- Modal -->
 <div class="modal fade" id="newNotificationModal" tabindex="-1" aria-labelledby="newNotificationModalLabel" aria-hidden="true">

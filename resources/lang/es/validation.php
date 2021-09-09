@@ -220,7 +220,9 @@ return [
         'termsandconditions' => 'Términos y condiciones',
         'freedays' => 'días gratis',
         'gracedays' => 'días de gracia',
-        'g-recaptcha-response.required' => 'Captcha is Required'
+        'g-recaptcha-response.required' => 'Captcha is Required',
+        'havecomputer' => 'tienes una computadora',
+        'commercerole' => 'a que se dedica tu comercio',
 
     ],
 
