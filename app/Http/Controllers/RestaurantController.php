@@ -141,7 +141,8 @@ class RestaurantController extends Controller
             'commerce' => $request->commerce,
             'address' => $request->address,
             'havecomputer' => $request->havecomputer,
-            'commercerole' => $request->commercerole
+            'commercerole' => $request->commercerole,
+            'g-recaptcha-response' => 'recaptcha',
         ];
 
         $data = request()->validate([
@@ -152,6 +153,7 @@ class RestaurantController extends Controller
             'address' => 'required',
             'havecomputer' => 'required',
             'commercerole' => 'required',
+            'g-recaptcha-response' => 'required',
         ]);
 
         Mail::to($request->email)->send(new RequestMail);

@@ -55,6 +55,12 @@
                 <div class="form-group"  data-error="{{$errors->first('commercerole', ':message')}}">
                   <textarea class="form-input" name="commercerole" id="" cols="30" rows="4" placeholder="¿A qué se dedica tu comercio?" value="{{old('commercerole')}}">{{old('commercerole')}}</textarea>
                 </div>
+                <div class="form-group" data-error="{{$errors->first('g-recaptcha-response', ':message')}}">
+                  {!! htmlFormSnippet() !!}
+                  {{-- @if($errors->first('g-recaptcha-response'))
+                      <small style="color:#dc3545"> El captcha es obligatorio.</small>
+                  @endif --}}
+                </div>
                 <button class="spinnerSubmitButton btn btn-primary btn-block" type="submit">
                     <i class="loadingIcon fas fa-spinner fa-spin d-none"></i>
                     <span class="btn-txt">Enviar</span>
@@ -373,6 +379,10 @@ function scrollToTop() {
     margin-top: 2rem;
   }
   @media (max-width: 768px) {
+    #recaptcha-element   {
+      transform: scale(0.84);
+      transform-origin: 0 0;
+    }
     .left-info{
       margin: 20px 0px;
     }
