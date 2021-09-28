@@ -135,7 +135,7 @@
             <span>
                 <a target=”_blank” href="http://instagram.com/pedisimple"><i class="fab fa-instagram mr-1"></i></a>
                 <a target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
-                <a target=”_blank” href="mailto:contacto@pedisimple.com"><i class="far fa-envelope mr-1"></i></a>
+                <a target=”_blank” href="mailto:{{env('MAIL_FROM_ADDRESS')}}"><i class="far fa-envelope mr-1"></i></a>
             </span>
         </div>
     </div>

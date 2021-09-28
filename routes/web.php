@@ -37,6 +37,11 @@ Route::get('/bienvenido', function () {
 Route::get('/registra-tu-comercio', function () {
     return view('request');
 })->name('register.request');
+
+Route::get('/registrarcomercio', function () {
+    return view('request');
+})->name('register.request');
+
 Route::post('/registra-tu-comercio', 'RestaurantController@request')->name('restaurant.request');
 
 Route::get('/confirmado', function () {

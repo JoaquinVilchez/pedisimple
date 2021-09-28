@@ -586,7 +586,7 @@ class ProductController extends Controller
         }
 
         if ($request->temporary == 'on') {
-            Mail::to("contacto@pedisimple.com")->send(new NewTemporaryProduct(Auth::user()->restaurant, $product));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new NewTemporaryProduct(Auth::user()->restaurant, $product));
         }
 
 
