@@ -44,6 +44,9 @@
 </section>
 
 <div class="container">
+    <div class="row d-flex justify-content-center">
+        @include('components.streaming')
+    </div>
     @if ($order->state != 'cancelled')
     <div class="row">
         <div class="col-md-8 col-12">

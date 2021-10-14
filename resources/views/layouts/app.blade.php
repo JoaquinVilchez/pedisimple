@@ -211,7 +211,7 @@
             @yield('content')
         </main>
     </div>
-{{-- 
+
 <footer class="footer">
     <div class="container">
         <div class="row d-flex justify-content-between">
@@ -225,7 +225,7 @@
             </div>
         </div>
     </div>
-</footer> --}}
+</footer>
 
 <!-- Modal -->
 <div class="modal fade" id="newNotificationModal" tabindex="-1" aria-labelledby="newNotificationModalLabel" aria-hidden="true">

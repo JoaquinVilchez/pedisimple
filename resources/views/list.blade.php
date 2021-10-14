@@ -84,7 +84,7 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-8">
-          
+
           @if (count($filters)>0)
           <div class="alert alert-danger m-0 p-1 px-2 rounded-0 mb-2" role="alert" style="text-align:center" style="text-decoration: none">
               <div>
@@ -94,6 +94,7 @@
           </div>
           @endif
 
+          @include('components.streaming')
 
           @if(Auth::check() and Auth::user()->type == 'administrator')
           <div class="accordion" id="pendingShops">
