@@ -423,7 +423,7 @@ class ProductController extends Controller
             ->where('temporary', false)
             ->where('state', '!=', 'removed')
             ->orderBy('category_id', 'asc')
-            ->paginate(45);
+            ->paginate(25);
 
         return view('restaurant.products.list')->with('products', $products);
     }
