@@ -94,8 +94,6 @@
           </div>
           @endif
 
-          @include('components.streaming')
-
           @if(Auth::check() and Auth::user()->type == 'administrator')
           <div class="accordion" id="pendingShops">
             <div class="card border-0">
@@ -318,10 +316,10 @@
   })
 
   $('#orderStoppedRestaurantModal').on('show.bs.modal', function(event){
-  var button = $(event.relatedTarget)
+    var button = $(event.relatedTarget)
 
-  restaurantSlug = button.data('restaurantslug')
-  var modal = $(this) 
+    restaurantSlug = button.data('restaurantslug')
+    var modal = $(this) 
   })
 
   function continueToRestaurant(){
