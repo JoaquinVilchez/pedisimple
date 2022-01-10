@@ -324,9 +324,9 @@
   var modal = $(this) 
   })
 
-function continueToRestaurant(){
-  window.location = "/"+restaurantSlug
-}
+  function continueToRestaurant(){
+    window.location = "/"+restaurantSlug
+  }
 
 </script>
 @endsection
