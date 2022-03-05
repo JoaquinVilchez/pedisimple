@@ -150,7 +150,7 @@
   </div>
   <hr width="50%">
 </section>
-
+{{-- 
 <section class="free-month">
   <div class="d-flex justify-content-center">
     <div>
@@ -159,7 +159,7 @@
       <a class="free-month__cta btn btn-primary" onclick="scrollToTop()">Quiero sumarme a {{env('APP_NAME')}}</a>
     </div>
   </div>
-</section>
+</section> --}}
 
 @endsection
 
