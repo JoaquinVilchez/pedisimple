@@ -206,6 +206,7 @@
             @if(Auth::check() and Auth::user()->type == 'merchant')
                 <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
                     Estas loggeado como <strong>comerciante</strong>
+                    <p>Para ver todas las funcionalidades de este rol ingresar desde una PC</p>
                 </div>
             @elseif(Auth::check() and Auth::user()->type == 'customer')
                 <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
