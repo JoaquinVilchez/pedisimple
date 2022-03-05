@@ -204,9 +204,9 @@
 
         <main role="main" class="flex-shrink-0">
             @if(Auth::check() and Auth::user()->type == 'merchant')
-                <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
+                <div class="alert alert-success rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
                     Estas loggeado como <strong>comerciante</strong>
-                    <p>Para ver todas las funcionalidades de este rol ingresar desde una PC</p>
+                    <p class="m-0"><strong>Para ver todas las funcionalidades de este rol ingresar desde una PC</strong></p>
                 </div>
             @elseif(Auth::check() and Auth::user()->type == 'customer')
                 <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
