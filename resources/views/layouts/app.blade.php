@@ -203,11 +203,20 @@
         @endif
 
         <main role="main" class="flex-shrink-0">
-            @if(env('MAINTENANCE')=='YES')
+            @if(Auth::check() and Auth::user()->type == 'merchant')
+                <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
+                    Estas loggeado como <strong>comerciante</strong>
+                </div>
+            @elseif(Auth::check() and Auth::user()->type == 'customer')
+                <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
+                    Estas loggeado como <strong>usuario</strong>
+                </div>
+            @endif
+            {{-- @if(env('MAINTENANCE')=='YES')
                 <div class="alert alert-primary rounded-0 py-1 my-0" style="font-size: .8em; text-align:center;" role="alert">
                     La página no está disponible al público en este momento. Únicamente pueden ingresar los comerciantes para configurar sus productos.
                 </div>
-            @endif
+            @endif --}}
             @yield('content')
         </main>
     </div>
