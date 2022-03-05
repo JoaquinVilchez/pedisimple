@@ -20,7 +20,7 @@ use App\User;
 
 Auth::routes(['verify' => true]);
 
-Route::get('/mantenimiento', function () {
+Route::get('/', function () {
     return view('maintenance');
 })->name('app.maintenance');
 
@@ -34,9 +34,9 @@ Route::get('/bienvenido', function () {
     return view('auth.welcome');
 })->name('welcome')->middleware(['auth', 'verified']);
 
-Route::get('/registra-tu-comercio', function () {
+Route::get('/caracteristicas', function () {
     return view('request');
-})->name('register.request');
+})->name('features');
 
 Route::get('/registrarcomercio', function () {
     return view('request');
@@ -55,8 +55,8 @@ Route::get('/checkout/descargar/{order}', 'CheckoutController@download')->name('
 Route::resource('/checkout', 'CheckoutController')->names('checkout');
 
 Route::post('/checkout-login', 'UserController@checkoutLogin')->name('user.checkoutlogin');
-Route::resource('usuario/direcciones', 'AddressController')->names('address')->middleware(['auth', 'verified', 'Maintenance']);
-Route::resource('usuario/datos', 'UserController')->names('user')->middleware(['auth', 'verified', 'Maintenance']);
+Route::resource('usuario/direcciones', 'AddressController')->names('address')->middleware(['auth', 'verified']);
+Route::resource('usuario/datos', 'UserController')->names('user')->middleware(['auth', 'verified']);
 
 Route::post('/carrito/addTax', 'CartController@deliveryTax')->name('cart.deliveryTax');
 Route::post('/carrito/vaciar', 'CartController@empty')->name('cart.empty');
@@ -89,8 +89,7 @@ Route::post('administracion/servicio/suscripciones/renew', 'SubscriptionControll
 //FIN-SUSCRIPCIONES/COMERCIOS
 
 //COMERCIOS
-
-Route::resource('/', 'ListController')->names('home')->middleware('Maintenance');
+Route::resource('/list', 'ListController')->names('home');
 
 Route::post('/configuracion/readnotification', 'RestaurantController@readNotification')->name('updatePrices.readNotification')->middleware(['verified', 'hasRestaurant']);
 Route::post('/configuracion/addnotificationnumber', 'RestaurantController@addNotificationNumber')->name('restaurant.notificationnumber')->middleware(['verified', 'hasRestaurant']);
@@ -100,7 +99,7 @@ Route::put('/configuracion/horarios', 'RestaurantController@openingTimeUpdate')-
 Route::resource('/configuracion', 'RestaurantController')->names('restaurant')->middleware(['verified', 'hasRestaurant']);
 Route::get('/comercio/create', 'RestaurantController@create')->name('restaurant.create')->middleware(['verified', 'isMerchant']);
 Route::post('/comercio/store', 'RestaurantController@store')->name('restaurant.store')->middleware(['verified']);
-Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible', 'Maintenance']);
+Route::get('/{comercio}', 'RestaurantController@show')->name('restaurant.show')->middleware(['Visible']);
 Route::post('/comercio/eliminar', 'RestaurantController@destroy')->name('restaurant.destroy')->middleware(['verified']);
 Route::post('/comercio/pausarpedidos', 'RestaurantController@pauseOrders')->name('restaurant.pauseOrders')->middleware(['verified', 'hasRestaurant']);
 
@@ -164,6 +163,6 @@ Route::post('/pedidos/update', 'OrderController@updateOrder')->name('order.updat
 Route::post('/pedidos/edit', 'OrderController@editOrder')->name('order.editOrder')->middleware(['auth', 'verified', 'hasRestaurant']);
 Route::post('/pedidos/usuario/cancelar', 'OrderController@UserCancelOrder')->name('order.userCancel');
 Route::get('/pedido/{code}', 'CheckoutController@show')->name('confirmed.order');
-Route::resource('usuario/pedidos', 'OrderController')->names('order')->middleware(['auth', 'verified', 'Maintenance']);
+Route::resource('usuario/pedidos', 'OrderController')->names('order')->middleware(['auth', 'verified']);
 
 Route::post('/mailsubscription/create', 'MailSubscriptionController@store')->name('mailsubscription.store');

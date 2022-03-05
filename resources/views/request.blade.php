@@ -15,7 +15,7 @@
   </button>
 </div>
 @endif
-<section class="position-relative">
+{{-- <section class="position-relative">
   <img src="{{asset('storage/design/commerce-request/background.svg')}}" class="background" alt="">
   <div class="container">
     <div class="row header d-flex justify-content-center position-relative">
@@ -57,9 +57,9 @@
                 </div>
                 <div class="form-group" data-error="{{$errors->first('g-recaptcha-response', ':message')}}">
                   {!! htmlFormSnippet() !!}
-                  {{-- @if($errors->first('g-recaptcha-response'))
+                  @if($errors->first('g-recaptcha-response'))
                       <small style="color:#dc3545"> El captcha es obligatorio.</small>
-                  @endif --}}
+                  @endif
                 </div>
                 <button class="spinnerSubmitButton btn btn-primary btn-block" type="submit">
                     <i class="loadingIcon fas fa-spinner fa-spin d-none"></i>
@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    {{-- <div class="row my-3 reviews ">
+    <div class="row my-3 reviews ">
       <div class="col-12">
           <h2 class="reviews__title">¿Qué dicen nuestros clientes?</h2>
           <div class="review d-flex align-items-center justify-content-center text-left">
@@ -83,9 +83,9 @@
           </div>
         </div>
       </div>
-    </div> --}}
+    </div>
   </div>
-</section>
+</section> --}}
 <section class="features my-5">
 
   <div class="feature-1">
