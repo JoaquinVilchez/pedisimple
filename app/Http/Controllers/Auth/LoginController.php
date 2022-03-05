@@ -28,7 +28,7 @@ class LoginController extends Controller
      * @var string
      */
 
-    protected $redirectTo = '/';
+    protected $redirectTo = '/list';
 
 
     /**
@@ -41,9 +41,9 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-        // protected function redirectTo()
-        // {
-        //     return back();
-        // }
+    // protected function redirectTo()
+    // {
+    //     return back();
+    // }
 
 }

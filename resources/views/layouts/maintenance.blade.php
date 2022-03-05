@@ -61,7 +61,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light mr-0" >
             <div class="container">
-                    <img class="m-auto pt-3" src="{{asset('images/logo.png')}}" width="150px" alt="">
+                <a href="/list"><img class="m-auto pt-3" src="{{asset('images/logo.png')}}" width="150px" alt=""></a>
             </div>
         </nav>
 
