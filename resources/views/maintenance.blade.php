@@ -93,13 +93,13 @@
                     <div class="col-12 col-md-6 col-lg-3">
                       <div class="d-flex flex-column align-items-center">
                         <h2 class="text-title">867</h2>
-                        <p class="stadistic-description">Usuarios realizados</p>
+                        <p class="stadistic-description">Usuarios registrados</p>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">
                       <div class="d-flex flex-column align-items-center">
                         <h2 class="text-title">2546</h2>
-                        <p class="stadistic-description">Pedidos registrados</p>
+                        <p class="stadistic-description">Pedidos realizados</p>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">

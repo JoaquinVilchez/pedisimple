@@ -1,8 +1,20 @@
 @extends('layouts.app')
+@section('css-scripts')
+<style>
+    .demo-card {
+        width: 500px;
+        max-width: 100%;
+        padding: 0 30px;
+        border: none;
+        box-shadow: 0px 4px 97px rgba(0, 0, 0, 0.07);
+        border-radius: 17px;
+    }
+</style>
+@endsection
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row justify-content-center py-5">
+        <div class="col-12 col-md-8">
             <div class="image my-4" style="text-align:center">
                 <img data-original="{{asset('images/logo.png')}}" class="mt-1" width="300px">
                 <div class="icons d-block ml-3">
@@ -10,6 +22,20 @@
                     <a target=”_blank” href="http://facebook.com/pedisimple"><i class="fab fa-facebook-square mr-1"></i></a>
                     {{-- <a target=”_blank” href="http://twitter.com/pedisimple"><i class="fab fa-twitter mr-1"></i></a> --}}
                     <a target=”_blank” href="mailto:{{env('MAIL_FROM_ADDRESS')}}"><i class="far fa-envelope mr-1"></i></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="container d-flex justify-content-center">
+                    <div class="card demo-card text-center">
+                        <div class="card-body">
+                          <h5 class="text-title">Comerciante</h5>
+                          <p class="mb-0"><strong>user:</strong> pedisimple@gmail.com</p>
+                          <p class="mb-0"><strong>pass:</strong> 12345678</p>
+                          <h5 class="text-title mt-4">Usuario</h5>
+                          <p class="mb-0"><strong>user:</strong> juanperez@gmail.com</p>
+                          <p class="mb-0"><strong>pass:</strong> 12345678</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
