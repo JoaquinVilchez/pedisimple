@@ -1,0 +1,17 @@
+node_modules/
+package.json
+package-lock.json
+webpack.mix.js
+resources/js/
+resources/sass/
+npm-debug.log
+yarn-error.log
+.git/
+.env
+.env.example
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+tests/
+vendor/
