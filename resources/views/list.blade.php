@@ -221,7 +221,7 @@
         </button>
       </div>
         <div class="modal-body text-center">
-            <img src="{{asset('storage/design/close.svg')}}" class="img-step mb-4">
+            <i class="fas fa-times-circle fa-4x text-muted mb-4"></i>
             <h5>En este momento el comercio se encuentra cerrado</h5>  
             <p>¿Queres ingresar al perfil de todas formas?</p>
             <input type="hidden" id="restaurantid" name="restaurant_id" value="">

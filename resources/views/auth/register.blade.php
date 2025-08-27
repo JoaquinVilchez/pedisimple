@@ -5,7 +5,7 @@
         <div class="col-lg-8">
         @if(isset($person))
             <div style="text-align:center" class="mb-2">
-            <img data-original="{{asset('storage/design/chef.svg')}}" alt="" class="img-default mb-3">
+            <i class="fas fa-utensils fa-4x text-primary mb-3"></i>
                 <h5 class="txt-bold">¡Hola {{$person->first_name}}, que gusto tenerte por acá!</h5>
                 <p>Este es el primer paso para registrarte en la plataforma.</p>
                 <p>Completa el siguiente formulario con tus <strong>datos personales</strong>.<br>
@@ -13,8 +13,7 @@
             </div>
         @else
             <div style="text-align:center" class="mb-2">
-                <img data-original="{{asset('storage/design/man.svg')}}" alt="" class="img-default mb-3">
-                <img data-original="{{asset('storage/design/woman.svg')}}" alt="" class="img-default mb-3">
+                <i class="fas fa-user fa-4x text-success mb-3"></i>
                     <h5 class="txt-bold">¡Hola, que gusto tenerte por acá!</h5>
                     <p>Este es el primer paso para registrarte en la plataforma.</p>
                     <p>Completa el siguiente formulario con tus datos personales. <br>

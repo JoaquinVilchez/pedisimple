@@ -62,33 +62,33 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-12">
-            <h1 class="section-title">¡Sistema en venta!</h1>
+            <h1 class="section-title">Pedí Simple - Marketplace Gastronómico</h1>
             <hr class="my-1">
               <div class="row d-flex justify-content-center">
                   <div class="col-12 col-md-8 m-auto text-center">
-                    <h5 class="text-title mt-4">¿En qué consiste?</h5>
+                    <h5 class="text-title mt-4">Descripción del Proyecto</h5>
                     <p>
-                      Pedí Simple es un marketplace de comercios gastronómicos que permite brindarle a cada comerciante,
-                      un perfil propio para mostrar sus productos, recibir pedidos online  desde la plataforma y gestionarlos
-                      a través de mensajes automáticos en WhatsApp. El comerciante gestiona los pedidos a través de un panel
-                      de administración para mantener al cliente informado sobre el estado de su pedido en todo momento.
+                      Pedí Simple es un marketplace completo desarrollado en Laravel que conecta comercios gastronómicos con sus clientes. 
+                      El sistema incluye un panel de administración robusto para comerciantes, gestión de pedidos en tiempo real, 
+                      integración con WhatsApp para notificaciones automáticas, y una experiencia de usuario optimizada para 
+                      dispositivos móviles. Este proyecto demuestra mi capacidad para desarrollar aplicaciones web complejas 
+                      con funcionalidades empresariales reales.
                     </p>
 
-                    <h5 class="text-title mt-4">¿Cómo funciona?</h5>
+                    <h5 class="text-title mt-4">Funcionalidades Principales</h5>
                     <p>
-                      Los clientes que ingresan a la paltaforma, pueden elegir cualquiera de los comercios disponibles, ingresar
-                      a su perfil y agregar al carrito los productos que desea comprar. Una vez realizado el pedido, al comerciante
-                      le llega una alerta en tiempo real en su panel de administración indicando la recepción del nuevo pedido.
-                      El comerciante puede aceptar o rechazar, indicar tiempo de demora, cancelar o editar el pedido. Cada vez que el
-                      pedido cambia de estado (Aceptado-Editado-Cancelado) se le notifica automáticamente por WhatsApp al comprador,
-                      agilizando así, la gestión de los pedidos a los comerciantes.
+                      <strong>Para Comerciantes:</strong> Panel de administración completo, gestión de productos y categorías, 
+                      recepción de pedidos en tiempo real, sistema de notificaciones automáticas, y dashboard con estadísticas 
+                      de ventas.<br><br>
+                      <strong>Para Clientes:</strong> Catálogo de productos por comercio, carrito de compras intuitivo, 
+                      seguimiento de pedidos en tiempo real, y notificaciones automáticas por WhatsApp sobre el estado de su orden.
                     </p>
-                    <a class="btn btn-link" href="{{route('features')}}"> Ver más características del sistema </a>
+                    <a class="btn btn-link" href="{{route('features')}}"> Ver características técnicas detalladas </a>
                 </div>
               </div>
               <div class="row d-flex justify-content-center">
                 <div class="col-12 col-md-8 m-auto text-center">
-                  <h5 class="text-title mt-4">Estadísticas</h5>
+                  <h5 class="text-title mt-4">Estadísticas del Sistema</h5>
                   <div class="row my-4 d-flex align-items-center">
                     <div class="col-12 col-md-6 col-lg-3">
                       <div class="d-flex flex-column align-items-center">
@@ -99,7 +99,7 @@
                     <div class="col-12 col-md-6 col-lg-3">
                       <div class="d-flex flex-column align-items-center">
                         <h2 class="text-title">2546</h2>
-                        <p class="stadistic-description">Pedidos realizados</p>
+                        <p class="stadistic-description">Pedidos procesados</p>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">
@@ -119,40 +119,61 @@
               </div>
               <div class="row d-flex justify-content-center">
                   <div class="col-12 col-md-8 m-auto text-center">
-                    <h5 class="text-title mt-4">Tecnologías utilizadas</h5>
+                    <h5 class="text-title mt-4">Stack Tecnológico</h5>
                     <div class="row my-4 d-flex align-items-center">
                       <div class="col-12 col-md-4 col-lg-2">
-                        <img class="my-4" src="{{asset('storage/technologies/PHP.svg')}}" >
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fab fa-php fa-4x my-4 text-dark"></i>
+                          <p class="text-muted">PHP</p>
+                        </div>
                       </div>
                       <div class="col-12 col-md-4 col-lg-2">
-                        <img class="my-4" src="{{asset('storage/technologies/LARAVEL.svg')}}" >
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fab fa-laravel fa-3x my-4 text-dark"></i>
+                          <p class="text-muted">Laravel</p>
+                        </div>
                       </div>
                       <div class="col-12 col-md-4 col-lg-2">
-                        <img class="my-4" src="{{asset('storage/technologies/MYSQL.svg')}}" >
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fas fa-database fa-3x my-4 text-dark"></i>
+                          <p class="text-muted">MySQL</p>
+                        </div>
                       </div>
                       <div class="col-12 col-md-4 col-lg-2">
-                        <img class="my-4" src="{{asset('storage/technologies/JQUERY.svg')}}" >
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fab fa-js-square fa-3x my-4 text-dark"></i>
+                          <p class="text-muted">jQuery</p>
+                        </div>
                       </div>
                       <div class="col-12 col-md-4 col-lg-2">
-                        <img class="my-4" src="{{asset('storage/technologies/GIT.svg')}}" >
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fab fa-git-alt fa-3x my-4 text-dark"></i>
+                          <p class="text-muted">Git</p>
+                        </div>
                       </div>
                       <div class="col-12 col-md-4 col-lg-2">
-                        <img class="my-4" src="{{asset('storage/technologies/DIGITALOCEAN.svg')}}" >
+                        <div class="d-flex flex-column align-items-center">
+                          <i class="fas fa-cloud fa-3x my-4 text-dark"></i>
+                          <p class="text-muted">DigitalOcean</p>
+                        </div>
                       </div>
                     </div>
                 </div>
               </div>
               <div class="row d-flex justify-content-center">
                 <div class="col-12 col-lg-6 m-auto text-center d-flex flex-column align-items-center">
-                  <h5 class="text-title mt-4">Demo</h5>
+                  <h5 class="text-title mt-4">Demo del Sistema</h5>
                   <div class="card demo-card">
                     <div class="card-body">
-                      <h5 class="text-title">Comerciante</h5>
-                      <p class="mb-0"><strong>user:</strong> pedisimple@gmail.com</p>
-                      <p class="mb-0"><strong>pass:</strong> 12345678</p>
-                      <h5 class="text-title mt-4">Usuario</h5>
-                      <p class="mb-0"><strong>user:</strong> juanperez@gmail.com</p>
-                      <p class="mb-0"><strong>pass:</strong> 12345678</p>
+                        <h5 class="text-title">Comerciante</h5>
+                        <p class="mb-0"><strong>user:</strong> comerciante@mail.com</p>
+                        <p class="mb-0"><strong>pass:</strong> 12345678</p>
+                        <h5 class="text-title mt-4">Usuario</h5>
+                        <p class="mb-0"><strong>user:</strong> cliente@mail.com</p>
+                        <p class="mb-0"><strong>pass:</strong> 12345678</p>
+                        <h5 class="text-title mt-4">Administrador</h5>
+                        <p class="mb-0"><strong>user:</strong> admin@mail.com</p>
+                        <p class="mb-0"><strong>pass:</strong> 12345678</p>
                       @if(Auth::user())
                         <a href="{{route('home.index')}}" class="btn btn-primary btn-block mt-4">Ir a inicio</a>
                       @else

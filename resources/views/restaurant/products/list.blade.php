@@ -25,7 +25,7 @@
   
   @if(count($products)==0)
     <div style="text-align:center" class="m-auto">
-      <img data-original="{{asset('/storage/design/new-product.svg')}}" alt="" class="img-default my-2">
+      <i class="fas fa-plus-circle fa-4x text-muted my-2"></i>
       <p>Todavía no tienes productos.<br>
       <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar producto</a></p>
     </div>
@@ -137,7 +137,7 @@
         </button>
       </div>
       <div style="text-align:center">
-        <img src="{{asset('storage/design/alarm.svg')}}" width="70px" class="my-2" alt="">
+        <i class="fas fa-exclamation-triangle fa-4x text-warning my-2"></i>
         <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
       </div>
       <form action="{{route('product.destroyAll')}}" method="POST">
@@ -221,7 +221,7 @@
       </div>
       <div class="modal-body">
         <div style="text-align:center">
-          <img src="{{asset('storage/design/download.svg')}}" width="70px" class="my-2" alt="">
+          <i class="fas fa-download fa-4x text-success my-2"></i>
           <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">Exportar mi lista de productos</h5>
           <hr>
           <p>Exporte su lista de productos para modificar o agregar los productos de manera más sencilla. Una vez modificada la hoja de Excel, podrá importar su archivo a la plataforma.</p>

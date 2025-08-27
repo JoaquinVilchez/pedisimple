@@ -17,8 +17,9 @@
                 </table>
                 <a href="#" data-toggle="modal" class="btn btn-primary" data-target="#addAddressModal">Agregar dirección</a>
             @else
-            <div style="text-align: center">
-                <img data-original="{{asset('storage/design/marker.svg')}}" alt="" class="img-step m-3">
+            <div style="text-align:center" class="m-auto">
+                <i class="fas fa-map-marker-alt fa-4x text-primary m-3"></i>
+                <h5 class="txt-bold">Mis direcciones</h5>
                 <p>Aún no tienes direcciones</p>
                 <a href="#" data-toggle="modal" class="btn btn-primary" data-target="#addAddressModal">Agregar dirección</a>
             </div>

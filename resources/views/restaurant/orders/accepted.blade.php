@@ -31,8 +31,8 @@
     @include('messages')
     @if(count($orders)==0)
     <div style="text-align:center" class="m-auto">
-        <img data-original="{{asset('storage/design/complete.svg')}}" alt="" class="img-default my-2">
-        <p>No tienes pedidos aceptados.<br>
+        <i class="fas fa-check-circle fa-4x text-success my-2"></i>
+        <p>No tienes pedidos aceptados.</p>
     </div>
     @else
         @foreach($orders as $order)

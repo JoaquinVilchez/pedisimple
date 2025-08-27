@@ -19,7 +19,7 @@
                         <hr class="m-0">
 
                         <div class="row my-4">
-                            <img data-original="{{asset('/storage/design/whatsapp.svg')}}" alt="" class="m-auto" width="50px">
+                            <i class="fab fa-whatsapp fa-4x text-success m-auto"></i>
                         </div>
 
                         <p class="mt-2">
@@ -79,7 +79,7 @@
                         <hr class="m-0">
                         <p class="mt-2">Para poder activar el servicio es obligatorio que configures los horarios de apertura de tu comercio.</p>
                         <div class="row my-4">
-                            <img data-original="{{asset('/storage/design/calendartimes.svg')}}" alt="" class="img-default m-auto">
+                            <i class="fas fa-calendar-alt fa-4x text-primary m-auto"></i>
                         </div>
                         <a class="btn btn-primary" href="{{route('restaurant.times')}}" id="button-step2">Establecer horarios</a>
                     </div>

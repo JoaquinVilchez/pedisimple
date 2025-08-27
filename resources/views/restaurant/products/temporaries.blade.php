@@ -17,8 +17,8 @@
   </div>
   @if(count($products)==0)
     <div style="text-align:center" class="m-auto">
-      <img data-original="{{asset('storage/design/new-product.svg')}}" alt="" class="img-default my-2">
-      <p>Todavía no tienes productos temporales.<br>
+      <i class="fas fa-clock fa-4x text-warning my-2"></i>
+      <p>Todavía no tienes productos sin stock.<br>
       <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
       {{-- <a href="{{route('product.create')}}" class="btn btn-secondary btn-sm mt-2 d-inline">Importar planilla</a></p> --}}
     </div>

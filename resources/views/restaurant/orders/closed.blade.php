@@ -40,9 +40,9 @@
     </div>
     @else
         <div style="text-align:center" class="m-auto">
-            <img data-original="{{asset('storage/design/complete.svg')}}" alt="" class="img-default my-2">
-            <p>No tienes pedidos cerrados.<br>
-        </div>  
+            <i class="fas fa-check-circle fa-4x text-success my-2"></i>
+            <p>No tienes pedidos cerrados.</p>
+        </div>
     @endif
 
 <!-- Modal -->
@@ -57,7 +57,8 @@
         </div>
         <div class="modal-body" id="detail-closed-order-modal">
             <div class="d-flex justify-content-center">
-                <img src="{{asset('storage/design/loading.svg')}}" alt="">
+                <i class="fas fa-spinner fa-spin fa-4x text-primary"></i>
+                <p>Procesando...</p>
             </div>
         </div>
       </div>

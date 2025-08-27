@@ -28,29 +28,26 @@
       <h4 class="txt-bold">¿Cómo funciona Pedí Simple?</h4>
       <hr class="mb-0">
       <div class="row d-flex justify-content-center my-3">
-        <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
-          <img src="{{asset('storage/design/store.svg')}}" class="img-step" alt="">
-          <div class="col-xl-12">
-            <div class="my-2"><small>1</small></div>
-            <h6 class="txt-bold">Elegí un comercio</h6>
-              <small>Mira las opciones de los distintos comercios disponibles.</small>
-          </div>
+        <div class="col-12 col-md-4 text-center">
+            <div class="d-flex flex-column align-items-center">
+                <i class="fas fa-store fa-3x text-primary mb-3"></i>
+                <h5>Elige tu comercio</h5>
+                <p class="text-muted">Selecciona entre los mejores restaurantes y comercios gastronómicos de tu zona</p>
+            </div>
         </div>
-        <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
-          <img src="{{asset('storage/design/basket.svg')}}" class="img-step" alt="">
-          <div class="col-xl-12">
-            <div class="my-2"><small>2</small></div>
-            <h6 class="txt-bold">Armá tu pedido</h6>
-            <small class="col-md-6">Cargá los productos que desees al carrito.</small>
-          </div>
+        <div class="col-12 col-md-4 text-center">
+            <div class="d-flex flex-column align-items-center">
+                <i class="fas fa-shopping-cart fa-3x text-success mb-3"></i>
+                <h5>Realiza tu pedido</h5>
+                <p class="text-muted">Agrega al carrito los productos que desees y confirma tu compra</p>
+            </div>
         </div>
-        <div class="col-xl-3 col-lg-3 col-12 mx-1 mt-4">
-          <img src="{{asset('storage/design/conversation.svg')}}" class="img-step" alt="">
-          <div class="col-xl-12">
-            <div class="my-2"><small>3</small></div>
-            <h6 class="txt-bold">Finalizá tu pedido</h6>
-            <small class="col-md-6">Envía tu pedido al comercio 100% online.</small>
-          </div>
+        <div class="col-12 col-md-4 text-center">
+            <div class="d-flex flex-column align-items-center">
+                <i class="fas fa-comments fa-3x text-info mb-3"></i>
+                <h5>Recibe notificaciones</h5>
+                <p class="text-muted">Te informamos en tiempo real sobre el estado de tu pedido</p>
+            </div>
         </div>
       </div>
     </div>

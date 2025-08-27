@@ -94,9 +94,9 @@
             </div>
             @if($restaurant->getSchedule()==null)
             <div class="container">
-              <div style="text-align:center">
-                <img src="{{asset('storage/design/calendar.svg')}}" class="img-step m-3">
-                <h6>Establece tus horarios para poder activar el servicio.</h6>
+              <div style="text-align:center" class="m-auto">
+                <i class="fas fa-calendar-alt fa-4x text-primary m-3"></i>
+                <h5 class="txt-bold">Configurar horarios</h5>
               </div>
             </div>
             @else

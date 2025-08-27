@@ -4,8 +4,10 @@
 <div class="container">
     <div class="row justify-content-center">
             <div class="col-md-8" style="text-align:center">
-                <img data-original="{{asset('storage/design/password.svg')}}" class="img-default my-4">
-                <h4 class="txt-bold">{{ __('Reset Password') }}</h4>
+                <div style="text-align:center" class="m-auto">
+                    <i class="fas fa-key fa-4x text-warning my-4"></i>
+                    <h5 class="txt-bold">Restablecer contraseña</h5>
+                </div>
                 <hr>
                 <div class="container mt-5">
                     <form method="POST" action="{{ route('password.update') }}">

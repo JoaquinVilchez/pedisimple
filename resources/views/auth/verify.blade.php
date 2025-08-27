@@ -4,8 +4,9 @@
 <div class="container">
     <div class="row justify-content-center" style="text-align: center">
         <div class="col-md-8">
-        <img data-original="{{asset('storage/design/email.svg')}}" alt="" class="img-default my-3">
-                    <h4 class="txt-bold">Confirma tu correo electrónico</h4>
+        <div style="text-align:center" class="m-auto">
+            <i class="fas fa-envelope fa-4x text-primary my-3"></i>
+            <h5 class="txt-bold">Verificar tu correo electrónico</h5>
             
                     @if (session('resent'))
                         <div class="alert alert-success" role="alert">

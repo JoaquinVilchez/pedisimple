@@ -29,10 +29,13 @@
                     <div class="card demo-card text-center">
                         <div class="card-body">
                           <h5 class="text-title">Comerciante</h5>
-                          <p class="mb-0"><strong>user:</strong> pedisimple@gmail.com</p>
+                          <p class="mb-0"><strong>user:</strong> comerciante@mail.com</p>
                           <p class="mb-0"><strong>pass:</strong> 12345678</p>
                           <h5 class="text-title mt-4">Usuario</h5>
-                          <p class="mb-0"><strong>user:</strong> juanperez@gmail.com</p>
+                          <p class="mb-0"><strong>user:</strong> cliente@mail.com</p>
+                          <p class="mb-0"><strong>pass:</strong> 12345678</p>
+                          <h5 class="text-title mt-4">Administrador</h5>
+                          <p class="mb-0"><strong>user:</strong> admin@mail.com</p>
                           <p class="mb-0"><strong>pass:</strong> 12345678</p>
                         </div>
                     </div>

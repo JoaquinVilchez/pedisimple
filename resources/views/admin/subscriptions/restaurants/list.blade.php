@@ -163,8 +163,8 @@
         </button>
       </div>
       <div style="text-align:center">
-        <img src="{{asset('storage/design/alarm.svg')}}" width="70px" class="my-2" alt="">
-        <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
+            <i class="fas fa-exclamation-triangle fa-4x text-warning my-2"></i>
+            <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
       </div>
       <form action="{{route('subscription.destroy')}}" method="POST">
           @csrf

@@ -245,7 +245,7 @@
             <div style="text-align: center">
                 <div class="py-2">
                     <h5 class="modal-title txt-bold" id="NewOrderModalTitle">¡Tienes un nuevo pedido!</h5>
-                    <img class="my-4" src="{{asset('storage/design/desk-bell.svg')}}" alt="" width="80px">
+                    <i class="fas fa-bell fa-4x text-primary my-4"></i>
                 </div>
                 <div class="container">
                     <a href="{{route('order.new')}}" class="btn btn-block btn-sm btn-primary">Ver pedidos</a>

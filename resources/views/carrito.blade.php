@@ -115,9 +115,9 @@
             </div>
 
             <div class="list-group mb-3" id="cart-empty" style="text-align: center">
-                <div style="text-align: center" class="my-4">
-                    <img src="{{asset('storage/design/empty_cart.png')}}" alt="" width="100px" style="opacity: 0.7">
-                    <small class="d-block mt-2  ">No tienes productos en tu pedido</small>
+                <div style="text-align:center" class="m-auto">
+                    <i class="fas fa-shopping-cart fa-4x text-muted" style="opacity: 0.7"></i>
+                    <h5>Tu carrito está vacío</h5>
                 </div>
                 <a href="{{route('home.index')}}" class="btn btn-primary">Ver comercios</a>
             </div>

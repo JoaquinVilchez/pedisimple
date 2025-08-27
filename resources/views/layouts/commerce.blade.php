@@ -238,7 +238,10 @@
               <div class="modal-body">
                 <div style="text-align: center">
                     <h5 class="modal-title txt-bold" id="updatePricesModalLabel">¡Actualizá tus precios!</h5>
-                    <img class="my-2" src="{{asset('storage/design/price.svg')}}" alt="" width="50px">
+                    <div style="text-align:center" class="m-auto">
+                        <i class="fas fa-tag fa-3x text-primary my-2"></i>
+                        <p class="text-muted">Precio</p>
+                    </div>
                     <div class="container">
                       <p>Te ofrecemos actualizar tus precios de una forma muy sencilla y rápida, sólo te tomará unos minutos.</p>
                         <a href="{{route('product.editprices')}}" class="btn btn-primary">Actualizar Precios</a><br>

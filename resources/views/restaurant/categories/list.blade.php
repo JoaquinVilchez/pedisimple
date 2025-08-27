@@ -25,8 +25,8 @@
 @include('messages')
 @if(count($categories)==0)
   <div style="text-align:center" class="m-auto">
-    <img data-original="{{asset('storage/design/new-product.svg')}}" alt="" class="img-default my-2">
-    <p>Todavia no tienes categorías.<br>
+    <i class="fas fa-plus-circle fa-4x text-primary my-2"></i>
+    <p>Todavía no tienes categorías.<br>
     <a href="{{route('category.create')}}" class="btn btn-secondary btn-sm mt-2">Agregar</a></p>
   </div>  
 @else
@@ -101,7 +101,7 @@
 
           <div class="modal-body">
                   <div style="text-align:center">
-                      <img src="{{asset('storage/design/alarm.svg')}}" width="70px" class="my-2" alt="">
+                      <i class="fas fa-exclamation-triangle fa-4x text-warning my-2"></i>
                       <h5 class="modal-title txt-bold" id="exampleModalCenterTitle">¡Cuidado!</h5>
                       <hr>
                       <h5>¿Estás seguro de eliminar esta categoría?</h5>
