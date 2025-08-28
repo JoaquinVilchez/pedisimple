@@ -1,0 +1,8 @@
+{
+  "name": "pedisimple-railway",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Build completed - assets already compiled'"
+  },
+  "dependencies": {}
+}

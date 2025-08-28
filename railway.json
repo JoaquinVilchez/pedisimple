@@ -11,8 +11,16 @@
     "restartPolicyMaxRetries": 10
   },
   "nixpacks": {
-    "scripts": {
-      "build": "composer install --no-dev --optimize-autoloader"
+    "phases": {
+      "setup": {
+        "nixPkgs": ["php", "composer"]
+      },
+      "install": {
+        "cmds": ["composer install --no-dev --optimize-autoloader"]
+      },
+      "build": {
+        "cmds": ["echo 'Build completed - assets already compiled'"]
+      }
     }
   }
 }
